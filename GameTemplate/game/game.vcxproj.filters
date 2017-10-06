@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\myEngine">
+      <UniqueIdentifier>{cf71c2d7-86a3-4324-b23c-562f3630fba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\myEngine\Graphics">
+      <UniqueIdentifier>{06578e99-1462-452d-9e13-0656e1071d84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\myEngine\Physics">
+      <UniqueIdentifier>{24b08cc4-989a-4ce6-8812-a1108fd4dd90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\myEngine\HID">
+      <UniqueIdentifier>{eb51f13c-4c51-4798-b6cc-97f71ded64a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{60b09333-4447-4ed9-8610-08a4578f85a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Map">
+      <UniqueIdentifier>{9354e332-879e-4cce-bf12-64bbd48ca626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Camera">
+      <UniqueIdentifier>{209e8c02-5da4-45a6-a206-fdbb4adec1e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\myEngine\GameObject">
+      <UniqueIdentifier>{0000edf1-f19e-49a2-9ca5-0a6990372c17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Map\object">
+      <UniqueIdentifier>{9eb72537-f783-496f-9340-f251cd643417}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{5b6cad63-247e-46b8-bc69-f3fce5f57d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Fade">
+      <UniqueIdentifier>{9edf25bb-923b-443b-8046-60db06041f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\myEngine\Timer">
+      <UniqueIdentifier>{f698ae93-5ba8-4aed-96b0-fd8ee7e1005f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Enemy">
+      <UniqueIdentifier>{82323a8a-0f16-4c18-b428-50b3c50250ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Number">
+      <UniqueIdentifier>{b374d8bc-2678-4682-8931-d34806074ca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\locationinfo">
+      <UniqueIdentifier>{898a84f8-d001-470a-8dc6-7d3b1cb08b2c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\SkinModelData.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\Animation.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\Camera.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\EffectManager.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\SkinModel.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Physics\RigidBody.cpp">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Physics\CapsuleCollider.cpp">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Physics\CharacterController.cpp">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Physics\MeshCollider.cpp">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Physics\Physics.cpp">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\System.cpp">
+      <Filter>ソース ファイル\myEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\HID\Pad.cpp">
+      <Filter>ソース ファイル\myEngine\HID</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Map.cpp">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapChip.cpp">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\GameCamera.cpp">
+      <Filter>ソース ファイル\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\GameObject\GameObject.cpp">
+      <Filter>ソース ファイル\myEngine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\GameObject\GameObjectManager.cpp">
+      <Filter>ソース ファイル\myEngine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MoveFloor.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\Texture.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\Sprite.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\TitleScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneManager.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GameScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Timer\Timer.cpp">
+      <Filter>ソース ファイル\myEngine\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MoveFloor2.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Coin.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\Killer.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Number\Number.cpp">
+      <Filter>ソース ファイル\Number</Filter>
+    </ClCompile>
+    <ClCompile Include="Number\DisplayCoin.cpp">
+      <Filter>ソース ファイル\Number</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Physics\SphereCollider.cpp">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Physics\CameraCollisionSolver.cpp">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Fade\Fade.cpp">
+      <Filter>ソース ファイル\Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\ResultScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\JumpBlock.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Block.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\ShadowMap.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\SkinModelData.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\Animation.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\Camera.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\EffectManager.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\Light.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\SkinModel.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Physics\Physics.h">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Physics\RigidBody.h">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Physics\CapsuleCollider.h">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Physics\CharacterController.h">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Physics\CollisionAttr.h">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Physics\ICollider.h">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Physics\MeshCollider.h">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\system.h">
+      <Filter>ソース ファイル\myEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\HID\Pad.h">
+      <Filter>ソース ファイル\myEngine\HID</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Map.h">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapChip.h">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\GameCamera.h">
+      <Filter>ソース ファイル\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\GameObject\GameObject.h">
+      <Filter>ソース ファイル\myEngine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\GameObject\GameObjectManager.h">
+      <Filter>ソース ファイル\myEngine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MoveFloor.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\Texture.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\Sprite.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TitleScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneManager.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GameScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Timer\Timer.h">
+      <Filter>ソース ファイル\myEngine\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MoveFloor2.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Coin.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\Killer.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Number\Number.h">
+      <Filter>ソース ファイル\Number</Filter>
+    </ClInclude>
+    <ClInclude Include="Number\DisplayCoin.h">
+      <Filter>ソース ファイル\Number</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Physics\SphereCollider.h">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Physics\CameraCollisionSolver.h">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Fade\Fade.h">
+      <Filter>ソース ファイル\Fade</Filter>
+    </ClInclude>
+    <ClInclude Include="locationinfo\stage2.h">
+      <Filter>ソース ファイル\locationinfo</Filter>
+    </ClInclude>
+    <ClInclude Include="locationinfo\stage1.h">
+      <Filter>ソース ファイル\locationinfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\ResultScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\JumpBlock.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Block.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\ShadowMap.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\RenderTarget.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
