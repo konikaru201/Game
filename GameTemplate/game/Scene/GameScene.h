@@ -56,11 +56,11 @@ public:
 		return gameCamera;
 	}
 
-	//プレイヤーのインスタンス取得
-	Player* GetPlayer()
-	{
-		return player;
-	}
+	////プレイヤーのインスタンス取得
+	//Player* GetPlayer()
+	//{
+	//	return player;
+	//}
 
 	//ライトのインスタンス取得
 	Light& GetLight()
@@ -111,7 +111,7 @@ public:
 private:
 	Light light;					//ライト
 	Map* map;						//マップ
-	Player* player;					//プレイヤー
+	//Player* player;					//プレイヤー
 	GameCamera* gameCamera;			//ゲームカメラ
 	DisplayCoin* displayCoin;		//コイン枚数のスプライト
 	Sprite* CoinNum;				//コインのスプライト

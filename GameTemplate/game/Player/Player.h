@@ -21,7 +21,7 @@ public:
 	//描画
 	void Render();
 
-	//void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
+	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
 
 	//移動
 	//戻り値　移動速度を返す
@@ -104,4 +104,4 @@ private:
 	LPDIRECT3DTEXTURE9 specularMap = NULL;			//スペキュラマップ
 };
 
-extern Player* player;
+extern Player* g_player;

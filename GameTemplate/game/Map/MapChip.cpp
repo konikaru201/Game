@@ -24,7 +24,23 @@ void MapChip::Init(const char* modelName, D3DXVECTOR3 position, D3DXQUATERNION r
 	//ロードしたモデルデータを使ってSkinModelを初期化
 	model.Init(&modelData);
 
-	model.SetLight(&gameScene->GetLight());
+	if (strcmp("Assets/modelData/skyBox.x", filePath) == 0) {
+		//ライトを初期化
+		light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+		light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+		light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+		light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+
+		light.SetDiffuseLightColor(0, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
+		light.SetDiffuseLightColor(1, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
+		light.SetDiffuseLightColor(2, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
+		light.SetDiffuseLightColor(3, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
+		light.SetAmbientLight(D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.0f));
+		model.SetLight(&light);
+	}
+	else {
+		model.SetLight(&gameScene->GetLight());
+	}
 
 	model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
 	//衝突判定の初期化
@@ -57,5 +73,6 @@ void MapChip::Update()
 void MapChip::Render()
 {
 	if (gameScene == nullptr) { return; }
+	model.SetDrawShadowMap(false, true);
 	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
 }

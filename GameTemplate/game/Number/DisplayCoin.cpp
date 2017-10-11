@@ -34,7 +34,7 @@ bool DisplayCoin::Start()
 void DisplayCoin::Update()
 {
 	if (gameScene == nullptr) { return; }
-	int CoinNum = gameScene->GetPlayer()->GetCoinCount();
+	int CoinNum = g_player->GetCoinCount();
 
 	num[0]->NumSet((CoinNum / 10));
 	num[1]->NumSet((CoinNum % 10));

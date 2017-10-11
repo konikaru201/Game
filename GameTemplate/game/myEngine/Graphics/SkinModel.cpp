@@ -18,9 +18,9 @@ namespace {
 		D3DXMATRIX* viewMatrix,
 		D3DXMATRIX* projMatrix,
 		Light* light,
-		LPDIRECT3DTEXTURE9 specularMap
-		//bool isDrawShadowMap,
-		//bool isRecieveShadow
+		LPDIRECT3DTEXTURE9 specularMap,
+		bool isDrawShadowMap,
+		bool isRecieveShadow
 	)
 	{
 		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
@@ -37,22 +37,21 @@ namespace {
 		//テクニックを設定。
 		{
 			if (pMeshContainer->pSkinInfo != NULL) {
-				pEffect->SetTechnique("SkinModel");
+				if (!isDrawShadowMap) {
+					pEffect->SetTechnique("SkinModel");
+				}
+				else {
+					pEffect->SetTechnique("SkinModelRenderToShadowMap");
+				}
 			}
 			else {
-				pEffect->SetTechnique("NoSkinModel");
+				if (!isDrawShadowMap) {
+					pEffect->SetTechnique("NoSkinModel");
+				}
+				else {
+					pEffect->SetTechnique("NoSkinModelRenderToShadowMap");
+				}
 			}
-			//if (!isDrawShadowMap) {
-			//	
-			//}
-			//else {
-			//	if (pMeshContainer->pSkinInfo != NULL) {
-			//		pEffect->SetTechnique("SkinModelRenderToShadowMap");
-			//	}
-			//	else {
-			//		pEffect->SetTechnique("NoSkinModelRenderToShadowMap");
-			//	}
-			//}
 		}
 		//共通の定数レジスタを設定
 		{
@@ -64,8 +63,8 @@ namespace {
 				light,
 				sizeof(Light)
 			);
-			////シャドウレシーバーフラグを転送
-			//pEffect->SetInt("g_isShadowReciever", isRecieveShadow);
+			//シャドウレシーバーフラグを転送
+			pEffect->SetBool("g_isShadowReciever", isRecieveShadow);
 		}
 		if (specularMap != NULL) {
 			//スペキュラマップがあるので、シェーダーに転送する。
@@ -77,11 +76,11 @@ namespace {
 			//スペキュラマップのあり、なしのフラグをfalseにする。
 			pEffect->SetBool("g_isHasSpecularMap", false);
 		}
-		//if (isRecieveShadow) {
-		//	pEffect->SetTexture("g_shadowMapTexture", g_shadowMap.GetTexture());
-		//	pEffect->SetMatrix("g_lightViewMatrix", &g_shadowMap.GetLightViewMatrix());
-		//	pEffect->SetMatrix("g_lightProjectionMatrix", &g_shadowMap.GetLightProjectionMatrix);
-		//}
+		if (isRecieveShadow) {
+			pEffect->SetTexture("g_shadowMapTexture", g_shadowMap.GetTexture());
+			pEffect->SetMatrix("g_lightViewMatrix", &g_shadowMap.GetLightViewMatrix());
+			pEffect->SetMatrix("g_lightProjectionMatrix", &g_shadowMap.GetLightProjectionMatrix());
+		}
 		if (pMeshContainer->pSkinInfo != NULL)
 		{
 			//スキン情報有り。
@@ -169,9 +168,9 @@ namespace {
 		D3DXMATRIX* viewMatrix,
 		D3DXMATRIX* projMatrix,
 		Light* light,
-		LPDIRECT3DTEXTURE9 specularMap
-		//bool isDrawShadowMap,
-		//bool isRecieveShadow
+		LPDIRECT3DTEXTURE9 specularMap,
+		bool isDrawShadowMap,
+		bool isRecieveShadow
 	)
 	{
 		LPD3DXMESHCONTAINER pMeshContainer;
@@ -189,9 +188,9 @@ namespace {
 				viewMatrix,
 				projMatrix,
 				light,
-				specularMap
-				//isDrawShadowMap,
-				//isRecieveShadow
+				specularMap,
+				isDrawShadowMap,
+				isRecieveShadow
 				);
 
 			pMeshContainer = pMeshContainer->pNextMeshContainer;
@@ -208,9 +207,9 @@ namespace {
 				viewMatrix,
 				projMatrix,
 				light,
-				specularMap
-				//isDrawShadowMap,
-				//isRecieveShadow
+				specularMap,
+				isDrawShadowMap,
+				isRecieveShadow
 				);
 		}
 
@@ -225,9 +224,9 @@ namespace {
 				viewMatrix,
 				projMatrix,
 				light,
-				specularMap
-				//isDrawShadowMap,
-				//isRecieveShadow
+				specularMap,
+				isDrawShadowMap,
+				isRecieveShadow
 				);
 		}
 	}
@@ -274,9 +273,9 @@ void SkinModel::Draw(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix)
 			viewMatrix,
 			projMatrix,
 			light,
-			specularMap
-			//isDrawShadowMap,
-			//isRecieveShadow
+			specularMap,
+			isDrawShadowMap,
+			isRecieveShadow
 		);
 	}
 }

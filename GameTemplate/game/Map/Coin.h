@@ -20,6 +20,15 @@ public:
 
 	//描画
 	void Render();
+
+	////シャドウマップ描画
+	//void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
+
+	//座標を取得
+	D3DXVECTOR3 GetPosition()
+	{
+		return position;
+	}
 private:
 	SkinModel model;			//スキンモデル
 	SkinModelData modelData;	//スキンモデルデータ

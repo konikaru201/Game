@@ -68,7 +68,7 @@ void GameCamera::Move()
 	}
 
 	//プレイヤーの座標を取得
-	D3DXVECTOR3 targetPos = gameScene->GetPlayer()->GetPosition();
+	D3DXVECTOR3 targetPos = g_player->GetPosition();
 	targetPos.y += 0.5f;
 	//カメラの注視点を設定
 	camera.SetLookatPt(targetPos);
@@ -76,7 +76,7 @@ void GameCamera::Move()
 	//カメラリセット
 	if (pad->IsTrigger(pad->enButtonLB1) && !ResetFlg) {
 		////プレイヤーの向きを取得
-		//D3DXVECTOR3 PlayerDir = gameScene->GetPlayer()->GetPlayerDir();
+		//D3DXVECTOR3 PlayerDir = g_player->GetPlayerDir();
 		////向きを逆向きにする
 		//D3DXVec3Scale(&PlayerDir, &PlayerDir, -1.0f);
 		////プレイヤーの逆向きとプレイヤーからカメラの向きを正規化
@@ -103,7 +103,7 @@ void GameCamera::Move()
 		//D3DXVec3Normalize(&cameraNormalizePos, &toCameraPos);
 
 		////D3DXVECTOR3 playerUpDir = { 0.0f,1.0f,0.0f };
-		//D3DXVECTOR3 playerUpDir = gameScene->GetPlayer()->GetPlayerUpDir();
+		//D3DXVECTOR3 playerUpDir = g_player->GetPlayerUpDir();
 		//float upAngle = D3DXVec3Dot(&playerUpDir, &cameraNormalizePos);
 		//upAngle = acosf(upAngle);
 		////D3DXVECTOR3 hogehoge;
@@ -127,7 +127,7 @@ void GameCamera::Move()
 		//	D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
 		//}
 
-		//D3DXVECTOR3 playerUpDir = gameScene->GetPlayer()->GetPlayerUpDir();
+		//D3DXVECTOR3 playerUpDir = g_player->GetPlayerUpDir();
 
 		////縦方向のリセット
 		//{

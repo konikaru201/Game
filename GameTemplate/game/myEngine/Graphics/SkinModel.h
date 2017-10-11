@@ -50,14 +50,14 @@ public:
 	{
 		return worldMatrix;
 	}
-	////シャドウマップ作成フラグを設定
-	////DrawShadowMap シャドウマップを描画するか
-	////RecieveShadow シャドウレシーバーかどうか
-	//void SetDrawShadowMap(bool DrawShadowMap, bool RecieveShadow)
-	//{
-	//	isDrawShadowMap = DrawShadowMap;
-	//	isRecieveShadow = RecieveShadow;
-	//}
+	//シャドウマップ作成フラグを設定
+	//DrawShadowMap シャドウマップを描画するか
+	//RecieveShadow シャドウレシーバーかどうか
+	void SetDrawShadowMap(bool DrawShadowMap, bool RecieveShadow)
+	{
+		isDrawShadowMap = DrawShadowMap;
+		isRecieveShadow = RecieveShadow;
+	}
 	/*!
 	*@brief	オリジナルメッシュの先頭を取得する。
 	*/
@@ -71,6 +71,6 @@ private:
 	Light*				light = nullptr;			//!<ライト。
 
 	LPDIRECT3DTEXTURE9 specularMap = NULL;			//!<スペキュラマップ。
-	//bool isDrawShadowMap = false;
-	//bool isRecieveShadow = false;
+	bool isDrawShadowMap = false;
+	bool isRecieveShadow = false;
 };

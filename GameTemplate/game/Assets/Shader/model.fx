@@ -15,9 +15,9 @@ float4x4	g_rotationMatrix;		//!<回転行列。
 float4x4	g_viewMatrixRotInv;		//!<カメラの回転行列の逆行列。
 float3		vEyePos;
 
-//int g_isShadowReciever;				//シャドウレシーバー？１ならシャドウレシーバー。
-//float4x4 g_lightViewMatrix;			//ライトビュー行列。
-//float4x4 g_lightProjectionMatrix;	//ライトプロジェクション行列。
+bool g_isShadowReciever;				//シャドウレシーバー？１ならシャドウレシーバー。
+float4x4 g_lightViewMatrix;			//ライトビュー行列。
+float4x4 g_lightProjectionMatrix;	//ライトプロジェクション行列。
 
 bool g_isHasSpecularMap;		//スペキュラマップ保持している？
 bool g_isHasNormalMap;			//法線マップ保持している？
@@ -60,17 +60,17 @@ sampler_state
 	AddressV = Wrap;
 };
 
-//texture g_shadowMapTexture;		//シャドウマップテクスチャ。
-//sampler g_shadowMapTextureSampler = 
-//sampler_state
-//{
-//	Texture = <g_shadowMapTexture>;
-//    MipFilter = LINEAR;
-//    MinFilter = LINEAR;
-//    MagFilter = LINEAR;
-//    AddressU = CLAMP;
-//	AddressV = CLAMP;
-//};
+texture g_shadowMapTexture;		//シャドウマップテクスチャ。
+sampler g_shadowMapTextureSampler = 
+sampler_state
+{
+	Texture = <g_shadowMapTexture>;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    AddressU = CLAMP;
+	AddressV = CLAMP;
+};
 
 /*!
  * @brief	入力頂点
@@ -166,12 +166,12 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
     o.Tangent = normalize(Tangent);
     o.Tex0 = In.Tex0;
 
-	//if(g_isShadowReciever == 1){
-	//	//シャドウレシーバー。
-	//	//ワールド座標をライトカメラから見た射影空間に変換する。
-	//	o.lightViewPos = mul(o.worldPos, g_lightViewMatrix);
-	//	o.lightViewPos = mul(o.lightViewPos, g_lightProjectionMatrix);
-	//}
+	if(g_isShadowReciever){
+		//シャドウレシーバー。
+		//ワールド座標をライトカメラから見た射影空間に変換する。
+		o.lightViewPos = mul(float4(o.worldPos,1.0f), g_lightViewMatrix);
+		o.lightViewPos = mul(o.lightViewPos, g_lightProjectionMatrix);
+	}
 
 	return o;
 }
@@ -197,30 +197,30 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		spec = tex2D(g_specularMapSampler,In.Tex0);
 	}
 
-	//if(g_isShadowReciever == 1){
-	//	//射影空間(スクリーン座標系)に変換された座標はw成分で割ってやると(-1.0f～1.0)の範囲の正規化座標系になる。
-	//	//これをUV座標系(0.0～1.0)に変換して、シャドウマップをフェッチするためのUVとして活用する。
-	//	float2 shadowMapUV = In.lightViewPos.xy / In.lightViewPos.w;	//この計算で(-1.0～1.0)の範囲になる。
-	//	shadowMapUV *= float2(0.5f, -0.5f);								//この計算で(-0.5～0.5)の範囲になる。
-	//	shadowMapUV += float2(0.5f, 0.5f);								//そしてこれで(0.0～1.0)の範囲になってＵＶ座標系に変換できた。やったね。
-	//	float4 shadowVal = tex2D(g_shadowMapTextureSampler, shadowMapUV);	//シャドウマップは影が落ちているところはグレースケールになっている。
-	//	color *= shadowVal;
-	//}
+
 	
 	lig += pow(max(0, dot(L, R)), 10) * g_light.diffuseLightColor[0] * length(spec) * 10.0f;
 	color *= lig;
-	
+	if (g_isShadowReciever) {
+		//射影空間(スクリーン座標系)に変換された座標はw成分で割ってやると(-1.0f～1.0)の範囲の正規化座標系になる。
+		//これをUV座標系(0.0～1.0)に変換して、シャドウマップをフェッチするためのUVとして活用する。
+		float2 shadowMapUV = In.lightViewPos.xy / In.lightViewPos.w;	//この計算で(-1.0～1.0)の範囲になる。
+		shadowMapUV *= float2(0.5f, -0.5f);								//この計算で(-0.5～0.5)の範囲になる。
+		shadowMapUV += float2(0.5f, 0.5f);								//そしてこれで(0.0～1.0)の範囲になってＵＶ座標系に変換できた。やったね。
+		float4 shadowVal = tex2D(g_shadowMapTextureSampler, shadowMapUV);	//シャドウマップは影が落ちているところはグレースケールになっている。
+		color *= shadowVal;
+	}
 	
 	return color;
 }
 
-///*!
-// *@brief	シャドウマップ書き込み用のピクセルシェーダー。
-// */
-//float4 PSRenderToShadowMapMain(VS_OUTPUT In) : COLOR
-//{
-//	return float4(0.5f, 0.5f, 0.5f, 1.0f);
-//}
+/*!
+ *@brief	シャドウマップ書き込み用のピクセルシェーダー。
+ */
+float4 PSRenderToShadowMapMain(VS_OUTPUT In) : COLOR
+{
+	return float4(0.5f, 0.5f, 0.5f, 1.0f);
+}
 
 /*!
  *@brief	スキンありモデル用のテクニック。
@@ -245,27 +245,28 @@ technique NoSkinModel
 	}
 }
 
-///*!
-// *@brief	スキンあり
-// *@brief	シャドウマップ書き込み用のテクニック
-// */
-//technique SkinModelRenderToShadowMap
-//{
-//	pass p0
-//	{
-//		VertexShader 	= compile vs_3_0 VSMain(true);
-//		PixelShader 	= compile ps_3_0 PSRenderToShadowMapMain(); 
-//	}
-//}
-///*!
-// *@brief	スキンなし
-// *@brief	シャドウマップ書き込み用のテクニック
-// */
-//technique NoSkinModelRenderToShadowMap
-//{
-//	pass p0
-//	{
-//		VertexShader 	= compile vs_3_0 VSMain(false);
-//		PixelShader 	= compile ps_3_0 PSRenderToShadowMapMain(); 
-//	}
-//}
+/*!
+ *@brief	スキンあり
+ *@brief	シャドウマップ書き込み用のテクニック
+ */
+technique SkinModelRenderToShadowMap
+{
+	pass p0
+	{
+		VertexShader 	= compile vs_3_0 VSMain(true);
+		PixelShader 	= compile ps_3_0 PSRenderToShadowMapMain();
+	}
+}
+
+/*!
+*@brief	スキンなし
+*@brief	シャドウマップ書き込み用のテクニック
+*/
+technique NoSkinModelRenderToShadowMap
+{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMain(false);
+		PixelShader = compile ps_3_0 PSRenderToShadowMapMain();
+	}
+}

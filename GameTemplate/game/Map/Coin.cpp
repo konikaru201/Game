@@ -38,11 +38,11 @@ void Coin::Update()
 	D3DXQuaternionMultiply(&rotation, &rotation, &rot);
 
 	//プレイヤーとの距離を求める
-	D3DXVECTOR3 PlayerPos = gameScene->GetPlayer()->GetPosition();
+	D3DXVECTOR3 PlayerPos = g_player->GetPosition();
 	D3DXVECTOR3 toPlayer = position - PlayerPos;
 	float length = D3DXVec3Length(&toPlayer);
 	//プレイヤーと距離が近ければ枚数をカウントして削除
-	if (length <= 0.5f)
+	if (length <= 0.7f)
 	{
 		flag = true;
 	}
@@ -58,9 +58,9 @@ void Coin::Update()
 		position.y += moveSpeed;
 
 		if (position.y - InitPosition.y >= 1.0f) {
-			int Count = gameScene->GetPlayer()->GetCoinCount();
+			int Count = g_player->GetCoinCount();
 			Count++;
-			gameScene->GetPlayer()->SetCoinCount(Count);
+			g_player->SetCoinCount(Count);
 			SetisDead();
 			return;
 		}
@@ -77,3 +77,12 @@ void Coin::Render()
 	if (gameScene == nullptr){	return; }
 	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
 }
+
+//void Coin::RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
+//{
+//	if (g_coin != nullptr) {
+//		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
+//		model.Draw(viewMatrix, projMatrix);
+//		model.SetDrawShadowMap(false, false);
+//	}
+//}

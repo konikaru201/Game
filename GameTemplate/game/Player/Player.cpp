@@ -2,10 +2,11 @@
 #include "Player.h"
 #include "Scene/GameScene.h"
 #include "myEngine/HID/Pad.h"
+#include "myEngine/Graphics/ShadowMap.h"
 
 #define SPEED 8.0f
 
-Player* player;
+Player* g_player;
 
 Player::Player()
 {
@@ -108,6 +109,7 @@ void Player::Update()
 	if (position.y <= -20.0f)
 	{
 		isDead = true;
+		g_shadowMap.SetPlayerDead(true);
 		//position = { 0.0f,0.0f,0.0f };
 		//characterController.SetPosition(position);
 	}
@@ -151,11 +153,14 @@ void Player::Render()
 	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
 }
 
-//void Player::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
-//{
-//	model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
-//	model.Draw(viewMatrix, projMatrix);
-//}
+void Player::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
+{
+	if (g_player != nullptr){
+		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
+		model.Draw(viewMatrix, projMatrix);
+		model.SetDrawShadowMap(false, false);
+	}
+}
 
 D3DXVECTOR3 Player::Move()
 {

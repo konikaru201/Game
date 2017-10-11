@@ -27,8 +27,8 @@ GameScene::~GameScene()
 {
 	delete map;
 	map = nullptr;
-	delete player;
-	player = nullptr;
+	delete g_player;
+	g_player = nullptr;
 	delete displayCoin;
 	displayCoin = nullptr;
 	delete CoinNum;
@@ -64,7 +64,7 @@ bool GameScene::Start()
 		
 		gameCamera = goMgr->NewGameObject<GameCamera>();	//カメラ生成
 		displayCoin = new DisplayCoin;
-		player = goMgr->NewGameObject<Player>();			//プレイヤー生成
+		g_player = goMgr->NewGameObject<Player>();			//プレイヤー生成
 		ChengeStage = false;
 		finishFadeOut = true;
 
@@ -107,7 +107,7 @@ void GameScene::Update()
 			step = step_WaitFadeOut;
 			return;
 		}
-		if (player->GetIsDead()) {
+		if (g_player->GetIsDead()) {
 			step = step_GameOver;
 		}
 		g_physicsWorld->Update();
@@ -167,7 +167,7 @@ void GameScene::Release()
 	//delete g_physicsWorld;
 	//g_physicsWorld = nullptr;
 	map->SetisDead();
-	player->SetisDead();
+	g_player->SetisDead();
 	gameCamera->SetisDead();
 	//displayCoin->SetisDead();
 	SetisDead();
@@ -175,7 +175,7 @@ void GameScene::Release()
 
 void GameScene::Reset()
 {
-	GetPlayer()->Reset();
+	g_player->Reset();
 	GetGameCamera()->Reset();
 	map->SetisDead();
 }

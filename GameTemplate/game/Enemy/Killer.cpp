@@ -73,7 +73,7 @@ D3DXVECTOR3 Killer::Move()
 	D3DXVECTOR3 move = characterController.GetMoveSpeed();
 
 	//プレイヤーの位置を取得
-	D3DXVECTOR3 toPlayer = gameScene->GetPlayer()->GetPosition() - position;
+	D3DXVECTOR3 toPlayer = g_player->GetPosition() - position;
 	//モデルのZ方向を取得
 	D3DXVECTOR3 direction;
 	D3DXMATRIX mWorld = model.GetWorldMatrix();

@@ -55,7 +55,7 @@ void JumpBlock::Update()
 		return;
 	}
 
-	//D3DXVECTOR3 playerPos = gameScene->GetPlayer()->GetPosition();
+	//D3DXVECTOR3 playerPos = g_player->GetPosition();
 	//D3DXVECTOR3 toPlayerPos = playerPos - position;
 	//float length = D3DXVec3Length(&toPlayerPos);
 	//if (length < 1.0f) {

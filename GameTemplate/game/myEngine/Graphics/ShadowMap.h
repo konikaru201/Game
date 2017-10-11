@@ -38,12 +38,20 @@ public:
 	void Update();
 	//シャドウマップに書き込み。
 	void Draw();
+
+	//プレイヤーの死亡フラグを設定する
+	void SetPlayerDead(bool deadFlg)
+	{
+		isPlayerDead = deadFlg;
+	}
 private:
 	CRenderTarget renderTarget;		//シャドウマップを書きこむレンダリングターゲット。
 	D3DXMATRIX  lightViewMatrix;	//ライトビューマトリクス。
 	D3DXMATRIX	lightProjMatrix;	//ライトプロジェクションマトリクス。
 	D3DXVECTOR3 viewPosition;		//ライトビューの視点。
 	D3DXVECTOR3 viewTarget;			//ライトビューの注視点。
+
+	bool isPlayerDead = false;
 };
 
 extern CShadowMap g_shadowMap;
