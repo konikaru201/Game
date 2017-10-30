@@ -59,6 +59,12 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 			//座標と回転の情報を渡して初期化
 			block->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
+		else if (strcmp("Box", mapLocInfo[i].modelName) == 0) {
+			//インスタンスを動的に生成
+			Box* box = goMgr->NewGameObject<Box>();
+			//座標と回転の情報を渡して初期化
+			box->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		}
 		else {
 			//MapChipのインスタンスを動的に生成
 			MapChip* mapChip = goMgr->NewGameObject<MapChip>();

@@ -177,6 +177,12 @@
     <ClCompile Include="myEngine\Graphics\ShadowMap.cpp">
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="myEngine\Physics\BoxCollider.cpp">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Box.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -313,6 +319,12 @@
     </ClInclude>
     <ClInclude Include="myEngine\Graphics\RenderTarget.h">
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Physics\BoxCollider.h">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Box.h">
+      <Filter>ソース ファイル\Map\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -29,7 +29,6 @@ private:
 	SkinModelData modelData;		//スキンモデルデータ
 	MeshCollider meshCollider;		//メッシュコライダー
 	RigidBody rigidBody;			//剛体
-
 	Light light;					//ライト
 };
 

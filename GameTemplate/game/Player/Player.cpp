@@ -217,7 +217,7 @@ D3DXVECTOR3 Player::Move()
 	{
 		if (JumpCount == 0) {
 			//move.y = 8.0f;
-			move.y = 14.0f;
+			move.y = 20.0f;
 			JumpCount++;
 		}
 		//‘–‚è‚È‚ª‚ç2,3‰ñ–Ú‚ÌƒWƒƒƒ“ƒv‚ª‚Å‚«‚é

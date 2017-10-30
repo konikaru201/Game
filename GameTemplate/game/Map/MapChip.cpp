@@ -43,7 +43,7 @@ void MapChip::Init(const char* modelName, D3DXVECTOR3 position, D3DXQUATERNION r
 	}
 
 	model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
-	//衝突判定の初期化
+
 	//スキンモデルからメッシュコライダーを作成する
 	D3DXMATRIX* rootBoneMatrix = modelData.GetRootBoneWorldMatrix();
 	meshCollider.CreateFromSkinModel(&model, rootBoneMatrix);
@@ -56,6 +56,7 @@ void MapChip::Init(const char* modelName, D3DXVECTOR3 position, D3DXQUATERNION r
 	rbInfo.rot = rotation;
 	//剛体を作成
 	rigidBody.Create(rbInfo);
+
 	//作成した剛体を物理ワールドに追加
 	g_physicsWorld->AddRigidBody(&rigidBody);
 }

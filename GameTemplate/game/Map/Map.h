@@ -8,6 +8,7 @@
 #include "Enemy/Killer.h"
 #include "JumpBlock.h"
 #include "Block.h"
+#include "Box.h"
 
 //マップの配置情報
 struct SMapInfo {
