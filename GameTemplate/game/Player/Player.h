@@ -1,6 +1,6 @@
 #pragma once
 
-#include "myEngine/Physics/CharacterController.h"
+#include "myEngine/Physics/PlayerController.h"
 #include "myEngine/GameObject/GameObject.h"
 
 class Player : public GameObject
@@ -55,10 +55,10 @@ public:
 	//地面の上か判定
 	bool GetIsOnGround()
 	{
-		if (characterController.IsOnGround()
-			|| characterController.IsOnMoveFloor()
-			|| characterController.IsOnMoveFloor2()
-			|| characterController.IsOnJumpBlock())
+		if (playerController.IsOnGround()
+			|| playerController.IsOnMoveFloor()
+			|| playerController.IsOnMoveFloor2()
+			|| playerController.IsOnJumpBlock())
 		{
 			return true;
 		}
@@ -88,7 +88,7 @@ private:
 	SkinModel model;								//スキンモデル
 	SkinModelData modelData;						//スキンモデルデータ
 	Animation animation;							//アニメーション
-	CharacterController characterController;		//キャラクターコントローラー
+	PlayerController playerController;		//キャラクターコントローラー
 
 	D3DXVECTOR3 MoveSpeed = { 0.0f,0.0f,0.0f };		//移動速度
 

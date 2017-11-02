@@ -1,6 +1,6 @@
 /*!
- * @brief	キャラクタコントローラー。
- */
+* @brief	プレイヤーコントローラー。
+*/
 
 #pragma once
 
@@ -9,17 +9,16 @@
 
 class ICollider;
 
-//static const float cPI = 3.14159265358979323846f;
-/*!
-	* @brief	キャラクタコントローラー。
-	*/
-class CharacterController{
+static const float cPI = 3.14159265358979323846f;
+
+class PlayerController {
 public:
-	CharacterController() {
-		m_position = {0.0f, 0.0f, 0.0f};
-		m_moveSpeed = {0.0f, 0.0f, 0.0f};
+	PlayerController() {
+		m_position = { 0.0f, 0.0f, 0.0f };
+		m_moveSpeed = { 0.0f, 0.0f, 0.0f };
 	}
-	~CharacterController()
+
+	~PlayerController() 
 	{
 		if (m_collider != nullptr) {
 			delete m_collider;
@@ -27,45 +26,45 @@ public:
 		}
 	}
 	/*!
-		* @brief	初期化。
-		*/
+	* @brief	初期化。
+	*/
 	void Init(ICollider* collider, const D3DXVECTOR3& position);
 	/*!
-		* @brief	実行。
-		*/
+	* @brief	実行。
+	*/
 	void Execute();
 	/*!
-		* @brief	座標を取得。
-		*/
+	* @brief	座標を取得。
+	*/
 	const D3DXVECTOR3& GetPosition() const
 	{
 		return m_position;
 	}
 	/*!
-		* @brief	座標を設定。
-		*/
+	* @brief	座標を設定。
+	*/
 	void SetPosition(const D3DXVECTOR3& pos)
 	{
 		m_position = pos;
 	}
 	/*!
-		* @brief	移動速度を設定。
-		*/
-	void SetMoveSpeed(const D3DXVECTOR3& speed )
+	* @brief	移動速度を設定。
+	*/
+	void SetMoveSpeed(const D3DXVECTOR3& speed)
 	{
 		m_moveSpeed = speed;
 	}
 	/*!
-		* @brief	移動速度を取得。
-		*/
+	* @brief	移動速度を取得。
+	*/
 	const D3DXVECTOR3& GetMoveSpeed() const
 	{
 		return m_moveSpeed;
 	}
 	/*!
-		* @brief	ジャンプさせる。
-		*/
-	void Jump( )
+	* @brief	ジャンプさせる。
+	*/
+	void Jump()
 	{
 		m_isJump = true;
 		m_isOnGround = false;
@@ -74,8 +73,8 @@ public:
 		m_isOnJumpBlock = false;
 	}
 	/*!
-		* @brief	ジャンプ中か判定
-		*/
+	* @brief	ジャンプ中か判定
+	*/
 	bool IsJump() const
 	{
 		return m_isJump;
@@ -148,6 +147,26 @@ public:
 	*/
 	void RemoveRigidBoby();
 
+	//レイで全方向見るためのベクトル
+	struct MoveRay {
+		const D3DXVECTOR3 rightDir = { 3.0f,  0.0f,  0.0f };		//右
+		const D3DXVECTOR3 leftDir = { -3.0f,  0.0f,  0.0f };		//左
+		const D3DXVECTOR3 frontDir = { 0.0f,  0.0f,  3.0f };		//前
+		const D3DXVECTOR3 backDir = { 0.0f,  0.0f, -3.0f };		//後
+		const D3DXVECTOR3 downDir = { 0.0f, -3.0f,  0.0f };		//下
+		const D3DXVECTOR3 upDir = { 0.0f,  3.0f,  0.0f };		//上
+	};
+
+	//レイの方向の状態
+	enum RayDirection {
+		RIGHT,	//右
+		LEFT,	//左
+		FRONT,	//前
+		BACK,	//後
+		DOWN,	//下
+		UP,		//上
+		NUM_RAY,	//レイの数。
+	};
 private:
 	D3DXVECTOR3 		m_position;						//座標。
 	D3DXVECTOR3 		m_moveSpeed;					//移動速度。
@@ -164,4 +183,6 @@ private:
 	float				m_gravity = -9.8f;				//重力。
 	D3DXVECTOR3			m_hitNormal = { 0.0f,0.0f,0.0f };
 	bool				m_hitCeiling = false;			//上方向に当たった
+	RayDirection		rayDirection = RIGHT;
+	bool				noHitObject = false;
 };

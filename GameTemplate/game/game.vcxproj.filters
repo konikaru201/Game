@@ -183,6 +183,9 @@
     <ClCompile Include="Map\Box.cpp">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClCompile>
+    <ClCompile Include="myEngine\Physics\PlayerController.cpp">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -325,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="Map\Box.h">
       <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Physics\PlayerController.h">
+      <Filter>ソース ファイル\myEngine\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

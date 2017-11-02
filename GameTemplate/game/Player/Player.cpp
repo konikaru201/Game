@@ -42,8 +42,8 @@ bool Player::Start()
 	//キャラクターコントローラーを初期化
 	CapsuleCollider* coll = new CapsuleCollider;
 	coll->Create(0.3f, 1.0f);
-	characterController.Init(coll, position);
-	characterController.SetGravity(-20.0f);	//重力強め
+	playerController.Init(coll, position);
+	playerController.SetGravity(-20.0f);	//重力強め
 
 	animation.PlayAnimation(AnimationStand, 0.3f);
 	animation.SetAnimationEndTime(AnimationRun, 0.8f);
@@ -64,12 +64,12 @@ void Player::Update()
 		if (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f) {
 			//移動しているなら向きを変える
 			D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), atan2f(dir.x, dir.z));
-			if (characterController.IsJump() == false) {
+			if (playerController.IsJump() == false) {
 				currentAnim = AnimationRun;
 			}
 		}
 		else {
-			if (characterController.IsJump() == false) {
+			if (playerController.IsJump() == false) {
 				currentAnim = AnimationStand;
 			}
 		}
@@ -77,13 +77,13 @@ void Player::Update()
 	
 
 	//移動床の上いるなら移動床についていく
-	if (characterController.IsOnMoveFloor() == true || characterController.IsOnMoveFloor2() == true)
+	if (playerController.IsOnMoveFloor() == true || playerController.IsOnMoveFloor2() == true)
 	{
 		if (g_moveFloor != nullptr && g_moveFloor2 != nullptr
 			&& g_moveFloor->GetMoveFlag() == true
 			|| g_moveFloor2->GetmoveFlg() == true) {
 			D3DXVECTOR3 AddPos;
-			if (characterController.IsOnMoveFloor() == true)
+			if (playerController.IsOnMoveFloor() == true)
 			{
 				AddPos = g_moveFloor->GetMoveSpeed();
 			}
@@ -97,7 +97,7 @@ void Player::Update()
 
 	//ジャンプブロックに当たったとき
 	if (gameScene->GetMap()->GetJumpBlock() != nullptr 
-		&& characterController.IsOnJumpBlock() == true)
+		&& playerController.IsOnJumpBlock() == true)
 	{
 		D3DXVECTOR3 AddPos = gameScene->GetMap()->GetJumpBlock()->GetMoveSpeed();
 		moveSpeed += AddPos;
@@ -146,11 +146,11 @@ void Player::Update()
 			JumpFrameCount = 0;
 		}
 	}
-	characterController.SetMoveSpeed(moveSpeed);
+	playerController.SetMoveSpeed(moveSpeed);
 	//キャラクターコントローラーを実行
-	characterController.Execute();
+	playerController.Execute();
 	//座標を設定
-	position = characterController.GetPosition();
+	position = playerController.GetPosition();
 	//アニメーションの更新
 	animation.Update(1.0f / 60.0f);
 	model.UpdateWorldMatrix(position, rotation, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
@@ -174,7 +174,7 @@ void Player::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix, bool
 D3DXVECTOR3 Player::Move()
 {
 	//移動速度を取得
-	D3DXVECTOR3 move = characterController.GetMoveSpeed();
+	D3DXVECTOR3 move = playerController.GetMoveSpeed();
 
 	//スティックの入力量を取得
 	D3DXVECTOR3 moveDir;
@@ -212,7 +212,7 @@ D3DXVECTOR3 Player::Move()
 
 	//Aボタンが押されたらジャンプ
 	if (pad->IsTrigger(pad->enButtonA)
-		&& !characterController.IsJump()
+		&& !playerController.IsJump()
 		&& GetIsOnGround())
 	{
 		if (JumpCount == 0) {
@@ -231,7 +231,7 @@ D3DXVECTOR3 Player::Move()
 				JumpCount = 0;
 			}
 		}
-		characterController.Jump();
+		playerController.Jump();
 		currentAnim = AnimationJump;
 	}
 
@@ -285,7 +285,7 @@ void Player::Reset()
 	//座標と向きを初期化
 	position = { 0.0f,0.0f,0.0f };
 	rotation = { 0.0f,0.0f,0.0f,1.0f };
-	characterController.SetPosition(position);
+	playerController.SetPosition(position);
 
 	isDead = false;
 
