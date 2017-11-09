@@ -12,7 +12,8 @@ namespace {
 		bool isHit = false;									//衝突フラグ。
 		bool isMoveFloorHit = false;						//移動床の衝突フラグ
 		bool isMoveFloorHit2 = false;
-		bool isJumpBlock = false;
+		bool isJumpBlockHit = false;
+		bool isBlockHit = false;
 		D3DXVECTOR3 hitPos = { 0.0f, 0.0f, 0.0f };			//衝突点。
 		D3DXVECTOR3 startPos = { 0.0f, 0.0f, 0.0f };			//レイの始点。
 		D3DXVECTOR3 hitNormal = { 0.0f, 0.0f, 0.0f };			//衝突点の法線。
@@ -51,7 +52,12 @@ namespace {
 				//ジャンプブロックに衝突している。
 				else if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_JumpBlock)
 				{
-					isJumpBlock = true;
+					isJumpBlockHit = true;
+				}
+				//ブロックに衝突している。
+				else if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Block) 
+				{
+					isBlockHit = true;
 				}
 				//地面に衝突している。
 				else
@@ -205,6 +211,15 @@ void PlayerController::Execute()
 	D3DXVECTOR3 originalXZDir = addPos;
 	originalXZDir.y = 0.0f;
 	D3DXVec3Normalize(&originalXZDir, &originalXZDir);
+	D3DXVECTOR3 originalYDir = addPos;
+	originalXZDir.x = 0.0f;
+	originalXZDir.z = 0.0f;
+	D3DXVec3Normalize(&originalYDir, &originalYDir);
+
+	//常に壁には当たってないので
+	m_isOnWall = false;
+
+	D3DXVECTOR3 upPos;
 
 	//XZ平面での衝突検出と衝突解決を行う。
 	{
@@ -241,9 +256,9 @@ void PlayerController::Execute()
 
 			if (callback.isHit) {
 				//当たった。
-				////壁。
-				//m_isOnWall = true;
-				//m_hitNormal = callback.hitNormal;
+				//壁。
+				m_isOnWall = true;
+				m_hitNormal = callback.hitNormal;
 
 				D3DXVECTOR3 vT0, vT1;
 				//XZ平面上での移動後の座標をvT0に、交点の座標をvT1に設定する。
@@ -288,7 +303,6 @@ void PlayerController::Execute()
 			}
 			else {
 				//どことも当たらないので終わり。
-				noHitObject = true;
 				break;
 			}
 			loopCount++;
@@ -305,6 +319,8 @@ void PlayerController::Execute()
 	{
 		D3DXVECTOR3 addPos;
 		addPos = nextPosition - m_position;
+
+		upPos = addPos;
 
 		m_position = nextPosition;	//移動の仮確定。
 									//レイを作成する。
@@ -364,12 +380,19 @@ void PlayerController::Execute()
 			}
 			nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
 		}
-		else if (callback.isJumpBlock)
+		else if (callback.isJumpBlockHit)
 		{
 			//当たった。
 			m_moveSpeed.y = 0.0f;
 			m_isJump = false;
 			m_isOnJumpBlock = true;
+			nextPosition.y = callback.hitPos.y;
+		}
+		else if (callback.isBlockHit) 
+		{
+			m_moveSpeed.y = 0.0f;
+			m_isJump = false;
+			m_isOnBlock = true;
 			nextPosition.y = callback.hitPos.y;
 		}
 		else {
@@ -378,6 +401,100 @@ void PlayerController::Execute()
 			m_isOnMoveFloor = false;
 			m_isOnMoveFloor2 = false;
 			m_isOnJumpBlock = false;
+			m_isOnBlock = false;
+		}
+	}
+	//上方向を調べる。
+	{
+		//D3DXVECTOR3 addPos;
+		//addPos = nextPosition - m_position;
+
+		m_position = nextPosition;	//移動の仮確定。
+
+		//レイを作成する。
+		btTransform start, end;
+		start.setIdentity();
+		end.setIdentity();
+		//始点はカプセルコライダーの中心。
+		start.setOrigin(btVector3(m_position.x, m_position.y + m_collider->GetHalfSize().y/*m_height * 0.5f + m_radius*/, m_position.z));
+		//終点は地面上にいない場合は1m下を見る。
+		//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
+		//地面上にいなくて降下中の場合はそのまま落下先を調べる。
+		D3DXVECTOR3 endPos;
+		endPos = { start.getOrigin().x(), start.getOrigin().y(), start.getOrigin().z() };
+
+		if (m_isOnGround == false) {
+			if (upPos.y > 0.0f) {
+				//ジャンプ中とかで上昇中。
+				//上昇中でもXZに移動した結果めり込んでいる可能性があるので上を調べる。
+				endPos.y += upPos.y;
+			}
+			else {
+				//落下している場合はそのまま上を調べる。
+				endPos.y -= upPos.y * 0.01f;
+			}
+		}
+		else {
+			//地面上にいる場合は1m上を見る。
+			endPos.y += 1.0f;
+		}
+
+		end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
+		SweepResultCeiling callback;
+		callback.me = m_rigidBody.GetBody();
+		callback.startPos = { start.getOrigin().x(), start.getOrigin().y(), start.getOrigin().z() };
+		//衝突検出。
+		if (fabsf(upPos.y) > FLT_EPSILON) {
+			g_physicsWorld->ConvexSweepTest((const btConvexShape*)m_collider->GetBody(), start, end, callback);
+		}
+		if (callback.isHit) {
+			//当たった。
+			if (!m_hitCeiling) {
+				m_moveSpeed.y = 0.0f;
+				m_hitCeiling = true;
+			}
+			//m_isJump = true;
+			//m_isOnGround = false;
+			//nextPosition.y = callback.hitPos.y - (m_collider->GetHalfSize().y + 0.8f);//; + offset - m_radius;
+
+			D3DXVECTOR3 vT0, vT1;
+			//Y平面上での移動後の座標をvT0に、交点の座標をvT1に設定する。
+			vT0 = { 0.0f, nextPosition.y, 0.0f };
+			vT1 = { 0.0f, callback.hitPos.y, 0.0f };
+			//めり込みが発生している移動ベクトルを求める。
+			D3DXVECTOR3 vMerikomi;
+			vMerikomi = vT0 - vT1;
+			//Y平面での衝突した壁の法線を求める。。
+			D3DXVECTOR3 hitNormalY = callback.hitNormal;
+			hitNormalY.x = 0.0f;
+			hitNormalY.z = 0.0f;
+			D3DXVec3Normalize(&hitNormalY, &hitNormalY);
+			//めり込みベクトルを壁の法線に射影する。
+			float fT0 = D3DXVec3Dot(&hitNormalY, &vMerikomi);
+			//押し戻し返すベクトルを求める。
+			//押し返すベクトルは壁の法線に射影されためり込みベクトル+半径。
+			D3DXVECTOR3 vOffset;
+			vOffset = hitNormalY;
+			float halfSizeSide = 0.0f;
+			D3DXVECTOR3 work = m_collider->GetHalfSize();
+			halfSizeSide = work.y;
+			vOffset *= (-fT0 + halfSizeSide);
+
+			nextPosition += vOffset;
+			D3DXVECTOR3 currentDir;
+			currentDir = nextPosition - m_position;
+			currentDir.x = 0.0f;
+			currentDir.z = 0.0f;
+			D3DXVec3Normalize(&currentDir, &currentDir);
+
+			if (D3DXVec3Dot(&currentDir, &originalYDir) < 0.0f) {
+				//角に入った時のキャラクタの振動を防止するために、
+				//移動先が逆向きになったら移動をキャンセルする。
+				nextPosition.y = m_position.y;
+			}
+		}
+		else {
+			m_hitCeiling = false;
 		}
 	}
 
@@ -402,16 +519,11 @@ void PlayerController::Execute()
 			moveRay.upDir			//上方向
 		};
 
-		//次の移動先となる座標を計算する。
-		//速度からこのフレームでの移動量を求める。オイラー積分。
-		D3DXVECTOR3 addPos = m_moveSpeed;
-		addPos *= 1.0f / 60.0f;
-		m_position += addPos;
-
-		D3DXVECTOR3 upPos;
-
-		//常に壁には当たってないので
-		m_isOnWall = false;
+		////次の移動先となる座標を計算する。
+		////速度からこのフレームでの移動量を求める。オイラー積分。
+		//D3DXVECTOR3 addPos = m_moveSpeed;
+		//addPos *= 1.0f / 60.0f;
+		//m_position += addPos;
 
 		//右、左、前、後、下、上の順に6方向を見る
 		for (int i = 0; i < NUM_RAY; i++) {
@@ -451,9 +563,7 @@ void PlayerController::Execute()
 
 					if (callback.isHit) {
 						//当たった。
-						////壁。
-						//m_isOnWall = true;
-						//m_hitNormal = callback.hitNormal;
+						//壁。
 
 						D3DXVECTOR3 vT0, vT1;
 						//XZ平面上での移動後の座標をvT0に、交点の座標をvT1に設定する。

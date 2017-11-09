@@ -18,11 +18,23 @@ public:
 	//rot	回転
 	void Init(D3DXVECTOR3 pos, D3DXQUATERNION rot);
 
+	bool Start();
+
 	//更新
 	void Update();
 
 	//描画
 	void Render();
+
+	D3DXMATRIX GetWorldMatrix()
+	{
+		return model.GetWorldMatrix();
+	}
+
+	D3DXMATRIX GetRotationMatrix()
+	{
+		return model.GetRotationMatrix();
+	}
 private:
 	SkinModel model;								//スキンモデル
 	SkinModelData modelData;						//スキンモデルデータ

@@ -186,6 +186,15 @@
     <ClCompile Include="myEngine\Physics\PlayerController.cpp">
       <Filter>ソース ファイル\myEngine\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Map\Test.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Block2.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\DepthStencilRender.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -331,6 +340,15 @@
     </ClInclude>
     <ClInclude Include="myEngine\Physics\PlayerController.h">
       <Filter>ソース ファイル\myEngine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Test.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Block2.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\DepthStencilRender.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

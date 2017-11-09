@@ -50,6 +50,11 @@ public:
 	{
 		return worldMatrix;
 	}
+	//回転行列を取得
+	D3DXMATRIX& GetRotationMatrix()
+	{
+		return rotationMatrix;
+	}
 	//シャドウマップ作成フラグを設定
 	//DrawShadowMap シャドウマップを描画するか
 	//RecieveShadow シャドウレシーバーかどうか
@@ -57,6 +62,11 @@ public:
 	{
 		isDrawShadowMap = DrawShadowMap;
 		isRecieveShadow = RecieveShadow;
+	}
+	//深度テストをするか設定
+	void SetDepthStencilRender(bool DepthStencilRender)
+	{
+		isDepthStencilRender = DepthStencilRender;
 	}
 	/*!
 	*@brief	オリジナルメッシュの先頭を取得する。
@@ -73,4 +83,5 @@ private:
 	LPDIRECT3DTEXTURE9 specularMap = NULL;			//!<スペキュラマップ。
 	bool isDrawShadowMap = false;
 	bool isRecieveShadow = false;
+	bool isDepthStencilRender = false;
 };

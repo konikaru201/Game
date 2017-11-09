@@ -8,6 +8,7 @@
 #include "myEngine/Physics/Physics.h"
 #include "myEngine/GameObject/GameObject.h"
 #include "myEngine/Graphics/Sprite.h"
+#include "../myEngine/Graphics/DepthStencilRender.h"
 
 namespace {
 	//コインのスプライトのサイズと座標
@@ -115,6 +116,7 @@ private:
 	GameCamera* gameCamera;			//ゲームカメラ
 	DisplayCoin* displayCoin;		//コイン枚数のスプライト
 	Sprite* CoinNum;				//コインのスプライト
+	DepthStencilRender* depthStencilRender;
 
 	Step step = step_WaitFadeOut;
 	state_stage currentStage = en_Stage1;	//現在のステージ番号

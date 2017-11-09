@@ -78,6 +78,8 @@ VOID Render()
 	if (gameScene != nullptr) {
 		gameScene->Render();
 	}
+
+	//フェードのレンダリング
 	g_fade->Render();
 
 	// シーンの描画終了。

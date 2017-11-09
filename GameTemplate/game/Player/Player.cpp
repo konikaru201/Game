@@ -5,8 +5,6 @@
 #include "myEngine/Graphics/ShadowMap.h"
 #include "myEngine/Timer/Timer.h"
 
-#define SPEED 8.0f
-
 Player* g_player;
 
 Player::Player()
@@ -39,6 +37,17 @@ bool Player::Start()
 	position = { 0.0f,0.0f,0.0f };
 	rotation = { 0.0f,0.0f,0.0f,1.0f };
 
+	//親のワールド行列から逆行列を生成
+	D3DXMATRIX parentWorldMatrixInv;
+	D3DXMatrixInverse(&parentWorldMatrixInv, 0, &parentWorldMatrix);
+	D3DXVec3TransformCoord(&childPosition, &position, &parentWorldMatrixInv);
+	//親の回転行列から逆クォータニオンを生成
+	D3DXQUATERNION parentRotationInv;
+	D3DXQuaternionRotationMatrix(&parentRotationInv, &parentRotationMatrix);
+	D3DXQuaternionInverse(&parentRotationInv, &parentRotationInv);
+	D3DXQuaternionMultiply(&childRotation, &rotation, &parentRotationInv);
+	
+
 	//キャラクターコントローラーを初期化
 	CapsuleCollider* coll = new CapsuleCollider;
 	coll->Create(0.3f, 1.0f);
@@ -59,11 +68,35 @@ void Player::Update()
 	//移動速度を設定
 	D3DXVECTOR3 moveSpeed = Move();
 	
-
+	D3DXQUATERNION rot;
+	D3DXQuaternionIdentity(&rot);
 	if (isOnWall == false && wallJump == false) {
 		if (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f) {
 			//移動しているなら向きを変える
-			D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), atan2f(dir.x, dir.z));
+			D3DXVECTOR3 playerDir = GetPlayerDir();
+			D3DXVec3Normalize(&playerDir, &playerDir);
+			D3DXVECTOR3 stickDir = dir;
+			D3DXVec3Normalize(&stickDir, &stickDir);
+			angle = D3DXVec3Dot(&playerDir, &stickDir);
+			if (angle < -1.0f)
+			{
+				angle = -1.0f;
+			}
+			if (angle > 1.0f)
+			{
+				angle = 1.0f;
+			}
+			angle = acosf(angle);
+			D3DXVECTOR3 hoge;
+			D3DXVec3Cross(&hoge, &playerDir, &stickDir);
+			//ベクトルが下向きか判定
+			if (hoge.y < 0.0f) {
+				angle *= -1.0f;
+			}
+			D3DXVECTOR3 playerDirY = GetPlayerDirY();
+			D3DXQuaternionRotationAxis(&rot, &playerDirY/*&D3DXVECTOR3(0.0f, 1.0f, 0.0f)*/, angle);
+			D3DXQuaternionMultiply(&rotation, &rotation, &rot);
+
 			if (playerController.IsJump() == false) {
 				currentAnim = AnimationRun;
 			}
@@ -96,7 +129,7 @@ void Player::Update()
 	}
 
 	//ジャンプブロックに当たったとき
-	if (gameScene->GetMap()->GetJumpBlock() != nullptr 
+	if (gameScene->GetMap()->GetJumpBlock() != nullptr
 		&& playerController.IsOnJumpBlock() == true)
 	{
 		D3DXVECTOR3 AddPos = gameScene->GetMap()->GetJumpBlock()->GetMoveSpeed();
@@ -112,11 +145,12 @@ void Player::Update()
 	//落ちたら死亡フラグを立てる
 	if (position.y <= -20.0f)
 	{
-		isDead = true;
+		//isDead = true;
 		//g_shadowMap.SetPlayerDead(true);
 		//テスト用
-		//position = { 0.0f,0.0f,0.0f };
-		//characterController.SetPosition(position);
+		position = { 0.0f,0.0f,0.0f };
+		playerController.SetPosition(position);
+		D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), atan2f(dir.x, dir.z));
 	}
 
 	//アニメーションが変わっていたら変更
@@ -146,11 +180,61 @@ void Player::Update()
 			JumpFrameCount = 0;
 		}
 	}
-	playerController.SetMoveSpeed(moveSpeed);
-	//キャラクターコントローラーを実行
-	playerController.Execute();
-	//座標を設定
-	position = playerController.GetPosition();
+
+	if (playerController.IsOnBlock() == true) 
+	{
+		if (parentFirstHit) {
+			//親のワールド行列から逆行列を生成
+			D3DXMATRIX parentWorldMatrixInv;
+			D3DXMatrixInverse(&parentWorldMatrixInv, NULL, &parentWorldMatrix);
+			D3DXVec3TransformCoord(&childPosition, &position, &parentWorldMatrixInv);
+			////親の回転行列から逆クォータニオンを生成
+			//D3DXQUATERNION parentRotationInv;
+			//D3DXQuaternionRotationMatrix(&parentRotationInv, &parentRotationMatrix);
+			//D3DXQuaternionInverse(&parentRotationInv, &parentRotationInv);
+			//D3DXQuaternionMultiply(&childRotation, &rotation, &parentRotationInv);
+			parentFirstHit = false;
+		}
+
+		//プレイヤーのワールド座標に変換する
+		D3DXVec3TransformCoord(&position, &childPosition, &parentWorldMatrix);
+		playerController.SetPosition(position);
+
+		////親から見たプレイヤーを回転させる
+		//D3DXQuaternionMultiply(&childRotation, &childRotation, &rot);
+		////プレイヤーの回転に変換する
+		//D3DXQUATERNION parentRotation;
+		//D3DXQuaternionRotationMatrix(&parentRotation, &parentRotationMatrix);
+		//D3DXQuaternionMultiply(&rotation, &childRotation, &parentRotation);
+
+		//プレイヤーの移動速度を設定
+		playerController.SetMoveSpeed(moveSpeed);
+		//キャラクターコントローラーを実行
+		playerController.Execute();
+		//座標を設定
+		position = playerController.GetPosition();
+
+		//親から見たプレイヤーの座標を更新
+		D3DXMATRIX worldMatrixInv;
+		D3DXMatrixInverse(&worldMatrixInv, NULL, &parentWorldMatrix);
+		D3DXVec3TransformCoord(&childPosition, &position, &worldMatrixInv);
+
+		////親から見たプレイヤーの回転を更新
+		//D3DXQUATERNION parentRotationInv;
+		//D3DXQuaternionRotationMatrix(&parentRotationInv, &parentRotationMatrix);
+		//D3DXQuaternionInverse(&parentRotationInv, &parentRotationInv);
+		//D3DXQuaternionMultiply(&childRotation, &rotation, &parentRotationInv);
+	}
+	else {
+		//プレイヤーの移動速度を設定
+		playerController.SetMoveSpeed(moveSpeed);
+		//キャラクターコントローラーを実行
+		playerController.Execute();
+		//座標を設定
+		position = playerController.GetPosition();
+		parentFirstHit = true;
+	}
+
 	//アニメーションの更新
 	animation.Update(1.0f / 60.0f);
 	model.UpdateWorldMatrix(position, rotation, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
@@ -168,6 +252,15 @@ void Player::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix, bool
 		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
 		model.Draw(viewMatrix, projMatrix);
 		model.SetDrawShadowMap(false, false);
+	}
+}
+
+void Player::DepthStencilRender(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix)
+{
+	if (g_player != nullptr && gameScene->GetGameCamera() != nullptr) {
+		model.SetDepthStencilRender(true);
+		model.Draw(viewMatrix, projMatrix);
+		model.SetDepthStencilRender(false);
 	}
 }
 
@@ -207,8 +300,15 @@ D3DXVECTOR3 Player::Move()
 	dir.z = cameraVecX.z * moveDir.x + cameraVecZ.z * moveDir.z;
 
 	//移動速度を計算
-	move.x = dir.x * SPEED;
-	move.z = dir.z * SPEED;
+	float Speed = 8.0f;
+	if (pad->IsPress(pad->enButtonX)) {
+		Speed = 16.0f;
+	}
+	move.x = dir.x * Speed;
+	move.z = dir.z * Speed;
+
+	//D3DXVECTOR3 reduseSpeed = move;
+	//reduseSpeed *= 0.3f;
 
 	//Aボタンが押されたらジャンプ
 	if (pad->IsTrigger(pad->enButtonA)
@@ -236,7 +336,7 @@ D3DXVECTOR3 Player::Move()
 	}
 
 	////壁に当たった時
-	//if (characterController.IsOnWall()) {
+	//if (playerController.IsOnWall()) {
 	//	isOnWall = true;
 	//}
 
@@ -258,7 +358,7 @@ D3DXVECTOR3 Player::Move()
 	////壁ジャンプ中
 	//if (wallJump) {
 	//	//壁の法線を取得する
-	//	D3DXVECTOR3 hitNormal = characterController.GethitNormal();
+	//	D3DXVECTOR3 hitNormal = playerController.GethitNormal();
 	//	D3DXVec3Normalize(&hitNormal, &hitNormal);
 	//	
 	//	//反射ベクトルを求める
@@ -271,8 +371,8 @@ D3DXVECTOR3 Player::Move()
 	//		move.y = 8.0f;
 	//		wallJumpExecute = false;
 	//	}
-	//	move.x = R.x * 8.0f;
-	//	move.z = R.z * 8.0f;
+	//	move.x = R.x * 8.0f - reduseSpeed.x;
+	//	move.z = R.z * 8.0f - reduseSpeed.z;
 
 	//	D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), atan2f(R.x, R.z));
 	//}

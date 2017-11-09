@@ -21,7 +21,10 @@ public:
 	//描画
 	void Render();
 
+	//影を描画
 	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
+
+	void DepthStencilRender(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix);
 
 	//移動
 	//戻り値　移動速度を返す
@@ -58,7 +61,8 @@ public:
 		if (playerController.IsOnGround()
 			|| playerController.IsOnMoveFloor()
 			|| playerController.IsOnMoveFloor2()
-			|| playerController.IsOnJumpBlock())
+			|| playerController.IsOnJumpBlock()
+			|| playerController.IsOnBlock())
 		{
 			return true;
 		}
@@ -77,6 +81,18 @@ public:
 		return direction;
 	}
 
+	//プレイヤーのY方向を取得
+	D3DXVECTOR3 GetPlayerDirY()
+	{
+		D3DXMATRIX matrix = model.GetWorldMatrix();
+		D3DXVECTOR3 direction;
+		direction.x = matrix.m[1][0];
+		direction.y = matrix.m[1][1];
+		direction.z = matrix.m[1][2];
+		D3DXVec3Normalize(&direction, &direction);
+		return direction;
+	}
+
 	//アニメーションの状態
 	enum AnimationNo {
 		AnimationStand,	//立ち
@@ -84,11 +100,22 @@ public:
 		AnimationRun,	//走る
 		AnimationJump,	//ジャンプ
 	};
+
+	//親のワールド行列を設定
+	void SetParentWorldMatrix(D3DXMATRIX worldMatrix)
+	{
+		parentWorldMatrix = worldMatrix;
+	}
+	//親の回転行列を設定
+	void SetParentRotationMatrix(D3DXMATRIX rotationMatrix)
+	{
+		parentRotationMatrix = rotationMatrix;
+	}
 private:
 	SkinModel model;								//スキンモデル
 	SkinModelData modelData;						//スキンモデルデータ
 	Animation animation;							//アニメーション
-	PlayerController playerController;		//キャラクターコントローラー
+	PlayerController playerController;				//プレイヤーコントローラー
 
 	D3DXVECTOR3 MoveSpeed = { 0.0f,0.0f,0.0f };		//移動速度
 
@@ -101,11 +128,19 @@ private:
 	int JumpCount = 0;								//ジャンプの回数
 	int JumpFrameCount = 0;							//次のジャンプをするまでのフレーム
 	int CoinCount = 0;								//コインの獲得枚数
+	float angle = 0.0f;
+	bool parentFirstHit = true;
+
 	bool isDead = false;
 	bool isOnWall = false;
 	bool wallJump = false;
 	bool wallJumpExecute = false;
 	float timer = 0.0f;
+
+	D3DXMATRIX parentWorldMatrix;								//親のワールド行列
+	D3DXVECTOR3 childPosition = { 0.0f,0.0f,0.0f };				//親のローカル座標からみたプレイヤーの座標
+	D3DXMATRIX parentRotationMatrix;							//親の回転行列
+	D3DXQUATERNION childRotation = { 0.0f,0.0f,0.0f,1.0f };		//親の回転座標からみたプレイヤーの回転
 
 	LPDIRECT3DTEXTURE9 specularMap = NULL;			//スペキュラマップ
 };

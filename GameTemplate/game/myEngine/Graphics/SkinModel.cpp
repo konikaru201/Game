@@ -20,7 +20,8 @@ namespace {
 		Light* light,
 		LPDIRECT3DTEXTURE9 specularMap,
 		bool isDrawShadowMap,
-		bool isRecieveShadow
+		bool isRecieveShadow,
+		bool isDepthStencilRender
 	)
 	{
 		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
@@ -37,12 +38,15 @@ namespace {
 		//テクニックを設定。
 		{
 			if (pMeshContainer->pSkinInfo != NULL) {
-				if (!isDrawShadowMap) {
+				if (isDepthStencilRender) {
+					pEffect->SetTechnique("DepthStencilRender");
+				}else if (!isDrawShadowMap) {
 					pEffect->SetTechnique("SkinModel");
 				}
 				else {
 					pEffect->SetTechnique("SkinModelRenderToShadowMap");
 				}
+				
 			}
 			else {
 				if (!isDrawShadowMap) {
@@ -50,6 +54,9 @@ namespace {
 				}
 				else {
 					pEffect->SetTechnique("NoSkinModelRenderToShadowMap");
+				}
+				if (isDepthStencilRender) {
+					pEffect->SetTechnique("NoSkinDepthStencilRender");
 				}
 			}
 		}
@@ -170,7 +177,8 @@ namespace {
 		Light* light,
 		LPDIRECT3DTEXTURE9 specularMap,
 		bool isDrawShadowMap,
-		bool isRecieveShadow
+		bool isRecieveShadow,
+		bool isDepthStencilRender
 	)
 	{
 		LPD3DXMESHCONTAINER pMeshContainer;
@@ -190,7 +198,8 @@ namespace {
 				light,
 				specularMap,
 				isDrawShadowMap,
-				isRecieveShadow
+				isRecieveShadow,
+				isDepthStencilRender
 				);
 
 			pMeshContainer = pMeshContainer->pNextMeshContainer;
@@ -209,7 +218,8 @@ namespace {
 				light,
 				specularMap,
 				isDrawShadowMap,
-				isRecieveShadow
+				isRecieveShadow,
+				isDepthStencilRender
 				);
 		}
 
@@ -226,7 +236,8 @@ namespace {
 				light,
 				specularMap,
 				isDrawShadowMap,
-				isRecieveShadow
+				isRecieveShadow,
+				isDepthStencilRender
 				);
 		}
 	}
@@ -275,7 +286,8 @@ void SkinModel::Draw(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix)
 			light,
 			specularMap,
 			isDrawShadowMap,
-			isRecieveShadow
+			isRecieveShadow,
+			isDepthStencilRender
 		);
 	}
 }

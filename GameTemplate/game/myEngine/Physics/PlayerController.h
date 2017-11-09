@@ -71,6 +71,7 @@ public:
 		m_isOnMoveFloor = false;
 		m_isOnMoveFloor2 = false;
 		m_isOnJumpBlock = false;
+		m_isOnBlock = false;
 	}
 	/*!
 	* @brief	ジャンプ中か判定
@@ -115,6 +116,13 @@ public:
 		return m_isOnJumpBlock;
 	}
 	/*!
+	* @brief	ブロック上にいるか判定。
+	*/
+	bool IsOnBlock() const
+	{
+		return m_isOnBlock;
+	}
+	/*!
 	* @brief	コライダーを取得。
 	*/
 	ICollider* GetCollider()
@@ -152,9 +160,9 @@ public:
 		const D3DXVECTOR3 rightDir = { 3.0f,  0.0f,  0.0f };		//右
 		const D3DXVECTOR3 leftDir = { -3.0f,  0.0f,  0.0f };		//左
 		const D3DXVECTOR3 frontDir = { 0.0f,  0.0f,  3.0f };		//前
-		const D3DXVECTOR3 backDir = { 0.0f,  0.0f, -3.0f };		//後
-		const D3DXVECTOR3 downDir = { 0.0f, -3.0f,  0.0f };		//下
-		const D3DXVECTOR3 upDir = { 0.0f,  3.0f,  0.0f };		//上
+		const D3DXVECTOR3 backDir = { 0.0f,  0.0f, -3.0f };			//後
+		const D3DXVECTOR3 downDir = { 0.0f, -3.0f,  0.0f };			//下
+		const D3DXVECTOR3 upDir = { 0.0f,  3.0f,  0.0f };			//上
 	};
 
 	//レイの方向の状態
@@ -176,6 +184,7 @@ private:
 	bool				m_isOnMoveFloor2 = false;		//移動床の上にいる？
 	bool				m_isOnJumpBlock = false;		//ジャンプブロックの上にいる？
 	bool				m_isOnWall = false;
+	bool				m_isOnBlock = false;
 	ICollider*			m_collider = nullptr;			//コライダー。
 	//float				m_radius = 0.0f;
 	//float				m_height = 0.0f;		
@@ -184,5 +193,4 @@ private:
 	D3DXVECTOR3			m_hitNormal = { 0.0f,0.0f,0.0f };
 	bool				m_hitCeiling = false;			//上方向に当たった
 	RayDirection		rayDirection = RIGHT;
-	bool				noHitObject = false;
 };
