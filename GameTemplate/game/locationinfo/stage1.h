@@ -109,12 +109,30 @@
 //Box
 {
 	"Box",
-	D3DXVECTOR3(6.83f, 5.50f, 9.17f),             //平行移動
+	D3DXVECTOR3(6.83f, 5.00f, 9.17f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
 //Box
 {
 	"Box",
 	D3DXVECTOR3(-5.86f, 0.00f, 9.07f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//Box
+{
+	"Box",
+	D3DXVECTOR3(13.70f, 10.00f, 8.90f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//Box
+{
+	"Box",
+	D3DXVECTOR3(13.70f, 15.00f, 16.29f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//Box
+{
+	"Box",
+	D3DXVECTOR3(13.70f, 20.00f, 23.78f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },

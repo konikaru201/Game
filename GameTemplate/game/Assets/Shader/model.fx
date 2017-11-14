@@ -96,6 +96,7 @@ struct VS_OUTPUT
     float3	Tangent			: TEXCOORD1;	//接ベクトル
 	float3	worldPos		: TEXCOORD2;
 	float4	lightViewPos 	: TEXCOORD3;		//ワールド空間->ライトビュー空間->ライト射影空間に変換された座標。
+	float4  PosInProj		: TEXCOORD4;
 };
 /*!
  *@brief	ワールド座標とワールド法線をスキン行列から計算する。
@@ -161,7 +162,7 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 	}
 	o.worldPos = Pos;
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
-
+	o.PosInProj = o.Pos;
     o.Normal = normalize(Normal);
     o.Tangent = normalize(Tangent);
     o.Tex0 = In.Tex0;
@@ -201,15 +202,17 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	color *= lig;
 
 	if (g_isShadowReciever) {
-		//ライトから見たZ値を計算
-		//float shadowMapZ = In.lightViewPos.z / In.lightViewPos.w;
+		//ライトのZ値を計算
+		float lightViewPosZ = In.lightViewPos.z / In.lightViewPos.w;
 		//射影空間(スクリーン座標系)に変換された座標はw成分で割ってやると(-1.0f～1.0)の範囲の正規化座標系になる。
 		//これをUV座標系(0.0～1.0)に変換して、シャドウマップをフェッチするためのUVとして活用する。
 		float2 shadowMapUV = In.lightViewPos.xy / In.lightViewPos.w;	//この計算で(-1.0～1.0)の範囲になる。
 		shadowMapUV *= float2(0.5f, -0.5f);								//この計算で(-0.5～0.5)の範囲になる。
 		shadowMapUV += float2(0.5f, 0.5f);								//そしてこれで(0.0～1.0)の範囲になってＵＶ座標系に変換できた。やったね。
 		float4 shadowVal = tex2D(g_shadowMapTextureSampler, shadowMapUV);	//シャドウマップは影が落ちているところはグレースケールになっている。
-		color *= shadowVal;
+		if (shadowVal.r < lightViewPosZ) {
+			color *= float4(0.0f, 0.0f, 0.0f, 1.0f);
+		}
 	}
 	
 	return color;
@@ -220,7 +223,8 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
  */
 float4 PSRenderToShadowMapMain(VS_OUTPUT In) : COLOR
 {
-	return float4(0.5f, 0.5f, 0.5f, 1.0f);
+	float z = In.PosInProj.z / In.PosInProj.w;
+	return float4(z, z, z, 1.0f);
 }
 
 /*!

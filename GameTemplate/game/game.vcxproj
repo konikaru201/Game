@@ -158,7 +158,6 @@
     <ClCompile Include="Fade\Fade.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\Block.cpp" />
-    <ClCompile Include="Map\Block2.cpp" />
     <ClCompile Include="Map\Box.cpp" />
     <ClCompile Include="Map\Coin.cpp" />
     <ClCompile Include="Map\JumpBlock.cpp" />
@@ -166,7 +165,6 @@
     <ClCompile Include="Map\MapChip.cpp" />
     <ClCompile Include="Map\MoveFloor.cpp" />
     <ClCompile Include="Map\MoveFloor2.cpp" />
-    <ClCompile Include="Map\Test.cpp" />
     <ClCompile Include="myEngine\GameObject\GameObject.cpp" />
     <ClCompile Include="myEngine\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="myEngine\Graphics\Animation.cpp" />
@@ -211,7 +209,6 @@
     <ClInclude Include="locationinfo\stage1.h" />
     <ClInclude Include="locationinfo\stage2.h" />
     <ClInclude Include="Map\Block.h" />
-    <ClInclude Include="Map\Block2.h" />
     <ClInclude Include="Map\Box.h" />
     <ClInclude Include="Map\Coin.h" />
     <ClInclude Include="Map\JumpBlock.h" />
@@ -219,7 +216,6 @@
     <ClInclude Include="Map\MapChip.h" />
     <ClInclude Include="Map\MoveFloor.h" />
     <ClInclude Include="Map\MoveFloor2.h" />
-    <ClInclude Include="Map\Test.h" />
     <ClInclude Include="myEngine\GameObject\GameObject.h" />
     <ClInclude Include="myEngine\GameObject\GameObjectManager.h" />
     <ClInclude Include="myEngine\Graphics\Animation.h" />

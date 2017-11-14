@@ -42,7 +42,7 @@ VOID Render()
 	if (g_player != nullptr) {
 		D3DXVECTOR3 target = g_player->GetPosition();
 		D3DXVECTOR3 viewPos = target;
-		viewPos.y += 4.0f;
+		viewPos.y += 30.0f;
 		g_shadowMap.SetLightViewPosition(viewPos);
 		g_shadowMap.SetLightViewTarget(target);
 	}

@@ -18,6 +18,7 @@ public:
 	//rot	回転
 	void Init(D3DXVECTOR3 pos, D3DXQUATERNION rot);
 
+	//アップデートが呼ばれる前に呼ばれる関数
 	bool Start();
 
 	//更新
@@ -26,11 +27,13 @@ public:
 	//描画
 	void Render();
 
+	//ワールド行列を取得
 	D3DXMATRIX GetWorldMatrix()
 	{
 		return model.GetWorldMatrix();
 	}
 
+	//回転行列を取得
 	D3DXMATRIX GetRotationMatrix()
 	{
 		return model.GetRotationMatrix();
