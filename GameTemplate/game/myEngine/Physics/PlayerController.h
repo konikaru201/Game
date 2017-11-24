@@ -72,6 +72,8 @@ public:
 		m_isOnMoveFloor2 = false;
 		m_isOnJumpBlock = false;
 		m_isOnBlock = false;
+		m_isOnBlock2 = false;
+		m_isOnBox = false;
 	}
 	/*!
 	* @brief	ジャンプ中か判定
@@ -121,6 +123,20 @@ public:
 	bool IsOnBlock() const
 	{
 		return m_isOnBlock;
+	}
+	/*!
+	* @brief	ブロック2上にいるか判定。
+	*/
+	bool IsOnBlock2() const
+	{
+		return m_isOnBlock2;
+	}
+	/*!
+	* @brief	ボックス上にいるか判定。
+	*/
+	bool IsOnBox() const
+	{
+		return m_isOnBox;
 	}
 	/*!
 	* @brief	コライダーを取得。
@@ -185,6 +201,8 @@ private:
 	bool				m_isOnJumpBlock = false;		//ジャンプブロックの上にいる？
 	bool				m_isOnWall = false;
 	bool				m_isOnBlock = false;
+	bool				m_isOnBlock2 = false;
+	bool				m_isOnBox = false;
 	ICollider*			m_collider = nullptr;			//コライダー。
 	//float				m_radius = 0.0f;
 	//float				m_height = 0.0f;		

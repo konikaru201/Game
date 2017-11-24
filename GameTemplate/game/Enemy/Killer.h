@@ -28,6 +28,7 @@ private:
 	enum State {
 		State_Search, //探索
 		State_Find,	  //発見
+		State_Normal,
 	};
 
 	State state;									//状態
@@ -39,6 +40,7 @@ private:
 	D3DXVECTOR3 position;							//座標
 	D3DXQUATERNION rotation;						//回転
 	D3DXVECTOR3 InitPosition;						//初期位置
-
-	const float MoveSpeed = 0.8f;					//移動速度
+	RigidBody rigidBody;							//剛体
+	D3DXVECTOR3 up = { 0.0f,1.0f,0.0f };
+	const float MoveSpeed = 4.0f;					//移動速度
 };

@@ -11,6 +11,8 @@ enum EnCollisionAttr{
 	enCollisionAttr_MoveFloor2,
 	enCollisionAttr_JumpBlock,
 	enCollisionAttr_Block,
+	enCollisionAttr_Block2,
+	enCollisionAttr_Box,
 	enCollisionAttr_Ground,
 	enCollisionAttr_Character,
 	enCollisionAttr_Killer,

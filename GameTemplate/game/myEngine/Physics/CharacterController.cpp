@@ -192,7 +192,10 @@ void CharacterController::Init(ICollider* collider, const D3DXVECTOR3& position)
 	trans.setOrigin(btVector3(position.x, position.y, position.z));
 	//@todo 未対応。trans.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z));
 	m_rigidBody.GetBody()->setUserIndex(enCollisionAttr_Character);
-	m_rigidBody.GetBody()->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
+
+	//キラーが起動時重かったため一時コメントアウト、原因不明
+	//m_rigidBody.GetBody()->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
+
 	g_physicsWorld->AddRigidBody(&m_rigidBody);
 
 }

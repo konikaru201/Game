@@ -14,7 +14,7 @@ Block::~Block()
 
 void Block::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 {
-	modelData.LoadModelData("Assets/modelData/block.x", NULL);
+	modelData.LoadModelData("Assets/modelData/Block_1.x", NULL);
 	model.Init(&modelData);
 	model.SetLight(&gameScene->GetLight());
 	model.UpdateWorldMatrix({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0 }, { 1.0f,1.0f,1.0f });
@@ -37,7 +37,7 @@ void Block::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	//„‘Ì‚ðì‚é‚½‚ß‚Ìî•ñ‚ðÝ’è
 	RigidBodyInfo rbInfo;
 	rbInfo.collider = &meshCollider;		//„‘Ì‚ÌƒRƒŠƒWƒ‡ƒ“‚ðÝ’è‚·‚é
-	rbInfo.mass = 0.0f;					//Ž¿—Ê‚ð0‚É‚·‚é‚Æ“®‚©‚È‚¢„‘Ì‚É‚È‚é
+	rbInfo.mass = 0.0f;						//Ž¿—Ê‚ð0‚É‚·‚é‚Æ“®‚©‚È‚¢„‘Ì‚É‚È‚é
 	rbInfo.pos = position;
 	rbInfo.rot = rotation;
 	//„‘Ì‚ðì¬

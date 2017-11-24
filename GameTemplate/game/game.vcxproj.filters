@@ -168,9 +168,6 @@
     <ClCompile Include="Scene\ResultScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Map\JumpBlock.cpp">
-      <Filter>ソース ファイル\Map\object</Filter>
-    </ClCompile>
     <ClCompile Include="Map\Block.cpp">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClCompile>
@@ -188,6 +185,18 @@
     </ClCompile>
     <ClCompile Include="myEngine\Graphics\DepthStencilRender.cpp">
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Spring.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\SkyBox.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Block2.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Star.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -314,9 +323,6 @@
     <ClInclude Include="Scene\ResultScene.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Map\JumpBlock.h">
-      <Filter>ソース ファイル\Map\object</Filter>
-    </ClInclude>
     <ClInclude Include="Map\Block.h">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClInclude>
@@ -337,6 +343,18 @@
     </ClInclude>
     <ClInclude Include="myEngine\Graphics\DepthStencilRender.h">
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Spring.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\SkyBox.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Block2.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Star.h">
+      <Filter>ソース ファイル\Map\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

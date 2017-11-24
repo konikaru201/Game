@@ -109,10 +109,17 @@ public:
 	{
 		return step;
 	}
+
+	//現在いるステージを取得
+	state_stage GetStateStage()
+	{
+		return currentStage;
+	}
+
 private:
 	Light light;					//ライト
 	Map* map;						//マップ
-	//Player* player;					//プレイヤー
+	//Player* player;				//プレイヤー
 	GameCamera* gameCamera;			//ゲームカメラ
 	DisplayCoin* displayCoin;		//コイン枚数のスプライト
 	Sprite* CoinNum;				//コインのスプライト

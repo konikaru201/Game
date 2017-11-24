@@ -9,8 +9,6 @@ Killer::Killer()
 
 Killer::~Killer()
 {
-	//characterController.RemoveRigidBoby();
-	//characterController.~CharacterController();
 }
 
 void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
@@ -27,12 +25,22 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 	state = State_Search;
 
-	//剛体の作成
+	////剛体の作成
 	CapsuleCollider* coll = new CapsuleCollider;
 	coll->Create(1.0f, 1.0f);
-	characterController.Init(coll, position);
 
-	characterController.GetRigidBody()->GetBody()->setUserIndex(enCollisionAttr_Killer);
+	//剛体を作るための情報を設定
+	RigidBodyInfo rbInfo;
+	rbInfo.collider = coll;		//剛体のコリジョンを設定する
+	rbInfo.mass = 0.0f;			//質量を0にすると動かない剛体になる
+	rbInfo.pos = position;
+	rbInfo.rot = rotation;
+	//剛体を作成
+	rigidBody.Create(rbInfo);
+
+	//作成した剛体を物理ワールドに追加
+	g_physicsWorld->AddRigidBody(&rigidBody);
+
 }
 
 void Killer::Update()
@@ -40,22 +48,19 @@ void Killer::Update()
 	if (gameScene == nullptr || gameScene->GetChengeStage()) {
 		SetisDead();
 		//剛体を削除
-		characterController.RemoveRigidBoby();
+		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
 
-	//移動速度を設定
-	characterController.SetMoveSpeed(Move());
-	//キャラクターコントローラーを実行
-	characterController.Execute();
-	//座標を設定
-	position = characterController.GetPosition();
+	D3DXVECTOR3 addPos = Move();
+	position += addPos / 40.0f;
 
 	//初期位置に戻す
-	if (position.z >= -40.0f)
+	if (position.x < 55.0f || position.x > 130.0f || position.z < -120.0f || position.z > -70.0f)
 	{
 		position = InitPosition;
-		characterController.SetPosition(position);
+		D3DXQuaternionRotationAxis(&rotation, &up, D3DXToRadian(-90.0f));
+		state = State_Search;
 	}
 
 	model.UpdateWorldMatrix(position, rotation, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
@@ -70,10 +75,11 @@ void Killer::Render()
 D3DXVECTOR3 Killer::Move()
 {
 	//移動速度を取得
-	D3DXVECTOR3 move = characterController.GetMoveSpeed();
+	D3DXVECTOR3 move = { 0.0f,0.0f,0.0f };
 
 	//プレイヤーの位置を取得
-	D3DXVECTOR3 toPlayer = g_player->GetPosition() - position;
+	D3DXVECTOR3 playerPos = g_player->GetPosition();
+	D3DXVECTOR3 toPlayer = playerPos - position;
 	//モデルのZ方向を取得
 	D3DXVECTOR3 direction;
 	D3DXMATRIX mWorld = model.GetWorldMatrix();
@@ -84,7 +90,6 @@ D3DXVECTOR3 Killer::Move()
 	float length = 0.0f;
 	float angle = 0.0f;
 	D3DXVECTOR3 AxisZ = { 0.0f,0.0f,1.0f };
-	D3DXVECTOR3 up = { 0.0f,1.0f,0.0f };
 	switch (state)
 	{
 	//探索状態
@@ -95,11 +100,11 @@ D3DXVECTOR3 Killer::Move()
 		angle = acos(angle);
 
 		//発見された
-		if (fabsf(angle) < D3DXToRadian(45.0f) && length < 5.0f) {
+		if (fabsf(angle) < D3DXToRadian(45.0f) && length < 12.0f) {
 			state = State_Find;
 		}
 
-		move.z = 2.0f;
+		move.x = -4.0f;
 
 		break;
 	//発見状態
@@ -113,10 +118,18 @@ D3DXVECTOR3 Killer::Move()
 		}
 		D3DXVec3Scale(&toPlayer, &toPlayer, MoveSpeed);
 		move = toPlayer;
-		
+		move.y = 0.0f;
+
+		if (length > 30.0f || (position.y + 1.0f < playerPos.y && position.x < playerPos.x)) {
+			state = State_Normal;
+			break;
+		}
+
 		D3DXQuaternionRotationAxis(&rotation, &up, angle);
 		break;
 	default:
+		D3DXVECTOR3 moveDir = direction * MoveSpeed;
+		move = moveDir;
 		break;
 	}
 

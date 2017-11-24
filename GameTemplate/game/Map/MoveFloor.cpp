@@ -18,7 +18,7 @@ MoveFloor::~MoveFloor()
 
 void MoveFloor::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 {
-	modelData.LoadModelData("Assets/modelData/MoveFloor.x", NULL);
+	modelData.LoadModelData("Assets/modelData/MoveFloor_1.x", NULL);
 	model.Init(&modelData);
 	model.SetLight(&gameScene->GetLight());
 	model.UpdateWorldMatrix({ 0.0f, 0.0f, 0.0f }, {0.0f, 0.0f, 0.0f, 1.0}, { 1.0f,1.0f,1.0f });

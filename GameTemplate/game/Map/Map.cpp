@@ -19,13 +19,13 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 {
 	//オブジェクトを一個ずつロードしていく
 	for (int i = 0; i < numObject; i++) {
-		if (strcmp("MoveFloor", mapLocInfo[i].modelName) == 0) {
+		if (strcmp("MoveFloor_1", mapLocInfo[i].modelName) == 0) {
 			//インスタンスを動的に生成
 			g_moveFloor = goMgr->NewGameObject<MoveFloor>();
 			//座標と回転の情報を渡して初期化
 			g_moveFloor->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
- 		}
-		else if (strcmp("MoveFloor2", mapLocInfo[i].modelName) == 0) {
+		}
+		else if (strcmp("MoveFloor_2", mapLocInfo[i].modelName) == 0) {
 			//インスタンスを動的に生成
 			g_moveFloor2 = goMgr->NewGameObject<MoveFloor2>();
 			//座標と回転の情報を渡して初期化
@@ -45,19 +45,26 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 			//座標と回転の情報を渡して初期化
 			killer->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
-		else if (strcmp("JumpBlock", mapLocInfo[i].modelName) == 0)
+		else if (strcmp("Spring", mapLocInfo[i].modelName) == 0)
 		{
 			//インスタンスを動的に生成
-			jumpBlock = goMgr->NewGameObject<JumpBlock>();
+			spring = goMgr->NewGameObject<Spring>();
 			//座標と回転の情報を渡して初期化
-			jumpBlock->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+			spring->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
-		else if (strcmp("block", mapLocInfo[i].modelName) == 0) 
+		else if (strcmp("Block_1", mapLocInfo[i].modelName) == 0)
 		{
 			//インスタンスを動的に生成
 			Block* block = goMgr->NewGameObject<Block>();
 			//座標と回転の情報を渡して初期化
 			block->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		}
+		else if(strcmp("Block_2", mapLocInfo[i].modelName) == 0)
+		{
+			//インスタンスを動的に生成
+			Block2* block2 = goMgr->NewGameObject<Block2>();
+			//座標と回転の情報を渡して初期化
+			block2->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
 		else if (strcmp("Box", mapLocInfo[i].modelName) == 0) 
 		{
@@ -66,8 +73,23 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 			//座標と回転の情報を渡して初期化
 			box->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
-		else {
-			//MapChipのインスタンスを動的に生成
+		else if(strcmp("skyBox", mapLocInfo[i].modelName) == 0)
+		{
+			//インスタンスを動的に生成
+			SkyBox* skyBox = goMgr->NewGameObject<SkyBox>();
+			//座標と回転の情報を渡して初期化
+			skyBox->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		}
+		else if (strcmp("Star", mapLocInfo[i].modelName) == 0)
+		{
+			//インスタンスを動的に生成
+			Star* star = goMgr->NewGameObject<Star>();
+			//座標と回転の情報を渡して初期化
+			star->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		}
+		else 
+		{
+			//インスタンスを動的に生成
 			MapChip* mapChip = goMgr->NewGameObject<MapChip>();
 			//マップチップの情報を渡して初期化
 			mapChip->Init(mapLocInfo[i].modelName, mapLocInfo[i].position, mapLocInfo[i].rotation);

@@ -120,6 +120,9 @@ void GameScene::Update()
 			currentStage = nextStage;
 			ChengeStage = false;
 			StageCreate();
+			depthStencilRender = goMgr->NewGameObject<DepthStencilRender>();
+			g_player = goMgr->NewGameObject<Player>();
+			gameCamera = goMgr->NewGameObject<GameCamera>();
 		}
 		//フェードが終了
 		else if (!g_fade->IsExecute()) {
@@ -176,8 +179,11 @@ void GameScene::Release()
 
 void GameScene::Reset()
 {
-	g_player->Reset();
-	GetGameCamera()->Reset();
+	//g_player->Reset();
+	g_player->SetisDead();
+	depthStencilRender->SetisDead();
+	//GetGameCamera()->Reset();
+	GetGameCamera()->SetisDead();
 	map->SetisDead();
 }
 

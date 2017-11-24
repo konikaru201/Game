@@ -6,10 +6,12 @@
 #include "MoveFloor2.h"
 #include "Coin.h"
 #include "Enemy/Killer.h"
-#include "JumpBlock.h"
+#include "Spring.h"
 #include "Block.h"
+#include "Block2.h"
 #include "Box.h"
-#include "Test.h"
+#include "SkyBox.h"
+#include "Star.h"
 
 //マップの配置情報
 struct SMapInfo {
@@ -54,13 +56,13 @@ public:
 	//}
 
 	//ジャンプブロックのインスタンスを取得
-	JumpBlock* GetJumpBlock()
+	Spring* GetSpring()
 	{
-		return jumpBlock;
+		return spring;
 	}
 private:
 	//MoveFloor* moveFloor;		//移動床(横)のインスタンス
 	//MoveFloor2* moveFloor2;		//移動床(縦)のインスタンス
-	JumpBlock* jumpBlock;		//ジャンプブロックのインスタンス
+	Spring* spring;		//ジャンプブロックのインスタンス
 };
 

@@ -49,10 +49,22 @@ public:
 		return CoinCount;
 	}
 
+	//スター獲得フラグを設定
+	void SetGetStar(bool getstar)
+	{
+		getStar = getstar;
+	}
+
 	//コインの獲得枚数を更新
 	void SetCoinCount(int Count)
 	{
 		CoinCount = Count;
+	}
+
+	//ボックス上か判定
+	bool GetIsOnBox()
+	{
+		return isOnBox;
 	}
 
 	//地面の上か判定
@@ -62,7 +74,9 @@ public:
 			|| playerController.IsOnMoveFloor()
 			|| playerController.IsOnMoveFloor2()
 			|| playerController.IsOnJumpBlock()
-			|| playerController.IsOnBlock())
+			|| playerController.IsOnBlock()
+			|| playerController.IsOnBlock2()
+			|| playerController.IsOnBox())
 		{
 			return true;
 		}
@@ -93,14 +107,7 @@ public:
 		return direction;
 	}
 
-	//アニメーションの状態
-	enum AnimationNo {
-		AnimationStand,	//立ち
-		AnimationWalk,	//歩く
-		AnimationRun,	//走る
-		AnimationJump,	//ジャンプ
-	};
-
+	//ブロック１
 	//親のワールド行列を設定
 	void SetParentWorldMatrix(D3DXMATRIX worldMatrix)
 	{
@@ -111,36 +118,66 @@ public:
 	{
 		parentRotationMatrix = rotationMatrix;
 	}
+
+	//ブロック２
+	//親のワールド行列を設定
+	void SetSecondParentWorldMatrix(D3DXMATRIX worldMatrix)
+	{
+		secondParentWorldMatrix = worldMatrix;
+	}
+	//親の回転行列を設定
+	void SetSecondParentRotationMatrix(D3DXMATRIX rotationMatrix) 
+	{
+		secondParentRotationMatrix = rotationMatrix;
+	}
+
+	//アニメーションの状態
+	enum AnimationNo {
+		AnimationStand,	//立ち
+		AnimationWalk,	//歩く
+		AnimationRun,	//走る
+		AnimationJump,	//ジャンプ
+		AnimationPose,
+	};
+
 private:
 	SkinModel model;								//スキンモデル
 	SkinModelData modelData;						//スキンモデルデータ
 	Animation animation;							//アニメーション
 	PlayerController playerController;				//プレイヤーコントローラー
-
-	D3DXVECTOR3 MoveSpeed = { 0.0f,0.0f,0.0f };		//移動速度
-
 	D3DXVECTOR3	position;							//座標
 	D3DXQUATERNION rotation;						//回転
-	D3DXVECTOR3 dir = { 0.0f,0.0f,1.0f };			//Z軸の方向
+	D3DXVECTOR3 dir = { 0.0f,0.0f,0.0f };			//方向
 	AnimationNo currentAnim;						//現在のアニメーション
 	AnimationNo prevAnim;							//前のアニメーション
-	D3DXVECTOR3 playerDir;							
+	D3DXVECTOR3 playerDir;							//キャラクターのZ方向
 	int JumpCount = 0;								//ジャンプの回数
 	int JumpFrameCount = 0;							//次のジャンプをするまでのフレーム
 	int CoinCount = 0;								//コインの獲得枚数
-	float angle = 0.0f;
+	float angle = 0.0f;								//回転角度
+	float timer = 0.0f;								//タイマー
+	float moveSpeed = 0.0f;							//移動速度
+	float speedLimit = 8.0f;						//限界速度
+	D3DXVECTOR3 currentDir = { 0.0f,0.0f,0.0f };	//1フレーム前のキャラクターのZ方向
 	bool parentFirstHit = true;
-
+	bool secondParentFirstHit = true;
 	bool isDead = false;
+	bool isOnBox = false;
+	bool getStar = false;							//スター獲得フラグ
+
 	bool isOnWall = false;
 	bool wallJump = false;
 	bool wallJumpExecute = false;
-	float timer = 0.0f;
 
 	D3DXMATRIX parentWorldMatrix;								//親のワールド行列
 	D3DXVECTOR3 childPosition = { 0.0f,0.0f,0.0f };				//親のローカル座標からみたプレイヤーの座標
 	D3DXMATRIX parentRotationMatrix;							//親の回転行列
 	D3DXQUATERNION childRotation = { 0.0f,0.0f,0.0f,1.0f };		//親の回転座標からみたプレイヤーの回転
+
+	D3DXMATRIX secondParentWorldMatrix;								//親のワールド行列
+	D3DXVECTOR3 secondChildPosition = { 0.0f,0.0f,0.0f };			//親のローカル座標からみたプレイヤーの座標
+	D3DXMATRIX secondParentRotationMatrix;							//親の回転行列
+	D3DXQUATERNION secondChildRotation = { 0.0f,0.0f,0.0f,1.0f };	//親の回転座標からみたプレイヤーの回転
 
 	LPDIRECT3DTEXTURE9 specularMap = NULL;			//スペキュラマップ
 };
