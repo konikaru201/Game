@@ -13,9 +13,6 @@ namespace {
 	struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 	{
 		bool isHit = false;									//衝突フラグ。
-		bool isMoveFloorHit = false;						//移動床の衝突フラグ
-		bool isMoveFloorHit2 = false;
-		bool isJumpBlock = false;
 		D3DXVECTOR3 hitPos = { 0.0f, 0.0f, 0.0f };			//衝突点。
 		D3DXVECTOR3 startPos = { 0.0f, 0.0f, 0.0f };			//レイの始点。
 		D3DXVECTOR3 hitNormal = { 0.0f, 0.0f, 0.0f };			//衝突点の法線。
@@ -39,28 +36,8 @@ namespace {
 			angle = fabsf(acosf(angle));
 			if (angle < cPI * 0.3f		//地面の傾斜が54度より小さいので地面とみなす。
 				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Ground //もしくはコリジョン属性が地面と指定されている。
-				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_MoveFloor
-				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_MoveFloor2
-				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_JumpBlock) {
-				//移動床に衝突している。
-				if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_MoveFloor)
-				{
-					isMoveFloorHit = true;
-				}
-				else if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_MoveFloor2)
-				{
-					isMoveFloorHit2 = true;
-				}
-				//ジャンプブロックに衝突している。
-				else if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_JumpBlock)
-				{
-					isJumpBlock = true;
-				}
-				//地面に衝突している。
-				else
-				{
-					isHit = true;
-				}
+				) {
+				isHit = true;
 				D3DXVECTOR3 hitPosTmp = *(D3DXVECTOR3*)&convexResult.m_hitPointLocal;
 				//衝突点の距離を求める。。
 				D3DXVECTOR3 vDist;
@@ -201,8 +178,8 @@ void CharacterController::Init(ICollider* collider, const D3DXVECTOR3& position)
 }
 void CharacterController::Execute()
 {
-	//速度に重力加速度を加える。
-	m_moveSpeed.y += m_gravity * (1.0f / 60.0f);
+	////速度に重力加速度を加える。
+	//m_moveSpeed.y += m_gravity * (1.0f / 60.0f);
 	//次の移動先となる座標を計算する。
 	D3DXVECTOR3 nextPosition = m_position;
 	//速度からこのフレームでの移動量を求める。オイラー積分。
@@ -219,7 +196,7 @@ void CharacterController::Execute()
 	originalYDir.x = 0.0f;
 	originalYDir.z = 0.0f;
 
-	D3DXVECTOR3 upPos;
+	D3DXVECTOR3 upPos = addPos;
 	D3DXVec3Normalize(&originalYDir, &originalYDir);
 
 	//
@@ -321,86 +298,86 @@ void CharacterController::Execute()
 	m_position.z = nextPosition.z;
 
 
-	//下方向を調べる。
-	{
-		D3DXVECTOR3 addPos;
-		addPos = nextPosition - m_position;
+	////下方向を調べる。
+	//{
+	//	D3DXVECTOR3 addPos;
+	//	addPos = nextPosition - m_position;
 
-		upPos = addPos;
-		m_position = nextPosition;	//移動の仮確定。
-									//レイを作成する。
-		btTransform start, end;
-		start.setIdentity();
-		end.setIdentity();
-		//始点はカプセルコライダーの中心。
-		start.setOrigin(btVector3(m_position.x, m_position.y + m_collider->GetHalfSize().y/*m_height * 0.5f + m_radius*/, m_position.z));
-		//終点は地面上にいない場合は1m下を見る。
-		//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
-		//地面上にいなくて降下中の場合はそのまま落下先を調べる。
-		D3DXVECTOR3 endPos;
-		endPos = { start.getOrigin().x(), start.getOrigin().y(), start.getOrigin().z() };
+	//	upPos = addPos;
+	//	m_position = nextPosition;	//移動の仮確定。
+	//								//レイを作成する。
+	//	btTransform start, end;
+	//	start.setIdentity();
+	//	end.setIdentity();
+	//	//始点はカプセルコライダーの中心。
+	//	start.setOrigin(btVector3(m_position.x, m_position.y + m_collider->GetHalfSize().y/*m_height * 0.5f + m_radius*/, m_position.z));
+	//	//終点は地面上にいない場合は1m下を見る。
+	//	//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
+	//	//地面上にいなくて降下中の場合はそのまま落下先を調べる。
+	//	D3DXVECTOR3 endPos;
+	//	endPos = { start.getOrigin().x(), start.getOrigin().y(), start.getOrigin().z() };
 
-		if (m_isOnGround == false) {
-			if (addPos.y > 0.0f) {
-				//ジャンプ中とかで上昇中。
-				//上昇中でもXZに移動した結果めり込んでいる可能性があるので下を調べる。
-				endPos.y -= addPos.y * 0.01f;
-			}
-			else {
-				//落下している場合はそのまま下を調べる。
-				endPos.y += addPos.y;
-			}
-		}
-		else {
-			//地面上にいる場合は1m下を見る。
-			endPos.y -= 1.0f;
-		}
-		end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
-		SweepResultGround callback;
-		callback.me = m_rigidBody.GetBody();
-		callback.startPos = { start.getOrigin().x(), start.getOrigin().y(), start.getOrigin().z() };
-		//衝突検出。
-		if (fabsf(addPos.y) > FLT_EPSILON) {
-			g_physicsWorld->ConvexSweepTest((const btConvexShape*)m_collider->GetBody(), start, end, callback);
-		}
-		if (callback.isHit) {
-			//当たった。
-			m_moveSpeed.y = 0.0f;
-			m_isJump = false;
-			m_isOnGround = true;
-			nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
-		}
-		else if (callback.isMoveFloorHit || callback.isMoveFloorHit2)
-		{
-			//当たった。
-			m_moveSpeed.y = 0.0f;
-			m_isJump = false;
-			if (callback.isMoveFloorHit)
-			{
-				m_isOnMoveFloor = true;
-			}
-			else
-			{
-				m_isOnMoveFloor2 = true;
-			}
-			nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
-		}
-		else if (callback.isJumpBlock)
-		{
-			//当たった。
-			m_moveSpeed.y = 0.0f;
-			m_isJump = false;
-			m_isOnJumpBlock = true;
-			nextPosition.y = callback.hitPos.y;
-		}
-		else {
-			//地面上にいない。
-			m_isOnGround = false;
-			m_isOnMoveFloor = false;
-			m_isOnMoveFloor2 = false;
-			m_isOnJumpBlock = false;
-		}
-	}
+	//	if (m_isOnGround == false) {
+	//		if (addPos.y > 0.0f) {
+	//			//ジャンプ中とかで上昇中。
+	//			//上昇中でもXZに移動した結果めり込んでいる可能性があるので下を調べる。
+	//			endPos.y -= addPos.y * 0.01f;
+	//		}
+	//		else {
+	//			//落下している場合はそのまま下を調べる。
+	//			endPos.y += addPos.y;
+	//		}
+	//	}
+	//	else {
+	//		//地面上にいる場合は1m下を見る。
+	//		endPos.y -= 1.0f;
+	//	}
+	//	end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
+	//	SweepResultGround callback;
+	//	callback.me = m_rigidBody.GetBody();
+	//	callback.startPos = { start.getOrigin().x(), start.getOrigin().y(), start.getOrigin().z() };
+	//	//衝突検出。
+	//	if (fabsf(addPos.y) > FLT_EPSILON) {
+	//		g_physicsWorld->ConvexSweepTest((const btConvexShape*)m_collider->GetBody(), start, end, callback);
+	//	}
+	//	if (callback.isHit) {
+	//		//当たった。
+	//		m_moveSpeed.y = 0.0f;
+	//		m_isJump = false;
+	//		m_isOnGround = true;
+	//		nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
+	//	}
+	//	//else if (callback.isMoveFloorHit || callback.isMoveFloorHit2)
+	//	//{
+	//	//	//当たった。
+	//	//	m_moveSpeed.y = 0.0f;
+	//	//	m_isJump = false;
+	//	//	if (callback.isMoveFloorHit)
+	//	//	{
+	//	//		m_isOnMoveFloor = true;
+	//	//	}
+	//	//	else
+	//	//	{
+	//	//		m_isOnMoveFloor2 = true;
+	//	//	}
+	//	//	nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
+	//	//}
+	//	//else if (callback.isJumpBlock)
+	//	//{
+	//	//	//当たった。
+	//	//	m_moveSpeed.y = 0.0f;
+	//	//	m_isJump = false;
+	//	//	m_isOnJumpBlock = true;
+	//	//	nextPosition.y = callback.hitPos.y;
+	//	//}
+	//	else {
+	//		//地面上にいない。
+	//		m_isOnGround = false;
+	//		//m_isOnMoveFloor = false;
+	//		//m_isOnMoveFloor2 = false;
+	//		//m_isOnJumpBlock = false;
+	//	}
+	//}
 
 	//上方向を調べる。
 	{
@@ -449,6 +426,7 @@ void CharacterController::Execute()
 				m_moveSpeed.y = 0.0f;
 				m_hitCeiling = true;
 			}
+			
 			//m_isJump = true;
 			//m_isOnGround = false;
 			//nextPosition.y = callback.hitPos.y - (m_collider->GetHalfSize().y + 0.8f);//; + offset - m_radius;

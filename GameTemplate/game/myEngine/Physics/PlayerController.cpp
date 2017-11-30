@@ -396,7 +396,7 @@ void PlayerController::Execute()
 			//ìñÇΩÇ¡ÇΩÅB
 			m_moveSpeed.y = 0.0f;
 			m_isJump = false;
-			m_isOnJumpBlock = true;
+			m_isOnSpring = true;
 			nextPosition.y = callback.hitPos.y;
 		}
 		else if (callback.isBlockHit) 
@@ -425,7 +425,7 @@ void PlayerController::Execute()
 			m_isOnGround = false;
 			m_isOnMoveFloor = false;
 			m_isOnMoveFloor2 = false;
-			m_isOnJumpBlock = false;
+			m_isOnSpring = false;
 			m_isOnBlock = false;
 			m_isOnBlock2 = false;
 			m_isOnBox = false;

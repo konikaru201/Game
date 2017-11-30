@@ -70,7 +70,7 @@ public:
 		m_isOnGround = false;
 		m_isOnMoveFloor = false;
 		m_isOnMoveFloor2 = false;
-		m_isOnJumpBlock = false;
+		m_isOnSpring = false;
 		m_isOnBlock = false;
 		m_isOnBlock2 = false;
 		m_isOnBox = false;
@@ -111,11 +111,11 @@ public:
 		return m_isOnMoveFloor2;
 	}
 	/*!
-	* @brief	ジャンプブロック上にいるか判定。
+	* @brief	スプリング上にいるか判定。
 	*/
-	bool IsOnJumpBlock() const
+	bool IsOnSpring() const
 	{
-		return m_isOnJumpBlock;
+		return m_isOnSpring;
 	}
 	/*!
 	* @brief	ブロック上にいるか判定。
@@ -198,7 +198,7 @@ private:
 	bool				m_isOnGround = true;			//地面の上にいる？
 	bool				m_isOnMoveFloor = false;		//移動床の上にいる？
 	bool				m_isOnMoveFloor2 = false;		//移動床の上にいる？
-	bool				m_isOnJumpBlock = false;		//ジャンプブロックの上にいる？
+	bool				m_isOnSpring = false;			//スプリングの上にいる？
 	bool				m_isOnWall = false;
 	bool				m_isOnBlock = false;
 	bool				m_isOnBlock2 = false;

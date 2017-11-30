@@ -16,7 +16,7 @@ bool GameCamera::Start()
 {
 	//ƒJƒƒ‰‰Šú‰»
 	camera.Init();
-	camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 7.0f));
+	camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 10.0f));
 	camera.SetLookatPt(D3DXVECTOR3(0.0f, 10.5f, 0.0f));
 	camera.SetFar(1000.0f);
 	camera.Update();
@@ -29,6 +29,7 @@ bool GameCamera::Start()
 void GameCamera::Update()
 {
 	if (gameScene == nullptr) { return; }
+
 	Move();
 	//ƒJƒƒ‰XV
 	camera.Update();
@@ -41,7 +42,7 @@ void GameCamera::Move()
 	//’PˆÊs—ñ‚ðì¬
 	D3DXMatrixIdentity(&rot);
 	if (fabsf(pad->GetRStickXF()) > 0.0f) {		//‰¡‰ñ“]
-		D3DXMatrixRotationY(&rot, 0.05f * pad->GetRStickXF());
+		D3DXMatrixRotationY(&rot, 0.03f * pad->GetRStickXF());
 	}
 	D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
 
@@ -55,7 +56,7 @@ void GameCamera::Move()
 	//‰ñ“]Ž²‚ð³‹K‰»
 	D3DXVec3Normalize(&rotAxis, &rotAxis);
 	if (fabsf(pad->GetRStickYF()) > 0.0f) {			//c‰ñ“]
-		D3DXMatrixRotationAxis(&rot, &rotAxis, 0.05f * pad->GetRStickYF());
+		D3DXMatrixRotationAxis(&rot, &rotAxis, 0.03f * pad->GetRStickYF());
 	}
 
 	D3DXVECTOR3 toCameraPosOld = toCameraPos;

@@ -268,28 +268,16 @@
 	D3DXVECTOR3(132.00f, -1.15f, -100.90f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
-//Cannon
-{
-	"Cannon",
-	D3DXVECTOR3(128.06f, 8.55f, -89.64f),             //平行移動
-	D3DXQUATERNION(-0.71f, 0.00f, 0.71f, 0.00f ),  //回転
-},
-//Cannon
-{
-	"Cannon",
-	D3DXVECTOR3(128.06f, 8.55f, -99.57f),             //平行移動
-	D3DXQUATERNION(-0.71f, 0.00f, 0.71f, 0.00f ),  //回転
-},
 //Killer
 {
 	"Killer",
-	D3DXVECTOR3(127.66f, 7.19f, -89.60f),             //平行移動
+	D3DXVECTOR3(127.66f, 7.56f, -89.60f),             //平行移動
 	D3DXQUATERNION(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
 },
 //Killer
 {
 	"Killer",
-	D3DXVECTOR3(127.66f, 7.19f, -99.56f),             //平行移動
+	D3DXVECTOR3(127.66f, 7.68f, -99.53f),             //平行移動
 	D3DXQUATERNION(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
 },
 //Spring

@@ -107,7 +107,7 @@ void GameScene::Update()
 			step = step_WaitFadeOut;
 			return;
 		}
-		if (g_player->GetIsDead()) {
+		if (g_player->GetState() == g_player->State_Dead) {
 			step = step_GameOver;
 		}
 		g_physicsWorld->Update();

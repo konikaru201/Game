@@ -69,9 +69,6 @@ public:
 	{
 		m_isJump = true;
 		m_isOnGround = false;
-		m_isOnMoveFloor = false;
-		m_isOnMoveFloor2 = false;
-		m_isOnJumpBlock = false;
 	}
 	/*!
 		* @brief	ジャンプ中か判定
@@ -93,27 +90,6 @@ public:
 	bool IsOnWall() const
 	{
 		return m_isOnWall;
-	}
-	/*!
-	* @brief	移動床上にいるか判定。
-	*/
-	bool IsOnMoveFloor() const
-	{
-		return m_isOnMoveFloor;
-	}
-	/*!
-	* @brief	移動床上にいるか判定。
-	*/
-	bool IsOnMoveFloor2() const
-	{
-		return m_isOnMoveFloor2;
-	}
-	/*!
-	* @brief	ジャンプブロック上にいるか判定。
-	*/
-	bool IsOnJumpBlock() const
-	{
-		return m_isOnJumpBlock;
 	}
 	/*!
 	* @brief	コライダーを取得。
@@ -153,9 +129,6 @@ private:
 	D3DXVECTOR3 		m_moveSpeed;					//移動速度。
 	bool 				m_isJump = false;				//ジャンプ中？
 	bool				m_isOnGround = true;			//地面の上にいる？
-	bool				m_isOnMoveFloor = false;		//移動床の上にいる？
-	bool				m_isOnMoveFloor2 = false;		//移動床の上にいる？
-	bool				m_isOnJumpBlock = false;		//ジャンプブロックの上にいる？
 	bool				m_isOnWall = false;
 	ICollider*			m_collider = nullptr;			//コライダー。
 	//float				m_radius = 0.0f;

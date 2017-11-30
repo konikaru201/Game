@@ -198,6 +198,15 @@
     <ClCompile Include="Map\Star.cpp">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClCompile>
+    <ClCompile Include="myEngine\Graphics\Primitive.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\IndexBuffer.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\VertexBuffer.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -355,6 +364,15 @@
     </ClInclude>
     <ClInclude Include="Map\Star.h">
       <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\Primitive.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\IndexBuffer.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\VertexBuffer.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

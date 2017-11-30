@@ -28,6 +28,8 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	////剛体の作成
 	CapsuleCollider* coll = new CapsuleCollider;
 	coll->Create(1.0f, 1.0f);
+	characterController.Init(coll, position);
+	characterController.SetGravity(0.0f);
 
 	//剛体を作るための情報を設定
 	RigidBodyInfo rbInfo;
@@ -52,16 +54,20 @@ void Killer::Update()
 		return;
 	}
 
-	D3DXVECTOR3 addPos = Move();
-	position += addPos / 40.0f;
-
 	//初期位置に戻す
-	if (position.x < 55.0f || position.x > 130.0f || position.z < -120.0f || position.z > -70.0f)
+	if (position.x < 55.0f || position.x > 130.0f
+		|| position.z < -120.0f || position.z > -70.0f)
 	{
-		position = InitPosition;
+		characterController.SetPosition(InitPosition);
 		D3DXQuaternionRotationAxis(&rotation, &up, D3DXToRadian(-90.0f));
 		state = State_Search;
 	}
+
+	D3DXVECTOR3 moveSpeed = Move();
+
+	characterController.SetMoveSpeed(moveSpeed);
+	characterController.Execute();
+	position = characterController.GetPosition();
 
 	model.UpdateWorldMatrix(position, rotation, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 }
@@ -90,6 +96,7 @@ D3DXVECTOR3 Killer::Move()
 	float length = 0.0f;
 	float angle = 0.0f;
 	D3DXVECTOR3 AxisZ = { 0.0f,0.0f,1.0f };
+
 	switch (state)
 	{
 	//探索状態
@@ -100,7 +107,7 @@ D3DXVECTOR3 Killer::Move()
 		angle = acos(angle);
 
 		//発見された
-		if (fabsf(angle) < D3DXToRadian(45.0f) && length < 12.0f) {
+		if (fabsf(angle) < D3DXToRadian(30.0f) && length < 12.0f) {
 			state = State_Find;
 		}
 
@@ -120,16 +127,21 @@ D3DXVECTOR3 Killer::Move()
 		move = toPlayer;
 		move.y = 0.0f;
 
+		//プレイヤーとの距離が離れる
+		//又はプレイヤーにジャンプで避けられると見失う
 		if (length > 30.0f || (position.y + 1.0f < playerPos.y && position.x < playerPos.x)) {
-			state = State_Normal;
+			state = State_Miss;
 			break;
 		}
 
 		D3DXQuaternionRotationAxis(&rotation, &up, angle);
 		break;
-	default:
-		D3DXVECTOR3 moveDir = direction * MoveSpeed;
+	//見失った状態
+	case State_Miss:
+		moveDir = direction * MoveSpeed;
 		move = moveDir;
+		break;
+	default:
 		break;
 	}
 
