@@ -53,7 +53,7 @@ void MoveFloor::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 void MoveFloor::PreUpdate()
 {
-	if (gameScene == nullptr) {
+	if (gameScene == nullptr || gameScene->GetChengeStage()) {
 		SetisDead();
 		g_moveFloor = nullptr;
 		//„‘Ì‚ğíœ

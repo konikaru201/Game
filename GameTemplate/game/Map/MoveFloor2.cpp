@@ -57,7 +57,7 @@ void MoveFloor2::Update()
 }
 void MoveFloor2::PreUpdate()
 {
-	if (gameScene == nullptr) {
+	if (gameScene == nullptr || gameScene->GetChengeStage()) {
 		SetisDead();
 		g_moveFloor2 = nullptr;
 		//„‘Ì‚ğíœ

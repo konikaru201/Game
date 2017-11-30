@@ -48,7 +48,7 @@ void Spring::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 void Spring::Update()
 {
-	if (gameScene == nullptr) {
+	if (gameScene == nullptr || gameScene->GetChengeStage()) {
 		SetisDead();
 		//„‘Ì‚ðíœ
 		g_physicsWorld->RemoveRigidBody(&rigidBody);

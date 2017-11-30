@@ -64,7 +64,7 @@ bool Block2::Start()
 
 void Block2::Update()
 {
-	if (gameScene == nullptr) {
+	if (gameScene == nullptr || gameScene->GetChengeStage()) {
 		SetisDead();
 		//„‘Ì‚ðíœ
 		g_physicsWorld->RemoveRigidBody(&rigidBody);

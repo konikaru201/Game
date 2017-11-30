@@ -107,6 +107,12 @@ public:
 		secondParentRotationMatrix = rotationMatrix;
 	}
 
+	//スター獲得時のアニメーション終了フラグを取得
+	bool GetStarAnimationEnd()
+	{
+		return animationEnd;
+	}
+
 	//プレイヤーの状態
 	enum State {
 		State_Move,				//移動

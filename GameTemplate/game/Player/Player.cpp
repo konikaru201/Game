@@ -79,6 +79,11 @@ void Player::Update()
 {
 	if (gameScene == nullptr) { return; }
 
+	//ステージ切り替え時にプレイヤーを削除するので剛体を削除
+	if (gameScene->GetChengeStage()) {
+		playerController.RemoveRigidBoby();
+	}
+
 	moveSpeed = Move();
 
 	D3DXQUATERNION rot;

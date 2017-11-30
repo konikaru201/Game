@@ -105,10 +105,18 @@ void GameScene::Update()
 		if (pad->IsTrigger(pad->enButtonStart)) {
 			g_fade->StartFadeOut();
 			step = step_WaitFadeOut;
+			nextStage = en_Stage2;
 			return;
 		}
+		//プレイヤー死亡時
 		if (g_player->GetState() == g_player->State_Dead) {
 			step = step_GameOver;
+		}
+		//スター獲得時
+		if (g_player->GetStarAnimationEnd()) {
+			g_fade->StartFadeOut();
+			step = step_WaitFadeOut;
+			nextStage = en_Stage1;
 		}
 		g_physicsWorld->Update();
 		displayCoin->Update();
