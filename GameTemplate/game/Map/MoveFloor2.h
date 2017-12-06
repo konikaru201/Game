@@ -18,9 +18,12 @@ public:
 	//rot	回転
 	void Init(D3DXVECTOR3 pos, D3DXQUATERNION rot);
 
+	//Update関数より前に呼ばれる更新関数
+	void PreUpdate();
+
 	//更新
 	void Update();
-	void PreUpdate();
+	
 	//描画
 	void Render();
 
@@ -28,7 +31,7 @@ public:
 	void Move();
 
 	//移動速度を取得
-	D3DXVECTOR3& GetMoveSpeed()
+	const D3DXVECTOR3& GetMoveSpeed()
 	{
 		return moveSpeed;
 	}

@@ -7,8 +7,12 @@
 class Spring : public GameObject
 {
 public:
+	//コンストラクタ
 	Spring();
+
+	//デストラクタ
 	~Spring();
+
 	//初期化
 	//pos	座標
 	//rot	回転
@@ -24,7 +28,7 @@ public:
 	void Move();
 
 	//移動速度を取得
-	D3DXVECTOR3& GetMoveSpeed()
+	const D3DXVECTOR3& GetMoveSpeed()
 	{
 		return moveSpeed;
 	}

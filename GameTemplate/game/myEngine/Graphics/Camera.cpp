@@ -43,52 +43,52 @@ void Camera::SetNear(float _near)
 	Near = _near;
 }
 //視点のセッター
-void Camera::SetEyePt(D3DXVECTOR3 pt)
+void Camera::SetEyePt(const D3DXVECTOR3& pt)
 {
 	vEyePt = pt;
 }
 //視点のゲッター
-D3DXVECTOR3 Camera::GetEyePt()
+const D3DXVECTOR3& Camera::GetEyePt()
 {
 	return vEyePt;
 }
 //注視点のセッター
-void Camera::SetLookatPt(D3DXVECTOR3 pt)
+void Camera::SetLookatPt(const D3DXVECTOR3& pt)
 {
 	vLookatPt = pt;
 }
 //注視点のゲッター。
-D3DXVECTOR3 Camera::GetLookatPt()
+const D3DXVECTOR3& Camera::GetLookatPt()
 {
 	return vLookatPt;
 }
 //上方向のセッター
-void Camera::SetUpVec(D3DXVECTOR3 up)
+void Camera::SetUpVec(const D3DXVECTOR3& up)
 {
 	vUpVec = up;
 }
 //上方向のゲッター
-D3DXVECTOR3 Camera::GetUpVec()
+const D3DXVECTOR3& Camera::GetUpVec()
 {
 	return vUpVec;
 }
 //ビュー行列のセッター。
-void Camera::SetViewMatrix(D3DXMATRIX mView)
+void Camera::SetViewMatrix(const D3DXMATRIX& mView)
 {
 	viewMatrix = mView;
 }
 //ビュー行列のゲッター
-D3DXMATRIX Camera::GetViewMatrix()
+const D3DXMATRIX& Camera::GetViewMatrix()
 {
 	return viewMatrix;
 }
 //プロジェクション行列のセッター
-void Camera::SetProjectionMatrix(D3DXMATRIX mProj)
+void Camera::SetProjectionMatrix(const D3DXMATRIX& mProj)
 {
 	projectionMatrix = mProj;
 }
 //プロジェクション行列のゲッター
-D3DXMATRIX Camera::GetProjectionMatrix()
+const D3DXMATRIX& Camera::GetProjectionMatrix()
 {
 	return projectionMatrix;
 }

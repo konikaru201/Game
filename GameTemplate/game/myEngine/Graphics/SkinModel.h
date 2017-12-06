@@ -22,12 +22,10 @@ public:
 	/*!
 	*@brief	描画。
 	*/
-	void Draw(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix);
+	void Draw(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix);
 	
 	/*!
 	*@brief	ワールド行列を更新。
-	*@details
-	* 後でCMotionクラスに移動させます。
 	*@param[in]		trans	平行移動。
 	*@param[in]		rot		回転。
 	*@param[in]		scale	拡大。
@@ -46,12 +44,12 @@ public:
 		specularMap = specMap;
 	}
 	//ワールド座標を取得
-	D3DXMATRIX& GetWorldMatrix()
+	const D3DXMATRIX& GetWorldMatrix()
 	{
 		return worldMatrix;
 	}
 	//回転行列を取得
-	D3DXMATRIX& GetRotationMatrix()
+	const D3DXMATRIX& GetRotationMatrix()
 	{
 		return rotationMatrix;
 	}

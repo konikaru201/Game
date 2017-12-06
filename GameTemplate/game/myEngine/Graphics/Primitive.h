@@ -17,17 +17,15 @@ public:
 	//デストラクタ
 	~CPrimitive();
 	
-	/*
-	 *	プリミティブの作成
-	 *	primitiveType		プリミティブタイプ
-	 *	numVertex			頂点数
-	 *	vertexStride		頂点ストライド
-	 *	vertexLayout		頂点レイアウト
-	 *	pSrcVertexBuffer	ソース頂点バッファ
-	 *	numIndex			インデックスの数
-	 *	IndexFormat			インデックスバッファのフォーマット
-	 *	pSrcIndexBuffer		ソースインデックスバッファ
-	 */
+	//	プリミティブの作成
+	//	primitiveType		プリミティブタイプ
+	//	numVertex			頂点数
+	//	vertexStride		頂点ストライド
+	//	vertexLayout		頂点レイアウト
+	//	pSrcVertexBuffer	ソース頂点バッファ
+	//	numIndex			インデックスの数
+	//	IndexFormat			インデックスバッファのフォーマット
+	//	pSrcIndexBuffer		ソースインデックスバッファ
 	void Create(
 		EType					primitiveType,
 		int						numVertex,

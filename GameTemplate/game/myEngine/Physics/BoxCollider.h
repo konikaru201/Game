@@ -16,7 +16,7 @@ public:
 	~BoxCollider();
 
 	//ボックスコライダーを作成
-	void Create(const D3DXVECTOR3 boxHarfSize)
+	void Create(const D3DXVECTOR3& boxHarfSize)
 	{
 		shape = new btBoxShape(btVector3(boxHarfSize.x, boxHarfSize.y, boxHarfSize.z));
 	}

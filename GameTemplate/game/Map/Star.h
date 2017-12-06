@@ -23,7 +23,7 @@ public:
 	void Render();
 
 	//À•W‚ğæ“¾
-	D3DXVECTOR3 GetPosition()
+	const D3DXVECTOR3& GetPosition()
 	{
 		return position;
 	}

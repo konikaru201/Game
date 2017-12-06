@@ -11,5 +11,6 @@ void Texture::Initialize()
 {
 }
 
-
-
+void Texture::Update()
+{
+}

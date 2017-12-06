@@ -23,40 +23,41 @@ public:
 	//移動
 	void Move();
 
+	//リセット
 	void Reset();
 
 	//注視点を設定
-	void SetTarget(D3DXVECTOR3 target)
+	void SetTarget(const D3DXVECTOR3& target)
 	{
 		camera.SetLookatPt(target);
 	}
 	//視点を設定
-	void SetPosition(D3DXVECTOR3 position)
+	void SetPosition(const D3DXVECTOR3& position)
 	{
 		camera.SetEyePt(position);
 	}
 	//遠平面を設定
-	void SetFar(float _far)
+	void SetFar(const float& _far)
 	{
 		camera.SetFar(_far);
 	}
 	//注視点を取得
-	D3DXVECTOR3 GetTarget()
+	const D3DXVECTOR3& GetTarget()
 	{
 		return camera.GetLookatPt();
 	}
 	//視点を取得
-	D3DXVECTOR3 GetPosition()
+	const D3DXVECTOR3& GetPosition()
 	{
 		return camera.GetEyePt();
 	}
 	//ビュー行列を取得
-	D3DXMATRIX GetViewMatrix()
+	const D3DXMATRIX& GetViewMatrix()
 	{
 		return camera.GetViewMatrix();
 	}
 	//プロジェクション行列を取得
-	D3DXMATRIX GetViewProjectionMatrix()
+	const D3DXMATRIX& GetViewProjectionMatrix()
 	{
 		return camera.GetProjectionMatrix();
 	}

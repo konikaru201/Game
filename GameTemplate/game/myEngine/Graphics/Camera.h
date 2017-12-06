@@ -49,43 +49,43 @@ public:
 	/*!
 	 *@brief	視点を設定。
 	 */
-	void SetEyePt(D3DXVECTOR3 pt);
+	void SetEyePt(const D3DXVECTOR3& pt);
 	/*!
 	 *@brief	視点を取得。
 	 */
-	D3DXVECTOR3 GetEyePt();
+	const D3DXVECTOR3& GetEyePt();
 	/*!
 	 *@brief	注視点を設定。
 	 */
-	void SetLookatPt(D3DXVECTOR3 pt);
+	void SetLookatPt(const D3DXVECTOR3& pt);
 	/*!
 	 *@brief	注視点の取得。
 	 */
-	D3DXVECTOR3 GetLookatPt();
+	const D3DXVECTOR3& GetLookatPt();
 	/*!
 	 *@brief	上方向の設定。
 	 */
-	void SetUpVec(D3DXVECTOR3 up);
+	void SetUpVec(const D3DXVECTOR3& up);
 	/*!
 	 *@brief	上方向の取得。
 	 */
-	D3DXVECTOR3 GetUpVec();
+	const D3DXVECTOR3& GetUpVec();
 	/*!
 	 *@brief	ビュー行列の設定。
 	 */
-	void SetViewMatrix(D3DXMATRIX mView);
+	void SetViewMatrix(const D3DXMATRIX& mView);
 	/*!
 	 *@brief	ビュー行列の取得。
 	 */
-	D3DXMATRIX GetViewMatrix();
+	const D3DXMATRIX& GetViewMatrix();
 	/*!
 	 *@brief	プロジェクション行列の設定。
 	 */
-	void SetProjectionMatrix(D3DXMATRIX mProj);
+	void SetProjectionMatrix(const D3DXMATRIX& mProj);
 	/*!
 	 *@brief	プロジェクション行列の取得。
 	 */
-	D3DXMATRIX GetProjectionMatrix();
+	const D3DXMATRIX& GetProjectionMatrix();
 	/*!
 	 *@brief	カメラの更新処理。
 	 */

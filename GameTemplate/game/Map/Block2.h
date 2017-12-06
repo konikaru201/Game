@@ -27,13 +27,13 @@ public:
 	void Render();
 
 	//ワールド行列を取得
-	D3DXMATRIX GetWorldMatrix()
+	const D3DXMATRIX& GetWorldMatrix()
 	{
 		return model.GetWorldMatrix();
 	}
 
 	//回転行列を取得
-	D3DXMATRIX GetRotationMatrix()
+	const D3DXMATRIX& GetRotationMatrix()
 	{
 		return model.GetRotationMatrix();
 	}

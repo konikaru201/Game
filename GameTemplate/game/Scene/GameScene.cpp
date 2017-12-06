@@ -67,7 +67,7 @@ bool GameScene::Start()
 		//マップ作成
 		StageCreate();
 
-		depthStencilRender = goMgr->NewGameObject<DepthStencilRender>();
+		depthStencilRender = goMgr->NewGameObject<DepthStencilRender>();	//シルエット生成
 		g_player = goMgr->NewGameObject<Player>();			//プレイヤー生成
 		gameCamera = goMgr->NewGameObject<GameCamera>();	//カメラ生成
 		

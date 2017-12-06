@@ -24,7 +24,7 @@ public:
 	//影を描画
 	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
 
-	void DepthStencilRender(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix);
+	void DepthStencilRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix);
 
 	//移動
 	//戻り値　移動速度を返す
@@ -33,7 +33,7 @@ public:
 	void Reset();
 
 	//座標の取得
-	D3DXVECTOR3 GetPosition() {
+	const D3DXVECTOR3& GetPosition() {
 		return position;
 	}
 
@@ -85,24 +85,24 @@ public:
 
 	//ブロック１
 	//親のワールド行列を設定
-	void SetParentWorldMatrix(D3DXMATRIX worldMatrix)
+	void SetParentWorldMatrix(const D3DXMATRIX& worldMatrix)
 	{
 		parentWorldMatrix = worldMatrix;
 	}
 	//親の回転行列を設定
-	void SetParentRotationMatrix(D3DXMATRIX rotationMatrix)
+	void SetParentRotationMatrix(const D3DXMATRIX& rotationMatrix)
 	{
 		parentRotationMatrix = rotationMatrix;
 	}
 
 	//ブロック２
 	//親のワールド行列を設定
-	void SetSecondParentWorldMatrix(D3DXMATRIX worldMatrix)
+	void SetSecondParentWorldMatrix(const D3DXMATRIX& worldMatrix)
 	{
 		secondParentWorldMatrix = worldMatrix;
 	}
 	//親の回転行列を設定
-	void SetSecondParentRotationMatrix(D3DXMATRIX rotationMatrix) 
+	void SetSecondParentRotationMatrix(const D3DXMATRIX& rotationMatrix) 
 	{
 		secondParentRotationMatrix = rotationMatrix;
 	}

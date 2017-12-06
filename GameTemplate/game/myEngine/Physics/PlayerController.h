@@ -155,7 +155,7 @@ public:
 	/*!
 	* @brief	•Ç‚Ì–@ü‚ğæ“¾B
 	*/
-	D3DXVECTOR3 GethitNormal()
+	const D3DXVECTOR3& GethitNormal()
 	{
 		return m_hitNormal;
 	}

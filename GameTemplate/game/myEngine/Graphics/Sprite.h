@@ -32,14 +32,14 @@ public:
 
 	//座標を設定
 	//pos	座標
-	void SetPosition(D3DXVECTOR2 pos)
+	void SetPosition(const D3DXVECTOR2& pos)
 	{
 		m_position = pos;
 	}
 
 	//サイズを設定
 	//scale		サイズ
-	void SetSize(D3DXVECTOR2 size)
+	void SetSize(const D3DXVECTOR2& size)
 	{
 		m_size = size;
 	}

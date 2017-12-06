@@ -43,26 +43,12 @@ public:
 	//描画
 	void Render();
 
-	////移動床(横)のインスタンスを取得
-	//MoveFloor* GetMoveFloor()
-	//{
-	//	return moveFloor;
-	//}
-
-	////移動床(縦)のインスタンスを取得
-	//MoveFloor2* GetMoveFloor2()
-	//{
-	//	return moveFloor2;
-	//}
-
 	//ジャンプブロックのインスタンスを取得
 	Spring* GetSpring()
 	{
 		return spring;
 	}
 private:
-	//MoveFloor* moveFloor;		//移動床(横)のインスタンス
-	//MoveFloor2* moveFloor2;		//移動床(縦)のインスタンス
 	Spring* spring;		//ジャンプブロックのインスタンス
 };
 

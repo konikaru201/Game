@@ -315,7 +315,7 @@ void Player::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix, bool
 	}
 }
 
-void Player::DepthStencilRender(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix)
+void Player::DepthStencilRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix)
 {
 	if (g_player != nullptr && gameScene->GetGameCamera() != nullptr) {
 		model.SetDepthStencilRender(true);

@@ -15,8 +15,8 @@ namespace {
 		ID3DXEffect* pEffect,
 		D3DXMATRIX* worldMatrix,
 		D3DXMATRIX* rotationMatrix,
-		D3DXMATRIX* viewMatrix,
-		D3DXMATRIX* projMatrix,
+		const D3DXMATRIX* viewMatrix,
+		const D3DXMATRIX* projMatrix,
 		Light* light,
 		LPDIRECT3DTEXTURE9 specularMap,
 		bool isDrawShadowMap,
@@ -172,8 +172,8 @@ namespace {
 		ID3DXEffect* pEffect,
 		D3DXMATRIX* worldMatrix,
 		D3DXMATRIX* rotationMatrix,
-		D3DXMATRIX* viewMatrix,
-		D3DXMATRIX* projMatrix,
+		const D3DXMATRIX* viewMatrix,
+		const D3DXMATRIX* projMatrix,
 		Light* light,
 		LPDIRECT3DTEXTURE9 specularMap,
 		bool isDrawShadowMap,
@@ -272,7 +272,7 @@ void SkinModel::UpdateWorldMatrix(const D3DXVECTOR3& trans, const D3DXQUATERNION
 	}
 }
 
-void SkinModel::Draw(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix)
+void SkinModel::Draw(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix)
 {
 	if (skinModelData) {
 		DrawFrame(

@@ -57,12 +57,6 @@ public:
 		return gameCamera;
 	}
 
-	////プレイヤーのインスタンス取得
-	//Player* GetPlayer()
-	//{
-	//	return player;
-	//}
-
 	//ライトのインスタンス取得
 	Light& GetLight()
 	{
@@ -76,7 +70,7 @@ public:
 	}
 
 	//スプライトの座標を取得
-	D3DXVECTOR2 GetCoinPos()
+	const D3DXVECTOR2& GetCoinPos()
 	{
 		return CoinPos;
 	}
@@ -105,13 +99,13 @@ public:
 	}
 
 	//進行状況を返却
-	Step IsStep()
+	const Step& IsStep()
 	{
 		return step;
 	}
 
 	//現在いるステージを取得
-	state_stage GetStateStage()
+	const state_stage& GetStateStage()
 	{
 		return currentStage;
 	}
@@ -119,7 +113,6 @@ public:
 private:
 	Light light;					//ライト
 	Map* map;						//マップ
-	//Player* player;				//プレイヤー
 	GameCamera* gameCamera;			//ゲームカメラ
 	DisplayCoin* displayCoin;		//コイン枚数のスプライト
 	Sprite* CoinNum;				//コインのスプライト

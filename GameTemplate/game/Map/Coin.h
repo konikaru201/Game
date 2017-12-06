@@ -25,7 +25,7 @@ public:
 	//void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
 
 	//À•W‚ğæ“¾
-	D3DXVECTOR3 GetPosition()
+	const D3DXVECTOR3& GetPosition()
 	{
 		return position;
 	}
