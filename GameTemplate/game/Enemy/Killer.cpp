@@ -28,8 +28,6 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	////„‘Ì‚Ìì¬
 	CapsuleCollider* coll = new CapsuleCollider;
 	coll->Create(1.0f, 1.0f);
-	characterController.Init(coll, position);
-	characterController.SetGravity(0.0f);
 
 	//„‘Ì‚ðì‚é‚½‚ß‚Ìî•ñ‚ðÝ’è
 	RigidBodyInfo rbInfo;
@@ -39,6 +37,9 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	rbInfo.rot = rotation;
 	//„‘Ì‚ðì¬
 	rigidBody.Create(rbInfo);
+
+	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
+	trans.setOrigin(btVector3(position.x, position.y, position.z));
 
 	//ì¬‚µ‚½„‘Ì‚ð•¨—ƒ[ƒ‹ƒh‚É’Ç‰Á
 	g_physicsWorld->AddRigidBody(&rigidBody);
@@ -58,16 +59,16 @@ void Killer::Update()
 	if (position.x < 55.0f || position.x > 130.0f
 		|| position.z < -120.0f || position.z > -70.0f)
 	{
-		characterController.SetPosition(InitPosition);
+		position = InitPosition;
 		D3DXQuaternionRotationAxis(&rotation, &up, D3DXToRadian(-90.0f));
 		state = State_Search;
 	}
 
 	D3DXVECTOR3 moveSpeed = Move();
+	position += moveSpeed / 60.0f;
 
-	characterController.SetMoveSpeed(moveSpeed);
-	characterController.Execute();
-	position = characterController.GetPosition();
+	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
+	trans.setOrigin(btVector3(position.x, position.y, position.z));
 
 	model.UpdateWorldMatrix(position, rotation, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 }
@@ -123,7 +124,7 @@ D3DXVECTOR3 Killer::Move()
 		if (toPlayer.x <= 0.0f) {
 			angle *= -1.0f;
 		}
-		D3DXVec3Scale(&toPlayer, &toPlayer, MoveSpeed);
+		toPlayer *= moveSpeed;
 		move = toPlayer;
 		move.y = 0.0f;
 
@@ -138,7 +139,7 @@ D3DXVECTOR3 Killer::Move()
 		break;
 	//Œ©Ž¸‚Á‚½ó‘Ô
 	case State_Miss:
-		moveDir = direction * MoveSpeed;
+		moveDir = direction * moveSpeed;
 		move = moveDir;
 		break;
 	default:

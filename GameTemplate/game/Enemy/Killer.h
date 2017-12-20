@@ -43,5 +43,5 @@ private:
 	RigidBody			rigidBody;						//„‘Ì
 	D3DXVECTOR3			up = { 0.0f,1.0f,0.0f };
 	D3DXVECTOR3			moveDir = { 0.0f,0.0f,0.0f };
-	const float			MoveSpeed = 4.0f;				//ˆÚ“®‘¬“x
+	const float			moveSpeed = 4.0f;				//ˆÚ“®‘¬“x
 };

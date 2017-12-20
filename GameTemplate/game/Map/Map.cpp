@@ -87,6 +87,12 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 			//座標と回転の情報を渡して初期化
 			star->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
+		else if (strcmp("Red_Dragon", mapLocInfo[i].modelName) == 0) {
+			//インスタンスを動的に生成
+			Red_Dragon* red_Dragon = goMgr->NewGameObject<Red_Dragon>();
+			//座標と回転の情報を渡して初期化
+			red_Dragon->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		}
 		else 
 		{
 			//インスタンスを動的に生成

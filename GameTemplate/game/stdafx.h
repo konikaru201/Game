@@ -21,3 +21,9 @@
 #include "myEngine/Graphics/SkinModelData.h"
 #include "myEngine/Graphics/Animation.h"
 #include "myEngine/Graphics/Light.h"
+#include "myEngine/Graphics/RenderTarget.h"
+//#include "myEngine/Sound/SoundEngine.h"
+
+//extern CSoundEngine* soundEngine;
+extern CRenderTarget* mainRenderTarget;
+extern void DrawQuadPrimitive();

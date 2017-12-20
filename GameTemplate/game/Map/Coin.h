@@ -32,7 +32,7 @@ public:
 private:
 	SkinModel model;			//スキンモデル
 	SkinModelData modelData;	//スキンモデルデータ
-
+	Light light;
 	D3DXVECTOR3	position;		//座標
 	D3DXQUATERNION rotation;	//回転
 	D3DXVECTOR3 InitPosition;	//初期座標

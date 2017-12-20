@@ -18,6 +18,8 @@ bool GameCamera::Start()
 	camera.Init();
 	camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 10.0f));
 	camera.SetLookatPt(D3DXVECTOR3(0.0f, 10.5f, 0.0f));
+	//テスト用
+	//camera.SetLookatPt(D3DXVECTOR3(0.0f, 12.0f, 8.0f));
 	camera.SetFar(1000.0f);
 	camera.Update();
 	cameraCollisionSolver.Init(0.2f);

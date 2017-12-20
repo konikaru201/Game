@@ -271,12 +271,6 @@
 //Killer
 {
 	"Killer",
-	D3DXVECTOR3(127.66f, 7.56f, -89.60f),             //平行移動
-	D3DXQUATERNION(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
-},
-//Killer
-{
-	"Killer",
 	D3DXVECTOR3(127.66f, 7.68f, -99.53f),             //平行移動
 	D3DXQUATERNION(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
 },
@@ -285,6 +279,24 @@
 	"Spring",
 	D3DXVECTOR3(105.20f, 4.35f, -130.30f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//Killer
+{
+	"Killer",
+	D3DXVECTOR3(127.66f, 7.56f, -89.60f),             //平行移動
+	D3DXQUATERNION(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
+},
+//Coin
+{
+	"Coin",
+	D3DXVECTOR3(-10.00f, 1.94f, -19.00f),             //平行移動
+	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
+},
+//Coin
+{
+	"Coin",
+	D3DXVECTOR3(-9.99f, 1.94f, -18.00f),             //平行移動
+	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Spring
 {
@@ -332,18 +344,6 @@
 {
 	"Coin",
 	D3DXVECTOR3(-9.94f, 1.94f, -20.00f),             //平行移動
-	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
-},
-//Coin
-{
-	"Coin",
-	D3DXVECTOR3(-10.00f, 1.94f, -19.00f),             //平行移動
-	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
-},
-//Coin
-{
-	"Coin",
-	D3DXVECTOR3(-9.99f, 1.94f, -18.00f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
@@ -421,12 +421,6 @@
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(62.75f, 7.81f, -85.30f),             //平行移動
-	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
-},
-//Coin
-{
-	"Coin",
 	D3DXVECTOR3(62.70f, 7.81f, -89.55f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
@@ -434,6 +428,12 @@
 {
 	"Coin",
 	D3DXVECTOR3(62.74f, 7.81f, -94.71f),             //平行移動
+	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
+},
+//Coin
+{
+	"Coin",
+	D3DXVECTOR3(62.75f, 7.81f, -85.30f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
@@ -525,4 +525,10 @@
 	"Coin",
 	D3DXVECTOR3(107.64f, 7.81f, -114.80f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
+},
+//Red_Dragon
+{
+	"Red_Dragon",
+	D3DXVECTOR3(0.80f, 1.57f, -15.57f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },

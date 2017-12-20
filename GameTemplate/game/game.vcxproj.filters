@@ -207,6 +207,12 @@
     <ClCompile Include="myEngine\Graphics\VertexBuffer.cpp">
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="myEngine\Graphics\Bloom.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\Red_Dragon.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -373,6 +379,12 @@
     </ClInclude>
     <ClInclude Include="myEngine\Graphics\VertexBuffer.h">
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\Bloom.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\Red_Dragon.h">
+      <Filter>ソース ファイル\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

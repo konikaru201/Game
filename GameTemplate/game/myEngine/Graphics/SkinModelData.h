@@ -69,11 +69,17 @@ public:
 		D3DXFRAME_DERIVED* frameDer = (D3DXFRAME_DERIVED*)frameRoot;
 		return &frameDer->CombinedTransformationMatrix;
 	}
+	/*!
+	* @brief	骨のワールド行列を検索
+	*/
+	D3DXMATRIX* FindBoneWorldMatrix(const char* boneName);
 private:
 	/*!
 	* @brief	一番最初に見つかったオリジナルメッシュを取得。
 	*/
 	LPD3DXMESH GetOrgMesh(LPD3DXFRAME frame) ;
+
+	D3DXMATRIX* FindBoneWorldMatrix(const char* boneName, LPD3DXFRAME frame);
 private:
 	LPD3DXFRAME					frameRoot;		//フレームルート。
 	ID3DXAnimationController*   pAnimController;	//アニメーションコントローラ。

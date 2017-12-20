@@ -8,7 +8,8 @@
 #include "myEngine/Physics/Physics.h"
 #include "myEngine/GameObject/GameObject.h"
 #include "myEngine/Graphics/Sprite.h"
-#include "../myEngine/Graphics/DepthStencilRender.h"
+#include "myEngine/Graphics/DepthStencilRender.h"
+//#include "myEngine/Sound/SoundSource.h"
 
 namespace {
 	//コインのスプライトのサイズと座標

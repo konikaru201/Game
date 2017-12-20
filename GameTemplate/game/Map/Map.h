@@ -12,6 +12,7 @@
 #include "Box.h"
 #include "SkyBox.h"
 #include "Star.h"
+#include "Enemy/Red_Dragon.h"
 
 //マップの配置情報
 struct SMapInfo {

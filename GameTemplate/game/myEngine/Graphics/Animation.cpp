@@ -100,7 +100,6 @@ void Animation::Update(float deltaTime)
 		}
 		if (isInterpolate) {
 			ID3DXAnimationSet* animSet = animationSets[2];
-			float period = (float)animSet->GetPeriod();
 			//•âŠÔ’†B
 			interpolateTime += deltaTime;
 			float weight = 0.0f;

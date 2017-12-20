@@ -83,6 +83,9 @@ public:
 			NULL
 		);
 		m_texture->GetSurfaceLevel(0, &m_surface);
+
+		m_width = w;
+		m_height = h;
 	}
 	/*!
 	*@brief	レンダリングターゲットを取得。
@@ -105,8 +108,20 @@ public:
 	{
 		return m_texture;
 	}
+	//テクスチャの幅を取得
+	int GetWidth()
+	{
+		return m_width;
+	}
+	//テクスチャの高さを取得
+	int GetHeight()
+	{
+		return m_height;
+	}
 private:
 	LPDIRECT3DSURFACE9		m_depthSurface;		//!<深度バッファ用のサーフェイス
 	LPDIRECT3DTEXTURE9		m_texture;			//!<書き込み先のテクスチャ。
 	LPDIRECT3DSURFACE9		m_surface;			//!<サーフェイス
+	int						m_width = 0;		//テクスチャの幅
+	int						m_height = 0;		//テクスチャの高さ
 };

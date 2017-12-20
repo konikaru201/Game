@@ -11,13 +11,17 @@
 #include "Scene/GameScene.h"
 #include "Player/Player.h"
 #include "myEngine/Graphics/Primitive.h"
+#include "myEngine/Graphics/Bloom.h"
+//#include "myEngine/Sound/SoundEngine.h"
 
 GameObjectManager* goMgr = nullptr;
 Pad* pad = nullptr;
 SceneManager* sceneManager = nullptr;
 Fade* g_fade = nullptr;
+//CSoundEngine* soundEngine = nullptr;
 
 CShadowMap g_shadowMap;	//シャドウマップ。
+Bloom* bloom = nullptr;	//ブルーム
 
 CRenderTarget* mainRenderTarget;	//メインレンダリングターゲット
 CPrimitive* quadPrimitive;			//四角形の板ポリプリミティブ
@@ -28,20 +32,23 @@ void InitMainRenderTarget();
 void InitQuadPrimitive();
 void LoadShaders();
 void CopyMainRTToCurrentRT();
+void DrawQuadPrimitive();
 
 //-----------------------------------------------------------------------------
 // Name: ゲームを初期化。
 //-----------------------------------------------------------------------------
 void Init()
 {
-	////レンダリングターゲットを作成する
-	//InitMainRenderTarget();
-	////四角形の板ポリプリミティブを作成
-	//InitQuadPrimitive();
-	////シェーダーをロード
-	//LoadShaders();
+	//レンダリングターゲットを作成する
+	InitMainRenderTarget();
+	//四角形の板ポリプリミティブを作成
+	InitQuadPrimitive();
+	//シェーダーをロード
+	LoadShaders();
 
 	g_shadowMap.Init();
+
+	bloom = new Bloom;
 
 	goMgr = new GameObjectManager;
 
@@ -89,37 +96,40 @@ VOID Render()
 	//シーンの描画開始。
 	g_pd3dDevice->BeginScene();
 
-	////レンダリングターゲットとデプスステンシルバッファのバックアップをとる
-	//LPDIRECT3DSURFACE9 frameBufferRT;
-	//LPDIRECT3DSURFACE9 frameBufferDS;
-	//g_pd3dDevice->GetRenderTarget(0, &frameBufferRT);
-	//g_pd3dDevice->GetDepthStencilSurface(&frameBufferDS);
+	//レンダリングターゲットとデプスステンシルバッファのバックアップをとる
+	LPDIRECT3DSURFACE9 frameBufferRT;
+	LPDIRECT3DSURFACE9 frameBufferDS;
+	g_pd3dDevice->GetRenderTarget(0, &frameBufferRT);
+	g_pd3dDevice->GetDepthStencilSurface(&frameBufferDS);
 
-	////レンダリングターゲットをフレームバッファから変更する
-	//g_pd3dDevice->SetRenderTarget(
-	//	0,										//何番目のレンダリングターゲットを設定するかの引数。今回は０
-	//	mainRenderTarget->GetRenderTarget()		//変更するレンダリングターゲット
-	//);
-	////デプスステンシルバッファも変更する
-	//g_pd3dDevice->SetDepthStencilSurface(mainRenderTarget->GetDepthStencilBuffer());
-	//// レンダリングターゲットをクリア。
-	//g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0);
+	//レンダリングターゲットをフレームバッファから変更する
+	g_pd3dDevice->SetRenderTarget(
+		0,										//何番目のレンダリングターゲットを設定するかの引数。今回は０
+		mainRenderTarget->GetRenderTarget()		//変更するレンダリングターゲット
+	);
+	//デプスステンシルバッファも変更する
+	g_pd3dDevice->SetDepthStencilSurface(mainRenderTarget->GetDepthStencilBuffer());
+	// レンダリングターゲットをクリア。
+	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0);
 
 	//シャドウマップにレンダリング。
 	g_shadowMap.Draw();
 
 	goMgr->Render();
 
-	////レンダリングターゲットを戻す
-	//g_pd3dDevice->SetRenderTarget(0, frameBufferRT);
-	//g_pd3dDevice->SetDepthStencilSurface(frameBufferDS);
+	//ポストエフェクト
+	bloom->Render();
 
-	////参照カウンタを１減らす
-	//frameBufferRT->Release();
-	//frameBufferDS->Release();
+	//レンダリングターゲットを戻す
+	g_pd3dDevice->SetRenderTarget(0, frameBufferRT);
+	g_pd3dDevice->SetDepthStencilSurface(frameBufferDS);
 
-	////オフスクリーンレンダリングした絵をフレームバッファに貼り付ける
-	//CopyMainRTToCurrentRT();
+	//参照カウンタを１減らす
+	frameBufferRT->Release();
+	frameBufferDS->Release();
+
+	//オフスクリーンレンダリングした絵をフレームバッファに貼り付ける
+	CopyMainRTToCurrentRT();
 
 	if (gameScene != nullptr) {
 		gameScene->Render();
@@ -167,7 +177,7 @@ void InitMainRenderTarget()
 		FRAME_BUFFER_WIDTH,
 		FRAME_BUFFER_HEIGHT,
 		1,
-		D3DFMT_A8R8G8B8,
+		D3DFMT_A16B16G16R16F,
 		D3DFMT_D24S8,
 		D3DMULTISAMPLE_NONE,
 		0
@@ -276,25 +286,36 @@ void CopyMainRTToCurrentRT()
 	g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 	// αブレンドもいらない。
 	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	LPD3DXEFFECT shader = copyEffect;			//コピーを行うシェーダーを使う場合はこちら。
+	//LPD3DXEFFECT shader = monochromeEffect;	//モノクロフィルターをかける場合はこちらを使用する。
+	//シェーダーを設定。
+	shader->SetTechnique("Default");
+	shader->Begin(NULL, D3DXFX_DONOTSAVESHADERSTATE);
+	shader->BeginPass(0);
+	//シーンテクスチャを設定する
+	shader->SetTexture("g_tex",  mainRenderTarget->GetTexture());
+	//定数レジスタへの変更をコミットする。
+	shader->CommitChanges();
+
+	DrawQuadPrimitive();
+	shader->EndPass();
+	shader->End();
+	// 変更したレンダリングステートを元に戻す。
+	g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+}
+
+//板ポリを描画
+void DrawQuadPrimitive()
+{
 	// 頂点ストリーム0番に板ポリの頂点バッファを設定する。
 	g_pd3dDevice->SetStreamSource(
 		0,												//頂点ストリームの番号。
 		quadPrimitive->GetVertexBuffer()->GetBody(),	//頂点バッファ。
 		0,												//頂点バッファの読み込みを開始するオフセットのバイト数。
-														//今回は先頭から読み込むので0でいい。
 		quadPrimitive->GetVertexBuffer()->GetStride()	//頂点一つ分のサイズ。単位はバイト。
 	);
-
-	LPD3DXEFFECT shader = copyEffect;			//コピーを行うシェーダーを使う場合はこちら。
-	//LPD3DXEFFECT shader = monochromeEffect;	//モノクロフィルターをかける場合はこちらを使用する。
-												//シェーダーを設定。
-	shader->SetTechnique("Default");
-	shader->Begin(NULL, D3DXFX_DONOTSAVESHADERSTATE);
-	shader->BeginPass(0);
-	//シーンテクスチャを設定する
-	shader->SetTexture("g_tex", mainRenderTarget->GetTexture());
-	//定数レジスタへの変更をコミットする。
-	shader->CommitChanges();
 	// インデックスバッファを設定。
 	g_pd3dDevice->SetIndices(quadPrimitive->GetIndexBuffer()->GetBody());
 	// 頂点定義を設定する。
@@ -302,15 +323,10 @@ void CopyMainRTToCurrentRT()
 	//　準備が整ったので描画。
 	g_pd3dDevice->DrawIndexedPrimitive(
 		quadPrimitive->GetD3DPrimitiveType(),	//プリミティブの種類を指定する。
-		0,										//ベース頂点インデックス。0でいい。
-		0,										//最小の頂点インデックス。0でいい。
+		0,										//ベース頂点インデックス。
+		0,										//最小の頂点インデックス。
 		quadPrimitive->GetNumVertex(),			//頂点の数。
-		0,										//開始インデックス。0でいい。
+		0,										//開始インデックス。
 		quadPrimitive->GetNumPolygon()			//プリミティブの数。
 	);
-	shader->EndPass();
-	shader->End();
-	// 変更したレンダリングステートを元に戻す。
-	g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 }
