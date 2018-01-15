@@ -40,9 +40,9 @@ sampler g_normalMapSampler =
 sampler_state
 {
 	Texture = <g_normalTexture>;
-    MipFilter = NONE;
-    MinFilter = NONE;
-    MagFilter = NONE;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
     AddressU = Wrap;
 	AddressV = Wrap;
 };
@@ -183,6 +183,17 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 {
 	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
 	float3 normal = In.Normal;
+	
+	if(g_isHasNormalMap){
+		float3 localNormal = tex2D(g_normalMapSampler,In.Tex0);
+		localNormal = (localNormal * 2.0f) - 1.0f;
+		float3 tangent = normalize(In.Tangent);
+		float3 biNormal = cross(tangent, normal);
+		biNormal = normalize(biNormal);
+		normal = tangent * localNormal.x
+				+ biNormal * localNormal.y
+				+ normal * localNormal.z;
+	}
 	
 	float3 eye = In.worldPos.xyz - vEyePos;
 	float3 L = -g_light.diffuseLightDir[0];

@@ -17,7 +17,7 @@ bool GameCamera::Start()
 	//カメラ初期化
 	camera.Init();
 	camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 10.0f));
-	camera.SetLookatPt(D3DXVECTOR3(0.0f, 10.5f, 0.0f));
+	camera.SetLookatPt(D3DXVECTOR3(0.0f, 10.5f, 3.0f));
 	//テスト用
 	//camera.SetLookatPt(D3DXVECTOR3(0.0f, 12.0f, 8.0f));
 	camera.SetFar(1000.0f);

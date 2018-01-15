@@ -177,6 +177,7 @@ private:
 	D3DXQUATERNION secondChildRotation = { 0.0f,0.0f,0.0f,1.0f };	//親の回転座標からみたプレイヤーの回転
 
 	LPDIRECT3DTEXTURE9 specularMap = NULL;							//スペキュラマップ
+	LPDIRECT3DTEXTURE9 normalMap = NULL;							//法線マップ
 };
 
 extern Player* g_player;

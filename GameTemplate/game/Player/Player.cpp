@@ -13,6 +13,13 @@ Player::Player()
 
 Player::~Player()
 {
+	//テクスチャの開放
+	if (specularMap != NULL) {
+		specularMap->Release();
+	}
+	if (normalMap != NULL) {
+		normalMap->Release();
+	}
 }
 
 bool Player::Start()
@@ -22,9 +29,25 @@ bool Player::Start()
 		"Assets/modelData/utc_spec.tga",
 		&specularMap
 	);
-
+	//D3DXCreateTextureFromFileAの戻り値をチェック
+	if (FAILED(hr)) {
+		MessageBox(NULL, "テクスチャのロードに失敗しました。スペキュラマップ", "エラー", MB_OK);
+	}
 	if (specularMap != NULL) {
 		model.SetSpecularMap(specularMap);
+	}
+
+	//法線マップをロード
+	hr = D3DXCreateTextureFromFileA(g_pd3dDevice,
+		"Assets/modelData/utc_normal.tga",
+		&normalMap
+	);
+	//D3DXCreateTextureFromFileAの戻り値をチェック
+	if (FAILED(hr)) {
+		MessageBox(NULL, "テクスチャのロードに失敗しました。法線マップ", "エラー", MB_OK);
+	}
+	if (normalMap != NULL) {
+		model.SetNormalMap(normalMap);
 	}
 
 	//モデルデータをロードして初期化

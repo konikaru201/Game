@@ -19,6 +19,7 @@ namespace {
 		const D3DXMATRIX* projMatrix,
 		Light* light,
 		LPDIRECT3DTEXTURE9 specularMap,
+		LPDIRECT3DTEXTURE9 normalMap,
 		bool isDrawShadowMap,
 		bool isRecieveShadow,
 		bool isDepthStencilRender
@@ -87,6 +88,16 @@ namespace {
 			pEffect->SetTexture("g_shadowMapTexture", g_shadowMap.GetTexture());
 			pEffect->SetMatrix("g_lightViewMatrix", &g_shadowMap.GetLightViewMatrix());
 			pEffect->SetMatrix("g_lightProjectionMatrix", &g_shadowMap.GetLightProjectionMatrix());
+		}
+		if (normalMap != NULL) {
+			//法線マップがあるので、シェーダーに転送する。
+			pEffect->SetTexture("g_normalTexture", normalMap);
+			//法線マップのあり、なしのフラグをtrueにする。
+			pEffect->SetBool("g_isHasNormalMap", true);
+		}
+		else {
+			//法線マップのあり、なしのフラグをfalseにする。
+			pEffect->SetBool("g_isHasNormalMap", false);
 		}
 		if (pMeshContainer->pSkinInfo != NULL)
 		{
@@ -176,6 +187,7 @@ namespace {
 		const D3DXMATRIX* projMatrix,
 		Light* light,
 		LPDIRECT3DTEXTURE9 specularMap,
+		LPDIRECT3DTEXTURE9 normalMap,
 		bool isDrawShadowMap,
 		bool isRecieveShadow,
 		bool isDepthStencilRender
@@ -197,6 +209,7 @@ namespace {
 				projMatrix,
 				light,
 				specularMap,
+				normalMap,
 				isDrawShadowMap,
 				isRecieveShadow,
 				isDepthStencilRender
@@ -217,6 +230,7 @@ namespace {
 				projMatrix,
 				light,
 				specularMap,
+				normalMap,
 				isDrawShadowMap,
 				isRecieveShadow,
 				isDepthStencilRender
@@ -235,6 +249,7 @@ namespace {
 				projMatrix,
 				light,
 				specularMap,
+				normalMap,
 				isDrawShadowMap,
 				isRecieveShadow,
 				isDepthStencilRender
@@ -285,6 +300,7 @@ void SkinModel::Draw(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix)
 			projMatrix,
 			light,
 			specularMap,
+			normalMap,
 			isDrawShadowMap,
 			isRecieveShadow,
 			isDepthStencilRender

@@ -177,6 +177,8 @@
     <ClCompile Include="myEngine\Graphics\DepthStencilRender.cpp" />
     <ClCompile Include="myEngine\Graphics\EffectManager.cpp" />
     <ClCompile Include="myEngine\Graphics\IndexBuffer.cpp" />
+    <ClCompile Include="myEngine\Graphics\Particle.cpp" />
+    <ClCompile Include="myEngine\Graphics\ParticleEmitter.cpp" />
     <ClCompile Include="myEngine\Graphics\Primitive.cpp" />
     <ClCompile Include="myEngine\Graphics\ShadowMap.cpp" />
     <ClCompile Include="myEngine\Graphics\SkinModel.cpp" />
@@ -237,6 +239,8 @@
     <ClInclude Include="myEngine\Graphics\EffectManager.h" />
     <ClInclude Include="myEngine\Graphics\IndexBuffer.h" />
     <ClInclude Include="myEngine\Graphics\Light.h" />
+    <ClInclude Include="myEngine\Graphics\Particle.h" />
+    <ClInclude Include="myEngine\Graphics\ParticleEmitter.h" />
     <ClInclude Include="myEngine\Graphics\Primitive.h" />
     <ClInclude Include="myEngine\Graphics\RenderTarget.h" />
     <ClInclude Include="myEngine\Graphics\ShadowMap.h" />

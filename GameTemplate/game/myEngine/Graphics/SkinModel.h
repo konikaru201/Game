@@ -43,6 +43,11 @@ public:
 	{
 		specularMap = specMap;
 	}
+	//法線マップを設定
+	void SetNormalMap(LPDIRECT3DTEXTURE9 normalMap) 
+	{
+		this->normalMap = normalMap;
+	}
 	//ワールド座標を取得
 	const D3DXMATRIX& GetWorldMatrix()
 	{
@@ -79,6 +84,7 @@ private:
 	Light*				light = nullptr;			//!<ライト。
 
 	LPDIRECT3DTEXTURE9 specularMap = NULL;			//!<スペキュラマップ。
+	LPDIRECT3DTEXTURE9 normalMap = NULL;			//!<法線マップ
 	bool isDrawShadowMap = false;
 	bool isRecieveShadow = false;
 	bool isDepthStencilRender = false;

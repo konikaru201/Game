@@ -55,6 +55,8 @@ void Init()
 	g_fade = new Fade;
 	g_fade->Start();
 
+	
+
 	pad = goMgr->NewGameObject<Pad>();
 
 	sceneManager = goMgr->NewGameObject<SceneManager>();
