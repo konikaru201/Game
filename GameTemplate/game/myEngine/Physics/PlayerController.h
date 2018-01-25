@@ -171,16 +171,6 @@ public:
 	*/
 	void RemoveRigidBoby();
 
-	//レイで全方向見るためのベクトル
-	struct MoveRay {
-		const D3DXVECTOR3 rightDir = { 3.0f,  0.0f,  0.0f };		//右
-		const D3DXVECTOR3 leftDir = { -3.0f,  0.0f,  0.0f };		//左
-		const D3DXVECTOR3 frontDir = { 0.0f,  0.0f,  3.0f };		//前
-		const D3DXVECTOR3 backDir = { 0.0f,  0.0f, -3.0f };			//後
-		const D3DXVECTOR3 downDir = { 0.0f, -3.0f,  0.0f };			//下
-		const D3DXVECTOR3 upDir = { 0.0f,  3.0f,  0.0f };			//上
-	};
-
 	//レイの方向の状態
 	enum RayDirection {
 		RIGHT,	//右
@@ -204,8 +194,6 @@ private:
 	bool				m_isOnBlock2 = false;
 	bool				m_isOnBox = false;
 	ICollider*			m_collider = nullptr;			//コライダー。
-	//float				m_radius = 0.0f;
-	//float				m_height = 0.0f;		
 	RigidBody			m_rigidBody;					//剛体。
 	float				m_gravity = -9.8f;				//重力。
 	D3DXVECTOR3			m_hitNormal = { 0.0f,0.0f,0.0f };

@@ -48,6 +48,11 @@ public:
 	{
 		this->normalMap = normalMap;
 	}
+	//キューブマップを設定
+	void SetCubeMap(LPDIRECT3DCUBETEXTURE9 cubeMap)
+	{
+		this->cubeMap = cubeMap;
+	}
 	//ワールド座標を取得
 	const D3DXMATRIX& GetWorldMatrix()
 	{
@@ -85,6 +90,7 @@ private:
 
 	LPDIRECT3DTEXTURE9 specularMap = NULL;			//!<スペキュラマップ。
 	LPDIRECT3DTEXTURE9 normalMap = NULL;			//!<法線マップ
+	LPDIRECT3DCUBETEXTURE9 cubeMap = NULL;			//!<キューブマップ
 	bool isDrawShadowMap = false;
 	bool isRecieveShadow = false;
 	bool isDepthStencilRender = false;

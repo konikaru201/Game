@@ -20,6 +20,7 @@ namespace {
 		Light* light,
 		LPDIRECT3DTEXTURE9 specularMap,
 		LPDIRECT3DTEXTURE9 normalMap,
+		LPDIRECT3DCUBETEXTURE9 cubeMap,
 		bool isDrawShadowMap,
 		bool isRecieveShadow,
 		bool isDepthStencilRender
@@ -39,15 +40,15 @@ namespace {
 		//テクニックを設定。
 		{
 			if (pMeshContainer->pSkinInfo != NULL) {
-				if (isDepthStencilRender) {
-					pEffect->SetTechnique("DepthStencilRender");
-				}else if (!isDrawShadowMap) {
+				if (!isDrawShadowMap) {
 					pEffect->SetTechnique("SkinModel");
 				}
 				else {
 					pEffect->SetTechnique("SkinModelRenderToShadowMap");
 				}
-				
+				if (isDepthStencilRender) {
+					pEffect->SetTechnique("DepthStencilRender");
+				}
 			}
 			else {
 				if (!isDrawShadowMap) {
@@ -84,11 +85,6 @@ namespace {
 			//スペキュラマップのあり、なしのフラグをfalseにする。
 			pEffect->SetBool("g_isHasSpecularMap", false);
 		}
-		if (isRecieveShadow) {
-			pEffect->SetTexture("g_shadowMapTexture", g_shadowMap.GetTexture());
-			pEffect->SetMatrix("g_lightViewMatrix", &g_shadowMap.GetLightViewMatrix());
-			pEffect->SetMatrix("g_lightProjectionMatrix", &g_shadowMap.GetLightProjectionMatrix());
-		}
 		if (normalMap != NULL) {
 			//法線マップがあるので、シェーダーに転送する。
 			pEffect->SetTexture("g_normalTexture", normalMap);
@@ -98,6 +94,16 @@ namespace {
 		else {
 			//法線マップのあり、なしのフラグをfalseにする。
 			pEffect->SetBool("g_isHasNormalMap", false);
+		}
+		if (cubeMap != NULL) {
+			//キューブマップがあるので、シェーダーに転送する。
+			pEffect->SetTexture("g_cubeTexture", cubeMap);
+			pEffect->SetTechnique("NoSkinModelSkyCubeMap");
+		}
+		if (isRecieveShadow) {
+			pEffect->SetTexture("g_shadowMapTexture", g_shadowMap.GetTexture());
+			pEffect->SetMatrix("g_lightViewMatrix", &g_shadowMap.GetLightViewMatrix());
+			pEffect->SetMatrix("g_lightProjectionMatrix", &g_shadowMap.GetLightProjectionMatrix());
 		}
 		if (pMeshContainer->pSkinInfo != NULL)
 		{
@@ -188,6 +194,7 @@ namespace {
 		Light* light,
 		LPDIRECT3DTEXTURE9 specularMap,
 		LPDIRECT3DTEXTURE9 normalMap,
+		LPDIRECT3DCUBETEXTURE9 cubeMap,
 		bool isDrawShadowMap,
 		bool isRecieveShadow,
 		bool isDepthStencilRender
@@ -210,6 +217,7 @@ namespace {
 				light,
 				specularMap,
 				normalMap,
+				cubeMap,
 				isDrawShadowMap,
 				isRecieveShadow,
 				isDepthStencilRender
@@ -231,6 +239,7 @@ namespace {
 				light,
 				specularMap,
 				normalMap,
+				cubeMap,
 				isDrawShadowMap,
 				isRecieveShadow,
 				isDepthStencilRender
@@ -250,6 +259,7 @@ namespace {
 				light,
 				specularMap,
 				normalMap,
+				cubeMap,
 				isDrawShadowMap,
 				isRecieveShadow,
 				isDepthStencilRender
@@ -301,6 +311,7 @@ void SkinModel::Draw(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix)
 			light,
 			specularMap,
 			normalMap,
+			cubeMap,
 			isDrawShadowMap,
 			isRecieveShadow,
 			isDepthStencilRender

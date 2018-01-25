@@ -77,10 +77,10 @@ void SceneManager::Update()
 			//フェードが終了
 			if (!g_fade->IsExecute()) {
 				if (gameScene->IsStep() == GameScene::step_GameOver) {
-					//リザルトに遷移
-					result = goMgr->NewGameObject<ResultScene>();
-					result->Initialize();
-					state = stateResult;
+					////リザルトに遷移
+					//result = goMgr->NewGameObject<ResultScene>();
+					//result->Initialize();
+					//state = stateResult;
 				}
 				
 				gameScene->Release();

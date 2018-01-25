@@ -35,4 +35,6 @@ private:
 	D3DXVECTOR3 position;							//ç¿ïW
 	D3DXQUATERNION rotation;						//âÒì]
 	Light light;									//ÉâÉCÉg
+	
+	LPDIRECT3DCUBETEXTURE9	m_cubeMapTexture = nullptr;
 };

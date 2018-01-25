@@ -178,9 +178,19 @@ void Player::Update()
 			moveSpeed += AddPos;
 		}
 
-		//落ちたら又はキラーに当たったら死亡
-		if (position.y < -20.0f) {
+		//キラーに当たったときジャンプ
+		if (m_hitTreadOn) {
+			moveSpeed.y = 0.0f;
+			moveSpeed.y += jumpSpeed;
+			playerController.Jump();
+			currentAnim = AnimationJump;
+			m_hitTreadOn = false;
+		}
+
+		//落ちたら又は敵に当たったら死亡
+		if (position.y < -20.0f || m_hitEnemy) {
 			state = State_Dead;
+			m_hitEnemy = false;
 		}
 
 		//スター獲得したらクリア
@@ -299,6 +309,7 @@ void Player::Update()
 		position = { 0.0f,2.5f,0.0f };
 		playerController.SetPosition(position);
 		D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), atan2f(dir.x, dir.z));
+		state = State_Move;
 		break;
 
 		//スター獲得時
@@ -387,7 +398,10 @@ D3DXVECTOR3 Player::Move()
 		acceleration += 0.1f;
 	}
 	else {
-		acceleration = 0.0f;
+		acceleration -= 0.5f;
+		if (acceleration < 0.0f) {
+			acceleration = 0.0f;
+		}
 	}
 
 	//限界速度を超えたら移動速度を限界速度に設定
@@ -401,7 +415,7 @@ D3DXVECTOR3 Player::Move()
 			acceleration = 1.0f;
 		}
 	}
-	//前の向きを保存
+	//1フレーム前の向きを保存
 	currentDir = dir;
 
 	//移動速度を計算
@@ -411,7 +425,7 @@ D3DXVECTOR3 Player::Move()
 	//Aボタンが押されたらジャンプ
 	if (pad->IsTrigger(pad->enButtonA)
 		&& !playerController.IsJump()
-		&& GetIsOnGround())
+		/*&& GetIsOnGround()*/)
 	{
 		if (JumpCount == 0) {
 			move.y = 12.0f;

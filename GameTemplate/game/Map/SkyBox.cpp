@@ -12,7 +12,21 @@ SkyBox::~SkyBox()
 
 void SkyBox::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 {
-	modelData.LoadModelData("Assets/modelData/skyBox.x", NULL);
+	HRESULT hr = D3DXCreateCubeTextureFromFile(
+		g_pd3dDevice,
+		"Assets/modelData/skyCubeMap.dds",
+		&m_cubeMapTexture
+	);
+	if (FAILED(hr)) {
+		MessageBox(NULL, "テクスチャのロードに失敗しました。キューブマップ", "エラー", MB_OK);
+	}
+	if (m_cubeMapTexture != NULL) {
+		model.SetCubeMap(m_cubeMapTexture);
+	}
+
+	//modelData.LoadModelData("Assets/modelData/skyBox.x", NULL);
+	modelData.LoadModelData("Assets/modelData/sky.x", NULL);
+
 	model.Init(&modelData);
 	//ライトを初期化
 	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));

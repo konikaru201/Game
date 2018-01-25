@@ -21,6 +21,7 @@ float4x4 g_lightProjectionMatrix;	//ライトプロジェクション行列。
 
 bool g_isHasSpecularMap;		//スペキュラマップ保持している？
 bool g_isHasNormalMap;			//法線マップ保持している？
+bool g_isHasCubeMap;			//キューブマップ保持している？
 
 texture g_diffuseTexture;		//ディフューズテクスチャ。
 sampler g_diffuseTextureSampler = 
@@ -35,7 +36,7 @@ sampler_state
 };
 
 //法線マップ
-texture g_normalTexture;		//法線マップ。
+texture g_normalTexture;
 sampler g_normalMapSampler = 
 sampler_state
 {
@@ -70,6 +71,19 @@ sampler_state
     MagFilter = LINEAR;
     AddressU = CLAMP;
 	AddressV = CLAMP;
+};
+
+//キューブマップ
+texture g_cubeTexture;
+sampler g_cubeMapSampler = 
+sampler_state
+{
+	Texture = <g_cubeTexture>;
+	MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 /*!
@@ -244,6 +258,27 @@ float4 PSRenderToShadowMapMain(VS_OUTPUT In) : COLOR
 float4 PSDepthStencilRenderMain(VS_OUTPUT In) : COLOR
 {
 	return float4(0.5f, 0.5f, 0.5f, 1.0f);
+}
+
+/*!
+ *@brief	キューブマップ用のピクセルシェーダー。
+ */
+float4 PSSkyCubeMapMain(VS_OUTPUT In) : COLOR
+{
+	return texCUBE(g_cubeMapSampler,In.Normal);
+}
+
+/*!
+ *@brief	スキンなし
+ *@brief	キューブマップ用のテクニック。
+ */
+technique NoSkinModelSkyCubeMap
+{
+    pass p0
+    {
+        VertexShader = compile vs_3_0 VSMain(false);
+        PixelShader = compile ps_3_0 PSSkyCubeMapMain();
+    }
 }
 
 /*!

@@ -110,7 +110,7 @@ void GameScene::Update()
 		}
 		//プレイヤー死亡時
 		if (g_player->GetState() == g_player->State_Dead) {
-			step = step_GameOver;
+			//step = step_GameOver;
 		}
 		//スター獲得時
 		if (g_player->GetStarAnimationEnd()) {
