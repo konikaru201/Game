@@ -9,7 +9,7 @@
 #include "myEngine/GameObject/GameObject.h"
 #include "myEngine/Graphics/Sprite.h"
 #include "myEngine/Graphics/DepthStencilRender.h"
-//#include "myEngine/Sound/SoundSource.h"
+#include "myEngine/Sound/SoundSource.h"
 
 namespace {
 	//コインのスプライトのサイズと座標
@@ -118,6 +118,7 @@ private:
 	DisplayCoin* displayCoin;		//コイン枚数のスプライト
 	Sprite* CoinNum;				//コインのスプライト
 	DepthStencilRender* depthStencilRender;
+	CSoundSource* bgmSource = nullptr;
 
 	Step step = step_WaitFadeOut;
 	state_stage currentStage = en_Stage1;	//現在のステージ番号

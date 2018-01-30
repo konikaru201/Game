@@ -196,6 +196,10 @@
     <ClCompile Include="myEngine\Physics\PlayerController.cpp" />
     <ClCompile Include="myEngine\Physics\RigidBody.cpp" />
     <ClCompile Include="myEngine\Physics\SphereCollider.cpp" />
+    <ClCompile Include="myEngine\Sound\SoundEngine.cpp" />
+    <ClCompile Include="myEngine\Sound\SoundSource.cpp" />
+    <ClCompile Include="myEngine\Sound\WaveFile.cpp" />
+    <ClCompile Include="myEngine\Sound\WaveFileBank.cpp" />
     <ClCompile Include="myEngine\System.cpp" />
     <ClCompile Include="myEngine\Timer\Timer.cpp" />
     <ClCompile Include="Number\DisplayCoin.cpp" />
@@ -261,6 +265,10 @@
     <ClInclude Include="myEngine\Physics\PlayerController.h" />
     <ClInclude Include="myEngine\Physics\RigidBody.h" />
     <ClInclude Include="myEngine\Physics\SphereCollider.h" />
+    <ClInclude Include="myEngine\Sound\SoundEngine.h" />
+    <ClInclude Include="myEngine\Sound\SoundSource.h" />
+    <ClInclude Include="myEngine\Sound\WaveFile.h" />
+    <ClInclude Include="myEngine\Sound\WaveFileBank.h" />
     <ClInclude Include="myEngine\system.h" />
     <ClInclude Include="myEngine\Timer\Timer.h" />
     <ClInclude Include="Number\DisplayCoin.h" />

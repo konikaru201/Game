@@ -59,6 +59,8 @@ bool GameScene::Start()
 
 		g_physicsWorld = new PhysicsWorld;
 		g_physicsWorld->Init();
+
+		bgmSource = NULL;
 		
 		map = goMgr->NewGameObject<Map>();					//マップ生成
 		ChengeStage = false;
@@ -203,6 +205,11 @@ void GameScene::StageCreate()
 		//配置されているオブジェクトの数を計算
 		numObject = sizeof(Stage1) / sizeof(Stage1[0]);
 		map->Create(Stage1, numObject);
+
+		bgmSource = goMgr->NewGameObject<CSoundSource>();
+		bgmSource->Init("Assets/sound/Dungeon.wav");
+		bgmSource->Play(true);
+
 		break;
 	case en_Stage2:
 		//配置されているオブジェクトの数を計算

@@ -219,6 +219,18 @@
     <ClCompile Include="myEngine\Graphics\ParticleEmitter.cpp">
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="myEngine\Sound\SoundEngine.cpp">
+      <Filter>ソース ファイル\myEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Sound\WaveFileBank.cpp">
+      <Filter>ソース ファイル\myEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Sound\WaveFile.cpp">
+      <Filter>ソース ファイル\myEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Sound\SoundSource.cpp">
+      <Filter>ソース ファイル\myEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -397,6 +409,18 @@
     </ClInclude>
     <ClInclude Include="myEngine\Graphics\ParticleEmitter.h">
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Sound\SoundEngine.h">
+      <Filter>ソース ファイル\myEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Sound\WaveFileBank.h">
+      <Filter>ソース ファイル\myEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Sound\WaveFile.h">
+      <Filter>ソース ファイル\myEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Sound\SoundSource.h">
+      <Filter>ソース ファイル\myEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

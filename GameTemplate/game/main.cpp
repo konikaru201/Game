@@ -12,13 +12,11 @@
 #include "Player/Player.h"
 #include "myEngine/Graphics/Primitive.h"
 #include "myEngine/Graphics/Bloom.h"
-//#include "myEngine/Sound/SoundEngine.h"
 
 GameObjectManager* goMgr = nullptr;
 Pad* pad = nullptr;
 SceneManager* sceneManager = nullptr;
 Fade* g_fade = nullptr;
-//CSoundEngine* soundEngine = nullptr;
 
 CShadowMap g_shadowMap;	//シャドウマップ。
 Bloom* bloom = nullptr;	//ブルーム
