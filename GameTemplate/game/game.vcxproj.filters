@@ -58,6 +58,9 @@
     <Filter Include="ソース ファイル\locationinfo">
       <UniqueIdentifier>{898a84f8-d001-470a-8dc6-7d3b1cb08b2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\myEngine\Sound">
+      <UniqueIdentifier>{ffff331b-7949-43cd-a90e-f50a0166d44a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -220,16 +223,16 @@
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="myEngine\Sound\SoundEngine.cpp">
-      <Filter>ソース ファイル\myEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="myEngine\Sound\WaveFileBank.cpp">
-      <Filter>ソース ファイル\myEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="myEngine\Sound\WaveFile.cpp">
-      <Filter>ソース ファイル\myEngine</Filter>
+      <Filter>ソース ファイル\myEngine\Sound</Filter>
     </ClCompile>
     <ClCompile Include="myEngine\Sound\SoundSource.cpp">
-      <Filter>ソース ファイル\myEngine</Filter>
+      <Filter>ソース ファイル\myEngine\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Sound\WaveFile.cpp">
+      <Filter>ソース ファイル\myEngine\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Sound\WaveFileBank.cpp">
+      <Filter>ソース ファイル\myEngine\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -411,16 +414,16 @@
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="myEngine\Sound\SoundEngine.h">
-      <Filter>ソース ファイル\myEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="myEngine\Sound\WaveFileBank.h">
-      <Filter>ソース ファイル\myEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="myEngine\Sound\WaveFile.h">
-      <Filter>ソース ファイル\myEngine</Filter>
+      <Filter>ソース ファイル\myEngine\Sound</Filter>
     </ClInclude>
     <ClInclude Include="myEngine\Sound\SoundSource.h">
-      <Filter>ソース ファイル\myEngine</Filter>
+      <Filter>ソース ファイル\myEngine\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Sound\WaveFile.h">
+      <Filter>ソース ファイル\myEngine\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Sound\WaveFileBank.h">
+      <Filter>ソース ファイル\myEngine\Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

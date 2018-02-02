@@ -55,17 +55,12 @@
 #include <string>
 
 
-//#include <d3d9.h>
 #include <d3dx9effect.h>
 #pragma warning( disable : 4996 ) 
 #include <strsafe.h>
 #pragma warning( default : 4996 )
 #include <cstdlib>
 #include <memory>
-//#include <vector>
-//#include <list>
-//#include <algorithm>
-//#include <map>
 
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\CollisionDispatch\btGhostObject.h"

@@ -115,7 +115,7 @@ void Player::Update()
 	{
 		//移動中
 	case State_Move:
-		if (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f) 
+		if (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f)
 		{
 			//移動しているなら向きを変える
 			D3DXVECTOR3 playerDir = GetPlayerDir();
@@ -143,7 +143,16 @@ void Player::Update()
 
 			if (!(playerController.IsJump())) {
 				currentAnim = AnimationRun;
-			}
+
+				timer += Timer::GetFrameDeltaTime();
+
+				if (timer >= 0.4f) {
+					CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+					SE->Init("Assets/sound/FootStep.wav");
+					SE->Play(false);
+					timer = 0.0f;
+				}
+			}	
 		}
 		else {
 			if (!(playerController.IsJump())) {
@@ -178,7 +187,7 @@ void Player::Update()
 			moveSpeed += AddPos;
 		}
 
-		//キラーに当たったときジャンプ
+		//敵に当たったときジャンプ
 		if (m_hitTreadOn) {
 			moveSpeed.y = 0.0f;
 			moveSpeed.y += jumpSpeed;
@@ -191,11 +200,19 @@ void Player::Update()
 		if (position.y < -20.0f || m_hitEnemy) {
 			state = State_Dead;
 			m_hitEnemy = false;
+
+			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+			SE->Init("Assets/sound/U_Voice_2.wav");
+			SE->Play(false);
 		}
 
 		//スター獲得したらクリア
 		if (getStar && GetIsOnGround()) {
 			state = State_GetStar;
+
+			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+			SE->Init("Assets/sound/U_Voice_3.wav");
+			SE->Play(false);
 		}
 
 		//2，3回目のジャンプは一定時間経つとできなくする
@@ -306,10 +323,24 @@ void Player::Update()
 	case State_Dead:
 		//g_shadowMap.SetPlayerDead(true);
 		//テスト用
-		position = { 0.0f,2.5f,0.0f };
-		playerController.SetPosition(position);
-		D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), atan2f(dir.x, dir.z));
-		state = State_Move;
+		//position = { 0.0f,2.5f,0.0f };
+		//playerController.SetPosition(position);
+		//D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), atan2f(dir.x, dir.z));
+		//state = State_Move;
+		
+		moveSpeed.x = 0.0f;
+		moveSpeed.z = 0.0f;
+		//プレイヤーの移動速度を設定
+		playerController.SetMoveSpeed(moveSpeed);
+		//キャラクターコントローラーを実行
+		playerController.Execute();
+		//座標を設定
+		position = playerController.GetPosition();
+
+		timer += Timer::GetFrameDeltaTime();
+		if (timer >= 2.0f) {
+			m_playerDead = true;
+		}
 		break;
 
 		//スター獲得時
@@ -444,6 +475,10 @@ D3DXVECTOR3 Player::Move()
 		}
 		playerController.Jump();
 		currentAnim = AnimationJump;
+
+		CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+		SE->Init("Assets/sound/U_Voice_1.wav");
+		SE->Play(false);
 	}
 
 	////壁に当たった時

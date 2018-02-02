@@ -12,6 +12,8 @@ struct VS_OUTPUT
 
 float4x4 g_world;
 float g_alpha;
+float g_uvPos;
+bool g_uvMove;
 
 texture g_texture;
 sampler TextureSampler = 
@@ -34,6 +36,10 @@ VS_OUTPUT VSMain(VS_INPUT In)
 //ピクセルシェーダー
 float4 PSMain(VS_OUTPUT In) : COLOR
 {
+	if (g_uvMove) {
+		In.uv.x += g_uvPos;
+		In.uv.y += g_uvPos;
+	}
 	float4 color = tex2D(TextureSampler,In.uv);
 	color.w *= g_alpha;
 	return color;

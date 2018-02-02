@@ -101,12 +101,15 @@ void Sprite::Draw()
 	D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &scale);
 	D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &trans);
 
+	uvPos += 0.005f;
 	m_pEffect->SetTechnique("Sprite");
 	m_pEffect->Begin(NULL, D3DXFX_DONOTSAVESHADERSTATE);
 	m_pEffect->BeginPass(0);
 	m_pEffect->SetTexture("g_texture", m_pTexture);
 	m_pEffect->SetMatrix("g_world", &worldMatrix);
 	m_pEffect->SetFloat("g_alpha", m_alpha);
+	m_pEffect->SetFloat("g_uvPos", uvPos);
+	m_pEffect->SetBool("g_uvMove", m_uvMove);
 	m_pEffect->CommitChanges();
 
 	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

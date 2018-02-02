@@ -33,6 +33,7 @@ private:
 		State_Find,		//発見
 		State_Miss,		//見失う
 		State_Dead,		//死亡
+		State_Hit,		//プレイヤーにヒット
 	};
 
 	State				state = State_Search;				//状態
@@ -51,5 +52,4 @@ private:
 	bool				isDead = false;						//死亡フラグ
 	float				timer = 0.0f;						//タイマー
 	bool				m_hitPlayer = false;				//プレイヤーに当たったフラグ
-	D3DXVECTOR3			m_toPlayer = { 0.0f,0.0f,0.0f };	//見つかったときにプレイヤーへのベクトルを保持
 };

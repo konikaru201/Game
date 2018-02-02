@@ -54,7 +54,7 @@ void Red_Dragon::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	param.texturePath = "Assets/sprite/FireParticleGlow.png";
 	param.w = 0.5f;
 	param.h = 0.5f;
-	param.intervalTime = 0.1f;
+	param.intervalTime = 0.2f;
 	param.initSpeed = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
 	param.position = position;
 	param.alpha = 1.0f;
@@ -63,7 +63,7 @@ void Red_Dragon::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 void Red_Dragon::Update()
 {
-	if (gameScene == nullptr || gameScene->GetChengeStage()) {
+	if (gameScene == nullptr || gameScene->GetChengeStage() || isDead) {
 		SetisDead();
 		//剛体を削除
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
@@ -115,16 +115,19 @@ D3DXVECTOR3 Red_Dragon::Move()
 	D3DXVECTOR3 playerPos = g_player->GetPosition();
 	//プレイヤーへのベクトルを計算
 	D3DXVECTOR3 toPlayer = playerPos - modelPosition;
-	toPlayer.y = 0.0f;
 	
 	//初期化
-	float length = 0.0f;
+	float length = D3DXVec3Length(&toPlayer);
 	float angle = 0.0f;
 	D3DXVECTOR3 AxisZ = { 0.0f,0.0f,1.0f };
 	D3DXVECTOR3 toInitPosition = { 0.0f,0.0f,0.0f };
-	D3DXVECTOR3 hoge = { 0.0f,0.0f,0.0f };
+	D3DXVECTOR3 Cross = { 0.0f,0.0f,0.0f };
 	D3DXQUATERNION rot;
 	D3DXQuaternionIdentity(&rot);
+
+	//プレイヤーとの当たり判定を調べる
+	CollisionDetection(length, toPlayer);
+	toPlayer.y = 0.0f;
 
 	switch (state)
 	{
@@ -169,9 +172,9 @@ D3DXVECTOR3 Red_Dragon::Move()
 		//移動方向に向きを変える
 		angle = D3DXVec3Dot(&direction, &XDir);
 		angle = acosf(angle);
-		D3DXVec3Cross(&hoge, &direction, &XDir);
+		D3DXVec3Cross(&Cross, &direction, &XDir);
 		//ベクトルが下向きか判定
-		if (hoge.y < 0.0f) {
+		if (Cross.y < 0.0f) {
 			angle *= -1.0f;
 		}
 		D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
@@ -256,9 +259,9 @@ D3DXVECTOR3 Red_Dragon::Move()
 					angle = 1.0f;
 				}
 				angle = acosf(angle);
-				D3DXVec3Cross(&hoge, &direction, &toInitPosition);
+				D3DXVec3Cross(&Cross, &direction, &toInitPosition);
 				//ベクトルが下向きか判定
-				if (hoge.y < 0.0f) {
+				if (Cross.y < 0.0f) {
 					angle *= -1.0f;
 				}
 				D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
@@ -308,8 +311,73 @@ D3DXVECTOR3 Red_Dragon::Move()
 			timer = 0.0f;
 		}
 		currentAnim = AnimationAttack;
+
+		soundTimer += Timer::GetFrameDeltaTime();
+		if (soundTimer >= 1.0f) {
+			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+			SE->Init("Assets/sound/Fire.wav");
+			SE->Play(false);
+			soundTimer = 0.0f;
+			SE->SetisDead();
+		}
+
+		break;
+		//死亡時
+	case State_Dead:
+		//timer += Timer::GetFrameDeltaTime();
+		move = { 0.0f,0.0f,0.0f };
+		isDead = true;
+		//if (timer >= 5.0f) {
+		//	timer = 0.0f;
+		//}
+		currentAnim = AnimationWait;
+		break;
+		//プレイヤーにヒット
+	case State_Hit:
+		timer += Timer::GetFrameDeltaTime();
+		move = { 0.0f,0.0f,0.0f };
+		if (timer >= 5.0f) {
+			isDead = true;
+			timer = 0.0f;
+		}
+		currentAnim = AnimationWait;
 		break;
 	}
 
 	return move;
+}
+
+void Red_Dragon::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
+{
+	if (Length <= 1.5f) {
+		D3DXVECTOR3 toPlayerX = { ToPlayer.x,0.0f,0.0f };
+		float lengthX = D3DXVec3Length(&toPlayerX);
+
+		D3DXVECTOR3 toPlayerY = { 0.0f,ToPlayer.y,0.0f };
+		float lengthY = D3DXVec3Length(&toPlayerY);
+
+		D3DXVECTOR3 toPlayerZ = { 0.0f,0.0f,ToPlayer.z };
+		float lengthZ = D3DXVec3Length(&toPlayerZ);
+
+		//Y方向に当たった
+		if (toPlayerY.y > 0.0f && lengthY <= 0.5f) {
+			//ドラゴンが死亡
+			g_player->SetHitTreadOn(true);
+			state = State_Dead;
+		}
+		//X方向に当たった
+		else if (lengthY <= 0.5f && lengthX <= 1.5f) {
+			////プレイヤーが死亡
+			m_hitPlayer = true;
+			g_player->SetHitEnemy(m_hitPlayer);
+			state = State_Hit;
+		}
+		//Z方向に当たった
+		else if (lengthY <= 0.5f && lengthZ <= 0.8f) {
+			//プレイヤーが死亡
+			m_hitPlayer = true;
+			g_player->SetHitEnemy(m_hitPlayer);
+			state = State_Hit;
+		}
+	}
 }

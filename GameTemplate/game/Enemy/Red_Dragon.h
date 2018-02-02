@@ -26,6 +26,9 @@ public:
 	//移動
 	D3DXVECTOR3 Move();
 
+	//プレイヤーとの当たり判定
+	void CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer);
+
 	//モデルの向きを取得
 	D3DXVECTOR3 GetDirection()
 	{
@@ -49,7 +52,9 @@ private:
 		State_Move,		//移動
 		State_Find,		//発見
 		State_Miss,		//見失う
-		State_Attack	//攻撃
+		State_Attack,	//攻撃
+		State_Dead,		//死亡
+		State_Hit,		//プレイヤーにヒット
 	};
 
 	State state = State_Wait;
@@ -68,8 +73,11 @@ private:
 	float				moveSpeed = 2.0f;				//移動速度
 	D3DXMATRIX*			matrix;							//ボーンのワールド行列
 	float				timer = 0.0f;					//タイマー
+	float				soundTimer = 0.0f;				//音のタイマー
 	D3DXVECTOR3			XDir = { 1.0f,0.0f,0.0f };		//X方向
 	bool				findAgainFlag = false;			//攻撃後に視界内にプレイヤーがいるか
 	bool				changeDir = true;				//方向転換のフラグ
 	CParticleEmitter	particleEmitter;				//パーティクル生成
+	bool				m_hitPlayer = false;			//プレイヤーに当たったフラグ
+	bool				isDead = false;					//死亡フラグ
 };

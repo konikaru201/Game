@@ -62,11 +62,12 @@ public:
 		return camera.GetProjectionMatrix();
 	}
 private:
-	D3DXVECTOR3 toCameraPos;	//座標
+	D3DXVECTOR3 toCameraPos;	//注視点から視点へのベクトル
 	Camera camera;				//カメラインスタンス
 	CameraCollisionSolver cameraCollisionSolver;	//カメラコリジョンインスタンス
 	bool ResetFlg = false;	//カメラリセットフラグ
 	float Angle = 0.0f;		//XZ方向の回転量
 	float UpAngle = 0.0f;
+	D3DXVECTOR3 currentEyePos;
 };
 

@@ -101,7 +101,6 @@ void CParticle::Init(const SParticleEmitParameter& param)
 		&shaderEffect,
 		&compileErrorBuffer
 	);
-
 	if (FAILED(hr)) {
 		MessageBox(NULL, (char*)(compileErrorBuffer->GetBufferPointer()), "error", MB_OK);
 		std::abort();

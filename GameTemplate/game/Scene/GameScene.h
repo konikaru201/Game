@@ -124,7 +124,7 @@ private:
 	state_stage currentStage = en_Stage1;	//現在のステージ番号
 	state_stage nextStage = en_Stage2;		//次のステージ番号
 
-	bool ChengeStage;			
+	bool ChengeStage = false;			
 	float timer = 0.0f;
 	bool finishFadeOut = false;
 };

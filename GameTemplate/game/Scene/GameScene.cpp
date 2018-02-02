@@ -104,6 +104,7 @@ void GameScene::Update()
 
 		//通常時
 	case step_normal:
+		//ステージ変更
 		if (pad->IsTrigger(pad->enButtonStart)) {
 			g_fade->StartFadeOut();
 			step = step_WaitFadeOut;
@@ -112,7 +113,10 @@ void GameScene::Update()
 		}
 		//プレイヤー死亡時
 		if (g_player->GetState() == g_player->State_Dead) {
-			//step = step_GameOver;
+			if (g_player->GetPlayerDead()) {
+				bgmSource->SetisDead();
+				step = step_GameOver;
+			}
 		}
 		//スター獲得時
 		if (g_player->GetStarAnimationEnd()) {
@@ -128,11 +132,11 @@ void GameScene::Update()
 		if (ChengeStage) {
 			//ステージ切り替え
 			currentStage = nextStage;
-			ChengeStage = false;
 			StageCreate();
 			depthStencilRender = goMgr->NewGameObject<DepthStencilRender>();
 			g_player = goMgr->NewGameObject<Player>();
 			gameCamera = goMgr->NewGameObject<GameCamera>();
+			ChengeStage = false;
 		}
 		//フェードが終了
 		else if (!g_fade->IsExecute()) {
@@ -195,6 +199,7 @@ void GameScene::Reset()
 	//GetGameCamera()->Reset();
 	GetGameCamera()->SetisDead();
 	map->SetisDead();
+	bgmSource->SetisDead();
 }
 
 void GameScene::StageCreate()
@@ -207,7 +212,8 @@ void GameScene::StageCreate()
 		map->Create(Stage1, numObject);
 
 		bgmSource = goMgr->NewGameObject<CSoundSource>();
-		bgmSource->Init("Assets/sound/Dungeon.wav");
+		bgmSource->InitStreaming("Assets/sound/bgm_1.wav");
+		//bgmSource->Init("Assets/sound/bgm_1.wav");
 		bgmSource->Play(true);
 
 		break;
@@ -215,6 +221,12 @@ void GameScene::StageCreate()
 		//配置されているオブジェクトの数を計算
 		numObject = sizeof(Stage2) / sizeof(Stage2[0]);
 		map->Create(Stage2, numObject);
+
+		bgmSource = goMgr->NewGameObject<CSoundSource>();
+		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
+		//bgmSource->Init("Assets/sound/bgm_2.wav");
+		bgmSource->Play(true);
+
 		break;
 	}
 

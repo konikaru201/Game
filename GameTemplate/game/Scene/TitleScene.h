@@ -1,6 +1,7 @@
 #pragma once
 #include "myEngine/Graphics/Sprite.h"
 #include "myEngine/GameObject/GameObject.h"
+#include "myEngine/Graphics/Camera.h"
 
 class TitleScene : public GameObject{
 public:
@@ -23,9 +24,10 @@ public:
 	bool GetisDeside() {
 		return isDeside;
 	}
+
 private:
 	Sprite* sprite;				//スプライト
 	bool isDeside = false;		//決定ボタンを押したか
-	float alpha = 1.0f;
-	float timer = 0.0f;
+	float alpha = 1.0f;			//不透明度。1.0は黒
+	float timer = 0.0f;			//タイマー
 };

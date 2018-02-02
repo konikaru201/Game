@@ -125,6 +125,12 @@ public:
 		m_hitEnemy = hitEnemy;
 	}
 
+	//プレイヤーの死亡フラグを取得
+	bool GetPlayerDead()
+	{
+		return m_playerDead;
+	}
+
 	//プレイヤーの状態
 	enum State {
 		State_Move,				//移動
@@ -173,9 +179,10 @@ private:
 	bool getStar = false;											//スター獲得フラグ
 	State state = State_Move;										//状態
 	bool animationEnd = false;										//スター獲得時のアニメーション終了フラグ
-	bool m_hitTreadOn = false;										//キラーを踏んだフラグ
+	bool m_hitTreadOn = false;										//敵を踏んだフラグ
 	float jumpSpeed = 10.0f;										//ジャンプ時の速度
 	bool m_hitEnemy = false;										//敵に当たったフラグ
+	bool m_playerDead = false;										//プレイヤーの死亡フラグ
 
 	bool isOnWall = false;
 	bool wallJump = false;

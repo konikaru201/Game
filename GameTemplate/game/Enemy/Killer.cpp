@@ -119,9 +119,6 @@ D3DXVECTOR3 Killer::Move()
 
 		//発見された
 		if (fabsf(angle) < D3DXToRadian(30.0f) && length < 12.0f) {
-			////プレイヤーへのベクトルを保持
-			//m_toPlayer = toPlayer;
-			//D3DXVec3Normalize(&m_toPlayer, &m_toPlayer);
 			state = State_Find;
 		}
 
@@ -163,9 +160,17 @@ D3DXVECTOR3 Killer::Move()
 		move = { 0.0f, -moveSpeed * (timer + 1.0f), 0.0f };
 		if (timer > 5.0f) {
 			isDead = true;
+			timer = 0.0f;
 		}
 		break;
-	default:
+	//プレイヤーにヒットした状態
+	case State_Hit:
+		timer += Timer::GetFrameDeltaTime();
+		move = { 0.0f,0.0f,0.0f };
+		if (timer > 5.0f) {
+			isDead = true;
+			timer = 0.0f;
+		}
 		break;
 	}
 
@@ -196,14 +201,14 @@ void Killer::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 			////プレイヤーが死亡
 			m_hitPlayer = true;
 			g_player->SetHitEnemy(m_hitPlayer);
-			state = State_Dead;
+			state = State_Hit;
 		}
 		//Z方向に当たった
 		else if (lengthY <= 0.5f && lengthZ <= 0.8f) {
 			//プレイヤーが死亡
 			m_hitPlayer = true;
 			g_player->SetHitEnemy(m_hitPlayer);
-			state = State_Dead;
+			state = State_Hit;
 		}
 	}
 

@@ -2,8 +2,12 @@
 #include "TitleScene.h"
 #include "myEngine/system.h"
 #include "myEngine/HID/Pad.h"
-#include "../Fade/Fade.h"
-#include "../myEngine/Timer/Timer.h"
+#include "Fade/Fade.h"
+#include "myEngine/Timer/Timer.h"
+#include "myEngine/GameObject/GameObjectManager.h"
+#include "myEngine/Sound/SoundSource.h"
+
+TitleScene* titleScene;
 
 TitleScene::TitleScene(){}
 TitleScene::~TitleScene()
@@ -44,6 +48,10 @@ void TitleScene::Update()
 	if (pad->IsTrigger(pad->enButtonA))
 	{
 		isDeside = true;
+
+		CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+		SE->Init("Assets/sound/Desision_2.wav");
+		SE->Play(false);
 	}
 }
 

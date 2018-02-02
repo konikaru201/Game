@@ -56,6 +56,12 @@ public:
 	{
 		return m_alpha;
 	}
+
+	//UVを動かすフラグを設定
+	void SetUVMove(bool uvMove)
+	{
+		m_uvMove = uvMove;
+	}
 private:
 	LPDIRECT3DTEXTURE9 m_pTexture;		//テクスチャ
 	D3DXIMAGE_INFO m_imginfo;
@@ -65,4 +71,6 @@ private:
 	D3DXVECTOR2 m_position;
 	D3DXVECTOR2 m_size;
 	float m_alpha = 1.0f;
+	bool m_uvMove = false;				//UVを動かすフラグ
+	float uvPos = 0.0f;
 };

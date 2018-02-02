@@ -155,15 +155,20 @@ void GameCamera::Move()
 	//カメラの座標
 	D3DXVECTOR3 eyePos = targetPos + toCameraPos;
 
-	//カメラの座標を設定
-	camera.SetEyePt(eyePos);
+	if (g_player->GetState() != g_player->State_Dead) {
+		//カメラの座標を保存
+		currentEyePos = eyePos;
+	}
 
-	////カメラの当たり判定
-	//D3DXVECTOR3 newPos;
-	//if (cameraCollisionSolver.Execute(newPos, camera.GetEyePt(), camera.GetLookatPt()))
-	//{
-	//	camera.SetEyePt(newPos);
-	//}
+	//カメラの座標を設定
+	camera.SetEyePt(currentEyePos);
+
+	//カメラの当たり判定
+	D3DXVECTOR3 newPos;
+	if (cameraCollisionSolver.Execute(newPos, camera.GetEyePt(), camera.GetLookatPt()))
+	{
+		camera.SetEyePt(newPos);
+	}
 }
 
 void GameCamera::Reset()

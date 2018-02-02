@@ -3,6 +3,7 @@
 #include "myEngine/Graphics/SkinModelData.h"
 #include "myEngine/Graphics/Light.h"
 #include "Scene/GameScene.h"
+#include "Scene/TitleScene.h"
 #include "ShadowMap.h"
 
 extern UINT                 g_NumBoneMatricesMax;
