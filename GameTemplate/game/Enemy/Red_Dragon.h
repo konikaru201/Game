@@ -45,6 +45,7 @@ private:
 		AnimationWait,		//‘Ò‹@
 		AnimationRun,		//‘–‚èˆÚ“®
 		AnimationAttack,	//UŒ‚
+		AnimationDead,		//€–S
 	};
 
 	enum State {

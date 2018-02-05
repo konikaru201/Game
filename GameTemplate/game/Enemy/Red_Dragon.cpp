@@ -28,6 +28,7 @@ void Red_Dragon::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	state = State_Wait;
 	currentAnim = AnimationWait;
 
+	animation.SetAnimationLoopflg(AnimationDead, false);
 	animation.PlayAnimation(AnimationWait, 0.3f);
 
 	//剛体の作成
@@ -125,8 +126,11 @@ D3DXVECTOR3 Red_Dragon::Move()
 	D3DXQUATERNION rot;
 	D3DXQuaternionIdentity(&rot);
 
-	//プレイヤーとの当たり判定を調べる
-	CollisionDetection(length, toPlayer);
+	if (state != State_Dead && state != State_Hit) {
+		//プレイヤーとの当たり判定を調べる
+		CollisionDetection(length, toPlayer);
+	}
+
 	toPlayer.y = 0.0f;
 
 	switch (state)
@@ -325,9 +329,14 @@ D3DXVECTOR3 Red_Dragon::Move()
 		//死亡時
 	case State_Dead:
 		move = { 0.0f,0.0f,0.0f };
-		isDead = true;
-		//仮アニメーション
-		currentAnim = AnimationWait;
+		currentAnim = AnimationDead;
+		if (!animation.IsPlay()) {
+			//isDead = true;
+			SetisDead();
+			//剛体を削除
+			g_physicsWorld->RemoveRigidBody(&rigidBody);
+		}
+
 		break;
 		//プレイヤーにヒット
 	case State_Hit:
@@ -337,7 +346,6 @@ D3DXVECTOR3 Red_Dragon::Move()
 			isDead = true;
 			timer = 0.0f;
 		}
-		currentAnim = AnimationWait;
 		break;
 	}
 
@@ -363,14 +371,14 @@ void Red_Dragon::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 			state = State_Dead;
 		}
 		//X方向に当たった
-		else if (lengthY <= 0.5f && lengthX <= 1.5f) {
+		else if (lengthY <= 0.5f && lengthX <= 1.8f) {
 			////プレイヤーが死亡
 			m_hitPlayer = true;
 			g_player->SetHitEnemy(m_hitPlayer);
 			state = State_Hit;
 		}
 		//Z方向に当たった
-		else if (lengthY <= 0.5f && lengthZ <= 0.8f) {
+		else if (lengthY <= 0.5f && lengthZ <= 1.8f) {
 			//プレイヤーが死亡
 			m_hitPlayer = true;
 			g_player->SetHitEnemy(m_hitPlayer);
