@@ -113,10 +113,16 @@ public:
 		return animationEnd;
 	}
 
-	//キラー踏みつけ時のフラグを設定
-	void SetHitTreadOn(bool hitTreadOn)
+	//敵を踏みつけ時のフラグを設定
+	void SetTreadOnEnemy(bool treadOnEnemy)
 	{
-		m_hitTreadOn = hitTreadOn;
+		m_treadOnEnemy = treadOnEnemy;
+	}
+
+	//スプリングを踏みつけ時のフラグを設定
+	void SetTreadOnSpring(bool treadOnSpring) 
+	{
+		m_treadOnSpring = treadOnSpring;
 	}
 
 	//敵に当たった時のフラグを設定
@@ -172,17 +178,18 @@ private:
 	float timer = 0.0f;												//タイマー
 	D3DXVECTOR3 moveSpeed = { 0.0f,0.0f,0.0f };						//移動速度
 	float acceleration = 0.0f;										//加速度
-	const float speedLimit = 8.0f;									//限界速度
+	const float speedLimit = 6.0f;									//限界速度
 	D3DXVECTOR3 currentDir = { 0.0f,0.0f,0.0f };					//1フレーム前のZ方向
 	bool parentFirstHit = true;										//親との最初の当たり判定フラグ
 	bool secondParentFirstHit = true;								//親との最初の当たり判定フラグ
 	bool getStar = false;											//スター獲得フラグ
 	State state = State_Move;										//状態
 	bool animationEnd = false;										//スター獲得時のアニメーション終了フラグ
-	bool m_hitTreadOn = false;										//敵を踏んだフラグ
+	bool m_treadOnEnemy = false;									//敵を踏んだフラグ
 	float jumpSpeed = 10.0f;										//ジャンプ時の速度
 	bool m_hitEnemy = false;										//敵に当たったフラグ
 	bool m_playerDead = false;										//プレイヤーの死亡フラグ
+	bool m_treadOnSpring = false;									//スプリングを踏んだフラグ
 
 	bool isOnWall = false;
 	bool wallJump = false;

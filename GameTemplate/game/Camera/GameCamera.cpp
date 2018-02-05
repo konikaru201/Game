@@ -163,12 +163,12 @@ void GameCamera::Move()
 	//カメラの座標を設定
 	camera.SetEyePt(currentEyePos);
 
-	//カメラの当たり判定
-	D3DXVECTOR3 newPos;
-	if (cameraCollisionSolver.Execute(newPos, camera.GetEyePt(), camera.GetLookatPt()))
-	{
-		camera.SetEyePt(newPos);
-	}
+	////カメラの当たり判定
+	//D3DXVECTOR3 newPos;
+	//if (cameraCollisionSolver.Execute(newPos, camera.GetEyePt(), camera.GetLookatPt()))
+	//{
+	//	camera.SetEyePt(newPos);
+	//}
 }
 
 void GameCamera::Reset()

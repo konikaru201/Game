@@ -13,37 +13,37 @@ Spring::~Spring()
 
 void Spring::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 {
-	modelData.LoadModelData("Assets/modelData/Spring.x", NULL);
-	model.Init(&modelData);
-	model.SetLight(&gameScene->GetLight());
-	model.UpdateWorldMatrix({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0 }, { 1.0f,1.0f,1.0f });
+	m_modelData.LoadModelData("Assets/modelData/Spring.x", NULL);
+	m_model.Init(&m_modelData);
+	m_model.SetLight(&gameScene->GetLight());
+	m_model.UpdateWorldMatrix({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0 }, { 1.0f,1.0f,1.0f });
 
-	position = pos;
-	rotation = rot;
+	m_position = pos;
+	m_rotation = rot;
 
 	//衝突判定の初期化
 	//スキンモデルからメッシュコライダーを作成する
-	D3DXMATRIX* rootBoneMatrix = modelData.GetRootBoneWorldMatrix();
-	meshCollider.CreateFromSkinModel(&model, rootBoneMatrix);
+	D3DXMATRIX* rootBoneMatrix = m_modelData.GetRootBoneWorldMatrix();
+	m_meshCollider.CreateFromSkinModel(&m_model, rootBoneMatrix);
 
 	//剛体を作るための情報を設定
 	RigidBodyInfo rbInfo;
-	rbInfo.collider = &meshCollider;		//剛体のコリジョンを設定する
+	rbInfo.collider = &m_meshCollider;		//剛体のコリジョンを設定する
 	rbInfo.mass = 0.0f;					//質量を0にすると動かない剛体になる
-	rbInfo.pos = position;
-	rbInfo.rot = rotation;
+	rbInfo.pos = m_position;
+	rbInfo.rot = m_rotation;
 	//剛体を作成
-	rigidBody.Create(rbInfo);
+	m_rigidBody.Create(rbInfo);
 
-	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
-	trans.setOrigin(btVector3(position.x, position.y, position.z));
+	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
+	trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
 
-	rigidBody.GetBody()->setUserIndex(enCollisionAttr_JumpBlock);
-	rigidBody.GetBody()->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
-	rigidBody.GetBody()->setActivationState(DISABLE_DEACTIVATION);
+	m_rigidBody.GetBody()->setUserIndex(enCollisionAttr_JumpBlock);
+	m_rigidBody.GetBody()->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
+	m_rigidBody.GetBody()->setActivationState(DISABLE_DEACTIVATION);
 
 	//作成した剛体を物理ワールドに追加
-	g_physicsWorld->AddRigidBody(&rigidBody);
+	g_physicsWorld->AddRigidBody(&m_rigidBody);
 }
 
 void Spring::Update()
@@ -51,28 +51,35 @@ void Spring::Update()
 	if (gameScene == nullptr || gameScene->GetChengeStage()) {
 		SetisDead();
 		//剛体を削除
-		g_physicsWorld->RemoveRigidBody(&rigidBody);
+		g_physicsWorld->RemoveRigidBody(&m_rigidBody);
 		return;
 	}
 
-	//D3DXVECTOR3 playerPos = g_player->GetPosition();
-	//D3DXVECTOR3 toPlayerPos = playerPos - position;
-	//float length = D3DXVec3Length(&toPlayerPos);
-	//if (length < 1.0f) {
-	//	MoveFlg = true;
-	//}
+	//プレイヤーとの当たり判定
+	CollisionDetection();
 
-	model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
-
+	m_model.UpdateWorldMatrix(m_position, m_rotation, { 1.0f,1.0f,1.0f });
 }
 
 void Spring::Render()
 {
 	if (gameScene == nullptr) { return; }
-	model.SetDrawShadowMap(false, true);
-	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
+	m_model.SetDrawShadowMap(false, true);
+	m_model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
 }
 
-void Spring::Move()
+void Spring::CollisionDetection()
 {
+	D3DXVECTOR3 toPlayerPos = g_player->GetPosition() - m_position;
+	float length = D3DXVec3Length(&toPlayerPos);
+	if (length <= 3.0f)
+	{
+		D3DXVECTOR3 toPlayerPosY = { 0.0f,toPlayerPos.y,0.0f };
+		float lengthY = D3DXVec3Length(&toPlayerPosY);
+
+		//Y方向に当たった
+		if (toPlayerPosY.y >= 2.0f && lengthY <= 2.5f) {
+			g_player->SetTreadOnSpring(true);
+		}
+	}
 }

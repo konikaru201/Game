@@ -48,7 +48,7 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 		else if (strcmp("Spring", mapLocInfo[i].modelName) == 0)
 		{
 			//インスタンスを動的に生成
-			spring = goMgr->NewGameObject<Spring>();
+			Spring* spring = goMgr->NewGameObject<Spring>();
 			//座標と回転の情報を渡して初期化
 			spring->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}

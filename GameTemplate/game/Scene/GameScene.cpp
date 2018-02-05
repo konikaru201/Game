@@ -213,7 +213,6 @@ void GameScene::StageCreate()
 
 		bgmSource = goMgr->NewGameObject<CSoundSource>();
 		bgmSource->InitStreaming("Assets/sound/bgm_1.wav");
-		//bgmSource->Init("Assets/sound/bgm_1.wav");
 		bgmSource->Play(true);
 
 		break;
@@ -224,7 +223,6 @@ void GameScene::StageCreate()
 
 		bgmSource = goMgr->NewGameObject<CSoundSource>();
 		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
-		//bgmSource->Init("Assets/sound/bgm_2.wav");
 		bgmSource->Play(true);
 
 		break;

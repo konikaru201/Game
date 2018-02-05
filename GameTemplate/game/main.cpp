@@ -64,7 +64,7 @@ void Init()
 //-----------------------------------------------------------------------------
 VOID Render()
 {
-	if (g_player != nullptr) {
+	if (g_player != nullptr && g_player->GetState() != g_player->State_Dead) {
 		D3DXVECTOR3 target = g_player->GetPosition();
 		D3DXVECTOR3 viewPos = target;
 		viewPos.y += 30.0f;

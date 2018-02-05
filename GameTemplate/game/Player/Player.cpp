@@ -179,21 +179,23 @@ void Player::Update()
 			}
 		}
 
-		//ジャンプブロックに当たったとき
-		if (gameScene->GetMap()->GetSpring() != nullptr
-			&& playerController.IsOnSpring())
-		{
-			D3DXVECTOR3 AddPos = gameScene->GetMap()->GetSpring()->GetMoveSpeed();
-			moveSpeed += AddPos;
+		//スプリングに当たったときジャンプ
+		if (m_treadOnSpring) {
+			moveSpeed.y = 0.0f;
+			moveSpeed.y += jumpSpeed * 2;
+			playerController.Jump();
+			animation.PlayAnimation(AnimationJump);
+			currentAnim = AnimationJump;
+			m_treadOnSpring = false;
 		}
 
 		//敵に当たったときジャンプ
-		if (m_hitTreadOn) {
+		if (m_treadOnEnemy) {
 			moveSpeed.y = 0.0f;
 			moveSpeed.y += jumpSpeed;
 			playerController.Jump();
 			currentAnim = AnimationJump;
-			m_hitTreadOn = false;
+			m_treadOnEnemy = false;
 		}
 
 		//落ちたら又は敵に当たったら死亡

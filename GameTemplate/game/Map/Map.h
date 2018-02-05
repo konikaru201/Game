@@ -43,13 +43,5 @@ public:
 
 	//描画
 	void Render();
-
-	//ジャンプブロックのインスタンスを取得
-	Spring* GetSpring()
-	{
-		return spring;
-	}
-private:
-	Spring* spring;		//ジャンプブロックのインスタンス
 };
 

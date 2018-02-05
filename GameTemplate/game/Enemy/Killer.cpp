@@ -193,7 +193,7 @@ void Killer::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 		//Y•ûŒü‚É“–‚½‚Á‚½
 		if (toPlayerY.y > 0.0f && lengthY <= 1.3f) {
 			//ƒLƒ‰[‚ªŽ€–S
-			g_player->SetHitTreadOn(true);
+			g_player->SetTreadOnEnemy(true);
 			state = State_Dead;
 		}
 		//X•ûŒü‚É“–‚½‚Á‚½

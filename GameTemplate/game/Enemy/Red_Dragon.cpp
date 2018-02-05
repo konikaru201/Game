@@ -324,12 +324,9 @@ D3DXVECTOR3 Red_Dragon::Move()
 		break;
 		//死亡時
 	case State_Dead:
-		//timer += Timer::GetFrameDeltaTime();
 		move = { 0.0f,0.0f,0.0f };
 		isDead = true;
-		//if (timer >= 5.0f) {
-		//	timer = 0.0f;
-		//}
+		//仮アニメーション
 		currentAnim = AnimationWait;
 		break;
 		//プレイヤーにヒット
@@ -362,7 +359,7 @@ void Red_Dragon::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 		//Y方向に当たった
 		if (toPlayerY.y > 0.0f && lengthY <= 0.5f) {
 			//ドラゴンが死亡
-			g_player->SetHitTreadOn(true);
+			g_player->SetTreadOnEnemy(true);
 			state = State_Dead;
 		}
 		//X方向に当たった

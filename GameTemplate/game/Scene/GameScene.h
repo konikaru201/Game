@@ -64,11 +64,11 @@ public:
 		return light;
 	}
 
-	//マップのインスタンスを取得
-	Map* GetMap()
-	{
-		return map;
-	}
+	////マップのインスタンスを取得
+	//Map* GetMap()
+	//{
+	//	return map;
+	//}
 
 	//スプライトの座標を取得
 	const D3DXVECTOR2& GetCoinPos()
