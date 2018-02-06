@@ -204,7 +204,7 @@ void Killer::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 			state = State_Hit;
 		}
 		//Z•ûŒü‚É“–‚½‚Á‚½
-		else if (lengthY <= 0.5f && lengthZ <= 0.8f) {
+		else if (lengthY <= 0.5f && lengthZ <= 0.5f) {
 			//ƒvƒŒƒCƒ„[‚ªŽ€–S
 			m_hitPlayer = true;
 			g_player->SetHitEnemy(m_hitPlayer);

@@ -75,6 +75,7 @@ private:
 	D3DXMATRIX*			matrix;							//ボーンのワールド行列
 	float				timer = 0.0f;					//タイマー
 	float				soundTimer = 0.0f;				//音のタイマー
+	float				attackTimer = 0.0f;				//プレイヤーが攻撃に当たっている時間
 	D3DXVECTOR3			XDir = { 1.0f,0.0f,0.0f };		//X方向
 	bool				findAgainFlag = false;			//攻撃後に視界内にプレイヤーがいるか
 	bool				changeDir = true;				//方向転換のフラグ
