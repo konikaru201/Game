@@ -79,7 +79,7 @@ void Sprite::LoadTexture(char *filePath)
 	);
 }
 
-void Sprite::Draw()
+void Sprite::Render()
 {
 	float windowWidth = FRAME_BUFFER_WIDTH;
 	float windowHeight = FRAME_BUFFER_HEIGHT;

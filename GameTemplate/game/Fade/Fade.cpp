@@ -62,7 +62,7 @@ void Fade::Render()
 	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-	sprite->Draw();
+	sprite->Render();
 
 	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 }

@@ -4,6 +4,7 @@
 #include "myEngine/GameObject/GameObjectManager.h"
 #include "myEngine/Physics/RigidBody.h"
 #include "myEngine/Graphics/ParticleEmitter.h"
+#include "myEngine/Graphics/Light.h"
 
 class Red_Dragon : public GameObject
 {
@@ -64,6 +65,7 @@ private:
 
 	SkinModel			model;							//スキンモデル
 	SkinModelData		modelData;						//スキンモデルデータ
+	Light				light;							//ライト
 	D3DXVECTOR3			position;						//座標
 	D3DXVECTOR3			initPosition;					//初期座標
 	D3DXQUATERNION		rotation;						//回転

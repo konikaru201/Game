@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Box.h"
-#include "../Scene/GameScene.h"
+#include "Scene/SceneManager.h"
 #include "myEngine/Physics/CollisionAttr.h"
 
 Box::Box()
@@ -15,7 +15,18 @@ void Box::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 {
 	modelData.LoadModelData("Assets/modelData/Box.x", NULL);
 	model.Init(&modelData);
-	model.SetLight(&gameScene->GetLight());
+	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+
+	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	model.SetLight(&light);
+
 	model.UpdateWorldMatrix({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0 }, { 1.0f,1.0f,1.0f });
 
 	position = pos;
@@ -50,12 +61,19 @@ void Box::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 void Box::Update()
 {
-	if (gameScene == nullptr || gameScene->GetChengeStage()) {
+	if (sceneManager->GetChangeSceneFlag())
+	{
 		SetisDead();
 		//„‘Ì‚ðíœ
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
+	//if (gameScene == nullptr) {
+	//	SetisDead();
+	//	//„‘Ì‚ðíœ
+	//	g_physicsWorld->RemoveRigidBody(&rigidBody);
+	//	return;
+	//}
 
 	//if (g_player != nullptr) {
 	//	if (g_player->GetIsOnBox() == true) {
@@ -75,7 +93,6 @@ void Box::Update()
 
 void Box::Render()
 {
-	if (gameScene == nullptr) { return; }
 	model.SetDrawShadowMap(false, true);
-	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 }

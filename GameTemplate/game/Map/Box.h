@@ -3,6 +3,7 @@
 #include "myEngine/Physics/BoxCollider.h"
 #include "myEngine/Physics/RigidBody.h"
 #include "myEngine/GameObject/GameObject.h"
+#include "myEngine/Graphics/Light.h"
 
 class Box : public GameObject
 {
@@ -28,6 +29,7 @@ private:
 	SkinModel model;								//スキンモデル
 	SkinModelData modelData;						//スキンモデルデータ
 	RigidBody rigidBody;							//剛体
+	Light light;									//ライト
 	D3DXVECTOR3 position;							//座標
 	D3DXQUATERNION rotation;						//回転
 };

@@ -71,3 +71,4 @@ private:
 	D3DXVECTOR3 currentEyePos;
 };
 
+extern GameCamera* gameCamera;

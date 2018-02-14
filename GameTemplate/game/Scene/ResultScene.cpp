@@ -11,31 +11,31 @@ ResultScene::~ResultScene()
 	delete sprite;
 }
 
-namespace {
-	const D3DXVECTOR2 BackSize = { 1.0f,1.0f };
-	const D3DXVECTOR2 BackPos = { FRAME_BUFFER_WIDTH / 2, FRAME_BUFFER_HEIGHT / 2 };
-}
-
-void ResultScene::Initialize()
+bool ResultScene::Start()
 {
 	sprite = new Sprite;
 	sprite->Initialize("Assets/sprite/GameOver.png");
 
 	g_fade->StartFadeIn();
+
+	return true;
 }
 
 void ResultScene::Update()
 {
-	if (isDeside) { return; }
-
-	//決定
-	if (pad->IsTrigger(pad->enButtonA))
-	{
-		isDeside = true;
+	//Aボタンでシーン切り替えフラグを立てる
+	if (pad->IsTrigger(pad->enButtonA)) {
+		m_changeScene = true;
 	}
 }
 
 void ResultScene::Render()
 {
-	sprite->Draw();
+	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	sprite->Render();
+
+	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 }

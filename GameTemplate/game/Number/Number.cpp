@@ -34,5 +34,5 @@ void Number::NumSet(int n)
 
 void Number::Render()
 {
-	m_number[num]->Draw();
+	m_number[num]->Render();
 }

@@ -3,6 +3,7 @@
 #include "myEngine/Physics/MeshCollider.h"
 #include "myEngine/Physics/RigidBody.h"
 #include "myEngine/GameObject/GameObject.h"
+#include "myEngine/Graphics/Light.h"
 
 class Spring : public GameObject
 {
@@ -38,7 +39,7 @@ private:
 	SkinModelData m_modelData;							//スキンモデルデータ
 	MeshCollider m_meshCollider;						//メッシュコライダー
 	RigidBody m_rigidBody;								//剛体
-
+	Light light;										//ライト
 	D3DXVECTOR3 m_position;								//座標
 	D3DXQUATERNION m_rotation;							//回転
 	D3DXVECTOR3 m_jumpSpeed = { 0.0f, 20.0f, 0.0f };	//ジャンプ速度

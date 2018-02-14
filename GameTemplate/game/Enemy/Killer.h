@@ -2,6 +2,7 @@
 
 #include "myEngine/Physics/CharacterController.h"
 #include "myEngine/GameObject/GameObject.h"
+#include "myEngine/Graphics/Light.h"
 
 class Killer : public GameObject {
 public:
@@ -41,7 +42,7 @@ private:
 	SkinModel			model;								//スキンモデル
 	SkinModelData		modelData;							//スキンモデルデータ
 	CharacterController characterController;				//キャラクターコントローラー
-
+	Light				light;								//ライト
 	D3DXVECTOR3			position;							//座標
 	D3DXQUATERNION		rotation;							//回転
 	D3DXVECTOR3			InitPosition;						//初期位置

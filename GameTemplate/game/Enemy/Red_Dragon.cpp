@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Red_Dragon.h"
-#include "Scene/GameScene.h"
+#include "Scene/SceneManager.h"
 #include "myEngine/Timer/Timer.h"
 
 Red_Dragon::Red_Dragon()
@@ -16,7 +16,19 @@ void Red_Dragon::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	//モデルの初期化
 	modelData.LoadModelData("Assets/modelData/Red_Dragon.x", &animation);
 	model.Init(&modelData);
-	model.SetLight(&gameScene->GetLight());
+	//ライトを設定
+	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+
+	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	model.SetLight(&light);
+
 	model.UpdateWorldMatrix(pos, rot, { 1.0f,1.0f,1.0f });
 
 	matrix = modelData.FindBoneWorldMatrix("B_bip01");
@@ -64,12 +76,19 @@ void Red_Dragon::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 void Red_Dragon::Update()
 {
-	if (gameScene == nullptr || gameScene->GetChengeStage() || isDead) {
+	if (sceneManager->GetChangeSceneFlag())
+	{
 		SetisDead();
 		//剛体を削除
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
+	//if (gameScene == nullptr || isDead) {
+	//	SetisDead();
+	//	//剛体を削除
+	//	g_physicsWorld->RemoveRigidBody(&rigidBody);
+	//	return;
+	//}
 
 	D3DXVECTOR3 moveSpeed = Move();
 	position += moveSpeed / 60.0f;
@@ -91,8 +110,7 @@ void Red_Dragon::Update()
 
 void Red_Dragon::Render()
 {
-	if (gameScene == nullptr) { return; }
-	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 }
 
 D3DXVECTOR3 Red_Dragon::Move()
@@ -113,7 +131,7 @@ D3DXVECTOR3 Red_Dragon::Move()
 	modelPosition.z = matrix->m[3][2];
 
 	//プレイヤーの位置を取得
-	D3DXVECTOR3 playerPos = g_player->GetPosition();
+	D3DXVECTOR3 playerPos = player->GetPosition();
 	//プレイヤーへのベクトルを計算
 	D3DXVECTOR3 toPlayer = playerPos - modelPosition;
 	
@@ -307,7 +325,7 @@ D3DXVECTOR3 Red_Dragon::Move()
 				if (attackTimer >= 0.8f) {
 					//プレイヤーが死亡
 					m_hitPlayer = true;
-					g_player->SetHitEnemy(m_hitPlayer);
+					player->SetHitEnemy(m_hitPlayer);
 					state = State_Hit;
 				}
 			}
@@ -385,14 +403,14 @@ void Red_Dragon::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 		//Y方向に当たった
 		if (toPlayerY.y > 0.0f && lengthY <= 0.5f) {
 			//ドラゴンが死亡
-			g_player->SetTreadOnEnemy(true);
+			player->SetTreadOnEnemy(true);
 			state = State_Dead;
 		}
 		//XZ方向に当たった
 		else if (lengthY <= 0.8f && lengthXZ <= 1.1f) {
 			//プレイヤーが死亡
 			m_hitPlayer = true;
-			g_player->SetHitEnemy(m_hitPlayer);
+			player->SetHitEnemy(m_hitPlayer);
 			state = State_Hit;
 		}
 	}

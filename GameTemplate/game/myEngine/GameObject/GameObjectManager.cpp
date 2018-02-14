@@ -22,7 +22,9 @@ void GameObjectManager::Update()
 			obj->Start();
 			obj->SetStart();
 		}
-		obj->Update();	
+		if (!obj->GetisDead()) {
+			obj->Update();
+		}
 	}
 
 	for (GameObject* obj : gameObjects) {
@@ -34,7 +36,9 @@ void GameObjectManager::Update()
 void GameObjectManager::Render()
 {
 	for (GameObject* obj : gameObjects) {
-		obj->Render();
+		if (!obj->GetisDead()) {
+			obj->Render();
+		}
 	}
 }
 

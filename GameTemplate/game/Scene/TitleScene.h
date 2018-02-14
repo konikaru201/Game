@@ -11,8 +11,8 @@ public:
 	//デストラクタ
 	~TitleScene();
 
-	//初期化
-	void Initialize();
+	//更新される前に一度だけ呼ばれる関数
+	bool Start();
 
 	//更新
 	void Update();
@@ -20,14 +20,14 @@ public:
 	//描画
 	void Render();
 
-	//決定ボタンを押したかどうか
-	bool GetisDeside() {
-		return isDeside;
+	//シーン切り替えフラグを取得
+	bool GetChangeSceneFlag()
+	{
+		return m_changeScene;
 	}
-
 private:
 	Sprite* sprite;				//スプライト
-	bool isDeside = false;		//決定ボタンを押したか
 	float alpha = 1.0f;			//不透明度。1.0は黒
 	float timer = 0.0f;			//タイマー
+	bool m_changeScene = false; //シーン切り替えフラグ
 };

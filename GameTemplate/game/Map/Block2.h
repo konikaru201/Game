@@ -3,6 +3,7 @@
 #include "myEngine/Physics/MeshCollider.h"
 #include "myEngine/Physics/RigidBody.h"
 #include "myEngine/GameObject/GameObject.h"
+#include "myEngine/Graphics/Light.h"
 
 class Block2 : public GameObject
 {
@@ -42,6 +43,7 @@ private:
 	SkinModelData modelData;						//スキンモデルデータ
 	MeshCollider meshCollider;						//メッシュコライダー
 	RigidBody rigidBody;							//剛体
+	Light light;									//ライト
 	D3DXVECTOR3 rotationAxis;
 	D3DXVECTOR3 position;							//座標
 	D3DXQUATERNION rotation;						//回転

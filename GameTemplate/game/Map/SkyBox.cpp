@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "SkyBox.h"
-#include "Scene/GameScene.h"
+#include "Scene/SceneManager.h"
 
 SkyBox::SkyBox()
 {
@@ -34,10 +34,10 @@ void SkyBox::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
 	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
 
-	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
-	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
-	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
-	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
+	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
 	model.SetLight(&light);
 	model.UpdateWorldMatrix(pos, rot, { 1.0f,1.0f,1.0f });
@@ -70,18 +70,17 @@ bool SkyBox::Start()
 
 void SkyBox::Update()
 {
-	if (gameScene == nullptr) {
+	if (sceneManager->GetChangeSceneFlag())
+	{
 		SetisDead();
 		//„‘Ì‚ðíœ
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
-
 }
 
 void SkyBox::Render()
 {
-	if (gameScene == nullptr) { return; }
 	model.SetDrawShadowMap(false, false);
-	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 }

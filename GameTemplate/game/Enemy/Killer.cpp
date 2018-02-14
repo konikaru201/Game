@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Killer.h"
-#include "Scene/GameScene.h"
+#include "Scene/SceneManager.h"
 #include "myEngine/Physics/CollisionAttr.h"
 #include "myEngine/Timer/Timer.h"
 
@@ -17,7 +17,19 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	//モデルの初期化
 	modelData.LoadModelData("Assets/modelData/Killer.x", NULL);
 	model.Init(&modelData);
-	model.SetLight(&gameScene->GetLight());
+	//ライトを設定
+	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+
+	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	model.SetLight(&light);
+
 	model.UpdateWorldMatrix( pos, rot, { 1.0f,1.0f,1.0f });
 
 	position = pos;
@@ -55,12 +67,19 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 void Killer::Update()
 {
-	if (gameScene == nullptr || gameScene->GetChengeStage() || isDead) {
+	if (sceneManager->GetChangeSceneFlag())
+	{
 		SetisDead();
 		//剛体を削除
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
+	//if (gameScene == nullptr || isDead) {
+	//	SetisDead();
+	//	//剛体を削除
+	//	g_physicsWorld->RemoveRigidBody(&rigidBody);
+	//	return;
+	//}
 
 	//初期位置に戻す
 	if (position.x < moveLimitLine[0] || position.x > moveLimitLine[1]
@@ -82,8 +101,7 @@ void Killer::Update()
 
 void Killer::Render()
 {
-	if (gameScene == nullptr) { return; }
-	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 }
 
 D3DXVECTOR3 Killer::Move()
@@ -92,7 +110,7 @@ D3DXVECTOR3 Killer::Move()
 	D3DXVECTOR3 move = { 0.0f,0.0f,0.0f };
 
 	//プレイヤーの位置を取得
-	D3DXVECTOR3 playerPos = g_player->GetPosition();
+	D3DXVECTOR3 playerPos = player->GetPosition();
 	D3DXVECTOR3 toPlayer = playerPos - position;
 	//モデルのZ方向を取得
 	D3DXVECTOR3 direction;
@@ -193,21 +211,21 @@ void Killer::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 		//Y方向に当たった
 		if (toPlayerY.y > 0.0f && lengthY <= 1.3f) {
 			//キラーが死亡
-			g_player->SetTreadOnEnemy(true);
+			player->SetTreadOnEnemy(true);
 			state = State_Dead;
 		}
 		//X方向に当たった
 		else if (lengthY <= 0.5f && lengthX <= 1.5f) {
 			////プレイヤーが死亡
 			m_hitPlayer = true;
-			g_player->SetHitEnemy(m_hitPlayer);
+			player->SetHitEnemy(m_hitPlayer);
 			state = State_Hit;
 		}
 		//Z方向に当たった
 		else if (lengthY <= 0.5f && lengthZ <= 0.5f) {
 			//プレイヤーが死亡
 			m_hitPlayer = true;
-			g_player->SetHitEnemy(m_hitPlayer);
+			player->SetHitEnemy(m_hitPlayer);
 			state = State_Hit;
 		}
 	}

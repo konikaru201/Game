@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Spring.h"
-#include "Scene/GameScene.h"
+#include "Scene/SceneManager.h"
 #include "myEngine/Physics/CollisionAttr.h"
 
 Spring::Spring()
@@ -15,7 +15,19 @@ void Spring::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 {
 	m_modelData.LoadModelData("Assets/modelData/Spring.x", NULL);
 	m_model.Init(&m_modelData);
-	m_model.SetLight(&gameScene->GetLight());
+	//ライトを設定
+	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+
+	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	m_model.SetLight(&light);
+
 	m_model.UpdateWorldMatrix({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0 }, { 1.0f,1.0f,1.0f });
 
 	m_position = pos;
@@ -48,12 +60,19 @@ void Spring::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 void Spring::Update()
 {
-	if (gameScene == nullptr || gameScene->GetChengeStage()) {
+	if (sceneManager->GetChangeSceneFlag())
+	{
 		SetisDead();
 		//剛体を削除
 		g_physicsWorld->RemoveRigidBody(&m_rigidBody);
 		return;
 	}
+	//if (gameScene == nullptr) {
+	//	SetisDead();
+	//	//剛体を削除
+	//	g_physicsWorld->RemoveRigidBody(&m_rigidBody);
+	//	return;
+	//}
 
 	//プレイヤーとの当たり判定
 	CollisionDetection();
@@ -63,14 +82,13 @@ void Spring::Update()
 
 void Spring::Render()
 {
-	if (gameScene == nullptr) { return; }
 	m_model.SetDrawShadowMap(false, true);
-	m_model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 }
 
 void Spring::CollisionDetection()
 {
-	D3DXVECTOR3 toPlayerPos = g_player->GetPosition() - m_position;
+	D3DXVECTOR3 toPlayerPos = player->GetPosition() - m_position;
 	float length = D3DXVec3Length(&toPlayerPos);
 	if (length <= 3.0f)
 	{
@@ -79,7 +97,7 @@ void Spring::CollisionDetection()
 
 		//Y方向に当たった
 		if (toPlayerPosY.y >= 2.0f && lengthY <= 2.5f) {
-			g_player->SetTreadOnSpring(true);
+			player->SetTreadOnSpring(true);
 		}
 	}
 }

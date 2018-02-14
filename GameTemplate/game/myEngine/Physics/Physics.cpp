@@ -53,8 +53,5 @@ void PhysicsWorld::Update()
 void PhysicsWorld::AddRigidBody(RigidBody* rb)
 {
 	dynamicWorld->addRigidBody(rb->GetBody());
-}
-void PhysicsWorld::RemoveRigidBody(RigidBody* rb)
-{
-	dynamicWorld->removeRigidBody(rb->GetBody());
+	rb->SetAddPhysicsWorld();
 }

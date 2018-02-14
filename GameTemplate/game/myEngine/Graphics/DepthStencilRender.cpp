@@ -25,8 +25,8 @@ void DepthStencilRender::Render()
 {
 	g_pd3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_GREATER);
 	g_pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-	if (g_player != nullptr) {
-		g_player->DepthStencilRender(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
+	if (player != nullptr) {
+		player->DepthStencilRender(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 	}
 	g_pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	g_pd3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);

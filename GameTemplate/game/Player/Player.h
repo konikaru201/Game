@@ -2,6 +2,7 @@
 
 #include "myEngine/Physics/PlayerController.h"
 #include "myEngine/GameObject/GameObject.h"
+#include "myEngine/Graphics/Light.h"
 
 class Player : public GameObject
 {
@@ -164,6 +165,7 @@ private:
 	SkinModel model;												//スキンモデル
 	SkinModelData modelData;										//スキンモデルデータ
 	Animation animation;											//アニメーション
+	Light light;													//ライト
 	PlayerController playerController;								//プレイヤーコントローラー
 	D3DXVECTOR3	position;											//座標
 	D3DXQUATERNION rotation;										//回転
@@ -209,4 +211,4 @@ private:
 	LPDIRECT3DTEXTURE9 normalMap = NULL;							//法線マップ
 };
 
-extern Player* g_player;
+extern Player* player;

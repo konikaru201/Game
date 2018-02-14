@@ -25,7 +25,10 @@ public:
 		return dynamicWorld;
 	}
 	void AddRigidBody(RigidBody* rb);
-	void RemoveRigidBody(RigidBody* rb);
+	void RemoveRigidBody(RigidBody* rb)
+	{
+		//íœŒó•â
+	}
 	void ConvexSweepTest(
 		const btConvexShape* castShape,
 		const btTransform& convexFromWorld,

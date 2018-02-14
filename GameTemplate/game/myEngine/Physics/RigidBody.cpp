@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "myEngine/Physics/RigidBody.h"
 #include "myEngine/Physics/ICollider.h"
-
+#include "myEngine/physics/Physics.h"
 RigidBody::RigidBody() :
 	rigidBody(NULL),
 	myMotionState(NULL)
@@ -15,6 +15,10 @@ RigidBody::~RigidBody()
 }
 void RigidBody::Release()
 {
+	if (m_isAddPhysicsWorld && g_physicsWorld != NULL) {
+		g_physicsWorld->GetDynamicWorld()->removeRigidBody(rigidBody);
+		m_isAddPhysicsWorld = false;
+	}
 	delete rigidBody;
 	delete myMotionState;
 	rigidBody = NULL;

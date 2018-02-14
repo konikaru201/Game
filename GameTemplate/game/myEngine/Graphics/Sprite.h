@@ -1,5 +1,4 @@
 #pragma once
-//#include "Texture.h"
 
 class Sprite {
 public:
@@ -16,7 +15,7 @@ public:
 	void LoadTexture(char *filePath);
 
 	//描画
-	void Draw();
+	void Render();
 
 	//エフェクト読み込み
 	LPD3DXEFFECT LoadEffect(char *filePath);

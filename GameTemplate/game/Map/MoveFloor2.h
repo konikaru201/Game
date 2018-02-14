@@ -3,6 +3,7 @@
 #include "myEngine/Physics/MeshCollider.h"
 #include "myEngine/Physics/RigidBody.h"
 #include "myEngine/GameObject/GameObject.h"
+#include "myEngine/Graphics/Light.h"
 
 class MoveFloor2 : public GameObject
 {
@@ -46,7 +47,7 @@ private:
 	SkinModelData modelData;						//スキンモデルデータ
 	MeshCollider meshCollider;						//メッシュコライダー
 	RigidBody rigidBody;							//剛体
-
+	Light light;									//ライト
 	D3DXVECTOR3 position;							//座標
 	D3DXQUATERNION rotation;						//回転
 	D3DXVECTOR3 moveSpeed = { 0.0f,0.05f,0.0f };	//移動速度

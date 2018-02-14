@@ -234,6 +234,9 @@
     <ClCompile Include="myEngine\Sound\WaveFileBank.cpp">
       <Filter>ソース ファイル\myEngine\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\StageSelectScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -424,6 +427,9 @@
     </ClInclude>
     <ClInclude Include="myEngine\Sound\WaveFileBank.h">
       <Filter>ソース ファイル\myEngine\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\StageSelectScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

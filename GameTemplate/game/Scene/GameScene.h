@@ -11,11 +11,6 @@
 #include "myEngine/Graphics/DepthStencilRender.h"
 #include "myEngine/Sound/SoundSource.h"
 
-namespace {
-	//コインのスプライトのサイズと座標
-	const D3DXVECTOR2 CoinSize = { 128.0f,72.0f };
-	const D3DXVECTOR2 CoinPos = { 1000.0f, 600.0f };
-}
 
 class GameScene : public GameObject {
 public:
@@ -40,41 +35,11 @@ public:
 	*/
 	void Render();
 
-	//スプライトの初期化
-	void InitSprite();
-
-	//解放
-	void Release();
-
-	//リセット
-	void Reset();
-
 	//ステージ作成
 	void StageCreate();
 
-	//カメラのインスタンスを取得
-	GameCamera* GetGameCamera()
-	{
-		return gameCamera;
-	}
-
-	//ライトのインスタンス取得
-	Light& GetLight()
-	{
-		return light;
-	}
-
-	////マップのインスタンスを取得
-	//Map* GetMap()
-	//{
-	//	return map;
-	//}
-
-	//スプライトの座標を取得
-	const D3DXVECTOR2& GetCoinPos()
-	{
-		return CoinPos;
-	}
+	//解放
+	void Release();
 
 	//ゲーム進行の状態
 	enum Step {
@@ -84,7 +49,7 @@ public:
 		step_normal,
 		step_StageLoad,
 		step_GameOver,
-		step_GameClear,
+		step_StageClear,
 	};
 
 	//ステージの状態
@@ -92,12 +57,6 @@ public:
 		en_Stage1,
 		en_Stage2,
 	};
-
-	//ステージ変更フラグを返却
-	bool GetChengeStage()
-	{
-		return ChengeStage;
-	}
 
 	//進行状況を返却
 	const Step& IsStep()
@@ -111,22 +70,21 @@ public:
 		return currentStage;
 	}
 
-private:
-	Light light;					//ライト
-	Map* map;						//マップ
-	GameCamera* gameCamera;			//ゲームカメラ
-	DisplayCoin* displayCoin;		//コイン枚数のスプライト
-	Sprite* CoinNum;				//コインのスプライト
-	DepthStencilRender* depthStencilRender;
-	CSoundSource* bgmSource = nullptr;
+	//フェードアウト待ちであるか取得
+	bool GetWaitFadeOut()
+	{
+		return m_waitFadeOut;
+	}
 
-	Step step = step_WaitFadeOut;
+private:
+	Map* map;								//マップ
+	DepthStencilRender* depthStencilRender;	//シルエット
+	CSoundSource* bgmSource = nullptr;		//BGM
+
+	Step step = step_WaitFadeOut;			//状態
 	state_stage currentStage = en_Stage1;	//現在のステージ番号
 	state_stage nextStage = en_Stage2;		//次のステージ番号
 
-	bool ChengeStage = false;			
 	float timer = 0.0f;
-	bool finishFadeOut = false;
+	bool m_waitFadeOut = false;					//フェードアウト待ちフラグ
 };
-
-extern GameScene* gameScene;

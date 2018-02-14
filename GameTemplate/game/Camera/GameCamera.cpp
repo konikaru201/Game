@@ -3,6 +3,8 @@
 #include "Scene/GameScene.h"
 #include "myEngine/HID/Pad.h"
 
+GameCamera* gameCamera;
+
 GameCamera::GameCamera()
 {
 }
@@ -30,8 +32,6 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
-	if (gameScene == nullptr) { return; }
-
 	Move();
 	//カメラ更新
 	camera.Update();
@@ -71,7 +71,7 @@ void GameCamera::Move()
 	}
 
 	//プレイヤーの座標を取得
-	D3DXVECTOR3 targetPos = g_player->GetPosition();
+	D3DXVECTOR3 targetPos = player->GetPosition();
 	targetPos.y += 0.5f;
 	//カメラの注視点を設定
 	camera.SetLookatPt(targetPos);
@@ -155,7 +155,7 @@ void GameCamera::Move()
 	//カメラの座標
 	D3DXVECTOR3 eyePos = targetPos + toCameraPos;
 
-	if (g_player->GetState() != g_player->State_Dead) {
+	if (player->GetState() != player->State_Dead) {
 		//カメラの座標を保存
 		currentEyePos = eyePos;
 	}
@@ -163,12 +163,12 @@ void GameCamera::Move()
 	//カメラの座標を設定
 	camera.SetEyePt(currentEyePos);
 
-	////カメラの当たり判定
-	//D3DXVECTOR3 newPos;
-	//if (cameraCollisionSolver.Execute(newPos, camera.GetEyePt(), camera.GetLookatPt()))
-	//{
-	//	camera.SetEyePt(newPos);
-	//}
+	//カメラの当たり判定
+	D3DXVECTOR3 newPos;
+	if (cameraCollisionSolver.Execute(newPos, camera.GetEyePt(), camera.GetLookatPt()))
+	{
+		camera.SetEyePt(newPos);
+	}
 }
 
 void GameCamera::Reset()

@@ -7,7 +7,7 @@ public:
 	GameObject();
 
 	//デストラクタ
-	~GameObject();
+	virtual ~GameObject();
 
 	//初期化
 	virtual bool Start() { return true; }

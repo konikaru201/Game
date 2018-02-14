@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "MapChip.h"
-#include "Scene/GameScene.h"
+#include "Scene/SceneManager.h"
 #include "myEngine/GameObject/GameObjectManager.h"
 
 MapChip::MapChip()
@@ -9,9 +9,6 @@ MapChip::MapChip()
 
 MapChip::~MapChip()
 {
-	//剛体を削除
-	g_physicsWorld->RemoveRigidBody(&rigidBody);
-	//rigidBody.Release();
 }
 
 void MapChip::Init(const char* modelName, D3DXVECTOR3 position, D3DXQUATERNION rotation)
@@ -24,23 +21,18 @@ void MapChip::Init(const char* modelName, D3DXVECTOR3 position, D3DXQUATERNION r
 	//ロードしたモデルデータを使ってSkinModelを初期化
 	model.Init(&modelData);
 
-	if (strcmp("Assets/modelData/skyBox.x", filePath) == 0) {
-		//ライトを初期化
-		light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
-		light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
-		light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
-		light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+	//ライトを初期化
+	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
 
-		light.SetDiffuseLightColor(0, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
-		light.SetDiffuseLightColor(1, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
-		light.SetDiffuseLightColor(2, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
-		light.SetDiffuseLightColor(3, D3DXVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
-		light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
-		model.SetLight(&light);
-	}
-	else {
-		model.SetLight(&gameScene->GetLight());
-	}
+	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	model.SetLight(&light);
 
 	model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
 
@@ -63,17 +55,23 @@ void MapChip::Init(const char* modelName, D3DXVECTOR3 position, D3DXQUATERNION r
 
 void MapChip::Update()
 {
-	if (gameScene == nullptr || gameScene->GetChengeStage()) {
+	if (sceneManager->GetChangeSceneFlag())
+	{
 		SetisDead();
 		//剛体を削除
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
+	//if (gameScene == nullptr) {
+	//	SetisDead();
+	//	//剛体を削除
+	//	g_physicsWorld->RemoveRigidBody(&rigidBody);
+	//	return;
+	//}
 }
 
 void MapChip::Render()
 {
-	if (gameScene == nullptr) { return; }
 	model.SetDrawShadowMap(false, true);
-	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 }

@@ -22,6 +22,7 @@ class RigidBody
 {
 	btRigidBody*			rigidBody;		//剛体。
 	btDefaultMotionState*	myMotionState;	//モーションステート。
+	bool					m_isAddPhysicsWorld = false;
 public:
 	RigidBody();
 	~RigidBody();
@@ -30,6 +31,10 @@ public:
 	btRigidBody* GetBody()
 	{
 		return rigidBody;
+	}
+	void SetAddPhysicsWorld()
+	{
+		m_isAddPhysicsWorld = true;
 	}
 };
 

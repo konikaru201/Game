@@ -18,8 +18,11 @@ Pad* pad = nullptr;
 SceneManager* sceneManager = nullptr;
 Fade* g_fade = nullptr;
 
-CShadowMap g_shadowMap;	//シャドウマップ。
-Bloom* bloom = nullptr;	//ブルーム
+CShadowMap g_shadowMap;				//シャドウマップ。
+Bloom* bloom = nullptr;				//ブルーム
+
+DisplayCoin* displayCoin = nullptr;	//コイン枚数のスプライト
+Sprite* CoinNum = nullptr;			//コインの絵のスプライト
 
 CRenderTarget* mainRenderTarget;	//メインレンダリングターゲット
 CPrimitive* quadPrimitive;			//四角形の板ポリプリミティブ
@@ -31,6 +34,12 @@ void InitQuadPrimitive();
 void LoadShaders();
 void CopyMainRTToCurrentRT();
 void DrawQuadPrimitive();
+
+namespace {
+	//コインのスプライトのサイズと座標
+	const D3DXVECTOR2 coinSize = { 128.0f,72.0f };
+	const D3DXVECTOR2 coinPos = { 1000.0f, 600.0f };
+}
 
 //-----------------------------------------------------------------------------
 // Name: ゲームを初期化。
@@ -44,28 +53,47 @@ void Init()
 	//シェーダーをロード
 	LoadShaders();
 
+	//シャドウマップを初期化
 	g_shadowMap.Init();
 
+	//ブルーム生成
 	bloom = new Bloom;
 
-	goMgr = new GameObjectManager;
+	//物理ワールドを初期化
+	g_physicsWorld = new PhysicsWorld;
+	g_physicsWorld->Init();
 
+	//フェードを初期化
 	g_fade = new Fade;
 	g_fade->Start();
 
-	
+	//ゲームオブジェクト生成
+	goMgr = new GameObjectManager;
 
+	//ゲームパッド生成
 	pad = goMgr->NewGameObject<Pad>();
 
+	//シーンマネージャー生成
 	sceneManager = goMgr->NewGameObject<SceneManager>();
+
+	//スプライトの初期化
+	//コインの絵
+	CoinNum = new Sprite();
+	CoinNum->Initialize("Assets/sprite/Coin2.png");
+	CoinNum->SetPosition(coinPos);
+	CoinNum->SetSize(coinSize);
+	//コインの枚数
+	displayCoin = new DisplayCoin();
+	displayCoin->Init(coinPos);
+	displayCoin->Start();
 }
 //-----------------------------------------------------------------------------
 // Name: 描画処理。％
 //-----------------------------------------------------------------------------
 VOID Render()
 {
-	if (g_player != nullptr && g_player->GetState() != g_player->State_Dead) {
-		D3DXVECTOR3 target = g_player->GetPosition();
+	if (player != nullptr && player->GetState() != player->State_Dead) {
+		D3DXVECTOR3 target = player->GetPosition();
 		D3DXVECTOR3 viewPos = target;
 		viewPos.y += 30.0f;
 		g_shadowMap.SetLightViewPosition(viewPos);
@@ -112,9 +140,10 @@ VOID Render()
 	// レンダリングターゲットをクリア。
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0);
 
-	//シャドウマップにレンダリング。
+	//シャドウマップにレンダリング
 	g_shadowMap.Draw();
 
+	//ゲームオブジェクトをレンダリング
 	goMgr->Render();
 
 	//ポストエフェクト
@@ -131,8 +160,18 @@ VOID Render()
 	//オフスクリーンレンダリングした絵をフレームバッファに貼り付ける
 	CopyMainRTToCurrentRT();
 
-	if (gameScene != nullptr) {
-		gameScene->Render();
+	if (sceneManager->GetScene() == sceneManager->stateStageSelect
+		|| sceneManager->GetScene() == sceneManager->stateGame)
+	{
+		//アルファブレンディングを有効にする。
+		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		//コインの絵と枚数を描画
+		CoinNum->Render();
+		displayCoin->Render();
+		//アルファブレンディングを無効にする。
+		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
 
 	//フェードのレンダリング
@@ -142,8 +181,6 @@ VOID Render()
 	g_pd3dDevice->EndScene();
 	// バックバッファとフロントバッファを入れ替える。
 	g_pd3dDevice->Present(NULL, NULL, NULL, NULL);
-
-	
 }
 /*!-----------------------------------------------------------------------------
  *@brief	更新処理。
@@ -151,6 +188,7 @@ VOID Render()
 void Update()
 {
 	goMgr->Update();
+	displayCoin->Update();
 	g_fade->Update();
 }
 //-----------------------------------------------------------------------------
@@ -161,6 +199,9 @@ void Terminate()
 	delete goMgr;
 	delete g_fade;
 	delete g_effectManager;
+	delete g_physicsWorld;
+	delete CoinNum;
+	delete displayCoin;
 }
 
 //オブジェクトをデリートする処理

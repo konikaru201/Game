@@ -40,7 +40,6 @@ private:
 		FadeIn,		//フェードイン
 	};
 	Sprite* sprite;
-	//Texture texture;
 	
 	const float FADE_TIME = 0.2f;	//フェードする時間
 	State m_state = FadeIn;		//状態

@@ -133,7 +133,7 @@ namespace {
 				// ディフューズテクスチャ。
 				pEffect->SetTexture("g_diffuseTexture", pMeshContainer->ppTextures[pBoneComb[iAttrib].AttribId]);
 
-				D3DXVECTOR3 cameraPos = gameScene->GetGameCamera()->GetPosition();
+				D3DXVECTOR3 cameraPos = gameCamera->GetPosition();
 				D3DXVECTOR4 vEyePos = { 0.0f,0.0f,0.0f,1.0f };
 				vEyePos.x = cameraPos.x;
 				vEyePos.y = cameraPos.y;

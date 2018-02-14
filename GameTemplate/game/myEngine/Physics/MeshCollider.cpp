@@ -18,7 +18,7 @@ MeshCollider::~MeshCollider()
 	}
 	delete stridingMeshInterface;
 	delete meshShape;
-}
+}	
 
 /*!
  * @brief	CSkinModelからメッシュコライダーを生成。

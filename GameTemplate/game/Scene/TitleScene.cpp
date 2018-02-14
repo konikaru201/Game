@@ -15,48 +15,29 @@ TitleScene::~TitleScene()
 	delete sprite;
 }
 
-namespace {
-	const D3DXVECTOR2 BackSize = { 1.0f,1.0f };
-	const D3DXVECTOR2 BackPos = { FRAME_BUFFER_WIDTH / 2, FRAME_BUFFER_HEIGHT / 2 };
-}
-
-void TitleScene::Initialize()
+bool TitleScene::Start()
 {
 	sprite = new Sprite;
 	sprite->Initialize("Assets/sprite/Title.png");
 
 	g_fade->StartFadeIn();
+
+	return true;
 }
 
 void TitleScene::Update()
 {
-	if (isDeside) { return; }
-
-	//timer += Timer::GetFrameDeltaTime();
-	//if (timer >= 2.6f) {
-	//	timer = 0.0f;
-	//	alpha = 1.0f;
-	//}
-	//if (timer >= 1.5f && timer < 2.0f) {
-	//	alpha -= 0.06f;
-	//}
-	//else if (timer >= 2.0f && timer < 2.5f) {
-	//	alpha += 0.06f;
-	//}
-
 	//Œˆ’è
 	if (pad->IsTrigger(pad->enButtonA))
 	{
-		isDeside = true;
-
 		CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
 		SE->Init("Assets/sound/Desision_2.wav");
 		SE->Play(false);
+		m_changeScene = true;
 	}
 }
 
 void TitleScene::Render()
 {
-	//sprite->SetAlpha(alpha);
-	sprite->Draw();
+	sprite->Render();
 }

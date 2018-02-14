@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Block.h"
-#include "Scene/GameScene.h"
+#include "Scene/SceneManager.h"
 #include "myEngine/Physics/CollisionAttr.h"
 #include "../Player/Player.h"
 
@@ -16,7 +16,19 @@ void Block::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 {
 	modelData.LoadModelData("Assets/modelData/Block_1.x", NULL);
 	model.Init(&modelData);
-	model.SetLight(&gameScene->GetLight());
+	//ƒ‰ƒCƒg‚ðÝ’è
+	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+
+	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	model.SetLight(&light);
+
 	model.UpdateWorldMatrix({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0 }, { 1.0f,1.0f,1.0f });
 
 	position = pos;
@@ -57,19 +69,25 @@ void Block::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 bool Block::Start()
 {
-	g_player->SetParentWorldMatrix(GetWorldMatrix());
-	g_player->SetParentRotationMatrix(GetRotationMatrix());
+	player->SetParentWorldMatrix(GetWorldMatrix());
+	player->SetParentRotationMatrix(GetRotationMatrix());
 	return true;
 }
 
 void Block::Update()
 {
-	if (gameScene == nullptr || gameScene->GetChengeStage()) {
+	if (sceneManager->GetChangeSceneFlag()) {
 		SetisDead();
 		//„‘Ì‚ðíœ
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
+	//if (gameScene == nullptr) {
+	//	SetisDead();
+	//	//„‘Ì‚ðíœ
+	//	g_physicsWorld->RemoveRigidBody(&rigidBody);
+	//	return;
+	//}
 
 	float angle = 0.3f * cPI / 180.0f;
 	D3DXQUATERNION rot = { 0.0f,1.0f,0.0f,1.0f };
@@ -81,13 +99,12 @@ void Block::Update()
 
 	model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
 
-	g_player->SetParentWorldMatrix(GetWorldMatrix());
-	g_player->SetParentRotationMatrix(GetRotationMatrix());
+	player->SetParentWorldMatrix(GetWorldMatrix());
+	player->SetParentRotationMatrix(GetRotationMatrix());
 }
 
 void Block::Render()
 {
-	if (gameScene == nullptr) { return; }
 	model.SetDrawShadowMap(false, true);
-	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 }

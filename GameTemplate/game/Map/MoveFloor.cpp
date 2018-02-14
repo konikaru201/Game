@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "MoveFloor.h"
-#include "Scene/GameScene.h"
+#include "Scene/SceneManager.h"
 #include "myEngine/Physics/CollisionAttr.h"
 #include "myEngine/Timer/Timer.h"
 
@@ -20,7 +20,18 @@ void MoveFloor::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 {
 	modelData.LoadModelData("Assets/modelData/MoveFloor_1.x", NULL);
 	model.Init(&modelData);
-	model.SetLight(&gameScene->GetLight());
+	//ƒ‰ƒCƒg‚ðÝ’è
+	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+
+	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	model.SetLight(&light);
 	model.UpdateWorldMatrix({ 0.0f, 0.0f, 0.0f }, {0.0f, 0.0f, 0.0f, 1.0}, { 1.0f,1.0f,1.0f });
 
 	position = pos;
@@ -53,13 +64,20 @@ void MoveFloor::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 void MoveFloor::PreUpdate()
 {
-	if (gameScene == nullptr || gameScene->GetChengeStage()) {
+	if (sceneManager->GetChangeSceneFlag())
+	{
 		SetisDead();
-		g_moveFloor = nullptr;
 		//„‘Ì‚ðíœ
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
+	//if (gameScene == nullptr) {
+	//	SetisDead();
+	//	g_moveFloor = nullptr;
+	//	//„‘Ì‚ðíœ
+	//	g_physicsWorld->RemoveRigidBody(&rigidBody);
+	//	return;
+	//}
 
 	Move();
 
@@ -93,7 +111,6 @@ void MoveFloor::Move()
 
 void MoveFloor::Render()
 {
-	if (gameScene == nullptr) { return; }
 	model.SetDrawShadowMap(false, true);
-	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 }

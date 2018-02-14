@@ -60,7 +60,7 @@ void CShadowMap::Draw()
 	//書き込み先を変更したのでクリア。
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0);
 
-	g_player->RenderShadow(&lightViewMatrix, &lightProjMatrix, true, false);
+	player->RenderShadow(&lightViewMatrix, &lightProjMatrix, true, false);
 
 	g_pd3dDevice->SetRenderTarget(0, renderTargetBackup);		//戻す。
 	g_pd3dDevice->SetDepthStencilSurface(depthBufferBackup);	//戻す。

@@ -13,7 +13,6 @@ CParticleEmitter::CParticleEmitter()
 
 CParticleEmitter::~CParticleEmitter()
 {
-
 }
 
 void CParticleEmitter::Init(const SParticleEmitParameter& param)

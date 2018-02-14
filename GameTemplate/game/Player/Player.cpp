@@ -5,7 +5,7 @@
 #include "myEngine/Graphics/ShadowMap.h"
 #include "myEngine/Timer/Timer.h"
 
-Player* g_player;
+Player* player;
 
 Player::Player()
 {
@@ -13,6 +13,8 @@ Player::Player()
 
 Player::~Player()
 {
+	//剛体を削除
+	playerController.RemoveRigidBoby();
 	//テクスチャの開放
 	if (specularMap != NULL) {
 		specularMap->Release();
@@ -54,18 +56,21 @@ bool Player::Start()
 	modelData.LoadModelData("Assets/modelData/Unity.x", &animation);
 	model.Init(&modelData);
 	//ライトを設定
-	model.SetLight(&gameScene->GetLight());
+	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
 
-	if (gameScene->GetStateStage() == 0) {
-		//座標と向きを初期化
-		position = { 0.0f,0.0f,0.0f };
-		rotation = { 0.0f,0.0f,0.0f,1.0f };
-	}
-	else if(gameScene->GetStateStage() == 1) {
-		//座標と向きを初期化
-		position = { 0.0f,2.5f,0.0f };
-		rotation = { 0.0f,0.0f,0.0f,1.0f };
-	}
+	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	model.SetLight(&light);
+
+	//座標と向きを初期化
+	position = { 0.0f,2.5f,0.0f };
+	rotation = { 0.0f,0.0f,0.0f,1.0f };
 
 	state = State_Move;
 
@@ -100,13 +105,6 @@ bool Player::Start()
 
 void Player::Update()
 {
-	if (gameScene == nullptr) { return; }
-
-	//ステージ切り替え時にプレイヤーを削除するので剛体を削除
-	if (gameScene->GetChengeStage()) {
-		playerController.RemoveRigidBoby();
-	}
-
 	moveSpeed = Move();
 
 	D3DXQUATERNION rot;
@@ -369,13 +367,12 @@ void Player::Update()
 
 void Player::Render()
 {
-	if (gameScene == nullptr) { return; }
-	model.Draw(&gameScene->GetGameCamera()->GetViewMatrix(), &gameScene->GetGameCamera()->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 }
 
 void Player::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
 {
-	if (g_player != nullptr && gameScene->GetGameCamera() != nullptr){
+	if (player != nullptr && gameCamera != nullptr){
 		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
 		model.Draw(viewMatrix, projMatrix);
 		model.SetDrawShadowMap(false, false);
@@ -384,7 +381,7 @@ void Player::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix, bool
 
 void Player::DepthStencilRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix)
 {
-	if (g_player != nullptr && gameScene->GetGameCamera() != nullptr) {
+	if (player != nullptr && gameCamera != nullptr) {
 		model.SetDepthStencilRender(true);
 		model.Draw(viewMatrix, projMatrix);
 		model.SetDepthStencilRender(false);
@@ -403,7 +400,7 @@ D3DXVECTOR3 Player::Move()
 	moveDir.z = pad->GetLStickYF();
 
 	//カメラの逆行列を作成
-	D3DXMATRIX ViewMatrix = gameScene->GetGameCamera()->GetViewMatrix();
+	D3DXMATRIX ViewMatrix = gameCamera->GetViewMatrix();
 	D3DXMATRIX ViewMatrixInv;
 	D3DXMatrixInverse(&ViewMatrixInv, 0, &ViewMatrix);
 

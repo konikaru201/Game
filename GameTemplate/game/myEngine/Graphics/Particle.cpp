@@ -140,9 +140,8 @@ void CParticle::Update()
 
 void CParticle::Render()
 {
-	if (gameScene == nullptr) { return; }
-	D3DXMATRIX viewMatrix = gameScene->GetGameCamera()->GetViewMatrix();
-	D3DXMATRIX projMatrix = gameScene->GetGameCamera()->GetViewProjectionMatrix();
+	D3DXMATRIX viewMatrix = gameCamera->GetViewMatrix();
+	D3DXMATRIX projMatrix = gameCamera->GetViewProjectionMatrix();
 
 	D3DXMATRIX m, mTrans;
 	D3DXMatrixTranslation(&mTrans, position.x, position.y, position.z);
