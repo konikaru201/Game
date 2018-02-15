@@ -168,9 +168,6 @@
     <ClCompile Include="Fade\Fade.cpp">
       <Filter>ソース ファイル\Fade</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\ResultScene.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Map\Block.cpp">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClCompile>
@@ -235,6 +232,9 @@
       <Filter>ソース ファイル\myEngine\Sound</Filter>
     </ClCompile>
     <ClCompile Include="Scene\StageSelectScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GameOverScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -359,9 +359,6 @@
     <ClInclude Include="locationinfo\stage1.h">
       <Filter>ソース ファイル\locationinfo</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\ResultScene.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Map\Block.h">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClInclude>
@@ -429,6 +426,9 @@
       <Filter>ソース ファイル\myEngine\Sound</Filter>
     </ClInclude>
     <ClInclude Include="Scene\StageSelectScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GameOverScene.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>

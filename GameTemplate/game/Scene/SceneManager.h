@@ -1,7 +1,7 @@
 #pragma once
 #include "myEngine/GameObject/GameObject.h"
 #include "TitleScene.h"
-#include "ResultScene.h"
+#include "GameOverScene.h"
 #include "StageSelectScene.h"
 #include "Scene/GameScene.h"
 #include "myEngine/HID/Pad.h"
@@ -25,7 +25,7 @@ public:
 	enum SceneState {
 		stateTitle,
 		stateGame,
-		stateResult,
+		stateGameOver,
 		stateStageSelect,
 	};
 
@@ -49,7 +49,7 @@ private:
 	SceneState state;								//現在のシーン
 	FadeStep f_step;								//フェードの状態
 	TitleScene* titleScene = nullptr;				//タイトルシーン
-	ResultScene* resultScene = nullptr;				//リザルトシーン
+	GameOverScene* gameOverScene = nullptr;			//リザルトシーン
 	CStageSelectScene* stageSelectScene = nullptr;	//ステージセレクトシーン
 	GameScene* gameScene = nullptr;					//ゲームシーン
 	bool m_changeScene = false;						//シーン切り替えフラグ

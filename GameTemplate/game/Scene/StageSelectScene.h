@@ -3,7 +3,7 @@
 #include "Map/Map.h"
 #include "Player/Player.h"
 #include "Camera/GameCamera.h"
-#include "Scene/ResultScene.h"
+#include "Scene/GameOverScene.h"
 #include "Number/DisplayCoin.h"
 #include "myEngine/Physics/Physics.h"
 #include "myEngine/GameObject/GameObject.h"

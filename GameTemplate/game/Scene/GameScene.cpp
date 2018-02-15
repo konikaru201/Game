@@ -25,22 +25,14 @@ GameScene::~GameScene()
 */
 bool GameScene::Start()
 {
-	if (step == step_WaitFadeOut) {		
-		//マップ生成
-		map = goMgr->NewGameObject<Map>();
-		//ステージ作成
-		StageCreate();
+	//マップ生成
+	map = goMgr->NewGameObject<Map>();
+	//ステージ作成
+	StageCreate();
 
-		depthStencilRender = goMgr->NewGameObject<DepthStencilRender>();	//シルエット生成
-		player = goMgr->NewGameObject<Player>();			//プレイヤー生成
-		gameCamera = goMgr->NewGameObject<GameCamera>();	//カメラ生成
-		
-		return false;
-	}
-	else {
-		step = step_WaitFadeIn;
-		g_fade->StartFadeIn();
-	}
+	depthStencilRender = goMgr->NewGameObject<DepthStencilRender>();	//シルエット生成
+	player = goMgr->NewGameObject<Player>();			//プレイヤー生成
+	gameCamera = goMgr->NewGameObject<GameCamera>();	//カメラ生成
 
 	return true;
 }
@@ -77,9 +69,6 @@ void GameScene::Update()
 			step = step_StageClear;
 		}
 		g_physicsWorld->Update();
-		break;
-	//フェードアウト時
-	case step_WaitFadeOut:
 		break;
 	//ゲームオーバー時
 	case step_GameOver:

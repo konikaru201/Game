@@ -36,6 +36,12 @@ public:
 		m_position = pos;
 	}
 
+	//座標を取得
+	const D3DXVECTOR2& GetPosition()
+	{
+		return m_position;
+	}
+
 	//サイズを設定
 	//scale		サイズ
 	void SetSize(const D3DXVECTOR2& size)

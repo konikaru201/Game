@@ -3,7 +3,7 @@
 #include "Map/Map.h"
 #include "Player/Player.h"
 #include "Camera/GameCamera.h"
-#include "Scene/ResultScene.h"
+#include "Scene/GameOverScene.h"
 #include "Number/DisplayCoin.h"
 #include "myEngine/Physics/Physics.h"
 #include "myEngine/GameObject/GameObject.h"
@@ -44,7 +44,6 @@ public:
 	//ゲーム進行の状態
 	enum Step {
 		step_WaitFadeIn,
-		step_WaitFadeOut,
 		step_WaitGameOver,
 		step_normal,
 		step_StageLoad,
@@ -81,10 +80,10 @@ private:
 	DepthStencilRender* depthStencilRender;	//シルエット
 	CSoundSource* bgmSource = nullptr;		//BGM
 
-	Step step = step_WaitFadeOut;			//状態
+	Step step = step_StageLoad;				//状態
 	state_stage currentStage = en_Stage1;	//現在のステージ番号
 	state_stage nextStage = en_Stage2;		//次のステージ番号
 
-	float timer = 0.0f;
-	bool m_waitFadeOut = false;					//フェードアウト待ちフラグ
+	float timer = 0.0f;						//タイマー
+	bool m_waitFadeOut = false;				//フェードアウト待ちフラグ
 };

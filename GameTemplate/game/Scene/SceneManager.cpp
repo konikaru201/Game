@@ -84,7 +84,6 @@ void SceneManager::Update()
 		else if (f_step == step_normal) {
 			//フェードアウト待ち
 			if (stageSelectScene->GetWaitFadeOut()) {
-				//g_fade->StartFadeOut();
 				f_step = step_WaitFadeOut;
 				m_changeScene = true;
 			}
@@ -105,8 +104,8 @@ void SceneManager::Update()
 				//ゲームオーバー時
 				if (g_step == GameScene::step_GameOver) {
 					//リザルトシーンに遷移
-					resultScene = goMgr->NewGameObject<ResultScene>();
-					state = stateResult;
+					gameOverScene = goMgr->NewGameObject<GameOverScene>();
+					state = stateGameOver;
 					f_step = step_WaitFadeIn;
 				}
 				//ステージクリア時
@@ -120,24 +119,22 @@ void SceneManager::Update()
 		}
 		//通常時
 		else if (f_step == step_normal) {
-			////ゲームシーンの現在の状態を取得
-			//GameScene::Step g_step = gameScene->IsStep();
 			//ゲームオーバーかステージクリアになるとフェードアウト
-			if (gameScene->GetWaitFadeOut()/*g_step == GameScene::step_GameOver || g_step == GameScene::step_StageClear*/) {
+			if (gameScene->GetWaitFadeOut()) {
 				f_step = step_WaitFadeOut;
 				m_changeScene = true;
 			}
 		}
 		break;
 	//リザルトシーン
-	case stateResult:
+	case stateGameOver:
 		//フェードアウト時
 		if (f_step == step_WaitFadeOut) {
 			//フェードが終了
 			if (!g_fade->IsExecute()) {
 				//リザルトシーンを削除
-				resultScene->SetisDead();
-				resultScene = nullptr;
+				gameOverScene->SetisDead();
+				gameOverScene = nullptr;
 				//ゲームシーンに遷移
 				gameScene = goMgr->NewGameObject<GameScene>();
 				state = stateGame;
@@ -147,7 +144,7 @@ void SceneManager::Update()
 		//通常時
 		else if(f_step == step_normal){
 			//シーン切り替え時フェードアウト
-			if (resultScene->GetChangeSceneFlag()) {
+			if (gameOverScene->GetChangeSceneFlag()) {
 				g_fade->StartFadeOut();
 				f_step = step_WaitFadeOut;
 			}
