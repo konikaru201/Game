@@ -27,10 +27,10 @@ public:
 	//描画
 	void Render();
 
-	//シーン切り替えフラグを取得
-	bool GetChangeSceneFlag()
+	//ゲームオーバーシーン終了フラグを取得
+	bool GetGameOverSceneEnd()
 	{
-		return m_changeScene;
+		return m_gameOverSceneEnd;
 	}
 
 	//状態
@@ -40,6 +40,12 @@ public:
 		state_End,		//終了
 	};
 
+	//状態を取得
+	State GetState()
+	{
+		return m_state;
+	}
+
 private:
 	//スプライト
 	Sprite* m_gameOver;				//ゲームオーバー
@@ -48,9 +54,12 @@ private:
 	Sprite* m_titleReturn;			//タイトルに戻る
 	Sprite* m_triangle;				//三角
 
-	float alpha = 1.0f;				//透明度。0.0で黒
-	float timer = 0.0f;				//タイマー
-	bool m_changeScene = false;		//シーン切り替えフラグ
-	State state = state_Continue;	//状態
+	const float FADE_TIME = 1.0f;	//フェードする時間
+	float m_alpha = 0.0f;			//不透明度。1.0は黒
+	float m_timer = 0.0f;			//タイマー
+	bool m_gameOverSceneEnd = false;//ゲームオーバーシーン終了フラグ
+	State m_state = state_Continue;	//状態
+	D3DXVECTOR2 m_preGameOverPos;	//ゲームオーバーのスプライト座標保存用変数
 	D3DXVECTOR2 m_preTrianglePos;	//三角のスプライト座標保存用変数
+	bool m_gameOverSet = false;		//ゲームオーバーが表示されたか
 };

@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "GameScene.h"
 #include "myEngine/GameObject/GameObjectManager.h"
-#include "../Fade/Fade.h"
-#include "../myEngine/Timer/Timer.h"
+#include "Fade/Fade.h"
+#include "myEngine/Timer/Timer.h"
 
 SMapInfo Stage2[] = {
 #include "locationinfo/stage2.h"
@@ -60,7 +60,7 @@ void GameScene::Update()
 	case step_normal:
 		//プレイヤー死亡時
 		if (player->GetPlayerDead()) {
-			g_fade->StartFadeOut();
+			gameOverScene = goMgr->NewGameObject<GameOverScene>();
 			step = step_GameOver;
 		}
 		//スター獲得時
@@ -72,16 +72,19 @@ void GameScene::Update()
 		break;
 	//ゲームオーバー時
 	case step_GameOver:
-		//フェードが終了
-		if (!g_fade->IsExecute()) {
-			m_waitFadeOut = true;
+		//ゲームオーバーシーンが終了
+		if (gameOverScene != nullptr && gameOverScene->GetGameOverSceneEnd()) {
+			g_fade->StartFadeOut();
+			m_gameOverSceneEnd = true;
+			gameOverScene->SetisDead();
+			gameOverScene = nullptr;
 		}
 		break;
 	//ステージクリア時
 	case step_StageClear:
 		//フェードが終了
 		if (!g_fade->IsExecute()) {
-			m_waitFadeOut = true;
+			m_stageClearFlag = true;
 		}
 		break;
 	}

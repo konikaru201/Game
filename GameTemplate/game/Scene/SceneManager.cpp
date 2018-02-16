@@ -97,58 +97,72 @@ void SceneManager::Update()
 			if (!g_fade->IsExecute()) {
 				//ゲームシーンの現在の状態を取得
 				GameScene::Step g_step = gameScene->IsStep();
-				//ゲームシーンを削除
-				gameScene->Release();
-				gameScene->SetisDead();
-				gameScene = nullptr;
-				//ゲームオーバー時
-				if (g_step == GameScene::step_GameOver) {
-					//リザルトシーンに遷移
-					gameOverScene = goMgr->NewGameObject<GameOverScene>();
-					state = stateGameOver;
-					f_step = step_WaitFadeIn;
-				}
 				//ステージクリア時
-				else if (g_step == GameScene::step_StageClear) {
+				if (g_step == GameScene::step_StageClear) {
 					//ステージセレクトシーンに遷移
 					stageSelectScene = goMgr->NewGameObject<CStageSelectScene>();
 					state = stateStageSelect;
+					f_step = step_WaitFadeIn;
+					//ゲームシーンを削除
+					gameScene->Release();
+					gameScene->SetisDead();
+					gameScene = nullptr;
+				}
+				//ゲームオーバー時
+				if (g_step == GameScene::step_GameOver) {
+					m_changeScene = true;
+					state = stateGameOver;
 					f_step = step_WaitFadeIn;
 				}
 			}
 		}
 		//通常時
 		else if (f_step == step_normal) {
-			//ゲームオーバーかステージクリアになるとフェードアウト
-			if (gameScene->GetWaitFadeOut()) {
+			//ステージクリアになった
+			if (gameScene->GetStageClearFlag()) 
+			{
 				f_step = step_WaitFadeOut;
 				m_changeScene = true;
 			}
-		}
-		break;
-	//リザルトシーン
-	case stateGameOver:
-		//フェードアウト時
-		if (f_step == step_WaitFadeOut) {
-			//フェードが終了
-			if (!g_fade->IsExecute()) {
-				//リザルトシーンを削除
-				gameOverScene->SetisDead();
-				gameOverScene = nullptr;
-				//ゲームシーンに遷移
-				gameScene = goMgr->NewGameObject<GameScene>();
-				state = stateGame;
-				f_step = step_WaitFadeIn;
-			}
-		}
-		//通常時
-		else if(f_step == step_normal){
-			//シーン切り替え時フェードアウト
-			if (gameOverScene->GetChangeSceneFlag()) {
-				g_fade->StartFadeOut();
+			//ゲームオーバーになった
+			if (gameScene->GetGameOverEnd()) {
 				f_step = step_WaitFadeOut;
 			}
 		}
+		break;
+	//ゲームオーバーシーン
+	case stateGameOver:
+		//ゲームシーンを削除
+		gameScene->Release();
+		gameScene->SetisDead();
+		gameScene = nullptr;
+		//ゲームシーンを作り直す
+		gameScene = goMgr->NewGameObject<GameScene>();
+		state = stateGame;
+		f_step = step_WaitFadeIn;
+
+
+		////フェードアウト時
+		//if (f_step == step_WaitFadeOut) {
+		//	//フェードが終了
+		//	if (!g_fade->IsExecute()) {
+		//		//リザルトシーンを削除
+		//		gameOverScene->SetisDead();
+		//		gameOverScene = nullptr;
+		//		//ゲームシーンに遷移
+		//		gameScene = goMgr->NewGameObject<GameScene>();
+		//		state = stateGame;
+		//		f_step = step_WaitFadeIn;
+		//	}
+		//}
+		////通常時
+		//else if(f_step == step_normal){
+		//	//シーン切り替え時フェードアウト
+		//	if (gameOverScene->GetChangeSceneFlag()) {
+		//		g_fade->StartFadeOut();
+		//		f_step = step_WaitFadeOut;
+		//	}
+		//}
 		break;
 	}
 }

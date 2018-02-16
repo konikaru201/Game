@@ -69,13 +69,39 @@ public:
 		return currentStage;
 	}
 
-	//フェードアウト待ちであるか取得
-	bool GetWaitFadeOut()
+	//ステージクリアフラグを取得
+	bool GetStageClearFlag()
 	{
-		return m_waitFadeOut;
+		return m_stageClearFlag;
 	}
 
+	//ゲームオーバーシーンの終了フラグを取得
+	bool GetGameOverEnd()
+	{
+		return m_gameOverSceneEnd;
+	}
+
+	////ゲームオーバーシーンの状態を取得
+	//int GetGameOverSceneState()
+	//{
+	//	int stateNumber;
+	//	//コンティニューの場合
+	//	if (gameOverScene->GetState() == GameOverScene::state_Continue) {
+	//		stateNumber = 0;
+	//	}
+	//	//ステージ選択し直す場合
+	//	else if(gameOverScene->GetState() == GameOverScene::state_return) {
+	//		stateNumber = 1;
+	//	}
+	//	//タイトルに戻る場合
+	//	else {
+	//		stateNumber = 2;
+	//	}
+	//	return stateNumber;
+	//}
+
 private:
+	GameOverScene* gameOverScene = nullptr;
 	Map* map;								//マップ
 	DepthStencilRender* depthStencilRender;	//シルエット
 	CSoundSource* bgmSource = nullptr;		//BGM
@@ -85,5 +111,6 @@ private:
 	state_stage nextStage = en_Stage2;		//次のステージ番号
 
 	float timer = 0.0f;						//タイマー
-	bool m_waitFadeOut = false;				//フェードアウト待ちフラグ
+	bool m_gameOverSceneEnd = false;		//ゲームオーバーシーンの終了フラグ
+	bool m_stageClearFlag = false;			//ステージクリアフラグ
 };
