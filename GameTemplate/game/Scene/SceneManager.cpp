@@ -132,37 +132,32 @@ void SceneManager::Update()
 		break;
 	//ゲームオーバーシーン
 	case stateGameOver:
+		m_gameOverSceneStateNumber = gameScene->GetGameOverSceneStateNumber();
 		//ゲームシーンを削除
 		gameScene->Release();
 		gameScene->SetisDead();
 		gameScene = nullptr;
-		//ゲームシーンを作り直す
-		gameScene = goMgr->NewGameObject<GameScene>();
-		state = stateGame;
+		//コンティニュー
+		if (m_gameOverSceneStateNumber == 0) {
+			//ゲームシーンを作り直す
+			gameScene = goMgr->NewGameObject<GameScene>();
+			state = stateGame;
+		}
+		//ステージ選択に戻る
+		else if (m_gameOverSceneStateNumber == 1) {
+			//ステージセレクトシーンに遷移
+			stageSelectScene = goMgr->NewGameObject<CStageSelectScene>();
+			state = stateStageSelect;
+		}
+		//タイトルに戻る
+		else {
+			//タイトルシーンに遷移
+			titleScene = goMgr->NewGameObject<TitleScene>();
+			state = stateTitle;
+		}
+		
 		f_step = step_WaitFadeIn;
 
-
-		////フェードアウト時
-		//if (f_step == step_WaitFadeOut) {
-		//	//フェードが終了
-		//	if (!g_fade->IsExecute()) {
-		//		//リザルトシーンを削除
-		//		gameOverScene->SetisDead();
-		//		gameOverScene = nullptr;
-		//		//ゲームシーンに遷移
-		//		gameScene = goMgr->NewGameObject<GameScene>();
-		//		state = stateGame;
-		//		f_step = step_WaitFadeIn;
-		//	}
-		//}
-		////通常時
-		//else if(f_step == step_normal){
-		//	//シーン切り替え時フェードアウト
-		//	if (gameOverScene->GetChangeSceneFlag()) {
-		//		g_fade->StartFadeOut();
-		//		f_step = step_WaitFadeOut;
-		//	}
-		//}
 		break;
 	}
 }

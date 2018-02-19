@@ -40,10 +40,11 @@ public:
 		state_End,		//終了
 	};
 
-	//状態を取得
-	State GetState()
+	//状態を数字で取得。
+	//0はコンティニュー。1はステージ選択に戻る。2はタイトルに戻る。
+	int GetStateNumber()
 	{
-		return m_state;
+		return m_stateNumber;
 	}
 
 private:
@@ -59,6 +60,7 @@ private:
 	float m_timer = 0.0f;			//タイマー
 	bool m_gameOverSceneEnd = false;//ゲームオーバーシーン終了フラグ
 	State m_state = state_Continue;	//状態
+	int m_stateNumber = 0;			//状態の番号。0はコンティニュー。1はステージ選択に戻る。2はタイトルに戻る。
 	D3DXVECTOR2 m_preGameOverPos;	//ゲームオーバーのスプライト座標保存用変数
 	D3DXVECTOR2 m_preTrianglePos;	//三角のスプライト座標保存用変数
 	bool m_gameOverSet = false;		//ゲームオーバーが表示されたか

@@ -94,12 +94,14 @@ void GameOverScene::Update()
 
 			if (m_state == state_return) {
 				m_state = state_Continue;
+				m_stateNumber = 0;
 				m_preTrianglePos.y = continuePos.y;
 				m_preTrianglePos.x += 150.0f;
 				m_preTrianglePos.y -= 20.0f;
 			}
 			else {
 				m_state = state_return;
+				m_stateNumber = 1;
 				m_preTrianglePos.y = stageSelectReturnPos.y;
 				m_preTrianglePos.x -= 150.0f;
 				m_preTrianglePos.y -= 20.0f;
@@ -117,12 +119,14 @@ void GameOverScene::Update()
 
 			if (m_state == state_Continue) {
 				m_state = state_return;
+				m_stateNumber = 1;
 				m_preTrianglePos.y = stageSelectReturnPos.y;
 				m_preTrianglePos.x -= 150.0f;
 				m_preTrianglePos.y -= 20.0f;
 			}
 			else {
 				m_state = state_End;
+				m_stateNumber = 2;
 				m_preTrianglePos.y = titleReturnPos.y;
 				m_preTrianglePos.x += 150.0f;
 				m_preTrianglePos.y -= 20.0f;

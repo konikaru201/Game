@@ -49,10 +49,10 @@ private:
 	SceneState state;								//現在のシーン
 	FadeStep f_step;								//フェードの状態
 	TitleScene* titleScene = nullptr;				//タイトルシーン
-	//GameOverScene* gameOverScene = nullptr;			//リザルトシーン
 	CStageSelectScene* stageSelectScene = nullptr;	//ステージセレクトシーン
 	GameScene* gameScene = nullptr;					//ゲームシーン
 	bool m_changeScene = false;						//シーン切り替えフラグ
+	int m_gameOverSceneStateNumber = 0;				//ゲームオーバーシーンのステート番号
 };
 
 extern SceneManager* sceneManager;

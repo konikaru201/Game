@@ -74,6 +74,7 @@ void GameScene::Update()
 	case step_GameOver:
 		//ゲームオーバーシーンが終了
 		if (gameOverScene != nullptr && gameOverScene->GetGameOverSceneEnd()) {
+			m_gameOverSceneStateNumber = gameOverScene->GetStateNumber();
 			g_fade->StartFadeOut();
 			m_gameOverSceneEnd = true;
 			gameOverScene->SetisDead();

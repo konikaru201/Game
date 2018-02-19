@@ -81,24 +81,11 @@ public:
 		return m_gameOverSceneEnd;
 	}
 
-	////ゲームオーバーシーンの状態を取得
-	//int GetGameOverSceneState()
-	//{
-	//	int stateNumber;
-	//	//コンティニューの場合
-	//	if (gameOverScene->GetState() == GameOverScene::state_Continue) {
-	//		stateNumber = 0;
-	//	}
-	//	//ステージ選択し直す場合
-	//	else if(gameOverScene->GetState() == GameOverScene::state_return) {
-	//		stateNumber = 1;
-	//	}
-	//	//タイトルに戻る場合
-	//	else {
-	//		stateNumber = 2;
-	//	}
-	//	return stateNumber;
-	//}
+	//ゲームオーバーシーンの状態を数字で取得。
+	int GetGameOverSceneStateNumber()
+	{
+		return m_gameOverSceneStateNumber;
+	}
 
 private:
 	GameOverScene* gameOverScene = nullptr;
@@ -113,4 +100,5 @@ private:
 	float timer = 0.0f;						//タイマー
 	bool m_gameOverSceneEnd = false;		//ゲームオーバーシーンの終了フラグ
 	bool m_stageClearFlag = false;			//ステージクリアフラグ
+	int m_gameOverSceneStateNumber = 0;		//ゲームオーバーシーンのステート番号
 };
