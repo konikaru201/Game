@@ -235,6 +235,13 @@ void Player::Update()
 			}
 		}
 		
+		//ジャンプしたとき声を出す。
+		if (pad->IsTrigger(pad->enButtonA) && playerController.IsJump()) {
+			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+			SE->Init("Assets/sound/U_Voice_1.wav");
+			SE->Play(false);
+		}
+
 		//ブロックに当たった時
 		if (playerController.IsOnBlock() == true)
 		{
@@ -474,10 +481,6 @@ D3DXVECTOR3 Player::Move()
 		}
 		playerController.Jump();
 		currentAnim = AnimationJump;
-
-		CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
-		SE->Init("Assets/sound/U_Voice_1.wav");
-		SE->Play(false);
 	}
 
 	////壁に当たった時

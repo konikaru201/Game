@@ -60,11 +60,15 @@ void GameScene::Update()
 	case step_normal:
 		//プレイヤー死亡時
 		if (player->GetPlayerDead()) {
+			bgmSource->SetisDead();
+			bgmSource = nullptr;
 			gameOverScene = goMgr->NewGameObject<GameOverScene>();
 			step = step_GameOver;
 		}
 		//スター獲得時
 		else if (player->GetStarAnimationEnd()) {
+			bgmSource->SetisDead();
+			bgmSource = nullptr;
 			g_fade->StartFadeOut();
 			step = step_StageClear;
 		}
@@ -120,6 +124,4 @@ void GameScene::Release()
 	gameCamera = nullptr;
 	map->SetisDead();
 	map = nullptr;
-	bgmSource->SetisDead();
-	bgmSource = nullptr;
 }
