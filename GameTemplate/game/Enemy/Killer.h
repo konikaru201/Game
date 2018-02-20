@@ -3,6 +3,7 @@
 #include "myEngine/Physics/CharacterController.h"
 #include "myEngine/GameObject/GameObject.h"
 #include "myEngine/Graphics/Light.h"
+#include "myEngine/Graphics/ParticleEmitter.h"
 
 class Killer : public GameObject {
 public:
@@ -28,6 +29,18 @@ public:
 
 	//プレイヤーとの当たり判定
 	void CollisionDetection(float Length , const D3DXVECTOR3& ToPlayer);
+
+	//モデルの向きを取得
+	D3DXVECTOR3 GetDirection()
+	{
+		D3DXMATRIX matrix = model.GetWorldMatrix();
+		D3DXVECTOR3 direction;
+		direction.x = matrix.m[2][0];
+		direction.y = matrix.m[2][1];
+		direction.z = matrix.m[2][2];
+		D3DXVec3Normalize(&direction, &direction);
+		return direction;
+	}
 private:
 	enum State {
 		State_Search,	//探索
@@ -53,4 +66,5 @@ private:
 	bool				isDead = false;						//死亡フラグ
 	float				timer = 0.0f;						//タイマー
 	bool				m_hitPlayer = false;				//プレイヤーに当たったフラグ
+	CParticleEmitter	particleEmitter;					//パーティクル生成
 };

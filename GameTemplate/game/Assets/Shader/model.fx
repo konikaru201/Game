@@ -232,11 +232,13 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		//射影空間(スクリーン座標系)に変換された座標はw成分で割ってやると(-1.0f～1.0)の範囲の正規化座標系になる。
 		//これをUV座標系(0.0～1.0)に変換して、シャドウマップをフェッチするためのUVとして活用する。
 		float2 shadowMapUV = In.lightViewPos.xy / In.lightViewPos.w;	//この計算で(-1.0～1.0)の範囲になる。
-		shadowMapUV *= float2(0.5f, -0.5f);								//この計算で(-0.5～0.5)の範囲になる。
-		shadowMapUV += float2(0.5f, 0.5f);								//そしてこれで(0.0～1.0)の範囲になってＵＶ座標系に変換できた。やったね。
-		float4 shadowVal = tex2D(g_shadowMapTextureSampler, shadowMapUV);	//シャドウマップは影が落ちているところはグレースケールになっている。
-		if (shadowVal.r < lightViewPosZ) {
-			color *= float4(0.0f, 0.0f, 0.0f, 1.0f);
+		if(-1.0f <= shadowMapUV.x && shadowMapUV.x <= 1.0f && -1.0f <= shadowMapUV.y && shadowMapUV.y <= 1.0f){
+			shadowMapUV *= float2(0.5f, -0.5f);								//この計算で(-0.5～0.5)の範囲になる。
+			shadowMapUV += float2(0.5f, 0.5f);								//そしてこれで(0.0～1.0)の範囲になってＵＶ座標系に変換できた。やったね。
+			float4 shadowVal = tex2D(g_shadowMapTextureSampler, shadowMapUV);	//シャドウマップは影が落ちているところはグレースケールになっている。
+			if (shadowVal.r < lightViewPosZ) {
+				color *= float4(0.0f, 0.0f, 0.0f, 1.0f);
+			}
 		}
 	}
 	

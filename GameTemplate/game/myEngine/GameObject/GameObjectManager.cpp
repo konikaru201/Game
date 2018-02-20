@@ -42,6 +42,15 @@ void GameObjectManager::Render()
 	}
 }
 
+void GameObjectManager::RenderToShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
+{
+	for (GameObject* obj : gameObjects) {
+		if (obj->GetShadowToRender()){
+			obj->RenderShadow(viewMatrix, projMatrix, isDrawShadowMap, isRecieveShadow);
+		}
+	}
+}
+
 void GameObjectManager::DeleteGameObject()
 {
 	std::list<GameObject*>::iterator it;

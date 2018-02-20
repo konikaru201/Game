@@ -16,6 +16,9 @@ public:
 	//描画
 	void Render();
 
+	//影の描画
+	void RenderToShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
+
 	//インスタンスをゲームオブジェクトに追加
 	template<class T>
 	T* NewGameObject()

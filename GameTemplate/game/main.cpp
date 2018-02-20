@@ -92,32 +92,6 @@ void Init()
 //-----------------------------------------------------------------------------
 VOID Render()
 {
-	if (player != nullptr && player->GetState() != player->State_Dead) {
-		D3DXVECTOR3 target = player->GetPosition();
-		D3DXVECTOR3 viewPos = target;
-		viewPos.y += 30.0f;
-		g_shadowMap.SetLightViewPosition(viewPos);
-		g_shadowMap.SetLightViewTarget(target);
-	}
-	else {
-		g_shadowMap.SetLightViewPosition(D3DXVECTOR3(0.0f, 10.0f, 0.0f));
-		g_shadowMap.SetLightViewTarget(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	}
-
-	//if (g_coin != nullptr) {
-	//	D3DXVECTOR3 target = g_coin->GetPosition();
-	//	D3DXVECTOR3 viewPos = target;
-	//	viewPos.y += 10.0f;
-	//	g_shadowMap.SetLightViewPosition(viewPos);
-	//	g_shadowMap.SetLightViewTarget(target);
-	//}
-	//else {
-	//	g_shadowMap.SetLightViewPosition(D3DXVECTOR3(0.0f, 10.0f, 0.0f));
-	//	g_shadowMap.SetLightViewTarget(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	//}
-
-	g_shadowMap.Update();
-
 	// 画面をクリア。
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0);
 
@@ -190,6 +164,20 @@ void Update()
 	goMgr->Update();
 	displayCoin->Update();
 	g_fade->Update();
+
+	if (player != nullptr && player->GetState() != player->State_Dead) {
+		D3DXVECTOR3 target = player->GetPosition();
+		D3DXVECTOR3 viewPos = target;
+		viewPos.y += 10.0f;
+		g_shadowMap.SetLightViewPosition(viewPos);
+		g_shadowMap.SetLightViewTarget(target);
+	}
+	else {
+		g_shadowMap.SetLightViewPosition(D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+		g_shadowMap.SetLightViewTarget(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	}
+
+	g_shadowMap.Update();
 }
 //-----------------------------------------------------------------------------
 //ゲームが終了するときに呼ばれる処理。

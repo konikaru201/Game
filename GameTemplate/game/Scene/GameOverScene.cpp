@@ -15,6 +15,7 @@ GameOverScene::~GameOverScene()
 	delete m_stageSelectReturn;
 	delete m_titleReturn;
 	delete m_triangle;
+	delete m_background;
 }
 
 bool GameOverScene::Start()
@@ -46,7 +47,9 @@ bool GameOverScene::Start()
 	m_triangle->SetPosition(trianglePos);
 	m_triangle->SetAlpha(m_alpha);
 
-	//g_fade->StartFadeIn();
+	//m_background = new Sprite;
+	//m_background->Initialize("Assets/sprite/gameOverBackground.png");
+	//m_background->SetAlpha(0.2f);
 
 	return true;
 }

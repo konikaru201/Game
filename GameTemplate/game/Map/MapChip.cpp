@@ -62,12 +62,6 @@ void MapChip::Update()
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
-	//if (gameScene == nullptr) {
-	//	SetisDead();
-	//	//„‘Ì‚ðíœ
-	//	g_physicsWorld->RemoveRigidBody(&rigidBody);
-	//	return;
-	//}
 }
 
 void MapChip::Render()

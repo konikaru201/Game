@@ -42,11 +42,6 @@ void Star::Update()
 		SetisDead();
 		return;
 	}
-	//if (gameScene == nullptr)
-	//{
-	//	SetisDead();
-	//	return;
-	//}
 
 	float angle = 1.0f * cPI / 180.0f;
 	D3DXQUATERNION rot = { 0.0f,1.0f,0.0f,1.0f };

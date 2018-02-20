@@ -132,6 +132,7 @@ void SceneManager::Update()
 		break;
 	//ゲームオーバーシーン
 	case stateGameOver:
+		//選択したシーンの番号を取得
 		m_gameOverSceneStateNumber = gameScene->GetGameOverSceneStateNumber();
 		//ゲームシーンを削除
 		gameScene->Release();

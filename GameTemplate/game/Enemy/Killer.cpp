@@ -63,6 +63,16 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	//作成した剛体を物理ワールドに追加
 	g_physicsWorld->AddRigidBody(&rigidBody);
 
+	////パーティクルの初期化
+	//SParticleEmitParameter param;
+	//param.texturePath = "Assets/sprite/smoke.png";
+	//param.w = 0.5f;
+	//param.h = 0.5f;
+	//param.intervalTime = 0.1f;
+	//param.initSpeed = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+	//param.position = position;
+	//param.alpha = 1.0f;
+	//particleEmitter.Init(param);
 }
 
 void Killer::Update()
@@ -74,12 +84,6 @@ void Killer::Update()
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
-	//if (gameScene == nullptr || isDead) {
-	//	SetisDead();
-	//	//剛体を削除
-	//	g_physicsWorld->RemoveRigidBody(&rigidBody);
-	//	return;
-	//}
 
 	//初期位置に戻す
 	if (position.x < moveLimitLine[0] || position.x > moveLimitLine[1]
@@ -125,6 +129,10 @@ D3DXVECTOR3 Killer::Move()
 
 	//プレイヤーとの当たり判定
 	CollisionDetection(length, toPlayer);
+
+	//particleEmitter.SetSpeed(GetDirection() * -1.0f);
+	//particleEmitter.SetPosition(position);
+	//particleEmitter.Update();
 
 	switch (state)
 	{

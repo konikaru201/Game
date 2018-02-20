@@ -8,7 +8,6 @@ extern LPDIRECT3DDEVICE9 g_pd3dDevice;
 
 CParticleEmitter::CParticleEmitter()
 {
-
 }
 
 CParticleEmitter::~CParticleEmitter()

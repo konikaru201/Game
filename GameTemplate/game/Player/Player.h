@@ -31,8 +31,6 @@ public:
 	//戻り値　移動速度を返す
 	D3DXVECTOR3 Move();
 
-	void Reset();
-
 	//座標の取得
 	const D3DXVECTOR3& GetPosition() {
 		return position;
@@ -140,7 +138,7 @@ public:
 
 	//プレイヤーの状態
 	enum State {
-		State_Move,				//移動
+		State_Walk,				//移動
 		State_Dead,				//死亡
 		State_WallJump,			//壁ジャンプ
 		State_GetStar,			//スターを獲得
@@ -158,7 +156,8 @@ public:
 		AnimationWalk,	//歩く
 		AnimationRun,	//走る
 		AnimationJump,	//ジャンプ
-		AnimationPose,
+		AnimationPose,	//ポーズ
+		AnimationDead,	//死亡
 	};
 
 private:
@@ -169,7 +168,7 @@ private:
 	PlayerController playerController;								//プレイヤーコントローラー
 	D3DXVECTOR3	position;											//座標
 	D3DXQUATERNION rotation;										//回転
-	D3DXVECTOR3 dir = { 0.0f,0.0f,0.0f };							//方向
+	D3DXVECTOR3 dir = { 0.0f,0.0f,0.0f };								//方向
 	AnimationNo currentAnim;										//現在のアニメーション
 	AnimationNo prevAnim;											//前のアニメーション
 	D3DXVECTOR3 playerDir;											//キャラクターのZ方向
@@ -181,11 +180,11 @@ private:
 	D3DXVECTOR3 moveSpeed = { 0.0f,0.0f,0.0f };						//移動速度
 	float acceleration = 0.0f;										//加速度
 	const float speedLimit = 6.0f;									//限界速度
-	D3DXVECTOR3 currentDir = { 0.0f,0.0f,0.0f };					//1フレーム前のZ方向
+	D3DXVECTOR3 currentDir = { 0.0f,0.0f,0.0f };						//1フレーム前のZ方向
 	bool parentFirstHit = true;										//親との最初の当たり判定フラグ
 	bool secondParentFirstHit = true;								//親との最初の当たり判定フラグ
 	bool getStar = false;											//スター獲得フラグ
-	State state = State_Move;										//状態
+	State state = State_Walk;										//状態
 	bool animationEnd = false;										//スター獲得時のアニメーション終了フラグ
 	bool m_treadOnEnemy = false;									//敵を踏んだフラグ
 	float jumpSpeed = 10.0f;										//ジャンプ時の速度

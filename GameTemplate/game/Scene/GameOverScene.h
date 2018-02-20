@@ -54,6 +54,7 @@ private:
 	Sprite* m_stageSelectReturn;	//ステージ選択し直す
 	Sprite* m_titleReturn;			//タイトルに戻る
 	Sprite* m_triangle;				//三角
+	Sprite* m_background;			//背景
 
 	const float FADE_TIME = 1.0f;	//フェードする時間
 	float m_alpha = 0.0f;			//不透明度。1.0は黒

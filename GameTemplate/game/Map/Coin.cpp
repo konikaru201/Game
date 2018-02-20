@@ -2,6 +2,7 @@
 #include "Coin.h"
 #include "Number/DisplayCoin.h"
 #include "Scene/SceneManager.h"
+#include "myEngine/Sound/SoundSource.h"
 
 Coin::Coin()
 {
@@ -33,6 +34,9 @@ void Coin::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	position = pos;
 	rotation = rot;
 	InitPosition = pos;
+
+	//影を描画するフラグを立てる
+	SetRenderToShadow();
 }
 
 void Coin::Update()
@@ -42,11 +46,6 @@ void Coin::Update()
 		SetisDead();
 		return;
 	}
-	//if (gameScene == nullptr)
-	//{
-	//	SetisDead();
-	//	return;
-	//}
 
 	float angle = 1.0f * cPI / 180.0f;
 	D3DXQUATERNION rot = { 0.0f,1.0f,0.0f,1.0f };
@@ -59,9 +58,13 @@ void Coin::Update()
 	D3DXVECTOR3 toPlayer = position - PlayerPos;
 	float length = D3DXVec3Length(&toPlayer);
 	//プレイヤーと距離が近ければ枚数をカウントして削除
-	if (length <= 0.7f)
+	if (length <= 0.7f && !flag)
 	{
 		flag = true;
+
+		CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+		SE->Init("Assets/sound/coin.wav");
+		SE->Play(false);
 	}
 
 	if (flag)
@@ -94,11 +97,11 @@ void Coin::Render()
 	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 }
 
-//void Coin::RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
-//{
-//	if (g_coin != nullptr) {
-//		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
-//		model.Draw(viewMatrix, projMatrix);
-//		model.SetDrawShadowMap(false, false);
-//	}
-//}
+void Coin::RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
+{
+	if (gameCamera != nullptr) {
+		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
+		model.Draw(viewMatrix, projMatrix);
+		model.SetDrawShadowMap(false, false);
+	}
+}

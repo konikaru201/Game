@@ -17,9 +17,10 @@ public:
 	virtual void PreUpdate() {}
 	virtual void PostUpdate() {}
 	//•`‰æ
-	virtual void Render()
-	{
-	}
+	virtual void Render(){}
+
+	//‰e‚Ì•`‰æ
+	virtual void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow){}
 
 	//StartŠÖ”‚ª‚·‚Å‚ÉŒÄ‚Î‚ê‚½‚©
 	virtual bool IsStart()
@@ -45,7 +46,20 @@ public:
 		m_isDead = true;
 	}
 
+	//‰e‚Ì•`‰æƒtƒ‰ƒO‚ğ•Ô‹p
+	bool GetShadowToRender()
+	{
+		return m_renderToShadow;
+	}
+
+	//‰e‚Ì•`‰æƒtƒ‰ƒO‚ğ—§‚Ä‚é
+	void SetRenderToShadow()
+	{
+		m_renderToShadow = true;
+	}
+
 protected:
-	bool m_isStart = false;		//StartŠÖ”‚Ìƒtƒ‰ƒO
-	bool m_isDead = false;		//€–Sƒtƒ‰ƒO
+	bool m_isStart = false;			//StartŠÖ”‚Ìƒtƒ‰ƒO
+	bool m_isDead = false;			//€–Sƒtƒ‰ƒO
+	bool m_renderToShadow = false;	//‰e‚Ì•`‰æƒtƒ‰ƒO
 };

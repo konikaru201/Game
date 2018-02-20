@@ -12,8 +12,6 @@ MoveFloor2::MoveFloor2()
 
 MoveFloor2::~MoveFloor2()
 {
-	//g_physicsWorld->RemoveRigidBody(&rigidBody);
-	//rigidBody.Release();
 }
 
 void MoveFloor2::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
@@ -76,13 +74,6 @@ void MoveFloor2::PreUpdate()
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
-	//if (gameScene == nullptr) {
-	//	SetisDead();
-	//	g_moveFloor2 = nullptr;
-	//	//„‘Ì‚ðíœ
-	//	g_physicsWorld->RemoveRigidBody(&rigidBody);
-	//	return;
-	//}
 
 	Move();
 

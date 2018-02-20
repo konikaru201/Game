@@ -67,12 +67,6 @@ void Spring::Update()
 		g_physicsWorld->RemoveRigidBody(&m_rigidBody);
 		return;
 	}
-	//if (gameScene == nullptr) {
-	//	SetisDead();
-	//	//„‘Ì‚ğíœ
-	//	g_physicsWorld->RemoveRigidBody(&m_rigidBody);
-	//	return;
-	//}
 
 	//ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
 	CollisionDetection();

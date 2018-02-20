@@ -82,12 +82,6 @@ void Block2::Update()
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
-	//if (gameScene == nullptr) {
-	//	SetisDead();
-	//	//„‘Ì‚ðíœ
-	//	g_physicsWorld->RemoveRigidBody(&rigidBody);
-	//	return;
-	//}
 
 	float angle = 0.2f * cPI / 180.0f;
 	D3DXQUATERNION rot = { 0.0f,1.0f,0.0f,1.0f };

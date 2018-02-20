@@ -72,7 +72,7 @@ bool Player::Start()
 	position = { 0.0f,2.5f,0.0f };
 	rotation = { 0.0f,0.0f,0.0f,1.0f };
 
-	state = State_Move;
+	state = State_Walk;
 
 	//親のワールド行列から逆行列を生成
 	D3DXMATRIX parentWorldMatrixInv;
@@ -99,7 +99,11 @@ bool Player::Start()
 	animation.SetAnimationEndTime(AnimationJump, 1.1f);
 	animation.SetAnimationLoopflg(AnimationJump, false);
 	animation.SetAnimationLoopflg(AnimationPose, false);
+	animation.SetAnimationLoopflg(AnimationDead, false);
 	
+	//影を描画するフラグを立てる
+	SetRenderToShadow();
+
 	return true;
 }
 
@@ -109,10 +113,12 @@ void Player::Update()
 
 	D3DXQUATERNION rot;
 	D3DXQuaternionIdentity(&rot);
+
+	
 	switch (state)
 	{
 		//移動中
-	case State_Move:
+	case State_Walk:
 		if (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f)
 		{
 			//移動しているなら向きを変える
@@ -198,6 +204,9 @@ void Player::Update()
 
 		//落ちたら又は敵に当たったら死亡
 		if (position.y < -20.0f || m_hitEnemy) {
+			if (m_hitEnemy) {
+				currentAnim = AnimationDead;
+			}
 			state = State_Dead;
 			m_hitEnemy = false;
 
@@ -237,6 +246,7 @@ void Player::Update()
 		
 		//ジャンプしたとき声を出す。
 		if (pad->IsTrigger(pad->enButtonA) && playerController.IsJump()) {
+			currentAnim = AnimationJump;
 			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
 			SE->Init("Assets/sound/U_Voice_1.wav");
 			SE->Play(false);
@@ -329,14 +339,10 @@ void Player::Update()
 		//死亡時
 	case State_Dead:
 		//g_shadowMap.SetPlayerDead(true);
-		//テスト用
-		//position = { 0.0f,2.5f,0.0f };
-		//playerController.SetPosition(position);
-		//D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), atan2f(dir.x, dir.z));
-		//state = State_Move;
-		
+
 		moveSpeed.x = 0.0f;
 		moveSpeed.z = 0.0f;
+		moveSpeed.y = -9.8f;
 		//プレイヤーの移動速度を設定
 		playerController.SetMoveSpeed(moveSpeed);
 		//キャラクターコントローラーを実行
@@ -358,11 +364,12 @@ void Player::Update()
 		}
 		break;
 	}
-
+	
 	//アニメーションが変わっていたら変更
 	if (currentAnim != prevAnim) {
 		animation.PlayAnimation(currentAnim, 0.3f);
 	}
+	
 
 	//前のアニメーションを保存
 	prevAnim = currentAnim;
@@ -480,7 +487,6 @@ D3DXVECTOR3 Player::Move()
 			}
 		}
 		playerController.Jump();
-		currentAnim = AnimationJump;
 	}
 
 	////壁に当たった時
@@ -526,16 +532,4 @@ D3DXVECTOR3 Player::Move()
 	//}
 
 	return move;
-}
-
-void Player::Reset()
-{
-	//座標と向きを初期化
-	position = { 0.0f,2.5f,0.0f };
-	D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), atan2f(dir.x, dir.z));
-	playerController.SetPosition(position);
-
-	//アニメーションの更新
-	animation.Update(1.0f / 60.0f);
-	model.UpdateWorldMatrix(position, rotation, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 }

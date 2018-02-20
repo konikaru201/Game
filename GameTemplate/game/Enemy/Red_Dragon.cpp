@@ -83,12 +83,6 @@ void Red_Dragon::Update()
 		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
-	//if (gameScene == nullptr || isDead) {
-	//	SetisDead();
-	//	//„‘Ì‚ðíœ
-	//	g_physicsWorld->RemoveRigidBody(&rigidBody);
-	//	return;
-	//}
 
 	D3DXVECTOR3 moveSpeed = Move();
 	position += moveSpeed / 60.0f;
