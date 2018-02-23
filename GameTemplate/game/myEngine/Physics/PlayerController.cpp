@@ -195,6 +195,7 @@ void PlayerController::Init(ICollider* collider, const D3DXVECTOR3& position)
 	rbInfo.collider = m_collider;
 	rbInfo.mass = 0.0f;
 	m_rigidBody.Create(rbInfo);
+	
 	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
 	//剛体の位置を更新。
 	trans.setOrigin(btVector3(position.x, position.y, position.z));

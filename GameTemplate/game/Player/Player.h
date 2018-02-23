@@ -82,6 +82,32 @@ public:
 		return direction;
 	}
 
+	//移動床１
+	//移動床に当たったフラグを設定
+	void SetMoveFloorFlag(bool moveFloorFlag) 
+	{
+		m_moveFloorflag = moveFloorFlag;
+	}
+
+	//移動床の速度を設定
+	void SetMoveFloorSpeed(const D3DXVECTOR3& speed)
+	{
+		m_moveFloorSpeed = speed;
+	}
+
+	//移動床２
+	//移動床に当たったフラグを設定
+	void SetMoveFloor2Flag(bool moveFloorFlag)
+	{
+		m_moveFloor2flag = moveFloorFlag;
+	}
+
+	//移動床の速度を設定
+	void SetMoveFloor2Speed(const D3DXVECTOR3& speed)
+	{
+		m_moveFloor2Speed = speed;
+	}
+
 	//ブロック１
 	//親のワールド行列を設定
 	void SetParentWorldMatrix(const D3DXMATRIX& worldMatrix)
@@ -168,7 +194,7 @@ private:
 	PlayerController playerController;								//プレイヤーコントローラー
 	D3DXVECTOR3	position;											//座標
 	D3DXQUATERNION rotation;										//回転
-	D3DXVECTOR3 dir = { 0.0f,0.0f,0.0f };								//方向
+	D3DXVECTOR3 dir = { 0.0f,0.0f,0.0f };							//方向
 	AnimationNo currentAnim;										//現在のアニメーション
 	AnimationNo prevAnim;											//前のアニメーション
 	D3DXVECTOR3 playerDir;											//キャラクターのZ方向
@@ -180,7 +206,7 @@ private:
 	D3DXVECTOR3 moveSpeed = { 0.0f,0.0f,0.0f };						//移動速度
 	float acceleration = 0.0f;										//加速度
 	const float speedLimit = 6.0f;									//限界速度
-	D3DXVECTOR3 currentDir = { 0.0f,0.0f,0.0f };						//1フレーム前のZ方向
+	D3DXVECTOR3 currentDir = { 0.0f,0.0f,0.0f };					//1フレーム前のZ方向
 	bool parentFirstHit = true;										//親との最初の当たり判定フラグ
 	bool secondParentFirstHit = true;								//親との最初の当たり判定フラグ
 	bool getStar = false;											//スター獲得フラグ
@@ -191,6 +217,12 @@ private:
 	bool m_hitEnemy = false;										//敵に当たったフラグ
 	bool m_playerDead = false;										//プレイヤーの死亡フラグ
 	bool m_treadOnSpring = false;									//スプリングを踏んだフラグ
+
+	bool m_moveFloorflag = false;
+	D3DXVECTOR3 m_moveFloorSpeed = { 0.0f,0.0f,0.0f };
+
+	bool m_moveFloor2flag = false;
+	D3DXVECTOR3 m_moveFloor2Speed = { 0.0f,0.0f,0.0f };
 
 	bool isOnWall = false;
 	bool wallJump = false;

@@ -4,8 +4,6 @@
 #include "myEngine/Physics/CollisionAttr.h"
 #include "myEngine/Timer/Timer.h"
 
-MoveFloor2* g_moveFloor2;
-
 MoveFloor2::MoveFloor2()
 {
 }
@@ -61,6 +59,11 @@ void MoveFloor2::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	g_physicsWorld->AddRigidBody(&rigidBody);
 }
 
+bool MoveFloor2::Start()
+{
+	return true;
+}
+
 void MoveFloor2::Update()
 {
 	
@@ -77,11 +80,18 @@ void MoveFloor2::PreUpdate()
 
 	Move();
 
+	player->SetMoveFloor2Flag(moveFlg);
+
+	if (moveFlg) {
+		player->SetMoveFloor2Speed(moveSpeed);
+	}
+
 	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
 	trans.setOrigin(btVector3(position.x, position.y, position.z));
 
 	model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
 }
+
 void MoveFloor2::Move()
 {
 	Timer += Timer::GetFrameDeltaTime();

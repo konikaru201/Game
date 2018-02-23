@@ -21,15 +21,15 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 	for (int i = 0; i < numObject; i++) {
 		if (strcmp("MoveFloor_1", mapLocInfo[i].modelName) == 0) {
 			//インスタンスを動的に生成
-			g_moveFloor = goMgr->NewGameObject<MoveFloor>();
+			MoveFloor* moveFloor = goMgr->NewGameObject<MoveFloor>();
 			//座標と回転の情報を渡して初期化
-			g_moveFloor->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+			moveFloor->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
 		else if (strcmp("MoveFloor_2", mapLocInfo[i].modelName) == 0) {
 			//インスタンスを動的に生成
-			g_moveFloor2 = goMgr->NewGameObject<MoveFloor2>();
+			MoveFloor2* moveFloor2 = goMgr->NewGameObject<MoveFloor2>();
 			//座標と回転の情報を渡して初期化
-			g_moveFloor2->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+			moveFloor2->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
 		else if (strcmp("Coin", mapLocInfo[i].modelName) == 0)
 		{

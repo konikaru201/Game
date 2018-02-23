@@ -3,8 +3,7 @@
 #include "Scene/SceneManager.h"
 #include "myEngine/Physics/CollisionAttr.h"
 #include "myEngine/Timer/Timer.h"
-
-MoveFloor* g_moveFloor;
+#include "../Player/Player.h"
 
 MoveFloor::MoveFloor() 
 {
@@ -60,6 +59,12 @@ void MoveFloor::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	g_physicsWorld->AddRigidBody(&rigidBody);
 }
 
+bool MoveFloor::Start()
+{
+
+	return true;
+}
+
 void MoveFloor::PreUpdate()
 {
 	if (sceneManager->GetChangeSceneFlag())
@@ -72,10 +77,17 @@ void MoveFloor::PreUpdate()
 
 	Move();
 
+	player->SetMoveFloorFlag(moveFlag);
+
+	if (moveFlag) {
+		player->SetMoveFloorSpeed(moveSpeed);
+	}
+
 	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
 	trans.setOrigin(btVector3(position.x, position.y, position.z));
 
 	model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
+
 }
 void MoveFloor::Update()
 {	
@@ -85,7 +97,7 @@ void MoveFloor::Update()
 void MoveFloor::Move()
 {
 	Timer += Timer::GetFrameDeltaTime();
-	MoveFlag = true;
+	moveFlag = true;
 	if (Timer >= 7.0f) {
 		moveSpeed *= -1.0f;
 		Timer = 0.0f;
@@ -96,7 +108,7 @@ void MoveFloor::Move()
 	}
 	else
 	{
-		MoveFlag = false;
+		moveFlag = false;
 	}
 }
 

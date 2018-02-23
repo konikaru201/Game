@@ -19,6 +19,9 @@ public:
 	//rot	回転
 	void Init(D3DXVECTOR3 pos, D3DXQUATERNION rot);
 
+	//更新する前に一度だけ呼ばれる関数
+	bool Start();
+
 	//Update関数より前に呼ばれる更新関数
 	void PreUpdate();
 
@@ -31,17 +34,18 @@ public:
 	//移動
 	void Move();
 
-	//移動速度を取得
-	const D3DXVECTOR3& GetMoveSpeed()
-	{
-		return moveSpeed;
-	}
+	////移動速度を取得
+	//const D3DXVECTOR3& GetMoveSpeed()
+	//{
+	//	return moveSpeed;
+	//}
 
-	//移動フラグの取得
-	bool GetmoveFlg()
-	{
-		return moveFlg;
-	}
+	////移動フラグの取得
+	//bool GetmoveFlg()
+	//{
+	//	return moveFlg;
+	//}
+
 private:
 	SkinModel model;								//スキンモデル
 	SkinModelData modelData;						//スキンモデルデータ
@@ -50,9 +54,7 @@ private:
 	Light light;									//ライト
 	D3DXVECTOR3 position;							//座標
 	D3DXQUATERNION rotation;						//回転
-	D3DXVECTOR3 moveSpeed = { 0.0f,0.05f,0.0f };	//移動速度
+	D3DXVECTOR3 moveSpeed = { -0.07f,0.0f,0.0f };	//移動速度
 	float Timer = 0.0f;								//タイマー
 	bool moveFlg = false;							//移動フラグ
 };
-
-extern MoveFloor2* g_moveFloor2;

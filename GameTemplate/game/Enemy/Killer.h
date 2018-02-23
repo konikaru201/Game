@@ -30,6 +30,9 @@ public:
 	//プレイヤーとの当たり判定
 	void CollisionDetection(float Length , const D3DXVECTOR3& ToPlayer);
 
+	//影の描画
+	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
+
 	//モデルの向きを取得
 	D3DXVECTOR3 GetDirection()
 	{
@@ -58,12 +61,14 @@ private:
 	Light				light;								//ライト
 	D3DXVECTOR3			position;							//座標
 	D3DXQUATERNION		rotation;							//回転
-	D3DXVECTOR3			InitPosition;						//初期位置
+	D3DXVECTOR3			initPosition;						//初期位置
+	D3DXQUATERNION		initRotation;						//初期回転
 	float				moveLimitLine[4];					//移動限界ライン
 	RigidBody			rigidBody;							//剛体
 	D3DXVECTOR3			moveDir = { 0.0f,0.0f,0.0f };		//見失ったときの移動方向
 	const float			moveSpeed = 4.0f;					//移動速度
 	bool				isDead = false;						//死亡フラグ
+	bool				isRespawn = false;					//リスポーンフラグ
 	float				timer = 0.0f;						//タイマー
 	bool				m_hitPlayer = false;				//プレイヤーに当たったフラグ
 	CParticleEmitter	particleEmitter;					//パーティクル生成

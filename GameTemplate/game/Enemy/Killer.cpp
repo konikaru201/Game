@@ -34,13 +34,14 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 	position = pos;
 	rotation = rot;
-	InitPosition = pos;
+	initPosition = pos;
+	initRotation = rot;
 
 	//移動限界ラインを設定
-	moveLimitLine[0] = 55.0f;
-	moveLimitLine[1] = 130.0f;
-	moveLimitLine[2] = -70.0f;
-	moveLimitLine[3] = -120.0f;
+	moveLimitLine[0] = position.x + -80.0f;	//左
+	moveLimitLine[1] = position.x + 80.0f;	//右		
+	moveLimitLine[2] = position.z + 80.0f;	//前
+	moveLimitLine[3] = position.z + -80.0f;	//後
 
 	state = State_Search;
 
@@ -63,6 +64,9 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	//作成した剛体を物理ワールドに追加
 	g_physicsWorld->AddRigidBody(&rigidBody);
 
+	//影を描画するフラグを立てる
+	SetRenderToShadow();
+
 	////パーティクルの初期化
 	//SParticleEmitParameter param;
 	//param.texturePath = "Assets/sprite/smoke.png";
@@ -77,7 +81,7 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 void Killer::Update()
 {
-	if (sceneManager->GetChangeSceneFlag())
+	if (sceneManager->GetChangeSceneFlag() || isDead)
 	{
 		SetisDead();
 		//剛体を削除
@@ -87,11 +91,14 @@ void Killer::Update()
 
 	//初期位置に戻す
 	if (position.x < moveLimitLine[0] || position.x > moveLimitLine[1]
-		|| position.z < moveLimitLine[3] || position.z > moveLimitLine[2])
+		|| position.z < moveLimitLine[3] || position.z > moveLimitLine[2]
+		|| isRespawn)
 	{
-		position = InitPosition;
-		D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), D3DXToRadian(-90.0f));
-		state = State_Search;
+		SetisDead();
+		g_physicsWorld->RemoveRigidBody(&rigidBody);
+
+		Killer* killer = goMgr->NewGameObject<Killer>();
+		killer->Init(initPosition,initRotation);
 	}
 
 	D3DXVECTOR3 moveSpeed = Move();
@@ -185,7 +192,7 @@ D3DXVECTOR3 Killer::Move()
 		timer += Timer::GetFrameDeltaTime();
 		move = { 0.0f, -moveSpeed * (timer + 1.0f), 0.0f };
 		if (timer > 5.0f) {
-			isDead = true;
+			isRespawn = true;
 			timer = 0.0f;
 		}
 		break;
@@ -224,7 +231,7 @@ void Killer::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 		}
 		//X方向に当たった
 		else if (lengthY <= 0.5f && lengthX <= 1.5f) {
-			////プレイヤーが死亡
+			//プレイヤーが死亡
 			m_hitPlayer = true;
 			player->SetHitEnemy(m_hitPlayer);
 			state = State_Hit;
@@ -238,4 +245,13 @@ void Killer::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 		}
 	}
 
+}
+
+void Killer::RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
+{
+	if (gameCamera != nullptr) {
+		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
+		model.Draw(viewMatrix, projMatrix);
+		model.SetDrawShadowMap(false, false);
+	}
 }

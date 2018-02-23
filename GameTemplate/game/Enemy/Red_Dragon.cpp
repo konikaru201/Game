@@ -62,6 +62,9 @@ void Red_Dragon::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	//作成した剛体を物理ワールドに追加
 	g_physicsWorld->AddRigidBody(&rigidBody);
 
+	//影を描画するフラグを立てる
+	SetRenderToShadow();
+
 	//パーティクルの初期化
 	SParticleEmitParameter param;
 	param.texturePath = "Assets/sprite/FireParticleGlow.png";
@@ -407,5 +410,14 @@ void Red_Dragon::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 			player->SetHitEnemy(m_hitPlayer);
 			state = State_Hit;
 		}
+	}
+}
+
+void Red_Dragon::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
+{
+	if (gameCamera != nullptr) {
+		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
+		model.Draw(viewMatrix, projMatrix);
+		model.SetDrawShadowMap(false, false);
 	}
 }

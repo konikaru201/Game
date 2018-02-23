@@ -30,6 +30,9 @@ public:
 	//プレイヤーとの当たり判定
 	void CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer);
 
+	//影の描画
+	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
+
 	//モデルの向きを取得
 	D3DXVECTOR3 GetDirection()
 	{

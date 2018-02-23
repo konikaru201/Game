@@ -69,7 +69,7 @@ bool Player::Start()
 	model.SetLight(&light);
 
 	//À•W‚ÆŒü‚«‚ð‰Šú‰»
-	position = { 0.0f,2.5f,0.0f };
+	position = { 0.0f,0.0f,15.0f };
 	rotation = { 0.0f,0.0f,0.0f,1.0f };
 
 	state = State_Walk;
@@ -164,22 +164,17 @@ void Player::Update()
 			}
 		}
 
-		//ˆÚ“®°‚Ìã‚¢‚é‚È‚çˆÚ“®°‚É‚Â‚¢‚Ä‚¢‚­
-		if (playerController.IsOnMoveFloor() || playerController.IsOnMoveFloor2())
+		//ˆÚ“®°‚É“–‚½‚Á‚½‚ç‚Â‚¢‚Ä‚¢‚­
+		if (playerController.IsOnMoveFloor()) {
+			if (m_moveFloorflag) {
+				moveSpeed += m_moveFloorSpeed * 60.0f;
+			}
+		}
+
+		if (playerController.IsOnMoveFloor2())
 		{
-			if (g_moveFloor != nullptr && g_moveFloor2 != nullptr
-				&& g_moveFloor->GetMoveFlag()
-				|| g_moveFloor2->GetmoveFlg()) {
-				D3DXVECTOR3 AddPos;
-				if (playerController.IsOnMoveFloor())
-				{
-					AddPos = g_moveFloor->GetMoveSpeed();
-				}
-				else
-				{
-					AddPos = g_moveFloor2->GetMoveSpeed();
-				}
-				moveSpeed += AddPos * 60.0f;
+			if (m_moveFloor2flag) {
+				moveSpeed += m_moveFloor2Speed * 60.0f;
 			}
 		}
 

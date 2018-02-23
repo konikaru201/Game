@@ -46,7 +46,7 @@ void CShadowMap::Update()
 		D3DXMatrixLookAtLH(&lightViewMatrix, &viewPosition, &viewTarget, &D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 	}
 	D3DXMATRIXA16 matProj;
-	D3DXMatrixOrthoLH(&lightProjMatrix, 10.0f, 10.0f, 1.1f, 100.0f);
+	D3DXMatrixOrthoLH(&lightProjMatrix, 15.0f, 15.0f, 1.1f, 100.0f);
 	//D3DXMatrixPerspectiveFovLH(&lightProjMatrix, D3DXToRadian(60.0f), 1.0f, 1.1f, 100.0f);
 }
 //シャドウマップに書き込み。
