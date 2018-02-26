@@ -49,10 +49,17 @@ public:
 		return m_waitFadeOut;
 	}
 
+	//ステージ番号を取得
+	int GetStageNumber()
+	{
+		return stageNumber;
+	}
+
 private:
 	Map* map;									//マップ
 	DepthStencilRender* depthStencilRender;		//シルエット
 	Step step = step_WaitFadeOut;				//状態
 	CSoundSource* bgmSource = nullptr;			//BGM
 	bool m_waitFadeOut = false;					//フェードアウト待ちフラグ
+	int stageNumber = 0;
 };

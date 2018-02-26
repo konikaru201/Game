@@ -76,6 +76,7 @@ void SceneManager::Update()
 				stageSelectScene = nullptr;
 				//ゲームシーンに遷移
 				gameScene = goMgr->NewGameObject<GameScene>();
+				gameScene->SetStageNumber(m_stageNumber);
 				state = stateGame;
 				f_step = step_WaitFadeIn;
 			}
@@ -86,6 +87,7 @@ void SceneManager::Update()
 			if (stageSelectScene->GetWaitFadeOut()) {
 				f_step = step_WaitFadeOut;
 				m_changeScene = true;
+				m_stageNumber = stageSelectScene->GetStageNumber();
 			}
 		}
 		break;
@@ -142,6 +144,7 @@ void SceneManager::Update()
 		if (m_gameOverSceneStateNumber == 0) {
 			//ゲームシーンを作り直す
 			gameScene = goMgr->NewGameObject<GameScene>();
+			gameScene->SetStageNumber(m_stageNumber);
 			state = stateGame;
 		}
 		//ステージ選択に戻る

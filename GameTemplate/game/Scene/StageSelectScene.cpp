@@ -2,7 +2,7 @@
 #include "StageSelectScene.h"
 #include "Fade/Fade.h"
 
-SMapInfo Stage1[] = {
+SMapInfo Stage0[] = {
 #include "locationinfo/stage1.h"
 };
 
@@ -58,10 +58,21 @@ void CStageSelectScene::Update()
 
 	//通常時
 	case step_normal:
-		//Aボタンでフェードアウト待ち
-		if (pad->IsTrigger(pad->enButtonA)) {
+		//A,X,Yボタンでフェードアウト待ち
+		if (pad->IsTrigger(pad->enButtonB)) {
 			g_fade->StartFadeOut();
 			step = step_WaitFadeOut;
+			stageNumber = 1;
+		}
+		else if (pad->IsTrigger(pad->enButtonY)) {
+			g_fade->StartFadeOut();
+			step = step_WaitFadeOut;
+			stageNumber = 2;
+		}
+		else if (pad->IsTrigger(pad->enButtonX)) {
+			g_fade->StartFadeOut();
+			step = step_WaitFadeOut;
+			stageNumber = 3;
 		}
 		break;
 
@@ -84,8 +95,8 @@ void CStageSelectScene::Render()
 void CStageSelectScene::StageCreate()
 {
 	//配置されているオブジェクトの数を計算
-	int numObject = sizeof(Stage1) / sizeof(Stage1[0]);
-	map->Create(Stage1, numObject);
+	int numObject = sizeof(Stage0) / sizeof(Stage0[0]);
+	map->Create(Stage0, numObject);
 
 	bgmSource = goMgr->NewGameObject<CSoundSource>();
 	bgmSource->InitStreaming("Assets/sound/bgm_1.wav");

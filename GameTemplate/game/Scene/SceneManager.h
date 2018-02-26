@@ -53,6 +53,7 @@ private:
 	GameScene* gameScene = nullptr;					//ゲームシーン
 	bool m_changeScene = false;						//シーン切り替えフラグ
 	int m_gameOverSceneStateNumber = 0;				//ゲームオーバーシーンのステート番号
+	int m_stageNumber = 0;
 };
 
 extern SceneManager* sceneManager;

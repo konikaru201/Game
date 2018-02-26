@@ -155,7 +155,7 @@ D3DXVECTOR3 Killer::Move()
 			state = State_Find;
 		}
 
-		move.x = -moveSpeed;
+		move.x = direction.x * moveSpeed;
 
 		break;
 	//î≠å©èÛë‘

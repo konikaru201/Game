@@ -4,8 +4,16 @@
 #include "Fade/Fade.h"
 #include "myEngine/Timer/Timer.h"
 
-SMapInfo Stage2[] = {
+SMapInfo Stage1[] = {
 #include "locationinfo/stage2.h"
+};
+
+SMapInfo Stage2[] = {
+#include "locationinfo/stage3.h"
+};
+
+SMapInfo Stage3[] = {
+#include "locationinfo/stage4.h"
 };
 
 /*!
@@ -28,7 +36,7 @@ bool GameScene::Start()
 	//マップ生成
 	map = goMgr->NewGameObject<Map>();
 	//ステージ作成
-	StageCreate();
+	StageCreate(m_stageNumber);
 
 	depthStencilRender = goMgr->NewGameObject<DepthStencilRender>();	//シルエット生成
 	player = goMgr->NewGameObject<Player>();			//プレイヤー生成
@@ -101,15 +109,39 @@ void GameScene::Render()
 {
 }
 
-void GameScene::StageCreate()
+void GameScene::StageCreate(int number)
 {
-	int numObject = sizeof(Stage2) / sizeof(Stage2[0]);
+	//ステージ１
+	if(number == 1)
+	{
+		int numObject = sizeof(Stage1) / sizeof(Stage1[0]);
 
-	map->Create(Stage2, numObject);
+		map->Create(Stage1, numObject);
 
-	bgmSource = goMgr->NewGameObject<CSoundSource>();
-	bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
-	bgmSource->Play(true);
+		bgmSource = goMgr->NewGameObject<CSoundSource>();
+		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
+		bgmSource->Play(true);
+	}
+	//ステージ２
+	else if (number == 2) {
+		int numObject = sizeof(Stage2) / sizeof(Stage2[0]);
+
+		map->Create(Stage2, numObject);
+
+		bgmSource = goMgr->NewGameObject<CSoundSource>();
+		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
+		bgmSource->Play(true);
+	}
+	//ステージ３
+	else if (number == 3) {
+		int numObject = sizeof(Stage3) / sizeof(Stage3[0]);
+
+		map->Create(Stage3, numObject);
+
+		bgmSource = goMgr->NewGameObject<CSoundSource>();
+		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
+		bgmSource->Play(true);
+	}
 
 	step = step_StageLoad;
 }
@@ -124,4 +156,9 @@ void GameScene::Release()
 	gameCamera = nullptr;
 	map->SetisDead();
 	map = nullptr;
+}
+
+void GameScene::SetStageNumber(int number)
+{
+	m_stageNumber = number;
 }

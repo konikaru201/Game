@@ -36,10 +36,13 @@ public:
 	void Render();
 
 	//ステージ作成
-	void StageCreate();
+	void StageCreate(int number);
 
 	//解放
 	void Release();
+
+	//ステージ番号を設定
+	void SetStageNumber(int number);
 
 	//ゲーム進行の状態
 	enum Step {
@@ -51,22 +54,10 @@ public:
 		step_StageClear,
 	};
 
-	//ステージの状態
-	enum state_stage {
-		en_Stage1,
-		en_Stage2,
-	};
-
 	//進行状況を返却
 	const Step& IsStep()
 	{
 		return step;
-	}
-
-	//現在いるステージを取得
-	const state_stage& GetStateStage()
-	{
-		return currentStage;
 	}
 
 	//ステージクリアフラグを取得
@@ -86,7 +77,6 @@ public:
 	{
 		return m_gameOverSceneStateNumber;
 	}
-
 private:
 	GameOverScene* gameOverScene = nullptr;
 	Map* map;								//マップ
@@ -94,11 +84,10 @@ private:
 	CSoundSource* bgmSource = nullptr;		//BGM
 
 	Step step = step_StageLoad;				//状態
-	state_stage currentStage = en_Stage1;	//現在のステージ番号
-	state_stage nextStage = en_Stage2;		//次のステージ番号
 
 	float timer = 0.0f;						//タイマー
 	bool m_gameOverSceneEnd = false;		//ゲームオーバーシーンの終了フラグ
 	bool m_stageClearFlag = false;			//ステージクリアフラグ
 	int m_gameOverSceneStateNumber = 0;		//ゲームオーバーシーンのステート番号
+	int m_stageNumber = 0;
 };
