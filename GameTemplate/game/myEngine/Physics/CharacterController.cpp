@@ -152,11 +152,6 @@ namespace {
 void CharacterController::Init(ICollider* collider, const D3DXVECTOR3& position)
 {
 	m_position = position;
-	//コリジョン作成。
-	//m_radius = radius;
-	//m_height = height;
-	//m_collider.Create(radius, height);
-
 	m_collider = collider;
 
 	//剛体を初期化。
@@ -178,8 +173,8 @@ void CharacterController::Init(ICollider* collider, const D3DXVECTOR3& position)
 }
 void CharacterController::Execute()
 {
-	////速度に重力加速度を加える。
-	//m_moveSpeed.y += m_gravity * (1.0f / 60.0f);
+	//速度に重力加速度を加える。
+	m_moveSpeed.y += m_gravity * (1.0f / 60.0f);
 	//次の移動先となる座標を計算する。
 	D3DXVECTOR3 nextPosition = m_position;
 	//速度からこのフレームでの移動量を求める。オイラー積分。
@@ -220,7 +215,7 @@ void CharacterController::Execute()
 			}
 			//カプセルコライダーの中心座標 + 0.2の座標をposTmpに求める。
 			D3DXVECTOR3 posTmp = m_position;
-			posTmp.y += m_collider->GetHalfSize().y/*m_height * 0.5f + m_radius*/ + 0.2f;
+			posTmp.y += m_collider->GetHalfSize().y + 0.2f;
 			//レイを作成。
 			btTransform start, end;
 			start.setIdentity();
@@ -298,86 +293,60 @@ void CharacterController::Execute()
 	m_position.z = nextPosition.z;
 
 
-	////下方向を調べる。
-	//{
-	//	D3DXVECTOR3 addPos;
-	//	addPos = nextPosition - m_position;
+	//下方向を調べる。
+	{
+		D3DXVECTOR3 addPos;
+		addPos = nextPosition - m_position;
 
-	//	upPos = addPos;
-	//	m_position = nextPosition;	//移動の仮確定。
-	//								//レイを作成する。
-	//	btTransform start, end;
-	//	start.setIdentity();
-	//	end.setIdentity();
-	//	//始点はカプセルコライダーの中心。
-	//	start.setOrigin(btVector3(m_position.x, m_position.y + m_collider->GetHalfSize().y/*m_height * 0.5f + m_radius*/, m_position.z));
-	//	//終点は地面上にいない場合は1m下を見る。
-	//	//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
-	//	//地面上にいなくて降下中の場合はそのまま落下先を調べる。
-	//	D3DXVECTOR3 endPos;
-	//	endPos = { start.getOrigin().x(), start.getOrigin().y(), start.getOrigin().z() };
+		upPos = addPos;
+		m_position = nextPosition;	//移動の仮確定。
+									//レイを作成する。
+		btTransform start, end;
+		start.setIdentity();
+		end.setIdentity();
+		//始点はカプセルコライダーの中心。
+		start.setOrigin(btVector3(m_position.x, m_position.y + m_collider->GetHalfSize().y/*m_height * 0.5f + m_radius*/, m_position.z));
+		//終点は地面上にいない場合は1m下を見る。
+		//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
+		//地面上にいなくて降下中の場合はそのまま落下先を調べる。
+		D3DXVECTOR3 endPos;
+		endPos = { start.getOrigin().x(), start.getOrigin().y(), start.getOrigin().z() };
 
-	//	if (m_isOnGround == false) {
-	//		if (addPos.y > 0.0f) {
-	//			//ジャンプ中とかで上昇中。
-	//			//上昇中でもXZに移動した結果めり込んでいる可能性があるので下を調べる。
-	//			endPos.y -= addPos.y * 0.01f;
-	//		}
-	//		else {
-	//			//落下している場合はそのまま下を調べる。
-	//			endPos.y += addPos.y;
-	//		}
-	//	}
-	//	else {
-	//		//地面上にいる場合は1m下を見る。
-	//		endPos.y -= 1.0f;
-	//	}
-	//	end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
-	//	SweepResultGround callback;
-	//	callback.me = m_rigidBody.GetBody();
-	//	callback.startPos = { start.getOrigin().x(), start.getOrigin().y(), start.getOrigin().z() };
-	//	//衝突検出。
-	//	if (fabsf(addPos.y) > FLT_EPSILON) {
-	//		g_physicsWorld->ConvexSweepTest((const btConvexShape*)m_collider->GetBody(), start, end, callback);
-	//	}
-	//	if (callback.isHit) {
-	//		//当たった。
-	//		m_moveSpeed.y = 0.0f;
-	//		m_isJump = false;
-	//		m_isOnGround = true;
-	//		nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
-	//	}
-	//	//else if (callback.isMoveFloorHit || callback.isMoveFloorHit2)
-	//	//{
-	//	//	//当たった。
-	//	//	m_moveSpeed.y = 0.0f;
-	//	//	m_isJump = false;
-	//	//	if (callback.isMoveFloorHit)
-	//	//	{
-	//	//		m_isOnMoveFloor = true;
-	//	//	}
-	//	//	else
-	//	//	{
-	//	//		m_isOnMoveFloor2 = true;
-	//	//	}
-	//	//	nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
-	//	//}
-	//	//else if (callback.isJumpBlock)
-	//	//{
-	//	//	//当たった。
-	//	//	m_moveSpeed.y = 0.0f;
-	//	//	m_isJump = false;
-	//	//	m_isOnJumpBlock = true;
-	//	//	nextPosition.y = callback.hitPos.y;
-	//	//}
-	//	else {
-	//		//地面上にいない。
-	//		m_isOnGround = false;
-	//		//m_isOnMoveFloor = false;
-	//		//m_isOnMoveFloor2 = false;
-	//		//m_isOnJumpBlock = false;
-	//	}
-	//}
+		if (m_isOnGround == false) {
+			if (addPos.y > 0.0f) {
+				//ジャンプ中とかで上昇中。
+				//上昇中でもXZに移動した結果めり込んでいる可能性があるので下を調べる。
+				endPos.y -= addPos.y * 0.01f;
+			}
+			else {
+				//落下している場合はそのまま下を調べる。
+				endPos.y += addPos.y;
+			}
+		}
+		else {
+			//地面上にいる場合は1m下を見る。
+			endPos.y -= 1.0f;
+		}
+		end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
+		SweepResultGround callback;
+		callback.me = m_rigidBody.GetBody();
+		callback.startPos = { start.getOrigin().x(), start.getOrigin().y(), start.getOrigin().z() };
+		//衝突検出。
+		if (fabsf(addPos.y) > FLT_EPSILON) {
+			g_physicsWorld->ConvexSweepTest((const btConvexShape*)m_collider->GetBody(), start, end, callback);
+		}
+		if (callback.isHit) {
+			//当たった。
+			m_moveSpeed.y = 0.0f;
+			m_isJump = false;
+			m_isOnGround = true;
+			nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
+		}
+		else {
+			//地面上にいない。
+			m_isOnGround = false;
+		}
+	}
 
 	//上方向を調べる。
 	{

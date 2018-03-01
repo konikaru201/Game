@@ -24,6 +24,11 @@ public:
 	//探索
 	void Search();
 
+	//回転
+	void Turn();
+
 private:
+	const float m_speed = 2.0f;
 	D3DXVECTOR3 m_moveSpeed = { 0.0f,0.0f,0.0f };
+	int m_rotationFrameCount = 0;					//回転フレームカウント
 };

@@ -37,21 +37,7 @@ void StoneMonster::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	//剛体の作成
 	CapsuleCollider* coll = new CapsuleCollider;
 	coll->Create(0.4f, 0.8f);
-
-	//剛体の情報を設定
-	RigidBodyInfo rbinfo;
-	rbinfo.collider = coll;
-	rbinfo.mass = 0.0f;
-	rbinfo.pos = m_position;
-	rbinfo.rot = m_rotation;
-	//剛体を作成
-	m_rigidBody.Create(rbinfo);
-
-	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
-	trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
-
-	//作成した剛体を物理ワールドに追加
-	g_physicsWorld->AddRigidBody(&m_rigidBody);
+	m_characterController.Init(coll, m_position);
 }
 
 bool StoneMonster::Start()
@@ -74,8 +60,10 @@ void StoneMonster::Update()
 		return;
 	}	
 
-	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
-	trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
+	//キャラクターコントローラーを実行
+	m_characterController.Execute();
+	//座標を設定
+	m_position = m_characterController.GetPosition();
 
 	m_model.UpdateWorldMatrix(m_position, m_rotation, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 

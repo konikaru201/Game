@@ -66,13 +66,13 @@ public:
 	//ˆÚ“®‘¬“x‚ğæ“¾
 	const D3DXVECTOR3& GetMoveSpeed()
 	{
-		return m_moveSpeed;
+		return m_characterController.GetMoveSpeed();
 	}
 
 	//ˆÚ“®‘¬“x‚ğİ’è
 	void SetMoveSpeed(const D3DXVECTOR3& moveSpeed)
 	{
-		m_moveSpeed = moveSpeed;
+		m_characterController.SetMoveSpeed(moveSpeed);
 	}
 
 private:

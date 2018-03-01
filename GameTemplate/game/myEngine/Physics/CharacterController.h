@@ -131,8 +131,6 @@ private:
 	bool				m_isOnGround = true;			//地面の上にいる？
 	bool				m_isOnWall = false;
 	ICollider*			m_collider = nullptr;			//コライダー。
-	//float				m_radius = 0.0f;
-	//float				m_height = 0.0f;		
 	RigidBody			m_rigidBody;					//剛体。
 	float				m_gravity = -9.8f;				//重力。
 	D3DXVECTOR3			m_hitNormal = { 0.0f,0.0f,0.0f };
