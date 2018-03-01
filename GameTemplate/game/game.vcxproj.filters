@@ -61,6 +61,9 @@
     <Filter Include="ソース ファイル\myEngine\Sound">
       <UniqueIdentifier>{ffff331b-7949-43cd-a90e-f50a0166d44a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Enemy\StoneMonster">
+      <UniqueIdentifier>{7a2c0edc-07fa-4b0f-942a-5a09fec880a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -236,6 +239,18 @@
     </ClCompile>
     <ClCompile Include="Scene\GameOverScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\StoneMonster.cpp">
+      <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\StoneMonsterIdle.cpp">
+      <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\StoneMonsterStateMachine.cpp">
+      <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\StoneMonsterFollow.cpp">
+      <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -430,6 +445,30 @@
     </ClInclude>
     <ClInclude Include="Scene\GameOverScene.h">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="locationinfo\stage3.h">
+      <Filter>ソース ファイル\locationinfo</Filter>
+    </ClInclude>
+    <ClInclude Include="locationinfo\stage4.h">
+      <Filter>ソース ファイル\locationinfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\IStoneMonsterState.h">
+      <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\StoneMonster.h">
+      <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\StoneMonsterIdle.h">
+      <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\StoneMonsterStateMachine.h">
+      <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\StoneMonsterState.h">
+      <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\StoneMonsterFollow.h">
+      <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

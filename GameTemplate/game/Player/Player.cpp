@@ -121,6 +121,7 @@ void Player::Update()
 	case State_Walk:
 		if (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f)
 		{
+			m_rotationFrameCount++;
 			//移動しているなら向きを変える
 			D3DXVECTOR3 playerDir = GetPlayerDir();
 			D3DXVec3Normalize(&playerDir, &playerDir);
@@ -142,8 +143,13 @@ void Player::Update()
 			if (hoge.y < 0.0f) {
 				angle *= -1.0f;
 			}
-			D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
-			D3DXQuaternionMultiply(&rotation, &rotation, &rot);
+
+			angle /= 5;
+			if (m_rotationFrameCount <= 5) {
+				D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
+				D3DXQuaternionMultiply(&rotation, &rotation, &rot);
+				m_rotationFrameCount = 0;
+			}
 
 			if (!(playerController.IsJump())) {
 				currentAnim = AnimationRun;
@@ -219,25 +225,25 @@ void Player::Update()
 			SE->Play(false);
 		}
 
-		//2，3回目のジャンプは一定時間経つとできなくする
-		//2回目のジャンプ
-		if (JumpCount == 1 && GetIsOnGround())
-		{
-			JumpFrameCount++;
-			if (JumpFrameCount % 10 == 0) {
-				JumpCount = 0;
-				JumpFrameCount = 0;
-			}
-		}
-		//3回目のジャンプ
-		else if (JumpCount == 2 && GetIsOnGround())
-		{
-			JumpFrameCount++;
-			if (JumpFrameCount % 8 == 0) {
-				JumpCount = 0;
-				JumpFrameCount = 0;
-			}
-		}
+		////2，3回目のジャンプは一定時間経つとできなくする
+		////2回目のジャンプ
+		//if (JumpCount == 1 && GetIsOnGround())
+		//{
+		//	JumpFrameCount++;
+		//	if (JumpFrameCount % 10 == 0) {
+		//		JumpCount = 0;
+		//		JumpFrameCount = 0;
+		//	}
+		//}
+		////3回目のジャンプ
+		//else if (JumpCount == 2 && GetIsOnGround())
+		//{
+		//	JumpFrameCount++;
+		//	if (JumpFrameCount % 8 == 0) {
+		//		JumpCount = 0;
+		//		JumpFrameCount = 0;
+		//	}
+		//}
 		
 		//ジャンプしたとき声を出す。
 		if (pad->IsTrigger(pad->enButtonA) && playerController.IsJump()) {
@@ -467,20 +473,20 @@ D3DXVECTOR3 Player::Move()
 		/*&& GetIsOnGround()*/)
 	{
 		if (JumpCount == 0) {
-			move.y = 12.0f;
-			JumpCount++;
+			move.y = 10.0f;
+			//JumpCount++;
 		}
-		//走りながら2,3回目のジャンプができる
-		else if (move.x != 0.0f || move.z != 0.0f) {
-			if (JumpCount == 1) {
-				move.y = 15.0f;
-				JumpCount++;
-			}
-			else if (JumpCount == 2) {
-				move.y = 18.0f;
-				JumpCount = 0;
-			}
-		}
+		////走りながら2,3回目のジャンプができる
+		//else if (move.x != 0.0f || move.z != 0.0f) {
+		//	if (JumpCount == 1) {
+		//		move.y = 15.0f;
+		//		JumpCount++;
+		//	}
+		//	else if (JumpCount == 2) {
+		//		move.y = 18.0f;
+		//		JumpCount = 0;
+		//	}
+		//}
 		playerController.Jump();
 	}
 

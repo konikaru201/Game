@@ -34,18 +34,6 @@ public:
 	//移動
 	void Move();
 
-	////移動速度を取得
-	//const D3DXVECTOR3& GetMoveSpeed()
-	//{
-	//	return moveSpeed;
-	//}
-
-	////移動フラグの取得
-	//bool GetmoveFlg()
-	//{
-	//	return moveFlg;
-	//}
-
 private:
 	SkinModel model;								//スキンモデル
 	SkinModelData modelData;						//スキンモデルデータ
@@ -54,7 +42,7 @@ private:
 	Light light;									//ライト
 	D3DXVECTOR3 position;							//座標
 	D3DXQUATERNION rotation;						//回転
-	D3DXVECTOR3 moveSpeed = { -0.07f,0.0f,0.0f };	//移動速度
+	D3DXVECTOR3 moveSpeed /*= { -0.07f,0.0f,0.0f }*/;	//移動速度
 	float Timer = 0.0f;								//タイマー
 	bool moveFlg = false;							//移動フラグ
 };

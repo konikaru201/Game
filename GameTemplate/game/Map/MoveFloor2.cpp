@@ -3,6 +3,7 @@
 #include "Scene/SceneManager.h"
 #include "myEngine/Physics/CollisionAttr.h"
 #include "myEngine/Timer/Timer.h"
+#include "../Player/Player.h"
 
 MoveFloor2::MoveFloor2()
 {
@@ -33,6 +34,7 @@ void MoveFloor2::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 	position = pos;
 	rotation = rot;
+	moveSpeed = { -0.07f,0.0f,0.0f };
 
 	//衝突判定の初期化
 	//スキンモデルからメッシュコライダーを作成する
@@ -96,7 +98,7 @@ void MoveFloor2::Move()
 {
 	Timer += Timer::GetFrameDeltaTime();
 	moveFlg = true;
-	if (Timer >= 7.0f) {
+	if (Timer >= 10.0f) {
 		moveSpeed *= -1.0f;
 		Timer = 0.0f;
 	}

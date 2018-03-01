@@ -33,6 +33,7 @@ void MoveFloor::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 	position = pos;
 	rotation = rot;
+	moveSpeed = { 0.07f,0.0f,0.0f };
 
 	//衝突判定の初期化
 	//スキンモデルからメッシュコライダーを作成する
@@ -98,7 +99,7 @@ void MoveFloor::Move()
 {
 	Timer += Timer::GetFrameDeltaTime();
 	moveFlag = true;
-	if (Timer >= 7.0f) {
+	if (Timer >= 10.0f) {
 		moveSpeed *= -1.0f;
 		Timer = 0.0f;
 	}

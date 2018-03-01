@@ -156,6 +156,10 @@
     <ClCompile Include="Camera\GameCamera.cpp" />
     <ClCompile Include="Enemy\Killer.cpp" />
     <ClCompile Include="Enemy\Red_Dragon.cpp" />
+    <ClCompile Include="Enemy\StoneMonster.cpp" />
+    <ClCompile Include="Enemy\StoneMonsterIdle.cpp" />
+    <ClCompile Include="Enemy\StoneMonsterFollow.cpp" />
+    <ClCompile Include="Enemy\StoneMonsterStateMachine.cpp" />
     <ClCompile Include="Fade\Fade.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\Block.cpp" />
@@ -219,11 +223,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\GameCamera.h" />
+    <ClInclude Include="Enemy\IStoneMonsterState.h" />
     <ClInclude Include="Enemy\Killer.h" />
     <ClInclude Include="Enemy\Red_Dragon.h" />
+    <ClInclude Include="Enemy\StoneMonster.h" />
+    <ClInclude Include="Enemy\StoneMonsterIdle.h" />
+    <ClInclude Include="Enemy\StoneMonsterFollow.h" />
+    <ClInclude Include="Enemy\StoneMonsterState.h" />
+    <ClInclude Include="Enemy\StoneMonsterStateMachine.h" />
     <ClInclude Include="Fade\Fade.h" />
     <ClInclude Include="locationinfo\stage1.h" />
     <ClInclude Include="locationinfo\stage2.h" />
+    <ClInclude Include="locationinfo\stage3.h" />
+    <ClInclude Include="locationinfo\stage4.h" />
     <ClInclude Include="Map\Block.h" />
     <ClInclude Include="Map\Block2.h" />
     <ClInclude Include="Map\Box.h" />

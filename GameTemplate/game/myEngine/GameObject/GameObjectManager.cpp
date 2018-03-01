@@ -63,6 +63,9 @@ void GameObjectManager::DeleteGameObject()
 			it = gameObjects.erase(it);
 			delete deleteObject;
 		}
+		else if ((*it)->GetIsChangeState()){
+			it = gameObjects.erase(it);
+		}
 		else {
 			it++;
 		}

@@ -32,8 +32,14 @@ public:
 		return newObject;
 	}
 
+	void AddGameObject(GameObject* go)
+	{
+		gameObjects.push_back(go);		
+	}
+
 	//インスタンスをゲームオブジェクトから削除
 	void DeleteGameObject();
+
 private:
 	std::list<GameObject*>	gameObjects;	//ゲームオブジェクトの配列
 	//typedef std::list<GameObject*>	GameObjectList;
