@@ -18,6 +18,8 @@ public:
 	//更新
 	void Update();
 
+	bool Start();
+
 	//移動
 	void Move();
 
@@ -28,6 +30,11 @@ public:
 	void Turn();
 
 private:
+	const float m_speed = 2.0f;
 	D3DXVECTOR3 m_moveSpeed = { 0.0f,0.0f,0.0f };
+	D3DXVECTOR3 m_destination;						//移動先の座標
+	D3DXVECTOR3 m_initPosition;						//初期座標
 	int m_rotationFrameCount = 0;					//回転フレームカウント
+	float timer = 0.0f;								//タイマー
+	bool isMove = false;							//移動フラグ
 };

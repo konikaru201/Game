@@ -34,7 +34,7 @@ public:
 
 	void AddGameObject(GameObject* go)
 	{
-		gameObjects.push_back(go);		
+		gameObjects.push_back(go);
 	}
 
 	//インスタンスをゲームオブジェクトから削除
