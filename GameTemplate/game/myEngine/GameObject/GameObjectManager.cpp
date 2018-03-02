@@ -58,13 +58,13 @@ void GameObjectManager::DeleteGameObject()
 	it = gameObjects.begin();
 
 	while (it != gameObjects.end()) {
-		if ((*it)->GetisDead()) {
+		if ((*it)->GetIsChangeState()) {
+			it = gameObjects.erase(it);
+		}
+		else if ((*it)->GetisDead()) {
 			GameObject *deleteObject = *it;
 			it = gameObjects.erase(it);
 			delete deleteObject;
-		}
-		else if ((*it)->GetIsChangeState()){
-			it = gameObjects.erase(it);
 		}
 		else {
 			it++;

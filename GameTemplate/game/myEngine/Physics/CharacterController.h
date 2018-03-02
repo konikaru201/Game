@@ -135,4 +135,5 @@ private:
 	float				m_gravity = -9.8f;				//d—ÍB
 	D3DXVECTOR3			m_hitNormal = { 0.0f,0.0f,0.0f };
 	bool				m_hitCeiling = false;			//ã•ûŒü‚É“–‚½‚Á‚½
+	D3DXVECTOR3			m_prePosition;
 };

@@ -82,7 +82,7 @@ private:
 	D3DXVECTOR3					m_position;							//座標
 	D3DXQUATERNION				m_rotation;							//回転
 	D3DXVECTOR3					m_direction;						//向き
-	RigidBody					m_rigidBody;						//剛体
+	//RigidBody					m_rigidBody;						//剛体
 	Animation					m_animation;						//アニメーション
 	D3DXVECTOR3					m_moveSpeed = { 0.0f,0.0f,0.0f };	//移動速度
 	CharacterController			m_characterController;				//キャラクターコントローラー

@@ -29,10 +29,16 @@ void StoneMonsterStateMachine::ChangeState(StoneMonsterState::EnState nextState)
 		break;
 	}
 
-	//ゲームオブジェクトにから外れないようにフラグを戻す
+	//ゲームオブジェクトから外れないようにフラグを戻す
 	if (m_currentState != nullptr) {
 		m_currentState->SetIsChangeState(false);
 	}
 
 	goMgr->AddGameObject(m_currentState);
+}
+
+void StoneMonsterStateMachine::Release()
+{
+	//シーン切り替え時に現在のステートをゲームオブジェクトから外す
+	m_currentState->SetIsChangeState(true);
 }

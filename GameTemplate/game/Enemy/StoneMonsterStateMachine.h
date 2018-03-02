@@ -32,6 +32,9 @@ public:
 	//ステート切り替え
 	void ChangeState(StoneMonsterState::EnState nextState);
 
+	//解放
+	void Release();
+
 private:
 	StoneMonsterState::EnState m_state = StoneMonsterState::enState_Invald;
 	IStoneMonsterState* m_currentState = nullptr;

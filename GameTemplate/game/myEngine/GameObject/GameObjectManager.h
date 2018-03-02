@@ -34,7 +34,10 @@ public:
 
 	void AddGameObject(GameObject* go)
 	{
-		gameObjects.push_back(go);
+		if (!go->GetIsRegist()) {
+			gameObjects.push_back(go);
+			go->SetIsRegist(true);
+		}
 	}
 
 	//インスタンスをゲームオブジェクトから削除

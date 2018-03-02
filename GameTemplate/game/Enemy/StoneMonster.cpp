@@ -54,11 +54,19 @@ void StoneMonster::Update()
 {
 	if (sceneManager->GetChangeSceneFlag())
 	{
+		m_stoneMonsterStateMachine.SetIsChangeState(true);
+		m_stoneMonsterStateMachine.Release();
+
 		SetisDead();
 		//剛体を削除
-		g_physicsWorld->RemoveRigidBody(&m_rigidBody);
+		//g_physicsWorld->RemoveRigidBody(&m_rigidBody);
+		m_characterController.RemoveRigidBoby();
 		return;
 	}	
+
+	//if (!m_characterController.IsOnGround()) {
+	//	m_characterController.SetMoveSpeed(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//}
 
 	//キャラクターコントローラーを実行
 	m_characterController.Execute();

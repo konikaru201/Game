@@ -58,17 +58,17 @@ public:
 		m_renderToShadow = true;
 	}
 
-	////ゲームオブジェクトに登録されているか
-	//bool GetIsRegist()
-	//{
-	//	return m_isRegist;
-	//}
+	//ゲームオブジェクトに登録されているか
+	bool GetIsRegist()
+	{
+		return m_isRegist;
+	}
 
-	////ゲームオブジェクトに登録するフラグを設定
-	//void SetIsRegist(bool isRegist)
-	//{
-	//	m_isRegist = isRegist;
-	//}
+	//ゲームオブジェクトに登録するフラグを設定
+	void SetIsRegist(bool isRegist)
+	{
+		m_isRegist = isRegist;
+	}
 
 	//ステートを変更するか
 	bool GetIsChangeState()
@@ -86,6 +86,6 @@ protected:
 	bool m_isStart = false;			//Start関数のフラグ
 	bool m_isDead = false;			//死亡フラグ
 	bool m_renderToShadow = false;	//影の描画フラグ
-	//bool m_isRegist = false;		//ゲームオブジェクトに登録されているか
+	bool m_isRegist = false;		//ゲームオブジェクトに登録されているか
 	bool m_isChangeState = false;	//ステートを変更するか
 };
