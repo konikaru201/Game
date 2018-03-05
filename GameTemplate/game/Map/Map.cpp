@@ -97,6 +97,10 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 			StoneMonster* stoneMonster = goMgr->NewGameObject<StoneMonster>();
 			stoneMonster->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
+		else if (strcmp("MoveFloor_3", mapLocInfo[i].modelName) == 0) {
+			Floor* floor = goMgr->NewGameObject<Floor>();
+			floor->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		}
 		else 
 		{
 			//インスタンスを動的に生成

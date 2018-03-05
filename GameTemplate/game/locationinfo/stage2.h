@@ -229,6 +229,12 @@
 //StoneMonster
 {
 	"StoneMonster",
-	D3DXVECTOR3(0.00f, 0.81f, 0.00f),             //平行移動
+	D3DXVECTOR3(-0.19f, 0.81f, -32.95f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(-0.19f, 0.81f, -21.08f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },

@@ -36,7 +36,7 @@ void StoneMonster::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 	//剛体の作成
 	CapsuleCollider* coll = new CapsuleCollider;
-	coll->Create(0.4f, 0.8f);
+	coll->Create(0.3f, 0.6f);
 	m_characterController.Init(coll, m_position);
 }
 
@@ -52,21 +52,18 @@ bool StoneMonster::Start()
 
 void StoneMonster::Update()
 {
+	//シーン切り替え時
 	if (sceneManager->GetChangeSceneFlag())
 	{
+		//状態クラスの死亡フラグを立てる
 		m_stoneMonsterStateMachine.SetIsChangeState(true);
 		m_stoneMonsterStateMachine.Release();
-
+		//死亡フラグを立てる
 		SetisDead();
 		//剛体を削除
-		//g_physicsWorld->RemoveRigidBody(&m_rigidBody);
 		m_characterController.RemoveRigidBoby();
 		return;
 	}	
-
-	//if (!m_characterController.IsOnGround()) {
-	//	m_characterController.SetMoveSpeed(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	//}
 
 	//キャラクターコントローラーを実行
 	m_characterController.Execute();

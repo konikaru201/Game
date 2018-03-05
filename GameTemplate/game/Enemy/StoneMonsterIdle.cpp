@@ -29,7 +29,7 @@ void StoneMonsterIdle::Update()
 
 bool StoneMonsterIdle::Start()
 {
-	//一度だけ乱数の初期化する
+	//一度だけ乱数の種を初期化する
 	srand((unsigned)time(NULL));
 
 	m_destination = m_stoneMonster->GetPosition();
@@ -92,11 +92,26 @@ void StoneMonsterIdle::Move()
 		}
 	}
 	else {
-		//移動先に進む
-		D3DXVec3Normalize(&toDestination, &toDestination);
-		toDestination *= m_speed;
-		m_moveSpeed.x = toDestination.x;
-		m_moveSpeed.z = toDestination.z;
+		if (length >= 10.0f) {
+			toDestination = m_initPosition - position;
+			D3DXVec3Normalize(&toDestination, &toDestination);
+			toDestination *= m_speed;
+			m_moveSpeed.x = toDestination.x;
+			m_moveSpeed.z = toDestination.z;
+		}
+		else {
+			//移動先に進む
+			D3DXVec3Normalize(&toDestination, &toDestination);
+			toDestination *= m_speed;
+			m_moveSpeed.x = toDestination.x;
+			m_moveSpeed.z = toDestination.z;
+			timer += Timer::GetFrameDeltaTime();
+			//壁際で詰まっていたら移動先を初期位置に戻す
+			if (timer >= 7.0f) {
+				m_destination = m_initPosition;
+				timer = 0.0f;
+			}
+		}
 	}
 
 	m_stoneMonster->SetMoveSpeed(m_moveSpeed);
@@ -117,7 +132,7 @@ void StoneMonsterIdle::Search()
 	float angle = D3DXVec3Dot(&toPlayerDir, &forward);
 	angle = acosf(angle);
 
-	if (fabsf(angle) < D3DXToRadian(30.0f) && length < 6.0f || length < 3.0f)
+	if (fabsf(angle) < D3DXToRadian(30.0f) && length < 8.0f || length < 5.0f)
 	{
 		//発見された
 		SetIsFind(true);

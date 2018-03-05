@@ -37,13 +37,13 @@ void MoveFloor2::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	moveSpeed = { -0.07f,0.0f,0.0f };
 
 	//衝突判定の初期化
-	//スキンモデルからメッシュコライダーを作成する
-	D3DXMATRIX* rootBoneMatrix = modelData.GetRootBoneWorldMatrix();
-	meshCollider.CreateFromSkinModel(&model, rootBoneMatrix);
+	//スキンモデルからボックスコライダーを作成する
+	BoxCollider* boxCollider = new BoxCollider;
+	boxCollider->Create(D3DXVECTOR3(2.5f, 0.41f, 2.5f));
 
 	//剛体を作るための情報を設定
 	RigidBodyInfo rbInfo;
-	rbInfo.collider = &meshCollider;		//剛体のコリジョンを設定する
+	rbInfo.collider = boxCollider;		//剛体のコリジョンを設定する
 	rbInfo.mass = 0.0f;					//質量を0にすると動かない剛体になる
 	rbInfo.pos = position;
 	rbInfo.rot = rotation;

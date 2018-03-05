@@ -276,7 +276,7 @@ void LoadShaders()
 #ifdef _DEBUG
 		D3DXSHADER_DEBUG,
 #else
-		D3DXSHADER_SKIPVALISATION,
+		D3DXSHADER_SKIPVALIDATION,
 #endif 
 		NULL,
 		&copyEffect,

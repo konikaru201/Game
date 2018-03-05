@@ -36,6 +36,8 @@ namespace {
 			angle = fabsf(acosf(angle));
 			if (angle < cPI * 0.3f		//地面の傾斜が54度より小さいので地面とみなす。
 				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Ground //もしくはコリジョン属性が地面と指定されている。
+				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_MoveFloor
+				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_MoveFloor2
 				) {
 				isHit = true;
 				D3DXVECTOR3 hitPosTmp = *(D3DXVECTOR3*)&convexResult.m_hitPointLocal;
@@ -179,10 +181,8 @@ void CharacterController::Execute()
 	//次の移動先となる座標を計算する。
 	D3DXVECTOR3 nextPosition = m_position;
 	//速度からこのフレームでの移動量を求める。オイラー積分。
-	//D3DXVECTOR3 AddPos;
 	D3DXVECTOR3 addPos = m_moveSpeed;
 	addPos *= 1.0f / 60.0f;
-	//AddPos *= 1.0f / 60.0f;
 	nextPosition += addPos;
 	D3DXVECTOR3 originalXZDir = addPos;
 	originalXZDir.y = 0.0f;
@@ -297,8 +297,8 @@ void CharacterController::Execute()
 		start.setIdentity();
 		end.setIdentity();
 		//始点はカプセルコライダーの中心。
-		//start.setOrigin(btVector3(m_position.x, m_position.y + m_collider->GetHalfSize().y/*m_height * 0.5f + m_radius*/, m_position.z));
-		start.setOrigin(btVector3(nextPosition.x, nextPosition.y + m_collider->GetHalfSize().y/*m_height * 0.5f + m_radius*/, nextPosition.z));
+		//start.setOrigin(btVector3(m_position.x, m_position.y + m_collider->GetHalfSize().y, m_position.z));
+		start.setOrigin(btVector3(nextPosition.x, nextPosition.y + m_collider->GetHalfSize().y, nextPosition.z));
 		//終点は地面上にいない場合は1m下を見る。
 		//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
 		//地面上にいなくて降下中の場合はそのまま落下先を調べる。
@@ -321,7 +321,6 @@ void CharacterController::Execute()
 			endPos.y -= 1.0f;
 		}
 		end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
-		//end.setOrigin(btVector3(nextPosition.x, endPos.y, nextPosition.z));
 		SweepResultGround callback;
 		callback.me = m_rigidBody.GetBody();
 		callback.startPos = { start.getOrigin().x(), start.getOrigin().y(), start.getOrigin().z() };
@@ -335,24 +334,24 @@ void CharacterController::Execute()
 			m_isJump = false;
 			m_isOnGround = true;
 			nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
+			m_prePosition.x = m_position.x;
+			m_prePosition.y = nextPosition.y;
+			m_prePosition.z = m_position.z;
 		}
 		else {
 			//地面上にいない。
 			m_isOnGround = false;
+			D3DXVECTOR3 vT0, vT1;
+			vT0 = { m_prePosition.x,m_prePosition.y,m_prePosition.z };
+			vT1 = { nextPosition.x, nextPosition.y, nextPosition.z };
+			D3DXVECTOR3 vMerikomi;
+			vMerikomi = vT0 - vT1;
+			//押し戻し返すベクトルを求める。
+			D3DXVECTOR3 vOffset;
+			vOffset = vMerikomi;
+			nextPosition += vOffset;
+			//nextPosition = m_prePosition;
 		}
-	}
-
-	if (!m_isOnGround) {
-		D3DXVECTOR3 vT0, vT1;
-		vT0 = { m_prePosition.x,m_prePosition.y,m_prePosition.z };
-		vT1 = { nextPosition.x, nextPosition.y, nextPosition.z };
-		D3DXVECTOR3 vMerikomi;
-		vMerikomi = vT0 - vT1;
-		//押し戻し返すベクトルを求める。
-		//押し返すベクトルは壁の法線に射影されためり込みベクトル+半径。
-		D3DXVECTOR3 vOffset;
-		vOffset = vMerikomi;
-		nextPosition += vOffset;
 	}
 
 	////上方向を調べる。
@@ -447,8 +446,6 @@ void CharacterController::Execute()
 	//		m_hitCeiling = false;
 	//	}
 	//}
-
-	m_prePosition = m_position;
 
 	//移動確定。
 	m_position = nextPosition;

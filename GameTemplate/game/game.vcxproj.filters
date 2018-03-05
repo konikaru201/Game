@@ -252,6 +252,9 @@
     <ClCompile Include="Enemy\StoneMonsterFollow.cpp">
       <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
     </ClCompile>
+    <ClCompile Include="Map\Floor.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -469,6 +472,9 @@
     </ClInclude>
     <ClInclude Include="Enemy\StoneMonsterFollow.h">
       <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Floor.h">
+      <Filter>ソース ファイル\Map\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

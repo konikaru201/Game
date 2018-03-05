@@ -166,6 +166,7 @@
     <ClCompile Include="Map\Block2.cpp" />
     <ClCompile Include="Map\Box.cpp" />
     <ClCompile Include="Map\Coin.cpp" />
+    <ClCompile Include="Map\Floor.cpp" />
     <ClCompile Include="Map\Map.cpp" />
     <ClCompile Include="Map\MapChip.cpp" />
     <ClCompile Include="Map\MoveFloor.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="Map\Block2.h" />
     <ClInclude Include="Map\Box.h" />
     <ClInclude Include="Map\Coin.h" />
+    <ClInclude Include="Map\Floor.h" />
     <ClInclude Include="Map\Map.h" />
     <ClInclude Include="Map\MapChip.h" />
     <ClInclude Include="Map\MoveFloor.h" />

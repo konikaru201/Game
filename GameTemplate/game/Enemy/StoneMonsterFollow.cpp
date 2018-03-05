@@ -9,6 +9,7 @@ void StoneMonsterFollow::Update()
 	//ƒvƒŒƒCƒ„[‚ğ’T‚·
 	Search();
 
+	//Œ©‚Â‚©‚Á‚Ä‚¢‚é
 	if (GetIsFind())
 	{
 		//ˆÚ“®
@@ -52,7 +53,7 @@ void StoneMonsterFollow::Search()
 	float angle = D3DXVec3Dot(&toPlayerDir, &forward);
 	angle = acosf(angle);
 
-	if (fabsf(angle) < D3DXToRadian(30.0f) && length < 10.0f || length < 5.0f)
+	if (fabsf(angle) < D3DXToRadian(30.0f) && length < 8.0f || length < 5.0f)
 	{
 		//Œ©‚Â‚©‚Á‚½
 		SetIsFind(true);
