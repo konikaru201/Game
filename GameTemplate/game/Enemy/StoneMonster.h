@@ -101,6 +101,7 @@ private:
 	Light						m_light;							//ライト
 	D3DXVECTOR3					m_position;							//座標
 	D3DXQUATERNION				m_rotation;							//回転
+	D3DXVECTOR3					m_scale;							//拡大
 	D3DXVECTOR3					m_direction;						//向き
 	Animation					m_animation;						//アニメーション
 	D3DXVECTOR3					m_moveSpeed = { 0.0f,0.0f,0.0f };	//移動速度
@@ -117,5 +118,6 @@ private:
 	bool moveFloor2Hit = false;
 	D3DXVECTOR3 moveFloor2Position = { 0.0f,0.0f,0.0f };
 
+	float deadTimer = 0.0f;
 	bool isDead = false;
 };

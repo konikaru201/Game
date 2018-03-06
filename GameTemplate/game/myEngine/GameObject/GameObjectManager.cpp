@@ -62,11 +62,33 @@ void GameObjectManager::DeleteGameObject()
 
 	it = gameObjects.begin();
 
+	//while (it != gameObjects.end()) {
+	//	if ((*it)->GetIsChangeState()) {
+	//		it = gameObjects.erase(it);
+	//	}
+	//	else if ((*it)->GetisDead()) {
+	//		GameObject *deleteObject = *it;
+	//		it = gameObjects.erase(it);
+	//		delete deleteObject;
+	//	}
+	//	else {
+	//		it++;
+	//	}
+	//}
+
 	while (it != gameObjects.end()) {
 		if ((*it)->GetIsChangeState()) {
 			it = gameObjects.erase(it);
 		}
-		else if ((*it)->GetisDead()) {
+		else {
+			it++;
+		}
+	}
+
+	it = gameObjects.begin();
+
+	while (it != gameObjects.end()) {
+		if ((*it)->GetisDead()) {
 			GameObject *deleteObject = *it;
 			it = gameObjects.erase(it);
 			delete deleteObject;

@@ -34,6 +34,7 @@ void StoneMonster::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 	m_position = pos;
 	m_rotation = rot;
+	m_scale = { 1.0f,1.0f,1.0f };
 
 	//剛体の作成
 	CapsuleCollider* coll = new CapsuleCollider;
@@ -82,7 +83,7 @@ bool StoneMonster::Start()
 void StoneMonster::Update()
 {
 	//シーン切り替え時
-	if (sceneManager->GetChangeSceneFlag() || isDead)
+	if (sceneManager->GetChangeSceneFlag() || deadTimer >= 0.5f)
 	{
 		//状態クラスの死亡フラグを立てる
 		m_stoneMonsterStateMachine.SetIsChangeState(true);
@@ -93,6 +94,11 @@ void StoneMonster::Update()
 		m_characterController.RemoveRigidBoby();
 		return;
 	}	
+
+	if (isDead) {
+		deadTimer += Timer::GetFrameDeltaTime();
+		return;
+	}
 
 	D3DXVECTOR3 playerPos = player->GetPosition();
 	D3DXVECTOR3 toPlayerPos = playerPos - m_position;
@@ -105,6 +111,7 @@ void StoneMonster::Update()
 		if (toPlayerPosY.y > 0.2f && lengthY <= 0.5f) {
 			player->SetTreadOnEnemy(true);
 			isDead = true;
+			m_scale.y = 0.1f;
 		}
 		else if (lengthY <= 0.2f && lengthXZ <= 0.6f) {
 			player->SetHitEnemy(true);
@@ -162,8 +169,7 @@ void StoneMonster::Update()
 		m_position = m_characterController.GetPosition();
 	}
 
-	m_model.UpdateWorldMatrix(m_position, m_rotation, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
-
+	m_model.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 }
 
 void StoneMonster::Render()

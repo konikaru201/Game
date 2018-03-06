@@ -54,7 +54,7 @@ void Star::Update()
 	D3DXVECTOR3 toPlayer = position - PlayerPos;
 	float length = D3DXVec3Length(&toPlayer);
 	//プレイヤーと距離が近ければ枚数をカウントして削除
-	if (length <= 0.7f)
+	if (length <= 1.0f)
 	{
 		flag = true;
 		player->SetGetStar(flag);

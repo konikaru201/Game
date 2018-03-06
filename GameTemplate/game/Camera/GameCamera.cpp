@@ -32,6 +32,38 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
+	//if (player->GetStar()) {
+	//	D3DXQUATERNION rot;
+	//	D3DXQuaternionIdentity(&rot);
+
+	//	m_rotationFrameCount++;
+	//	D3DXVECTOR3 playerForward = player->GetPlayerDir();
+	//	D3DXVECTOR3 toCameraPosition = camera.GetEyePt() - player->GetPosition();
+	//	toCameraPosition.y = 0.0f;
+	//	float angle = D3DXVec3Dot(&playerForward, &toCameraPosition);
+	//	if (angle < -1.0f)
+	//	{
+	//		angle = -1.0f;
+	//	}
+	//	if (angle > 1.0f)
+	//	{
+	//		angle = 1.0f;
+	//	}
+	//	angle = acosf(angle);
+	//	D3DXVECTOR3 Cross;
+	//	D3DXVec3Cross(&Cross, &playerForward, &toCameraPosition);
+	//	//ベクトルが下向きか判定
+	//	if (Cross.y < 0.0f) {
+	//		angle *= -1.0f;
+	//	}
+	//	angle /= 5;
+	//	if (m_rotationFrameCount <= 5) {
+	//		D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
+	//		//D3DXQuaternionMultiply(&rotation, &rotation, &rot);
+	//		m_rotationFrameCount = 0;
+	//	}
+	//}
+
 	Move();
 	//カメラ更新
 	camera.Update();

@@ -162,6 +162,12 @@ public:
 		return m_playerDead;
 	}
 
+	//スター獲得フラグ
+	bool GetStar()
+	{
+		return getStar;
+	}
+
 	//プレイヤーの状態
 	enum State {
 		State_Walk,				//移動
