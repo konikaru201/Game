@@ -72,9 +72,29 @@ public:
 	//移動速度を設定
 	void SetMoveSpeed(const D3DXVECTOR3& moveSpeed)
 	{
-		m_characterController.SetMoveSpeed(moveSpeed);
+		m_moveSpeed = moveSpeed;
+		//m_characterController.SetMoveSpeed(moveSpeed);
 	}
 
+	bool GetIsOnMoveFloor()
+	{
+		return moveFloorHit;
+	}
+
+	bool GetIsOnMoveFloor2()
+	{
+		return moveFloor2Hit;
+	}
+
+	const D3DXVECTOR3& GetMoveFloorPosition()
+	{
+		return moveFloorPosition;
+	}
+
+	const D3DXVECTOR3& GetMoveFloor2Position()
+	{
+		return moveFloor2Position;
+	}
 private:
 	SkinModel					m_model;							//スキンモデル
 	SkinModelData				m_modelData;						//スキンモデルデータ
@@ -86,4 +106,16 @@ private:
 	D3DXVECTOR3					m_moveSpeed = { 0.0f,0.0f,0.0f };	//移動速度
 	CharacterController			m_characterController;				//キャラクターコントローラー
 	StoneMonsterStateMachine	m_stoneMonsterStateMachine;			//ステートマシン
+
+	D3DXMATRIX parentWorldMatrix;									//親のワールド行列
+	D3DXVECTOR3 childPosition = { 0.0f,0.0f,0.0f };					//親のローカル座標からみた座標
+	bool moveFloorHit = false;
+	D3DXVECTOR3 moveFloorPosition = { 0.0f,0.0f,0.0f };
+
+	D3DXMATRIX secondParentWorldMatrix;								//親のワールド行列
+	D3DXVECTOR3 secondChildPosition = { 0.0f,0.0f,0.0f };			//親のローカル座標からみたプレイヤーの座標
+	bool moveFloor2Hit = false;
+	D3DXVECTOR3 moveFloor2Position = { 0.0f,0.0f,0.0f };
+
+	bool isDead = false;
 };

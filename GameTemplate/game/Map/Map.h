@@ -45,5 +45,28 @@ public:
 
 	//•`‰æ
 	void Render();
+
+	const D3DXMATRIX& MoveFloorWorldMatrix(const D3DXVECTOR3& pos);
+
+	const D3DXMATRIX& MoveFloor2WorldMatrix(const D3DXVECTOR3& pos);
+
+	std::list<MoveFloor*> GetMoveFloorList()
+	{
+		return m_moveFloorList;
+	}
+
+	std::list<MoveFloor2*> GetMoveFloor2List()
+	{
+		return m_moveFloor2List;
+	}
+
+	const D3DXVECTOR3& GetMoveFloorPosition(const D3DXVECTOR3& pos);
+
+	const D3DXVECTOR3& GetMoveFloor2Position(const D3DXVECTOR3& pos);
+
+private:
+	std::list<MoveFloor*> m_moveFloorList;
+	std::list<MoveFloor2*> m_moveFloor2List;
 };
 
+extern Map* map;

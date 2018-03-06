@@ -31,4 +31,5 @@ private:
 	const float m_speed = 2.0f;
 	D3DXVECTOR3 m_moveSpeed = { 0.0f,0.0f,0.0f };
 	int m_rotationFrameCount = 0;					//回転フレームカウント
+	float timer = 0.0f;
 };

@@ -29,6 +29,8 @@ public:
 	//回転
 	void Turn();
 
+	void TurnOnMoveFloor();
+
 private:
 	const float m_speed = 2.0f;
 	D3DXVECTOR3 m_moveSpeed = { 0.0f,0.0f,0.0f };
@@ -37,4 +39,6 @@ private:
 	int m_rotationFrameCount = 0;					//回転フレームカウント
 	float timer = 0.0f;								//タイマー
 	bool isMove = false;							//移動フラグ
+	D3DXVECTOR3 moveDirection = { 0.0f,0.0f,1.0f };
+	int m_turnCount = 0;
 };

@@ -205,7 +205,7 @@ private:
 	float timer = 0.0f;												//タイマー
 	D3DXVECTOR3 moveSpeed = { 0.0f,0.0f,0.0f };						//移動速度
 	float acceleration = 0.0f;										//加速度
-	const float speedLimit = 8.0f;									//限界速度
+	const float speedLimit = 6.0f;									//限界速度
 	D3DXVECTOR3 currentDir = { 0.0f,0.0f,0.0f };					//1フレーム前のZ方向
 	bool parentFirstHit = true;										//親との最初の当たり判定フラグ
 	bool secondParentFirstHit = true;								//親との最初の当たり判定フラグ

@@ -2,6 +2,8 @@
 #include "Map.h"
 #include "myEngine/GameObject/GameObjectManager.h"
 
+Map* map = nullptr;
+
 Map::Map()
 {
 }
@@ -24,12 +26,14 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 			MoveFloor* moveFloor = goMgr->NewGameObject<MoveFloor>();
 			//À•W‚Æ‰ñ“]‚Ìî•ñ‚ð“n‚µ‚Ä‰Šú‰»
 			moveFloor->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+			m_moveFloorList.push_back(moveFloor);
 		}
 		else if (strcmp("MoveFloor_2", mapLocInfo[i].modelName) == 0) {
 			//ƒCƒ“ƒXƒ^ƒ“ƒX‚ð“®“I‚É¶¬
 			MoveFloor2* moveFloor2 = goMgr->NewGameObject<MoveFloor2>();
 			//À•W‚Æ‰ñ“]‚Ìî•ñ‚ð“n‚µ‚Ä‰Šú‰»
 			moveFloor2->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+			m_moveFloor2List.push_back(moveFloor2);
 		}
 		else if (strcmp("Coin", mapLocInfo[i].modelName) == 0)
 		{
@@ -117,4 +121,70 @@ void Map::Update()
 
 void Map::Render()
 {
+}
+
+const D3DXMATRIX& Map::MoveFloorWorldMatrix(const D3DXVECTOR3& pos)
+{
+	D3DXMATRIX matrix;
+	float minLength = 1000.0f;
+	for (auto moveFloor : m_moveFloorList) {
+		D3DXVECTOR3 moveFloorPosition = moveFloor->GetPosition();
+		D3DXVECTOR3 Vector = pos - moveFloorPosition;
+		float length = D3DXVec3Length(&Vector);
+		if (minLength > length) {
+			matrix = moveFloor->GetWorldMatrix();
+			minLength = length;
+		}
+	}
+
+	return matrix;
+}
+
+const D3DXMATRIX & Map::MoveFloor2WorldMatrix(const D3DXVECTOR3 & pos)
+{
+	D3DXMATRIX matrix;
+	float minLength = 1000.0f;
+	for (auto moveFloor2 : m_moveFloor2List) {
+		D3DXVECTOR3 moveFloorPosition = moveFloor2->GetPosition();
+		D3DXVECTOR3 Vector = pos - moveFloorPosition;
+		float length = D3DXVec3Length(&Vector);
+		if (minLength > length) {
+			matrix = moveFloor2->GetWorldMatrix();
+			minLength = length;
+		}
+	}
+
+	return matrix;
+}
+
+const D3DXVECTOR3 & Map::GetMoveFloorPosition(const D3DXVECTOR3 & pos)
+{
+	D3DXVECTOR3 position;
+	float minLength = 1000.0f;
+	for (auto moveFloor : m_moveFloorList) {
+		D3DXVECTOR3 moveFloorPosition = moveFloor->GetPosition();
+		D3DXVECTOR3 Vector = pos - moveFloorPosition;
+		float length = D3DXVec3Length(&Vector);
+		if (minLength > length) {
+			position = moveFloorPosition;
+			minLength = length;
+		}
+	}
+	return position;
+}
+
+const D3DXVECTOR3 & Map::GetMoveFloor2Position(const D3DXVECTOR3 & pos)
+{
+	D3DXVECTOR3 position;
+	float minLength = 1000.0f;
+	for (auto moveFloor2 : m_moveFloor2List) {
+		D3DXVECTOR3 moveFloorPosition = moveFloor2->GetPosition();
+		D3DXVECTOR3 Vector = pos - moveFloorPosition;
+		float length = D3DXVec3Length(&Vector);
+		if (minLength > length) {
+			position = moveFloorPosition;
+			minLength = length;
+		}
+	}
+	return position;
 }

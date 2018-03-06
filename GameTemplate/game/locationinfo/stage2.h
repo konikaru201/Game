@@ -229,12 +229,108 @@
 //StoneMonster
 {
 	"StoneMonster",
-	D3DXVECTOR3(-0.19f, 0.81f, -32.95f),             //平行移動
+	D3DXVECTOR3(-20.40f, 0.35f, -41.40f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
 //StoneMonster
 {
 	"StoneMonster",
-	D3DXVECTOR3(-0.19f, 0.81f, -21.08f),             //平行移動
+	D3DXVECTOR3(-2.00f, 0.35f, -22.30f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(2.54f, 0.35f, -16.38f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(-2.57f, 0.35f, -14.14f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(19.00f, 0.35f, -56.90f),             //平行移動
+	D3DXQUATERNION(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(23.20f, 0.35f, -62.10f),             //平行移動
+	D3DXQUATERNION(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(28.20f, 0.35f, -58.10f),             //平行移動
+	D3DXQUATERNION(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(31.90f, 0.35f, -61.90f),             //平行移動
+	D3DXQUATERNION(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(37.70f, 0.35f, -56.90f),             //平行移動
+	D3DXQUATERNION(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(61.71f, 0.35f, -89.20f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(42.00f, 0.35f, -115.20f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(37.00f, 0.35f, -121.40f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(41.40f, 0.35f, -125.70f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(37.20f, 0.35f, -133.30f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(41.10f, 0.35f, -137.20f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(37.70f, 0.35f, -126.90f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(37.70f, 0.35f, -115.90f),             //平行移動
+	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
+//StoneMonster
+{
+	"StoneMonster",
+	D3DXVECTOR3(39.98f, 0.35f, -72.53f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },

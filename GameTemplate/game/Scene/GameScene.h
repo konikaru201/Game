@@ -79,7 +79,7 @@ public:
 	}
 private:
 	GameOverScene* gameOverScene = nullptr;
-	Map* map;								//マップ
+	//Map* map;								//マップ
 	DepthStencilRender* depthStencilRender;	//シルエット
 	CSoundSource* bgmSource = nullptr;		//BGM
 

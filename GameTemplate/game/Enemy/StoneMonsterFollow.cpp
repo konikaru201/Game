@@ -35,6 +35,44 @@ void StoneMonsterFollow::Move()
 	D3DXVec3Normalize(&toPlayerDir, &toPlayerDir);
 	m_moveSpeed.x = toPlayerDir.x * m_speed;
 	m_moveSpeed.z = toPlayerDir.z * m_speed;
+
+	if (m_stoneMonster->GetIsOnMoveFloor() || m_stoneMonster->GetIsOnMoveFloor2())
+	{
+		D3DXVECTOR3 position = m_stoneMonster->GetPosition();
+		D3DXVECTOR3 toMoveFloorPosition;
+		if (m_stoneMonster->GetIsOnMoveFloor()) {
+			toMoveFloorPosition = m_stoneMonster->GetMoveFloorPosition() - position;
+		}
+		else {
+			toMoveFloorPosition = m_stoneMonster->GetMoveFloor2Position() - position;
+		}
+
+		float length = D3DXVec3Length(&toMoveFloorPosition);
+		if (length >= 2.4f) {
+			timer += Timer::GetFrameDeltaTime();
+			if (timer >= 2.0f) {
+				D3DXVec3Normalize(&toMoveFloorPosition, &toMoveFloorPosition);
+				toMoveFloorPosition *= m_speed;
+				m_moveSpeed.x = toMoveFloorPosition.x;
+				m_moveSpeed.z = toMoveFloorPosition.z;
+			}
+			else {
+				m_moveSpeed.x = 0.0f;
+				m_moveSpeed.z = 0.0f;
+			}
+		}
+		else {
+			D3DXVECTOR3 AxisZ = { 0.0f,0.0f,1.0f };
+			//プレイヤーの座標を取得
+			D3DXVECTOR3 playerPos = player->GetPosition();
+			//自身からプレイヤーのベクトルを計算
+			D3DXVECTOR3 toPlayerDir = playerPos - m_stoneMonster->GetPosition();
+			D3DXVec3Normalize(&toPlayerDir, &toPlayerDir);
+			m_moveSpeed.x = toPlayerDir.x * m_speed;
+			m_moveSpeed.z = toPlayerDir.z * m_speed;
+		}
+	}
+
 	m_stoneMonster->SetMoveSpeed(m_moveSpeed);
 }
 

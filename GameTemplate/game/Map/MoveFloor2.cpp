@@ -3,7 +3,7 @@
 #include "Scene/SceneManager.h"
 #include "myEngine/Physics/CollisionAttr.h"
 #include "myEngine/Timer/Timer.h"
-#include "../Player/Player.h"
+#include "Player/Player.h"
 
 MoveFloor2::MoveFloor2()
 {
@@ -30,7 +30,7 @@ void MoveFloor2::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
 	model.SetLight(&light);
 
-	model.UpdateWorldMatrix({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0 }, { 1.0f,1.0f,1.0f });
+	model.UpdateWorldMatrix(pos, rot, { 1.0f,1.0f,1.0f });
 
 	position = pos;
 	rotation = rot;
@@ -63,6 +63,7 @@ void MoveFloor2::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 bool MoveFloor2::Start()
 {
+	
 	return true;
 }
 

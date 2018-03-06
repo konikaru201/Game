@@ -14,8 +14,13 @@ GameObjectManager::~GameObjectManager()
 void GameObjectManager::Update()
 {
 	for (GameObject* obj : gameObjects) {
-
-		obj->PreUpdate();
+		if (obj->IsStart() == false) {
+			obj->Start();
+			obj->SetStart();
+		}
+		if (!obj->GetisDead()) {
+			obj->PreUpdate();
+		}
 	}
 	for (GameObject* obj : gameObjects) {
 		if (obj->IsStart() == false) {

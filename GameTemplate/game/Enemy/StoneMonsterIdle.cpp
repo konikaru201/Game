@@ -16,8 +16,13 @@ void StoneMonsterIdle::Update()
 
 	//ˆÚ“®‚µŽn‚ß‚½‚ç
 	if (isMove) {
-		//‰ñ“]
-		Turn();
+		if (m_stoneMonster->GetIsOnMoveFloor() || m_stoneMonster->GetIsOnMoveFloor2()) {
+			TurnOnMoveFloor();
+		}
+		else {
+			//‰ñ“]
+			Turn();
+		}
 	}
 
 	//Œ©‚Â‚©‚Á‚Ä‚¢‚½‚ç
@@ -56,7 +61,8 @@ void StoneMonsterIdle::Move()
 		if (timer >= 2.0f) {
 			//ƒ‰ƒ“ƒ_ƒ€‚ÉˆÚ“®æ‚ðŒˆ’è
 			//0.0`1.0‚Ì’l‚É•ÏŠ·
-			float randomPositionX, randomPositionZ;
+			float randomPositionX;
+			float randomPositionZ;
 			randomPositionX = (float)rand() / 32767.0;
 			randomPositionZ = (float)rand() / 32767.0;
 			//0.0`6.0‚Ì’l‚É•ÏŠ·
@@ -65,7 +71,7 @@ void StoneMonsterIdle::Move()
 			//-3.0`3.0‚Ì’l‚É•ÏŠ·
 			randomPositionX -= 3.0f;
 			randomPositionZ -= 3.0f;
-			//Œ»Ý‚ÌÀ•W‚©‚çˆÚ“®æ‚Ü‚Å‚ÌƒxƒNƒgƒ‹‚ðŒvŽZ
+			//ˆÚ“®æ‚ÌÀ•W‚ðŒvŽZ
 			D3DXVECTOR3 toRandomPosition;
 			toRandomPosition.x = m_initPosition.x + randomPositionX;
 			toRandomPosition.y = 0.0f;
@@ -92,6 +98,7 @@ void StoneMonsterIdle::Move()
 		}
 	}
 	else {
+		//’Ç‚¢‚©‚¯‚Ä‰ŠúÀ•W‚©‚ç—£‚ê‚½‚ç–ß‚·
 		if (length >= 10.0f) {
 			toDestination = m_initPosition - position;
 			D3DXVec3Normalize(&toDestination, &toDestination);
@@ -106,11 +113,34 @@ void StoneMonsterIdle::Move()
 			m_moveSpeed.x = toDestination.x;
 			m_moveSpeed.z = toDestination.z;
 			timer += Timer::GetFrameDeltaTime();
-			//•ÇÛ‚Å‹l‚Ü‚Á‚Ä‚¢‚½‚çˆÚ“®æ‚ð‰ŠúˆÊ’u‚É–ß‚·
+			//ŠRÛ‚Å‹l‚Ü‚Á‚Ä‚¢‚½‚çˆÚ“®æ‚ð‰ŠúˆÊ’u‚É–ß‚·
 			if (timer >= 7.0f) {
 				m_destination = m_initPosition;
 				timer = 0.0f;
 			}
+		}
+	}
+
+	//ˆÚ“®°‚Ìã‚È‚ç“®‚©‚È‚¢
+	if (m_stoneMonster->GetIsOnMoveFloor() || m_stoneMonster->GetIsOnMoveFloor2())
+	{
+		D3DXVECTOR3 toMoveFloorPosition;
+		if (m_stoneMonster->GetIsOnMoveFloor()) {
+			toMoveFloorPosition = m_stoneMonster->GetMoveFloorPosition() - position;
+		}
+		else {
+			toMoveFloorPosition = m_stoneMonster->GetMoveFloor2Position() - position;
+		}
+		float length = D3DXVec3Length(&toMoveFloorPosition);
+		if (length >= 2.0f) {
+			D3DXVec3Normalize(&toMoveFloorPosition, &toMoveFloorPosition);
+			toMoveFloorPosition *= m_speed;
+			m_moveSpeed.x = toMoveFloorPosition.x;
+			m_moveSpeed.z = toMoveFloorPosition.z;
+		}
+		else {
+			m_moveSpeed.x = 0.0f;
+			m_moveSpeed.z = 0.0f;
 		}
 	}
 
@@ -169,6 +199,47 @@ void StoneMonsterIdle::Turn()
 	}
 	angle /= 3;
 	if (m_rotationFrameCount <= 3) {
+		D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
+		D3DXQUATERNION rotation = m_stoneMonster->GetRotation();
+		D3DXQuaternionMultiply(&rotation, &rotation, &rot);
+		m_stoneMonster->SetRotation(rotation);
+	}
+	else {
+		m_rotationFrameCount = 0;
+	}
+}
+
+void StoneMonsterIdle::TurnOnMoveFloor()
+{
+	D3DXQUATERNION rot;
+	D3DXQuaternionIdentity(&rot);
+	m_rotationFrameCount++;
+	//ƒ‚ƒfƒ‹‚Ì‘O•ûŒü‚ðŽæ“¾
+	D3DXVECTOR3 forward = m_stoneMonster->GetDirection();
+	D3DXVec3Normalize(&forward, &forward);
+	
+	m_turnCount++;
+	if (m_turnCount % 300 == 0) {
+		moveDirection.z *= -1.0f;
+		m_turnCount = 0;
+	}
+
+	float angle = D3DXVec3Dot(&forward, &moveDirection);
+	if (angle < -1.0f) {
+		angle = -1.0f;
+	}
+	if (angle > 1.0f)
+	{
+		angle = 1.0f;
+	}
+	angle = acosf(angle);
+	D3DXVECTOR3 Cross;
+	D3DXVec3Cross(&Cross, &forward, &moveDirection);
+	if (Cross.y < 0.0f) {
+		angle *= -1.0f;
+	}
+	angle /= 5;
+	if (m_rotationFrameCount <= 5) {
 		D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
 		D3DXQUATERNION rotation = m_stoneMonster->GetRotation();
 		D3DXQuaternionMultiply(&rotation, &rotation, &rot);

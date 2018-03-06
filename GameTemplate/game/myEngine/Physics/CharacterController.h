@@ -92,6 +92,20 @@ public:
 		return m_isOnWall;
 	}
 	/*!
+	* @brief	移動床上にいるか判定。
+	*/
+	bool IsOnMoveFloor() const
+	{
+		return m_isOnMoveFloor;
+	}
+	/*!
+	* @brief	移動床上にいるか判定。
+	*/
+	bool IsOnMoveFloor2() const
+	{
+		return m_isOnMoveFloor2;
+	}
+	/*!
 	* @brief	コライダーを取得。
 	*/
 	ICollider* GetCollider()
@@ -129,6 +143,8 @@ private:
 	D3DXVECTOR3 		m_moveSpeed;					//移動速度。
 	bool 				m_isJump = false;				//ジャンプ中？
 	bool				m_isOnGround = true;			//地面の上にいる？
+	bool				m_isOnMoveFloor = false;		//移動床の上にいる？
+	bool				m_isOnMoveFloor2 = false;		//移動床の上にいる？
 	bool				m_isOnWall = false;
 	ICollider*			m_collider = nullptr;			//コライダー。
 	RigidBody			m_rigidBody;					//剛体。

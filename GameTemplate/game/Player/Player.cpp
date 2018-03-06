@@ -199,6 +199,7 @@ void Player::Update()
 			moveSpeed.y = 0.0f;
 			moveSpeed.y += jumpSpeed;
 			playerController.Jump();
+			animation.PlayAnimation(AnimationJump);
 			currentAnim = AnimationJump;
 			m_treadOnEnemy = false;
 		}

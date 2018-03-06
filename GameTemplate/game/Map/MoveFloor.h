@@ -34,6 +34,16 @@ public:
 	//移動
 	void Move();
 
+	const D3DXVECTOR3& GetPosition()
+	{
+		return position;
+	}
+
+	const D3DXMATRIX& GetWorldMatrix()
+	{
+		return model.GetWorldMatrix();
+	}
+
 private:
 	SkinModel model;								//スキンモデル
 	SkinModelData modelData;						//スキンモデルデータ
