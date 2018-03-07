@@ -36,6 +36,12 @@ public:
 		return position;
 	}
 
+	//移動速度を取得
+	const D3DXVECTOR3& GetMoveSpeed()
+	{
+		return moveSpeed;
+	}
+
 	//コインの獲得枚数を取得
 	int GetCoinCount()
 	{
@@ -154,6 +160,12 @@ public:
 	void SetHitEnemy(bool hitEnemy)
 	{
 		m_hitEnemy = hitEnemy;
+	}
+
+	//敵に当たった時のフラグを取得
+	bool GetHitEnemy()
+	{
+		return m_hitEnemy;
 	}
 
 	//プレイヤーの死亡フラグを取得

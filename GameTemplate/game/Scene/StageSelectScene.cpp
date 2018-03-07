@@ -100,6 +100,7 @@ void CStageSelectScene::StageCreate()
 
 	bgmSource = goMgr->NewGameObject<CSoundSource>();
 	bgmSource->InitStreaming("Assets/sound/bgm_1.wav");
+	//bgmSource->Init("Assets/sound/bgm_1.wav");
 	bgmSource->Play(true);
 
 	step = step_StageLoad;

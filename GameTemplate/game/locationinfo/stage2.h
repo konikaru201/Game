@@ -19,7 +19,7 @@
 //MoveFloor_1
 {
 	"MoveFloor_1",
-	D3DXVECTOR3(-20.00f, -0.30f, -40.00f),             //平行移動
+	D3DXVECTOR3(-12.00f, -0.30f, -40.00f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
 //MoveFloor_3
@@ -43,19 +43,19 @@
 //MoveFloor_1
 {
 	"MoveFloor_1",
-	D3DXVECTOR3(20.00f, -0.30f, -80.40f),             //平行移動
+	D3DXVECTOR3(28.00f, -0.30f, -80.40f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
 //MoveFloor_2
 {
 	"MoveFloor_2",
-	D3DXVECTOR3(63.00f, -0.30f, -88.40f),             //平行移動
+	D3DXVECTOR3(55.00f, -0.30f, -88.40f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
 //MoveFloor_1
 {
 	"MoveFloor_1",
-	D3DXVECTOR3(12.00f, -0.30f, -96.40f),             //平行移動
+	D3DXVECTOR3(22.00f, -0.30f, -96.40f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
 //Ground_6
@@ -67,85 +67,85 @@
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(1.00f, 1.29f, -9.10f),             //平行移動
+	D3DXVECTOR3(2.00f, 1.29f, -9.10f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(1.00f, 1.29f, -11.10f),             //平行移動
+	D3DXVECTOR3(2.00f, 1.29f, -11.10f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(1.00f, 1.29f, -13.10f),             //平行移動
+	D3DXVECTOR3(2.00f, 1.29f, -13.10f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(1.00f, 1.29f, -15.10f),             //平行移動
+	D3DXVECTOR3(2.00f, 1.29f, -15.10f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(1.00f, 1.29f, -17.10f),             //平行移動
+	D3DXVECTOR3(2.00f, 1.29f, -17.10f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(1.00f, 1.29f, -7.10f),             //平行移動
+	D3DXVECTOR3(2.00f, 1.29f, -7.10f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(1.00f, 1.29f, -19.10f),             //平行移動
+	D3DXVECTOR3(2.00f, 1.29f, -19.10f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(-3.47f, 1.29f, -1.00f),             //平行移動
+	D3DXVECTOR3(-2.60f, 1.29f, -1.00f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(-3.47f, 1.29f, 1.00f),             //平行移動
+	D3DXVECTOR3(-2.60f, 1.29f, 1.00f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(-3.47f, 1.29f, 3.00f),             //平行移動
+	D3DXVECTOR3(-2.60f, 1.29f, 3.00f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(-3.47f, 1.29f, 5.00f),             //平行移動
+	D3DXVECTOR3(-2.60f, 1.29f, 5.00f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(-3.47f, 1.29f, 7.00f),             //平行移動
+	D3DXVECTOR3(-2.60f, 1.29f, 7.00f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(-3.47f, 1.29f, 9.00f),             //平行移動
+	D3DXVECTOR3(-2.60f, 1.29f, 9.00f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
 {
 	"Coin",
-	D3DXVECTOR3(-3.47f, 1.29f, 11.00f),             //平行移動
+	D3DXVECTOR3(-2.60f, 1.29f, 11.00f),             //平行移動
 	D3DXQUATERNION(0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },
 //Coin
@@ -229,7 +229,7 @@
 //StoneMonster
 {
 	"StoneMonster",
-	D3DXVECTOR3(-20.40f, 0.35f, -41.40f),             //平行移動
+	D3DXVECTOR3(-12.40f, 0.35f, -41.40f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
 //StoneMonster
@@ -283,7 +283,7 @@
 //StoneMonster
 {
 	"StoneMonster",
-	D3DXVECTOR3(61.71f, 0.35f, -89.20f),             //平行移動
+	D3DXVECTOR3(53.71f, 0.35f, -89.20f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
 //StoneMonster

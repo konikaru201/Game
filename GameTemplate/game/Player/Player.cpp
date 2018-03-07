@@ -108,18 +108,22 @@ bool Player::Start()
 }
 
 void Player::Update()
-{
-	moveSpeed = Move();
+{	
+	if (pad->IsTrigger(pad->enButtonLB1)) {
+		playerController.SetPosition(D3DXVECTOR3(40.0f, 3.3f, -142.0f));
+	}
+
 
 	D3DXQUATERNION rot;
 	D3DXQuaternionIdentity(&rot);
 
-	
 	switch (state)
 	{
 		//移動中
 	case State_Walk:
-		if (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f)
+		moveSpeed = Move();
+
+		if (getStar == false && (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f))
 		{
 			m_rotationFrameCount++;
 			//移動しているなら向きを変える
@@ -194,7 +198,7 @@ void Player::Update()
 			m_treadOnSpring = false;
 		}
 
-		//敵に当たったときジャンプ
+		//敵を踏んだらジャンプ
 		if (m_treadOnEnemy) {
 			moveSpeed.y = 0.0f;
 			moveSpeed.y += jumpSpeed;
@@ -208,9 +212,9 @@ void Player::Update()
 		if (position.y < -20.0f || m_hitEnemy) {
 			if (m_hitEnemy) {
 				currentAnim = AnimationDead;
+				moveSpeed.y = -9.8f;
 			}
 			state = State_Dead;
-			m_hitEnemy = false;
 
 			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
 			SE->Init("Assets/sound/U_Voice_2.wav");
@@ -218,12 +222,16 @@ void Player::Update()
 		}
 
 		//スター獲得したらクリア
-		if (getStar && GetIsOnGround()) {
-			state = State_GetStar;
+		if (getStar){
+			moveSpeed.x = 0.0f;
+			moveSpeed.z = 0.0f;
+			if (GetIsOnGround()) {
+				state = State_GetStar;
 
-			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
-			SE->Init("Assets/sound/U_Voice_3.wav");
-			SE->Play(false);
+				CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+				SE->Init("Assets/sound/U_Voice_3.wav");
+				SE->Play(false);
+			}
 		}
 
 		////2，3回目のジャンプは一定時間経つとできなくする
@@ -246,14 +254,6 @@ void Player::Update()
 		//	}
 		//}
 		
-		//ジャンプしたとき声を出す。
-		if (pad->IsTrigger(pad->enButtonA) && playerController.IsJump()) {
-			currentAnim = AnimationJump;
-			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
-			SE->Init("Assets/sound/U_Voice_1.wav");
-			SE->Play(false);
-		}
-
 		//ブロックに当たった時
 		if (playerController.IsOnBlock() == true)
 		{
@@ -341,10 +341,8 @@ void Player::Update()
 		//死亡時
 	case State_Dead:
 		//g_shadowMap.SetPlayerDead(true);
-
 		moveSpeed.x = 0.0f;
 		moveSpeed.z = 0.0f;
-		moveSpeed.y = -9.8f;
 		//プレイヤーの移動速度を設定
 		playerController.SetMoveSpeed(moveSpeed);
 		//キャラクターコントローラーを実行
@@ -471,7 +469,7 @@ D3DXVECTOR3 Player::Move()
 	//Aボタンが押されたらジャンプ
 	if (pad->IsTrigger(pad->enButtonA)
 		&& !playerController.IsJump()
-		/*&& GetIsOnGround()*/)
+		&& GetIsOnGround())
 	{
 		if (JumpCount == 0) {
 			move.y = 10.0f;
@@ -489,6 +487,11 @@ D3DXVECTOR3 Player::Move()
 		//	}
 		//}
 		playerController.Jump();
+
+		currentAnim = AnimationJump;
+		CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+		SE->Init("Assets/sound/U_Voice_1.wav");
+		SE->Play(false);
 	}
 
 	////壁に当たった時

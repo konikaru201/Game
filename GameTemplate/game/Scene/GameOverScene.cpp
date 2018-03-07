@@ -47,9 +47,9 @@ bool GameOverScene::Start()
 	m_triangle->SetPosition(trianglePos);
 	m_triangle->SetAlpha(m_alpha);
 
-	//m_background = new Sprite;
-	//m_background->Initialize("Assets/sprite/gameOverBackground.png");
-	//m_background->SetAlpha(0.2f);
+	CSoundSource* bgm = goMgr->NewGameObject<CSoundSource>();
+	bgm->Init("Assets/sound/GameOverBGM.wav");
+	bgm->Play(false);
 
 	return true;
 }

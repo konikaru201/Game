@@ -92,6 +92,7 @@ void GameScene::Update()
 			gameOverScene->SetisDead();
 			gameOverScene = nullptr;
 		}
+		g_physicsWorld->Update();
 		break;
 	//ステージクリア時
 	case step_StageClear:
@@ -120,6 +121,7 @@ void GameScene::StageCreate(int number)
 
 		bgmSource = goMgr->NewGameObject<CSoundSource>();
 		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
+		//bgmSource->Init("Assets/sound/bgm_2.wav");
 		bgmSource->Play(true);
 	}
 	//ステージ２
@@ -130,6 +132,7 @@ void GameScene::StageCreate(int number)
 
 		bgmSource = goMgr->NewGameObject<CSoundSource>();
 		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
+		//bgmSource->Init("Assets/sound/bgm_2.wav");
 		bgmSource->Play(true);
 	}
 	//ステージ３
@@ -140,6 +143,7 @@ void GameScene::StageCreate(int number)
 
 		bgmSource = goMgr->NewGameObject<CSoundSource>();
 		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
+		//bgmSource->Init("Assets/sound/bgm_2.wav");
 		bgmSource->Play(true);
 	}
 

@@ -71,10 +71,12 @@ private:
 	Camera camera;				//カメラインスタンス
 	CameraCollisionSolver cameraCollisionSolver;	//カメラコリジョンインスタンス
 	bool ResetFlg = false;	//カメラリセットフラグ
-	float Angle = 0.0f;		//XZ方向の回転量
+	float m_angle = 0.0f;
+	//float Angle = 0.0f;		//XZ方向の回転量
 	float UpAngle = 0.0f;
 	D3DXVECTOR3 currentEyePos;
 	int m_rotationFrameCount = 0;
+	bool m_goalFlag = false;
 };
 
 extern GameCamera* gameCamera;

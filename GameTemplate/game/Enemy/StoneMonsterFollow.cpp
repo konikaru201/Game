@@ -6,6 +6,16 @@
 
 void StoneMonsterFollow::Update()
 {
+	//“¥‚Ü‚ê‚Ä‚¢‚½‚ç“®‚©‚È‚¢
+	if (m_stoneMonster->GetIsStepOn()) {
+		D3DXVECTOR3 moveSpeed = m_stoneMonster->GetMoveSpeed();
+		moveSpeed.x = 0.0f;
+		moveSpeed.z = 0.0f;
+		m_stoneMonster->SetMoveSpeed(moveSpeed);
+
+		return;
+	}
+
 	//ƒvƒŒƒCƒ„[‚ğ’T‚·
 	Search();
 

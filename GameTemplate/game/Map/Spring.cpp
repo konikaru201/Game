@@ -2,6 +2,7 @@
 #include "Spring.h"
 #include "Scene/SceneManager.h"
 #include "myEngine/Physics/CollisionAttr.h"
+#include "myEngine/sound/SoundSource.h"
 
 Spring::Spring()
 {
@@ -92,6 +93,10 @@ void Spring::CollisionDetection()
 		//Y•ûŒü‚É“–‚½‚Á‚½
 		if (toPlayerPosY.y >= 2.0f && lengthY <= 2.5f) {
 			player->SetTreadOnSpring(true);
+
+			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+			SE->Init("Assets/sound/Spring.wav");
+			SE->Play(false);
 		}
 	}
 }

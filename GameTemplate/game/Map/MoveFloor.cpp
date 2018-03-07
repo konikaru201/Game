@@ -33,7 +33,7 @@ void MoveFloor::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 	position = pos;
 	rotation = rot;
-	moveSpeed = { 0.07f,0.0f,0.0f };
+	moveSpeed = { 0.05f,0.0f,0.0f };
 
 	//衝突判定の初期化
 	//スキンモデルからボックスコライダーを作成する

@@ -76,6 +76,12 @@ public:
 		//m_characterController.SetMoveSpeed(moveSpeed);
 	}
 
+	//“¥‚Ü‚ê‚½ƒtƒ‰ƒO‚ðŽæ“¾
+	bool GetIsStepOn()
+	{
+		return m_isStepOn;
+	}
+
 	bool GetIsOnMoveFloor()
 	{
 		return moveFloorHit;
@@ -118,6 +124,7 @@ private:
 	bool moveFloor2Hit = false;
 	D3DXVECTOR3 moveFloor2Position = { 0.0f,0.0f,0.0f };
 
-	float deadTimer = 0.0f;
-	bool isDead = false;
+	float m_deadTimer = 0.0f;
+	bool m_isStepOn = false;
+	bool m_isHitPlaer = false;
 };

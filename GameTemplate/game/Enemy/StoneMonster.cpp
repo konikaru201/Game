@@ -2,6 +2,7 @@
 #include "StoneMonster.h"
 #include "Scene/SceneManager.h"
 #include "Player/Player.h"
+#include "myEngine/sound/SoundSource.h"
 
 StoneMonster::StoneMonster() :
 	m_stoneMonsterStateMachine(this)
@@ -83,7 +84,7 @@ bool StoneMonster::Start()
 void StoneMonster::Update()
 {
 	//シーン切り替え時
-	if (sceneManager->GetChangeSceneFlag() || deadTimer >= 0.5f)
+	if (sceneManager->GetChangeSceneFlag() || m_deadTimer >= 0.5f)
 	{
 		//状態クラスの死亡フラグを立てる
 		m_stoneMonsterStateMachine.SetIsChangeState(true);
@@ -95,26 +96,35 @@ void StoneMonster::Update()
 		return;
 	}	
 
-	if (isDead) {
-		deadTimer += Timer::GetFrameDeltaTime();
-		return;
+	//踏まれたら死亡タイマーをカウント
+	if (m_isStepOn) {
+		m_deadTimer += Timer::GetFrameDeltaTime();
 	}
 
-	D3DXVECTOR3 playerPos = player->GetPosition();
-	D3DXVECTOR3 toPlayerPos = playerPos - m_position;
-	float length = D3DXVec3Length(&toPlayerPos);
-	if (length <= 1.0f) {
-		D3DXVECTOR3 toPlayerPosY = { 0.0f,toPlayerPos.y,0.0f };
-		D3DXVECTOR3 toPlayerPosXZ = { toPlayerPos.x,0.0f,toPlayerPos.z };
-		float lengthY = D3DXVec3Length(&toPlayerPosY);
-		float lengthXZ = D3DXVec3Length(&toPlayerPosXZ);
-		if (toPlayerPosY.y > 0.2f && lengthY <= 0.5f) {
-			player->SetTreadOnEnemy(true);
-			isDead = true;
-			m_scale.y = 0.1f;
-		}
-		else if (lengthY <= 0.2f && lengthXZ <= 0.6f) {
-			player->SetHitEnemy(true);
+	if(!player->GetHitEnemy()){
+		//プレイヤーとの当たり判定
+		D3DXVECTOR3 playerPos = player->GetPosition();
+		D3DXVECTOR3 toPlayerPos = playerPos - m_position;
+		float length = D3DXVec3Length(&toPlayerPos);
+		if (length <= 1.0f) {
+			D3DXVECTOR3 playerMoveSpeed = player->GetMoveSpeed();
+			D3DXVECTOR3 toPlayerPosY = { 0.0f,toPlayerPos.y,0.0f };
+			D3DXVECTOR3 toPlayerPosXZ = { toPlayerPos.x,0.0f,toPlayerPos.z };
+			float lengthY = D3DXVec3Length(&toPlayerPosY);
+			float lengthXZ = D3DXVec3Length(&toPlayerPosXZ);
+			if (toPlayerPos.y > 0.0f && lengthY <= 0.5f && lengthXZ <= 0.6f) {
+				player->SetTreadOnEnemy(true);
+				m_isStepOn = true;
+				m_scale.y = 0.1f;
+
+				CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+				SE->Init("Assets/sound/Humituke.wav");
+				SE->Play(false);
+			}
+			else if (lengthY <= 0.4f && lengthXZ <= 0.7f) {
+				player->SetHitEnemy(true);
+				m_isHitPlaer = true;
+			}
 		}
 	}
 

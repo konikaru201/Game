@@ -32,81 +32,52 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
-	//if (player->GetStar()) {
-	//	D3DXQUATERNION rot;
-	//	D3DXQuaternionIdentity(&rot);
-
-	//	m_rotationFrameCount++;
-	//	D3DXVECTOR3 playerForward = player->GetPlayerDir();
-	//	D3DXVECTOR3 toCameraPosition = camera.GetEyePt() - player->GetPosition();
-	//	toCameraPosition.y = 0.0f;
-	//	float angle = D3DXVec3Dot(&playerForward, &toCameraPosition);
-	//	if (angle < -1.0f)
-	//	{
-	//		angle = -1.0f;
-	//	}
-	//	if (angle > 1.0f)
-	//	{
-	//		angle = 1.0f;
-	//	}
-	//	angle = acosf(angle);
-	//	D3DXVECTOR3 Cross;
-	//	D3DXVec3Cross(&Cross, &playerForward, &toCameraPosition);
-	//	//ベクトルが下向きか判定
-	//	if (Cross.y < 0.0f) {
-	//		angle *= -1.0f;
-	//	}
-	//	angle /= 5;
-	//	if (m_rotationFrameCount <= 5) {
-	//		D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
-	//		//D3DXQuaternionMultiply(&rotation, &rotation, &rot);
-	//		m_rotationFrameCount = 0;
-	//	}
-	//}
-
 	Move();
+
 	//カメラ更新
 	camera.Update();
 }
 
 void GameCamera::Move()
 {
-	//Y軸周りの回転行列を作成
-	D3DXMATRIX rot;
-	//単位行列を作成
-	D3DXMatrixIdentity(&rot);
-	if (fabsf(pad->GetRStickXF()) > 0.0f) {		//横回転
-		D3DXMatrixRotationY(&rot, 0.03f * pad->GetRStickXF());
-	}
-	D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
-
-	//単位行列にする
-	D3DXMatrixIdentity(&rot);
-	D3DXVECTOR3 rotAxis;
-	//カメラの上方向を取得
-	D3DXVECTOR3 up = camera.GetUpVec();
-	//回転軸を求める
-	D3DXVec3Cross(&rotAxis, &up, &toCameraPos);
-	//回転軸を正規化
-	D3DXVec3Normalize(&rotAxis, &rotAxis);
-	if (fabsf(pad->GetRStickYF()) > 0.0f) {			//縦回転
-		D3DXMatrixRotationAxis(&rot, &rotAxis, 0.03f * pad->GetRStickYF());
-	}
-
-	D3DXVECTOR3 toCameraPosOld = toCameraPos;
-	D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
-	D3DXVECTOR3 toCameraPosNormalize;
-	D3DXVec3Normalize(&toCameraPosNormalize, &toCameraPos);
-	if (fabsf(toCameraPosNormalize.x) < 0.1f && fabsf(toCameraPosNormalize.z) < 0.1f) {
-		//可動域を超えた
-		toCameraPos = toCameraPosOld;
-	}
-
 	//プレイヤーの座標を取得
 	D3DXVECTOR3 targetPos = player->GetPosition();
 	targetPos.y += 0.5f;
 	//カメラの注視点を設定
 	camera.SetLookatPt(targetPos);
+
+	if (!player->GetStar()) {
+		//Y軸周りの回転行列を作成
+		D3DXMATRIX rot;
+		//単位行列を作成
+		D3DXMatrixIdentity(&rot);
+		if (fabsf(pad->GetRStickXF()) > 0.0f) {		//横回転
+			D3DXMatrixRotationY(&rot, 0.03f * pad->GetRStickXF());
+		}
+		D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
+
+		//単位行列にする
+		D3DXMatrixIdentity(&rot);
+		D3DXVECTOR3 rotAxis;
+		//カメラの上方向を取得
+		D3DXVECTOR3 up = camera.GetUpVec();
+		//回転軸を求める
+		D3DXVec3Cross(&rotAxis, &up, &toCameraPos);
+		//回転軸を正規化
+		D3DXVec3Normalize(&rotAxis, &rotAxis);
+		if (fabsf(pad->GetRStickYF()) > 0.0f) {			//縦回転
+			D3DXMatrixRotationAxis(&rot, &rotAxis, 0.03f * pad->GetRStickYF());
+		}
+
+		D3DXVECTOR3 toCameraPosOld = toCameraPos;
+		D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
+		D3DXVECTOR3 toCameraPosNormalize;
+		D3DXVec3Normalize(&toCameraPosNormalize, &toCameraPos);
+		if (fabsf(toCameraPosNormalize.x) < 0.1f && fabsf(toCameraPosNormalize.z) < 0.1f) {
+			//可動域を超えた
+			toCameraPos = toCameraPosOld;
+		}
+	}
 
 	//カメラリセット
 	if (pad->IsTrigger(pad->enButtonLB1) && !ResetFlg) {
@@ -182,6 +153,41 @@ void GameCamera::Move()
 		//		ResetFlg = false;
 		//	}
 		//}
+	}
+
+	if (player->GetStar() && !m_goalFlag) {
+		D3DXVECTOR3 playerForward = player->GetPlayerDir();
+		D3DXVECTOR3 toCameraPosition = toCameraPos;
+		toCameraPosition.y = 0.0f;
+		D3DXVec3Normalize(&toCameraPosition, &toCameraPosition);
+		m_angle = D3DXVec3Dot(&playerForward, &toCameraPosition);
+		if (m_angle < -1.0f)
+		{
+			m_angle = -1.0f;
+		}
+		if (m_angle > 1.0f)
+		{
+			m_angle = 1.0f;
+		}
+
+		if (m_angle >= 0.999f) {
+			m_goalFlag = true;
+		}
+		else {
+			m_angle = acosf(m_angle);
+			D3DXVECTOR3 Cross;
+			D3DXVec3Cross(&Cross, &playerForward, &toCameraPosition);
+			//ベクトルが上向きか判定
+			if (Cross.y > 0.0f) {
+				m_angle *= -1.0f;
+			}
+			m_angle /= 20;
+
+			D3DXMATRIX rot;
+			D3DXMatrixIdentity(&rot);
+			D3DXMatrixRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), m_angle);
+			D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
+		}
 	}
 
 	//カメラの座標
