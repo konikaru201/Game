@@ -71,6 +71,7 @@ bool Player::Start()
 	//À•W‚ÆŒü‚«‚ð‰Šú‰»
 	position = { 0.0f,0.0f,15.0f };
 	rotation = { 0.0f,0.0f,0.0f,1.0f };
+	D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), D3DXToRadian(180.0f));
 
 	state = State_Walk;
 
@@ -108,12 +109,7 @@ bool Player::Start()
 }
 
 void Player::Update()
-{	
-	if (pad->IsTrigger(pad->enButtonLB1)) {
-		playerController.SetPosition(D3DXVECTOR3(40.0f, 3.3f, -142.0f));
-	}
-
-
+{
 	D3DXQUATERNION rot;
 	D3DXQuaternionIdentity(&rot);
 

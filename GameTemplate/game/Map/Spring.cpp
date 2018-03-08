@@ -29,7 +29,7 @@ void Spring::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
 	m_model.SetLight(&light);
 
-	m_model.UpdateWorldMatrix({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0 }, { 1.0f,1.0f,1.0f });
+	m_model.UpdateWorldMatrix({ 0.0f,0.0f,0.0f }, {0.0f,0.0f,0.0f,1.0f}, { 1.0f,1.0f,1.0f });
 
 	m_position = pos;
 	m_rotation = rot;
@@ -59,6 +59,24 @@ void Spring::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	g_physicsWorld->AddRigidBody(&m_rigidBody);
 }
 
+bool Spring::Start()
+{
+	D3DXMatrixIdentity(&parentWorldMatrix);
+	//一番近い移動床のワールド行列を取得
+	if (!map->GetMoveFloor2List().empty()) {
+		parentWorldMatrix = map->MoveFloor2WorldMatrix(m_position);
+		moveFloor2Position = map->GetMoveFloor2Position(m_position);
+		moveFloor2Find = true;
+	}
+
+	//親のワールド行列から逆行列を生成
+	D3DXMATRIX parentWorldMatrixInv;
+	D3DXMatrixInverse(&parentWorldMatrixInv, NULL, &parentWorldMatrix);
+	D3DXVec3TransformCoord(&childPosition, &m_position, &parentWorldMatrixInv);
+
+	return true;
+}
+
 void Spring::Update()
 {
 	if (sceneManager->GetChangeSceneFlag())
@@ -67,6 +85,28 @@ void Spring::Update()
 		//剛体を削除
 		g_physicsWorld->RemoveRigidBody(&m_rigidBody);
 		return;
+	}
+
+	if (!map->GetMoveFloor2List().empty()) {
+		parentWorldMatrix = map->MoveFloor2WorldMatrix(m_position);
+		moveFloor2Position = map->GetMoveFloor2Position(m_position);
+	}
+
+	if (moveFloor2Find) {
+		D3DXVECTOR3 toMoveFloor2Position = moveFloor2Position - m_position;
+		float length = D3DXVec3Length(&toMoveFloor2Position);
+		if (length <= 3.0f) {
+			//ワールド座標に変換する
+			D3DXVec3TransformCoord(&m_position, &childPosition, &parentWorldMatrix);
+
+			btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
+			trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
+
+			//親から見たプレイヤーの座標を更新
+			D3DXMATRIX worldMatrixInv;
+			D3DXMatrixInverse(&worldMatrixInv, NULL, &parentWorldMatrix);
+			D3DXVec3TransformCoord(&childPosition, &m_position, &worldMatrixInv);
+		}
 	}
 
 	//プレイヤーとの当たり判定

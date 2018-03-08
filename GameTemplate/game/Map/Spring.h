@@ -19,6 +19,8 @@ public:
 	//rot	回転
 	void Init(D3DXVECTOR3 pos, D3DXQUATERNION rot);
 
+	bool Start();
+
 	//更新
 	void Update();
 
@@ -43,4 +45,9 @@ private:
 	D3DXVECTOR3 m_position;								//座標
 	D3DXQUATERNION m_rotation;							//回転
 	D3DXVECTOR3 m_jumpSpeed = { 0.0f, 20.0f, 0.0f };	//ジャンプ速度
+
+	D3DXMATRIX parentWorldMatrix;						//親のワールド行列
+	D3DXVECTOR3 childPosition = { 0.0f,0.0f,0.0f };		//親のローカル座標からみた座標
+	bool moveFloor2Find = false;
+	D3DXVECTOR3 moveFloor2Position = { 0.0f,0.0f,0.0f };
 };

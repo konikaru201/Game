@@ -80,112 +80,78 @@ void GameCamera::Move()
 	}
 
 	//カメラリセット
-	if (pad->IsTrigger(pad->enButtonLB1) && !ResetFlg) {
-		////プレイヤーの向きを取得
-		//D3DXVECTOR3 PlayerDir = g_player->GetPlayerDir();
-		////向きを逆向きにする
-		//D3DXVec3Scale(&PlayerDir, &PlayerDir, -1.0f);
-		////プレイヤーの逆向きとプレイヤーからカメラの向きを正規化
-		//D3DXVECTOR3 playerNormalizeDir;
-		//D3DXVECTOR3 cameraNormalizePos;
-		//D3DXVec3Normalize(&playerNormalizeDir, &PlayerDir);
-		//D3DXVec3Normalize(&cameraNormalizePos, &toCameraPos);
-		////二つのベクトルの角度を計算
-		//float angle = D3DXVec3Dot(&playerNormalizeDir, &cameraNormalizePos);
-		//angle = acosf(angle);
-		////二つのベクトルに直交するベクトルを求める
-		//D3DXVECTOR3 hoge;
-		//D3DXVec3Cross(&hoge, &PlayerDir, &toCameraPos);
-		////ベクトルが上向きか判定
-		//if (hoge.y > 0.0f) {
-		//	//回転方向を逆にする
-		//	angle = angle * -1.0f;
-		//}
-		////回転量を記録
-		//Angle = angle;
-
-		////縦回転
-		//D3DXVECTOR3 cameraNormalizePos;
-		//D3DXVec3Normalize(&cameraNormalizePos, &toCameraPos);
-
-		////D3DXVECTOR3 playerUpDir = { 0.0f,1.0f,0.0f };
-		//D3DXVECTOR3 playerUpDir = g_player->GetPlayerUpDir();
-		//float upAngle = D3DXVec3Dot(&playerUpDir, &cameraNormalizePos);
-		//upAngle = acosf(upAngle);
-		////D3DXVECTOR3 hogehoge;
-		////D3DXVec3Cross(&hogehoge, &playerUpDir, &toCameraPos);
-		////if (hogehoge.y > 0.0f) {
-		////	upAngle = upAngle * -1.0f;
-		////}
-		//UpAngle = upAngle;
-
-		//ResetFlg = true;
-	}
-	if (ResetFlg) {
-		//D3DXVECTOR3 toCameraPosOld = toCameraPos;
-
-		////横回転のリセット
-		//{
-		//	//回転量を分割する
-		//	float divideAngle = Angle / 5.0f;
-		//	D3DXMATRIX rot;
-		//	D3DXMatrixRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), divideAngle);
-		//	D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
-		//}
-
-		//D3DXVECTOR3 playerUpDir = g_player->GetPlayerUpDir();
-
-		////縦方向のリセット
-		//{
-		//	float divideUpAngle = UpAngle / 3.0f;
-		//	D3DXMATRIX rotUp;
-		//	D3DXVECTOR3 RotAxis;
-		//	D3DXVec3Cross(&RotAxis, /*&up,*/&playerUpDir , &toCameraPos);
-		//	D3DXVec3Normalize(&RotAxis, &RotAxis);
-		//	D3DXMatrixRotationAxis(&rotUp, &RotAxis, divideUpAngle);
-		//	D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rotUp);
-
-		//	D3DXVECTOR3 toCameraPosNormalize;
-		//	D3DXVec3Normalize(&toCameraPosNormalize, &toCameraPos);
-		//	if (fabsf(toCameraPosNormalize.y) < 0.1f) {
-		//		//可動域を超えた
-		//		toCameraPos = toCameraPosOld;
-		//		ResetFlg = false;
-		//	}
-		//}
+	if (pad->IsTrigger(pad->enButtonLB1)) {
+		m_cameraReset = true;
 	}
 
-	if (player->GetStar() && !m_goalFlag) {
-		D3DXVECTOR3 playerForward = player->GetPlayerDir();
+	if (m_cameraReset) {
+		D3DXVECTOR3 playerBack = player->GetPlayerDir();
+		playerBack *= -1.0f;
 		D3DXVECTOR3 toCameraPosition = toCameraPos;
-		toCameraPosition.y = 0.0f;
 		D3DXVec3Normalize(&toCameraPosition, &toCameraPosition);
-		m_angle = D3DXVec3Dot(&playerForward, &toCameraPosition);
-		if (m_angle < -1.0f)
-		{
-			m_angle = -1.0f;
+		float angle = D3DXVec3Dot(&playerBack, &toCameraPosition);
+		if (angle < -1.0f) {
+			angle = -1.0f;
 		}
-		if (m_angle > 1.0f)
-		{
-			m_angle = 1.0f;
+		if (angle > 1.0f) {
+			angle = 1.0f;
 		}
 
-		if (m_angle >= 0.999f) {
-			m_goalFlag = true;
+		if (angle >= 0.999f) {
+			m_cameraReset = false;
 		}
 		else {
-			m_angle = acosf(m_angle);
+			angle = acosf(angle);
+			D3DXVECTOR3 Cross;
+			D3DXVec3Cross(&Cross, &playerBack, &toCameraPosition);
+			//ベクトルが上向きか判定
+			if (Cross.y > 0.0f) {
+				angle *= -1.0f;
+			}
+			else if(Cross.y <= 0.0f) {
+				angle *= -1.0f;
+			}
+			angle /= 10;
+
+			D3DXMATRIX rot;
+			D3DXMatrixIdentity(&rot);
+			D3DXMatrixRotationAxis(&rot, &Cross, angle);
+			D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
+		}
+	}
+
+	//ステージクリア時にプレイヤーの正面に向かせる
+	if (player->GetStar() && !m_stopRotation) {
+		D3DXVECTOR3 playerForward = player->GetPlayerDir();
+		D3DXVECTOR3 toCameraPosition = toCameraPos;
+		D3DXVec3Normalize(&toCameraPosition, &toCameraPosition);
+		float angle = D3DXVec3Dot(&playerForward, &toCameraPosition);
+		if (angle < -1.0f) {
+			angle = -1.0f;
+		}
+		if (angle > 1.0f) {
+			angle = 1.0f;
+		}
+
+		if (angle >= 0.999f) {
+			m_stopRotation = true;
+		}
+		else {
+			angle = acosf(angle);
 			D3DXVECTOR3 Cross;
 			D3DXVec3Cross(&Cross, &playerForward, &toCameraPosition);
 			//ベクトルが上向きか判定
 			if (Cross.y > 0.0f) {
-				m_angle *= -1.0f;
+				angle *= -1.0f;
 			}
-			m_angle /= 20;
+			else if(Cross.y <= 0.0f) {
+				angle *= -1.0f;
+			}
+			angle /= 20;
 
 			D3DXMATRIX rot;
 			D3DXMatrixIdentity(&rot);
-			D3DXMatrixRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), m_angle);
+			D3DXMatrixRotationAxis(&rot, &Cross, angle);
 			D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
 		}
 	}

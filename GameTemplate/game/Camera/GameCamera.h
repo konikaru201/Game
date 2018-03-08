@@ -56,11 +56,6 @@ public:
 	{
 		return camera.GetViewMatrix();
 	}
-	////ビュー行列を設定
-	//void SetViewMatrix(const D3DXMATRIX& matrix)
-	//{
-	//	camera.SetViewMatrix(matrix);
-	//}
 	//プロジェクション行列を取得
 	const D3DXMATRIX& GetViewProjectionMatrix()
 	{
@@ -71,12 +66,14 @@ private:
 	Camera camera;				//カメラインスタンス
 	CameraCollisionSolver cameraCollisionSolver;	//カメラコリジョンインスタンス
 	bool ResetFlg = false;	//カメラリセットフラグ
-	float m_angle = 0.0f;
 	//float Angle = 0.0f;		//XZ方向の回転量
 	float UpAngle = 0.0f;
 	D3DXVECTOR3 currentEyePos;
 	int m_rotationFrameCount = 0;
-	bool m_goalFlag = false;
+	bool m_stopRotation = false;
+	bool m_downRotation = false;
+	bool m_upRotation = false;
+	bool m_cameraReset = false;
 };
 
 extern GameCamera* gameCamera;
