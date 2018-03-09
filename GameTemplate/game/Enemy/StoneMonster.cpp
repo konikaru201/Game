@@ -139,13 +139,13 @@ void StoneMonster::Update()
 	}
 
 	//移動床に当たっている
-	if (/*m_characterController.IsOnMoveFloor()*/moveFloorHit) {
+	if (moveFloorHit) {
 		//ワールド座標に変換する
 		D3DXVec3TransformCoord(&m_position, &childPosition, &parentWorldMatrix);
 		m_characterController.SetPosition(m_position);
 
 		m_characterController.SetMoveSpeed(m_moveSpeed);
-		//キャラクターコントローラーを実行
+		//キャラクターコントローラーを実行D3D
 		m_characterController.Execute();
 		//座標を設定
 		m_position = m_characterController.GetPosition();
@@ -155,8 +155,8 @@ void StoneMonster::Update()
 		D3DXMatrixInverse(&worldMatrixInv, NULL, &parentWorldMatrix);
 		D3DXVec3TransformCoord(&childPosition, &m_position, &worldMatrixInv);
 	}
-	else if (/*m_characterController.IsOnMoveFloor2()*/moveFloor2Hit){
-		//プレイヤーのワールド座標に変換する
+	else if (moveFloor2Hit){
+		//ワールド座標に変換する
 		D3DXVec3TransformCoord(&m_position, &secondChildPosition, &secondParentWorldMatrix);
 		m_characterController.SetPosition(m_position);
 
@@ -166,7 +166,7 @@ void StoneMonster::Update()
 		//座標を設定
 		m_position = m_characterController.GetPosition();
 
-		//親から見たプレイヤーの座標を更新
+		//親から見た座標を更新
 		D3DXMATRIX worldMatrixInv;
 		D3DXMatrixInverse(&worldMatrixInv, NULL, &secondParentWorldMatrix);
 		D3DXVec3TransformCoord(&secondChildPosition, &m_position, &worldMatrixInv);

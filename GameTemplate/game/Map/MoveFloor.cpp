@@ -77,10 +77,11 @@ void MoveFloor::PreUpdate()
 
 	Move();
 
-	player->SetMoveFloorFlag(moveFlag);
-
 	if (moveFlag) {
 		player->SetMoveFloorSpeed(moveSpeed);
+	}
+	else {
+		player->SetMoveFloorSpeed(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
 
 	btTransform& trans = rigidBody.GetBody()->getWorldTransform();

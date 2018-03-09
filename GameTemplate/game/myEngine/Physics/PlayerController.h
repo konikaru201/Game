@@ -68,12 +68,12 @@ public:
 	{
 		m_isJump = true;
 		m_isOnGround = false;
-		m_isOnMoveFloor = false;
-		m_isOnMoveFloor2 = false;
-		m_isOnSpring = false;
-		m_isOnBlock = false;
-		m_isOnBlock2 = false;
-		m_isOnBox = false;
+		//m_isOnMoveFloor = false;
+		//m_isOnMoveFloor2 = false;
+		//m_isOnSpring = false;
+		//m_isOnBlock = false;
+		//m_isOnBlock2 = false;
+		//m_isOnBox = false;
 	}
 	/*!
 	* @brief	ƒWƒƒƒ“ƒv’†‚©”»’è

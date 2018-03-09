@@ -38,6 +38,10 @@ bool DisplayCoin::Start()
 
 void DisplayCoin::Update()
 {
+	if (m_coinNum > 99) {
+		m_coinNum = 0;
+	}
+
 	num[0]->NumSet((m_coinNum / 10));
 	num[1]->NumSet((m_coinNum % 10));
 }

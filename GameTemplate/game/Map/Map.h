@@ -64,9 +64,23 @@ public:
 
 	const D3DXVECTOR3& GetMoveFloor2Position(const D3DXVECTOR3& pos);
 
+	bool GetIsMoveFloor()
+	{
+		return m_isMoveFloor;
+	}
+
+	bool GetIsMoveFloor2()
+	{
+		return m_isMoveFloor2;
+	}
+
 private:
 	std::list<MoveFloor*> m_moveFloorList;
 	std::list<MoveFloor2*> m_moveFloor2List;
+	D3DXMATRIX moveFloorMatrix;
+	D3DXMATRIX moveFloor2Matrix;
+	bool m_isMoveFloor = false;
+	bool m_isMoveFloor2 = false;
 };
 
 extern Map* map;

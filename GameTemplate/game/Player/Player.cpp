@@ -4,6 +4,7 @@
 #include "myEngine/HID/Pad.h"
 #include "myEngine/Graphics/ShadowMap.h"
 #include "myEngine/Timer/Timer.h"
+#include "Map/Map.h"
 
 Player* player;
 
@@ -79,11 +80,6 @@ bool Player::Start()
 	D3DXMATRIX parentWorldMatrixInv;
 	D3DXMatrixInverse(&parentWorldMatrixInv, 0, &parentWorldMatrix);
 	D3DXVec3TransformCoord(&childPosition, &position, &parentWorldMatrixInv);
-	////親の回転行列から逆クォータニオンを生成
-	//D3DXQUATERNION parentRotationInv;
-	//D3DXQuaternionRotationMatrix(&parentRotationInv, &parentRotationMatrix);
-	//D3DXQuaternionInverse(&parentRotationInv, &parentRotationInv);
-	//D3DXQuaternionMultiply(&childRotation, &rotation, &parentRotationInv);
 	
 	D3DXMATRIX secondParentWorldMatrixInv;
 	D3DXMatrixInverse(&secondParentWorldMatrixInv, 0, &secondParentWorldMatrix);
@@ -170,20 +166,6 @@ void Player::Update()
 			}
 		}
 
-		//移動床に当たったらついていく
-		if (playerController.IsOnMoveFloor()) {
-			if (m_moveFloorflag) {
-				moveSpeed += m_moveFloorSpeed * 60.0f;
-			}
-		}
-
-		if (playerController.IsOnMoveFloor2())
-		{
-			if (m_moveFloor2flag) {
-				moveSpeed += m_moveFloor2Speed * 60.0f;
-			}
-		}
-
 		//スプリングに当たったときジャンプ
 		if (m_treadOnSpring) {
 			moveSpeed.y = 0.0f;
@@ -229,53 +211,104 @@ void Player::Update()
 				SE->Play(false);
 			}
 		}
-
-		////2，3回目のジャンプは一定時間経つとできなくする
-		////2回目のジャンプ
-		//if (JumpCount == 1 && GetIsOnGround())
-		//{
-		//	JumpFrameCount++;
-		//	if (JumpFrameCount % 10 == 0) {
-		//		JumpCount = 0;
-		//		JumpFrameCount = 0;
-		//	}
-		//}
-		////3回目のジャンプ
-		//else if (JumpCount == 2 && GetIsOnGround())
-		//{
-		//	JumpFrameCount++;
-		//	if (JumpFrameCount % 8 == 0) {
-		//		JumpCount = 0;
-		//		JumpFrameCount = 0;
-		//	}
-		//}
 		
+		//慣性
+		if (m_moveFloorInertia) {
+			//空気抵抗で少し慣性の速度を減らす
+			m_airResistance = m_moveFloorSpeed * 60.0f;
+			D3DXVec3Normalize(&m_airResistance, &m_airResistance);
+			moveSpeed += m_moveFloorSpeed * 60.0f - m_airResistance;
+		}
+		else if (m_moveFloor2Inertia) {
+			//空気抵抗で少し慣性の速度を減らす
+			m_airResistance = m_moveFloor2Speed * 60.0f;
+			D3DXVec3Normalize(&m_airResistance, &m_airResistance);
+			moveSpeed += m_moveFloor2Speed * 60.0f - m_airResistance;
+		}
+		if (GetIsOnGround())
+		{
+			m_moveFloorInertia = false;
+			m_moveFloor2Inertia = false;
+		}
+
+		//一番近くの移動床のワールド行列を取得
+		if (map != nullptr && map->GetIsMoveFloor()) {
+			if (!map->GetMoveFloorList().empty()) {
+				moveFloorWorldMatrix = map->MoveFloorWorldMatrix(position);
+			}
+		}
+		if (map != nullptr && map->GetIsMoveFloor2()) {
+			if (!map->GetMoveFloor2List().empty()) {
+				moveFloor2WorldMatrix = map->MoveFloor2WorldMatrix(position);
+			}
+		}
+		//移動床に当たったらついていく
+		if (playerController.IsOnMoveFloor()) {
+			if (parentFirstHit) {
+				//親から見たプレイヤーの座標を更新
+				D3DXMATRIX moveFloorWorldMatrixInv;
+				D3DXMatrixInverse(&moveFloorWorldMatrixInv, NULL, &moveFloorWorldMatrix);
+				D3DXVec3TransformCoord(&moveFloorChildPosition, &position, &moveFloorWorldMatrixInv);
+				parentFirstHit = false;
+			}
+			//プレイヤーのワールド座標に変換する
+			D3DXVec3TransformCoord(&position, &moveFloorChildPosition, &moveFloorWorldMatrix);
+			playerController.SetPosition(position);
+
+			if (playerController.IsJump()) {
+				m_moveFloorInertia = true;
+			}
+
+			playerController.SetMoveSpeed(moveSpeed);
+			//キャラクターコントローラーを実行
+			playerController.Execute();
+			//座標を設定
+			position = playerController.GetPosition();
+			//親から見たプレイヤーの座標を更新
+			D3DXMATRIX moveFloorWorldMatrixInv;
+			D3DXMatrixInverse(&moveFloorWorldMatrixInv, NULL, &moveFloorWorldMatrix);
+			D3DXVec3TransformCoord(&moveFloorChildPosition, &position, &moveFloorWorldMatrixInv);
+		}
+		else if(playerController.IsOnMoveFloor2()) {
+			if (secondParentFirstHit) {
+				//親から見たプレイヤーの座標を更新
+				D3DXMATRIX moveFloor2WorldMatrixInv;
+				D3DXMatrixInverse(&moveFloor2WorldMatrixInv, NULL, &moveFloor2WorldMatrix);
+				D3DXVec3TransformCoord(&moveFloor2ChildPosition, &position, &moveFloor2WorldMatrixInv);
+				secondParentFirstHit = false;
+			}
+			//プレイヤーのワールド座標に変換する
+			D3DXVec3TransformCoord(&position, &moveFloor2ChildPosition, &moveFloor2WorldMatrix);
+			playerController.SetPosition(position);
+
+			if (playerController.IsJump()) {
+				m_moveFloor2Inertia = true;
+			}
+
+			playerController.SetMoveSpeed(moveSpeed);
+			//キャラクターコントローラーを実行
+			playerController.Execute();
+			//座標を設定
+			position = playerController.GetPosition();
+			//親から見たプレイヤーの座標を更新
+			D3DXMATRIX moveFloor2WorldMatrixInv;
+			D3DXMatrixInverse(&moveFloor2WorldMatrixInv, NULL, &moveFloor2WorldMatrix);
+			D3DXVec3TransformCoord(&moveFloor2ChildPosition, &position, &moveFloor2WorldMatrixInv);
+		}
 		//ブロックに当たった時
-		if (playerController.IsOnBlock() == true)
+		else if (playerController.IsOnBlock() == true)
 		{
 			if (parentFirstHit) {
 				//親のワールド行列から逆行列を生成
 				D3DXMATRIX parentWorldMatrixInv;
 				D3DXMatrixInverse(&parentWorldMatrixInv, NULL, &parentWorldMatrix);
 				D3DXVec3TransformCoord(&childPosition, &position, &parentWorldMatrixInv);
-				////親の回転行列から逆クォータニオンを生成
-				//D3DXQUATERNION parentRotationInv;
-				//D3DXQuaternionRotationMatrix(&parentRotationInv, &parentRotationMatrix);
-				//D3DXQuaternionInverse(&parentRotationInv, &parentRotationInv);
-				//D3DXQuaternionMultiply(&childRotation, &rotation, &parentRotationInv);
 				parentFirstHit = false;
 			}
 
 			//プレイヤーのワールド座標に変換する
 			D3DXVec3TransformCoord(&position, &childPosition, &parentWorldMatrix);
 			playerController.SetPosition(position);
-
-			////親から見たプレイヤーを回転させる
-			//D3DXQuaternionMultiply(&childRotation, &childRotation, &rot);
-			////プレイヤーの回転に変換する
-			//D3DXQUATERNION parentRotation;
-			//D3DXQuaternionRotationMatrix(&parentRotation, &parentRotationMatrix);
-			//D3DXQuaternionMultiply(&rotation, &childRotation, &parentRotation);
 
 			//プレイヤーの移動速度を設定
 			playerController.SetMoveSpeed(moveSpeed);
@@ -288,12 +321,6 @@ void Player::Update()
 			D3DXMATRIX worldMatrixInv;
 			D3DXMatrixInverse(&worldMatrixInv, NULL, &parentWorldMatrix);
 			D3DXVec3TransformCoord(&childPosition, &position, &worldMatrixInv);
-
-			////親から見たプレイヤーの回転を更新
-			//D3DXQUATERNION parentRotationInv;
-			//D3DXQuaternionRotationMatrix(&parentRotationInv, &parentRotationMatrix);
-			//D3DXQuaternionInverse(&parentRotationInv, &parentRotationInv);
-			//D3DXQuaternionMultiply(&childRotation, &rotation, &parentRotationInv);
 		}
 		//ブロック2に当たった時
 		else if (playerController.IsOnBlock2() == true)
@@ -467,21 +494,7 @@ D3DXVECTOR3 Player::Move()
 		&& !playerController.IsJump()
 		&& GetIsOnGround())
 	{
-		if (JumpCount == 0) {
-			move.y = 10.0f;
-			//JumpCount++;
-		}
-		////走りながら2,3回目のジャンプができる
-		//else if (move.x != 0.0f || move.z != 0.0f) {
-		//	if (JumpCount == 1) {
-		//		move.y = 15.0f;
-		//		JumpCount++;
-		//	}
-		//	else if (JumpCount == 2) {
-		//		move.y = 18.0f;
-		//		JumpCount = 0;
-		//	}
-		//}
+		move.y = 10.0f;
 		playerController.Jump();
 
 		currentAnim = AnimationJump;

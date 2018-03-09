@@ -70,7 +70,6 @@ void Block::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 bool Block::Start()
 {
 	player->SetParentWorldMatrix(GetWorldMatrix());
-	player->SetParentRotationMatrix(GetRotationMatrix());
 	return true;
 }
 
@@ -94,7 +93,6 @@ void Block::Update()
 	model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
 
 	player->SetParentWorldMatrix(GetWorldMatrix());
-	player->SetParentRotationMatrix(GetRotationMatrix());
 }
 
 void Block::Render()

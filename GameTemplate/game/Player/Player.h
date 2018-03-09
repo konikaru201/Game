@@ -42,22 +42,10 @@ public:
 		return moveSpeed;
 	}
 
-	//コインの獲得枚数を取得
-	int GetCoinCount()
-	{
-		return CoinCount;
-	}
-
 	//スター獲得フラグを設定
 	void SetGetStar(bool getstar)
 	{
 		getStar = getstar;
-	}
-
-	//コインの獲得枚数を更新
-	void SetCoinCount(int Count)
-	{
-		CoinCount = Count;
 	}
 
 	//地面の上か判定
@@ -89,12 +77,6 @@ public:
 	}
 
 	//移動床１
-	//移動床に当たったフラグを設定
-	void SetMoveFloorFlag(bool moveFloorFlag) 
-	{
-		m_moveFloorflag = moveFloorFlag;
-	}
-
 	//移動床の速度を設定
 	void SetMoveFloorSpeed(const D3DXVECTOR3& speed)
 	{
@@ -102,12 +84,6 @@ public:
 	}
 
 	//移動床２
-	//移動床に当たったフラグを設定
-	void SetMoveFloor2Flag(bool moveFloorFlag)
-	{
-		m_moveFloor2flag = moveFloorFlag;
-	}
-
 	//移動床の速度を設定
 	void SetMoveFloor2Speed(const D3DXVECTOR3& speed)
 	{
@@ -120,22 +96,12 @@ public:
 	{
 		parentWorldMatrix = worldMatrix;
 	}
-	//親の回転行列を設定
-	void SetParentRotationMatrix(const D3DXMATRIX& rotationMatrix)
-	{
-		parentRotationMatrix = rotationMatrix;
-	}
 
 	//ブロック２
 	//親のワールド行列を設定
 	void SetSecondParentWorldMatrix(const D3DXMATRIX& worldMatrix)
 	{
 		secondParentWorldMatrix = worldMatrix;
-	}
-	//親の回転行列を設定
-	void SetSecondParentRotationMatrix(const D3DXMATRIX& rotationMatrix) 
-	{
-		secondParentRotationMatrix = rotationMatrix;
 	}
 
 	//スター獲得時のアニメーション終了フラグを取得
@@ -216,9 +182,6 @@ private:
 	AnimationNo currentAnim;										//現在のアニメーション
 	AnimationNo prevAnim;											//前のアニメーション
 	D3DXVECTOR3 playerDir;											//キャラクターのZ方向
-	int JumpCount = 0;												//ジャンプの回数
-	int JumpFrameCount = 0;											//次のジャンプをするまでのフレーム
-	int CoinCount = 0;												//コインの獲得枚数
 	float angle = 0.0f;												//回転角度
 	float timer = 0.0f;												//タイマー
 	D3DXVECTOR3 moveSpeed = { 0.0f,0.0f,0.0f };						//移動速度
@@ -236,11 +199,16 @@ private:
 	bool m_playerDead = false;										//プレイヤーの死亡フラグ
 	bool m_treadOnSpring = false;									//スプリングを踏んだフラグ
 	int m_rotationFrameCount = 0;									//回転フレームカウント
+	bool m_moveFloorInertia = false;
+	bool m_moveFloor2Inertia = false;
+	D3DXVECTOR3 m_airResistance = { 0.0f,0.0f,0.0f };
 
-	bool m_moveFloorflag = false;
+	D3DXMATRIX moveFloorWorldMatrix;
+	D3DXVECTOR3 moveFloorChildPosition = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 m_moveFloorSpeed = { 0.0f,0.0f,0.0f };
 
-	bool m_moveFloor2flag = false;
+	D3DXMATRIX moveFloor2WorldMatrix;
+	D3DXVECTOR3 moveFloor2ChildPosition = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 m_moveFloor2Speed = { 0.0f,0.0f,0.0f };
 
 	bool isOnWall = false;
@@ -249,13 +217,9 @@ private:
 
 	D3DXMATRIX parentWorldMatrix;									//親のワールド行列
 	D3DXVECTOR3 childPosition = { 0.0f,0.0f,0.0f };					//親のローカル座標からみたプレイヤーの座標
-	D3DXMATRIX parentRotationMatrix;								//親の回転行列
-	D3DXQUATERNION childRotation = { 0.0f,0.0f,0.0f,1.0f };			//親の回転座標からみたプレイヤーの回転
 
 	D3DXMATRIX secondParentWorldMatrix;								//親のワールド行列
 	D3DXVECTOR3 secondChildPosition = { 0.0f,0.0f,0.0f };			//親のローカル座標からみたプレイヤーの座標
-	D3DXMATRIX secondParentRotationMatrix;							//親の回転行列
-	D3DXQUATERNION secondChildRotation = { 0.0f,0.0f,0.0f,1.0f };	//親の回転座標からみたプレイヤーの回転
 
 	LPDIRECT3DTEXTURE9 specularMap = NULL;							//スペキュラマップ
 	LPDIRECT3DTEXTURE9 normalMap = NULL;							//法線マップ
