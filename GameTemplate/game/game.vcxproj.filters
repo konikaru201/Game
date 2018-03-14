@@ -22,9 +22,6 @@
     <Filter Include="ソース ファイル\myEngine\Physics">
       <UniqueIdentifier>{24b08cc4-989a-4ce6-8812-a1108fd4dd90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\myEngine\HID">
-      <UniqueIdentifier>{eb51f13c-4c51-4798-b6cc-97f71ded64a4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Player">
       <UniqueIdentifier>{60b09333-4447-4ed9-8610-08a4578f85a0}</UniqueIdentifier>
     </Filter>
@@ -63,6 +60,9 @@
     </Filter>
     <Filter Include="ソース ファイル\Enemy\StoneMonster">
       <UniqueIdentifier>{7a2c0edc-07fa-4b0f-942a-5a09fec880a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\myEngine\Physics\HID">
+      <UniqueIdentifier>{eb51f13c-4c51-4798-b6cc-97f71ded64a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +106,7 @@
       <Filter>ソース ファイル\myEngine</Filter>
     </ClCompile>
     <ClCompile Include="myEngine\HID\Pad.cpp">
-      <Filter>ソース ファイル\myEngine\HID</Filter>
+      <Filter>ソース ファイル\myEngine\Physics\HID</Filter>
     </ClCompile>
     <ClCompile Include="Player\Player.cpp">
       <Filter>ソース ファイル\Player</Filter>
@@ -303,7 +303,7 @@
       <Filter>ソース ファイル\myEngine</Filter>
     </ClInclude>
     <ClInclude Include="myEngine\HID\Pad.h">
-      <Filter>ソース ファイル\myEngine\HID</Filter>
+      <Filter>ソース ファイル\myEngine\Physics\HID</Filter>
     </ClInclude>
     <ClInclude Include="Player\Player.h">
       <Filter>ソース ファイル\Player</Filter>

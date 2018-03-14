@@ -23,6 +23,7 @@ Bloom* bloom = nullptr;				//ブルーム
 
 DisplayCoin* displayCoin = nullptr;	//コイン枚数のスプライト
 Sprite* CoinNum = nullptr;			//コインの絵のスプライト
+//Sprite* Face = nullptr;
 
 CRenderTarget* mainRenderTarget;	//メインレンダリングターゲット
 CPrimitive* quadPrimitive;			//四角形の板ポリプリミティブ
@@ -38,7 +39,7 @@ void DrawQuadPrimitive();
 namespace {
 	//コインのスプライトのサイズと座標
 	const D3DXVECTOR2 coinSize = { 128.0f,72.0f };
-	const D3DXVECTOR2 coinPos = { 1000.0f, 600.0f };
+	const D3DXVECTOR2 coinPos = { 900.0f, 600.0f };
 }
 
 //-----------------------------------------------------------------------------
@@ -86,6 +87,11 @@ void Init()
 	displayCoin = new DisplayCoin();
 	displayCoin->Init(coinPos);
 	displayCoin->Start();
+	////ユニティちゃんの顔
+	//Face = new Sprite();
+	//Face->Initialize("Assets/sprite/UnityChanFace.png");
+	//Face->SetPosition(D3DXVECTOR2(1000.0f, 450.0f));
+	//Face->SetSize(D3DXVECTOR2(100.0f, 72.0f));
 }
 //-----------------------------------------------------------------------------
 // Name: 描画処理。％
@@ -144,6 +150,7 @@ VOID Render()
 		//コインの絵と枚数を描画
 		CoinNum->Render();
 		displayCoin->Render();
+		//Face->Render();
 		//アルファブレンディングを無効にする。
 		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}

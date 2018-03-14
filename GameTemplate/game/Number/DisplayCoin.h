@@ -32,7 +32,7 @@ public:
 		m_coinNum += count;
 	}
 private:
-	Number*		num[2];						//”š
+	Number*		num[3];						//”š
 	D3DXVECTOR2 m_position = { 0.0f,0.0f }; //À•W
 	int			m_coinNum = 0;				//ƒRƒCƒ“‚Ì–‡”
 };

@@ -132,7 +132,9 @@ D3DXVECTOR3 Killer::Move()
 
 	float length = D3DXVec3Length(&toPlayer);
 	float angle = 0.0f;
-	D3DXVECTOR3 AxisZ = { 0.0f,0.0f,1.0f };
+	D3DXQUATERNION rot;
+	D3DXQuaternionIdentity(&rot);
+	D3DXVECTOR3 Cross;
 
 	//プレイヤーとの当たり判定
 	CollisionDetection(length, toPlayer);
@@ -160,14 +162,6 @@ D3DXVECTOR3 Killer::Move()
 		break;
 	//発見状態
 	case State_Find:
-		length = D3DXVec3Length(&toPlayer);
-		D3DXVec3Normalize(&toPlayer, &toPlayer);
-		angle = D3DXVec3Dot(&toPlayer, &AxisZ);
-		angle = acos(angle);
-		if (toPlayer.x <= 0.0f) {
-			angle *= -1.0f;
-		}
-
 		//プレイヤーとの距離が離れる
 		//又はプレイヤーにジャンプで避けられると見失う
 		if (length > 30.0f || (position.y + 1.0f < playerPos.y && position.x < playerPos.x)) {
@@ -175,7 +169,23 @@ D3DXVECTOR3 Killer::Move()
 			break;
 		}
 
-		D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
+		D3DXVec3Normalize(&toPlayer, &toPlayer);
+		angle = D3DXVec3Dot(&toPlayer, &direction);
+		if (angle > 1.0f) {
+			angle = 1.0f;
+		}
+		else if(angle < -1.0f){
+			angle = -1.0f;
+		}
+		angle = acos(angle);
+		D3DXVec3Cross(&Cross, &toPlayer, &direction);
+		if (Cross.y > 0.0f) {
+			angle *= -1.0f;
+		}
+
+		angle /= 30;
+		D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
+		D3DXQuaternionMultiply(&rotation, &rotation, &rot);
 
 		direction *= moveSpeed;
 		move = direction;

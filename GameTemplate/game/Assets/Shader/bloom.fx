@@ -19,6 +19,7 @@ sampler_state
 
 struct VS_INPUT{
 	float4	pos : POSITION;
+	float2	uv : TEXCOORD;
 };
 
 struct VS_OUTPUT{
@@ -30,8 +31,9 @@ VS_OUTPUT VSMain( VS_INPUT In )
 {
 	VS_OUTPUT Out;
 	Out.pos = In.pos;		//トランスフォーム済み頂点なのでそのまま
-	Out.tex = (In.pos * 0.5f) + 0.5f;
-	Out.tex.y = 1.0f - Out.tex.y;
+	Out.tex = In.uv;
+	//Out.tex = (In.pos.xy * 0.5f) + 0.5f;
+	//Out.tex.y = 1.0f - Out.tex.y;
 	return Out;
 }
 
@@ -299,7 +301,7 @@ technique YBlur
 /*!
  * @brief	合成。
  */
-technique Conbine
+technique Combine
 {
 	pass p0
 	{

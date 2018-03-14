@@ -59,8 +59,8 @@ Bloom::Bloom()
 		);
 	}
 	m_combineRenderTarget.Create(
-		w / 2,
-		h / 2,
+		FRAME_BUFFER_WIDTH/*w*/ / 2,
+		FRAME_BUFFER_HEIGHT/*h*/ / 2,
 		1,
 		D3DFMT_A16B16G16R16F,
 		D3DFMT_D16,
@@ -146,7 +146,6 @@ void Bloom::Render()
 		
 
 		//輝度を抽出したテクスチャをYブラー
-
 		g_pd3dDevice->SetRenderTarget(0, m_downSamplingRenderTarget[i][1].GetRenderTarget());
 		//縦ブラー用のシェーダーテクニックを設定する。
 		m_effect->SetTechnique("YBlur");
@@ -189,18 +188,18 @@ void Bloom::Render()
 		g_pd3dDevice->SetRenderTarget(0, m_combineRenderTarget.GetRenderTarget());
 
 		float offset[2];
-		offset[0] = 0.5f / m_combineRenderTarget.GetWidth();
-		offset[1] = 0.5f / m_combineRenderTarget.GetHeight();
+		offset[0] = 0.0f / m_combineRenderTarget.GetWidth();
+		offset[1] = 0.0f / m_combineRenderTarget.GetHeight();
 
 		m_effect->SetTechnique("Combine");
 		m_effect->Begin(NULL, D3DXFX_DONOTSAVESHADERSTATE);
 		m_effect->BeginPass(0);
 
-		m_effect->SetTexture( "g_combineTex00", m_downSamplingRenderTarget[0][0].GetTexture());
-		m_effect->SetTexture( "g_combineTex01", m_downSamplingRenderTarget[1][0].GetTexture());
-		m_effect->SetTexture( "g_combineTex02", m_downSamplingRenderTarget[2][0].GetTexture());
-		m_effect->SetTexture( "g_combineTex03", m_downSamplingRenderTarget[3][0].GetTexture());
-		m_effect->SetTexture( "g_combineTex04", m_downSamplingRenderTarget[4][0].GetTexture());
+		m_effect->SetTexture( "g_combineTex00", m_downSamplingRenderTarget[0][1].GetTexture());
+		m_effect->SetTexture( "g_combineTex01", m_downSamplingRenderTarget[1][1].GetTexture());
+		m_effect->SetTexture( "g_combineTex02", m_downSamplingRenderTarget[2][1].GetTexture());
+		m_effect->SetTexture( "g_combineTex03", m_downSamplingRenderTarget[3][1].GetTexture());
+		m_effect->SetTexture( "g_combineTex04", m_downSamplingRenderTarget[4][1].GetTexture());
 		m_effect->SetValue( "g_offset", offset, sizeof(offset));
 
 		m_effect->CommitChanges();
@@ -208,6 +207,8 @@ void Bloom::Render()
 
 		m_effect->EndPass();
 		m_effect->End();
+
+		blurTexture = m_combineRenderTarget.GetTexture();
 	}
 
 

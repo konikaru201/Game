@@ -214,21 +214,28 @@ void Player::Update()
 		
 		//慣性
 		if (m_moveFloorInertia) {
+			m_ineltiaTime += 1.0f;
 			//空気抵抗で少し慣性の速度を減らす
 			m_airResistance = m_moveFloorSpeed * 60.0f;
 			D3DXVec3Normalize(&m_airResistance, &m_airResistance);
-			moveSpeed += m_moveFloorSpeed * 60.0f - m_airResistance;
+			m_airResistance *= m_ineltiaTime;
+			m_moveFloorSpeed *= 60.0f;
+			moveSpeed += m_moveFloorSpeed - m_airResistance;
 		}
 		else if (m_moveFloor2Inertia) {
+			m_ineltiaTime += 1.0f;
 			//空気抵抗で少し慣性の速度を減らす
 			m_airResistance = m_moveFloor2Speed * 60.0f;
 			D3DXVec3Normalize(&m_airResistance, &m_airResistance);
-			moveSpeed += m_moveFloor2Speed * 60.0f - m_airResistance;
+			m_airResistance *= m_ineltiaTime;
+			m_moveFloor2Speed *= 60.0f;
+			moveSpeed += m_moveFloor2Speed - m_airResistance;
 		}
 		if (GetIsOnGround())
 		{
 			m_moveFloorInertia = false;
 			m_moveFloor2Inertia = false;
+			m_ineltiaTime = 0.0f;
 		}
 
 		//一番近くの移動床のワールド行列を取得

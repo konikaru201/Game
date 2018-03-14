@@ -199,9 +199,10 @@ private:
 	bool m_playerDead = false;										//プレイヤーの死亡フラグ
 	bool m_treadOnSpring = false;									//スプリングを踏んだフラグ
 	int m_rotationFrameCount = 0;									//回転フレームカウント
-	bool m_moveFloorInertia = false;
-	bool m_moveFloor2Inertia = false;
-	D3DXVECTOR3 m_airResistance = { 0.0f,0.0f,0.0f };
+	bool m_moveFloorInertia = false;								//移動床の慣性
+	bool m_moveFloor2Inertia = false;								//移動床２の慣性
+	D3DXVECTOR3 m_airResistance = { 0.0f,0.0f,0.0f };				//空気抵抗
+	bool m_ineltiaTime = 0.0f;
 
 	D3DXMATRIX moveFloorWorldMatrix;
 	D3DXVECTOR3 moveFloorChildPosition = { 0.0f,0.0f,0.0f };
