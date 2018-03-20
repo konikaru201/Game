@@ -8,7 +8,6 @@ SMapInfo Stage0[] = {
 
 CStageSelectScene::CStageSelectScene()
 {
-
 }
 
 CStageSelectScene::~CStageSelectScene()
@@ -58,21 +57,9 @@ void CStageSelectScene::Update()
 
 	//通常時
 	case step_normal:
-		//A,X,Yボタンでフェードアウト待ち
-		if (pad->IsTrigger(pad->enButtonB)) {
+		if (m_changeStage) {
 			g_fade->StartFadeOut();
 			step = step_WaitFadeOut;
-			stageNumber = 1;
-		}
-		else if (pad->IsTrigger(pad->enButtonY)) {
-			g_fade->StartFadeOut();
-			step = step_WaitFadeOut;
-			stageNumber = 2;
-		}
-		else if (pad->IsTrigger(pad->enButtonX)) {
-			g_fade->StartFadeOut();
-			step = step_WaitFadeOut;
-			stageNumber = 3;
 		}
 		break;
 

@@ -90,10 +90,6 @@ void Coin::Update()
 	else {
 		model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
 	}
-
-	//テスト用
-	//model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
-
 }
 
 void Coin::Render()

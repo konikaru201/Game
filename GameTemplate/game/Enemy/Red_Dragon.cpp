@@ -2,6 +2,7 @@
 #include "Red_Dragon.h"
 #include "Scene/SceneManager.h"
 #include "myEngine/Timer/Timer.h"
+#include "myEngine/Sound/SoundSource.h"
 
 Red_Dragon::Red_Dragon()
 {
@@ -129,6 +130,7 @@ D3DXVECTOR3 Red_Dragon::Move()
 
 	//プレイヤーの位置を取得
 	D3DXVECTOR3 playerPos = player->GetPosition();
+	playerPos.y += 0.5f;
 	//プレイヤーへのベクトルを計算
 	D3DXVECTOR3 toPlayer = playerPos - modelPosition;
 	
@@ -398,13 +400,17 @@ void Red_Dragon::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 		float lengthY = D3DXVec3Length(&toPlayerY);
 
 		//Y方向に当たった
-		if (toPlayerY.y > 0.0f && lengthY <= 0.5f) {
+		if (toPlayerY.y > 0.0f && lengthY <= 0.95f && lengthXZ <= 0.7f) {
 			//ドラゴンが死亡
 			player->SetTreadOnEnemy(true);
 			state = State_Dead;
+
+			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+			SE->Init("Assets/sound/Humituke.wav");
+			SE->Play(false);
 		}
 		//XZ方向に当たった
-		else if (lengthY <= 0.8f && lengthXZ <= 1.1f) {
+		else if (lengthY <= 0.3f && lengthXZ <= 1.0f) {
 			//プレイヤーが死亡
 			m_hitPlayer = true;
 			player->SetHitEnemy(m_hitPlayer);

@@ -2,6 +2,7 @@
 #include "Box.h"
 #include "Scene/SceneManager.h"
 #include "myEngine/Physics/CollisionAttr.h"
+#include "myEngine/Timer/Timer.h"
 
 Box::Box()
 {
@@ -69,24 +70,60 @@ void Box::Update()
 		return;
 	}
 
-	//if (g_player != nullptr) {
-	//	if (g_player->GetIsOnBox() == true) {
-	//		D3DXVECTOR3 playerPos = g_player->GetPosition();
-
-	//		if (position.x - 2.5f < playerPos.x < position.x + 2.5f
-	//			&& position.z + 2.5f < playerPos.z < position.z - 2.5f)
-	//		{
-	//			Hit = true;
-	//		}
-	//	}
-	//}
-
+	
+	switch (m_state)
+	{
+	case Box::Entity:
+		m_timer += Timer::GetFrameDeltaTime();
+		if (m_timer < ALPHA_TIME) {
+			float t = m_timer / ALPHA_TIME;
+			m_alpha = max(1.0f - t, 0.0f);
+		}
+		else {
+			m_alpha = 0.0f;
+			m_alphaTimer += Timer::GetFrameDeltaTime();
+			if (m_alphaTimer >= 5.0f) {
+				m_state = Clear;
+				m_alphaTimer = 0.0f;
+				m_timer = 0.0f;
+			}
+		}
+		break;
+	case Box::Clear:
+		m_timer += Timer::GetFrameDeltaTime();
+		if (m_timer < ALPHA_TIME) {
+			float t = m_timer / ALPHA_TIME;
+			m_alpha = min(t, 1.0f);
+		}
+		else {
+			m_alpha = 1.0f;
+			m_alphaTimer += Timer::GetFrameDeltaTime();
+			if (m_alphaTimer >= 8.0f) {
+				m_state = Entity;
+				m_alphaTimer = 0.0f;
+				m_timer = 0.0f;
+			}
+		}
+		break;
+	}
 
 	model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
 }
 
 void Box::Render()
 {
+}
+
+void Box::PostRender()
+{
+	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	//“§–¾“x‚ðÝ’è
+	model.SetAlpha(m_alpha);
 	model.SetDrawShadowMap(false, true);
 	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+
+	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 }

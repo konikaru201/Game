@@ -18,6 +18,8 @@ public:
 	virtual void PostUpdate() {}
 	//•`‰æ
 	virtual void Render(){}
+	virtual void PreRender(){}
+	virtual void PostRender(){}
 
 	//‰e‚Ì•`‰æ
 	virtual void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow){}

@@ -13,12 +13,17 @@ TitleScene::TitleScene(){}
 TitleScene::~TitleScene()
 {
 	delete sprite;
+	delete m_pressA;
 }
 
 bool TitleScene::Start()
 {
 	sprite = new Sprite;
 	sprite->Initialize("Assets/sprite/Title.png");
+
+	m_pressA = new Sprite;
+	m_pressA->Initialize("Assets/sprite/PressA.png");
+	m_pressA->SetPosition(D3DXVECTOR2(0.0f, -320.0f));
 
 	g_fade->StartFadeIn();
 
@@ -40,4 +45,12 @@ void TitleScene::Update()
 void TitleScene::Render()
 {
 	sprite->Render();
+
+	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	m_pressA->Render();
+
+	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 }

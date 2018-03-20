@@ -42,7 +42,17 @@ void GameObjectManager::Render()
 {
 	for (GameObject* obj : gameObjects) {
 		if (!obj->GetisDead()) {
+			obj->PreRender();
+		}
+	}
+	for (GameObject* obj : gameObjects) {
+		if (!obj->GetisDead()) {
 			obj->Render();
+		}
+	}
+	for (GameObject* obj : gameObjects) {
+		if (!obj->GetisDead()){
+			obj->PostRender();
 		}
 	}
 }

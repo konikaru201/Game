@@ -15,6 +15,10 @@
 #include "Enemy/Red_Dragon.h"
 #include "Enemy/StoneMonster.h"
 #include "Floor.h"
+#include "Building_a.h"
+#include "Building_b.h"
+#include "Building_e.h"
+
 
 //マップの配置情報
 struct SMapInfo {

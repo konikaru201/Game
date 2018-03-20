@@ -25,11 +25,22 @@ public:
 	//描画
 	void Render();
 
+	void PostRender();
 private:
+	enum State {
+		Entity,		//実体
+		Clear		//透明
+	};
+	State m_state = Entity;
+
 	SkinModel model;								//スキンモデル
 	SkinModelData modelData;						//スキンモデルデータ
 	RigidBody rigidBody;							//剛体
 	Light light;									//ライト
 	D3DXVECTOR3 position;							//座標
 	D3DXQUATERNION rotation;						//回転
+	float m_timer = 0.0f;			//タイマー
+	float m_alpha = 1.0f;			//不透明度。0.0で透明
+	const float ALPHA_TIME = 0.5f;
+	float m_alphaTimer = 0.0f;
 };

@@ -76,6 +76,11 @@ public:
 	{
 		isDepthStencilRender = DepthStencilRender;
 	}
+	//透明度を設定
+	void SetAlpha(float alpha)
+	{
+		m_alpha = alpha;
+	}
 	/*!
 	*@brief	オリジナルメッシュの先頭を取得する。
 	*/
@@ -94,4 +99,5 @@ private:
 	bool isDrawShadowMap = false;
 	bool isRecieveShadow = false;
 	bool isDepthStencilRender = false;
+	float m_alpha = 1.0f;
 };

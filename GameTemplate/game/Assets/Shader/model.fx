@@ -23,6 +23,8 @@ bool g_isHasSpecularMap;		//スペキュラマップ保持している？
 bool g_isHasNormalMap;			//法線マップ保持している？
 bool g_isHasCubeMap;			//キューブマップ保持している？
 
+float g_alpha;			//透明度
+
 texture g_diffuseTexture;		//ディフューズテクスチャ。
 sampler g_diffuseTextureSampler = 
 sampler_state
@@ -242,6 +244,8 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		}
 	}
 	
+	color.w *= g_alpha;
+	
 	return color;
 }
 
@@ -255,7 +259,7 @@ float4 PSRenderToShadowMapMain(VS_OUTPUT In) : COLOR
 }
 
 /*!
- *@brief	深度テスト用のピクセルシェーダー。
+ *@brief	シルエット用のピクセルシェーダー。
  */
 float4 PSDepthStencilRenderMain(VS_OUTPUT In) : COLOR
 {
@@ -334,7 +338,7 @@ technique NoSkinModelRenderToShadowMap
 
 /*!
 *@brief	スキンあり
-*@brief	深度テスト用のテクニック
+*@brief	シルエット用のテクニック
 */
 technique DepthStencilRender
 {
@@ -347,7 +351,7 @@ technique DepthStencilRender
 
 /*!
 *@brief	スキンなし
-*@brief	深度テスト用のテクニック
+*@brief	シルエット用のテクニック
 */
 technique NoSkinDepthStencilRender
 {

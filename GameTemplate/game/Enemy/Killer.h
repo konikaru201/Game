@@ -65,7 +65,7 @@ private:
 	float				moveLimitLine[4];					//移動限界ライン
 	RigidBody			rigidBody;							//剛体
 	D3DXVECTOR3			moveDir = { 0.0f,0.0f,0.0f };		//見失ったときの移動方向
-	const float			moveSpeed = 4.0f;					//移動速度
+	const float			moveSpeed = 5.5f;					//移動速度
 	bool				isDead = false;						//死亡フラグ
 	bool				isRespawn = false;					//リスポーンフラグ
 	float				timer = 0.0f;						//タイマー

@@ -23,7 +23,7 @@ Bloom* bloom = nullptr;				//ブルーム
 
 DisplayCoin* displayCoin = nullptr;	//コイン枚数のスプライト
 Sprite* CoinNum = nullptr;			//コインの絵のスプライト
-//Sprite* Face = nullptr;
+Sprite* m_aBotton;
 
 CRenderTarget* mainRenderTarget;	//メインレンダリングターゲット
 CPrimitive* quadPrimitive;			//四角形の板ポリプリミティブ
@@ -87,11 +87,9 @@ void Init()
 	displayCoin = new DisplayCoin();
 	displayCoin->Init(coinPos);
 	displayCoin->Start();
-	////ユニティちゃんの顔
-	//Face = new Sprite();
-	//Face->Initialize("Assets/sprite/UnityChanFace.png");
-	//Face->SetPosition(D3DXVECTOR2(1000.0f, 450.0f));
-	//Face->SetSize(D3DXVECTOR2(100.0f, 72.0f));
+	//Aボタン
+	m_aBotton = new Sprite;
+	m_aBotton->Initialize("Assets/sprite/ABotton.png");
 }
 //-----------------------------------------------------------------------------
 // Name: 描画処理。％
@@ -150,10 +148,21 @@ VOID Render()
 		//コインの絵と枚数を描画
 		CoinNum->Render();
 		displayCoin->Render();
-		//Face->Render();
 		//アルファブレンディングを無効にする。
 		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
+
+	//if (sceneManager->GetstageSelectScene() != nullptr
+	//	&& sceneManager->GetstageSelectScene()->GetBottonRender())
+	//{
+	//	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	//	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	//	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	//	m_aBotton->Render();
+
+	//	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	//}
 
 	//フェードのレンダリング
 	g_fade->Render();

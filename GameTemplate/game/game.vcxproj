@@ -165,6 +165,9 @@
     <ClCompile Include="Map\Block.cpp" />
     <ClCompile Include="Map\Block2.cpp" />
     <ClCompile Include="Map\Box.cpp" />
+    <ClCompile Include="Map\Building_a.cpp" />
+    <ClCompile Include="Map\Building_b.cpp" />
+    <ClCompile Include="Map\Building_e.cpp" />
     <ClCompile Include="Map\Coin.cpp" />
     <ClCompile Include="Map\Floor.cpp" />
     <ClCompile Include="Map\Map.cpp" />
@@ -240,6 +243,9 @@
     <ClInclude Include="Map\Block.h" />
     <ClInclude Include="Map\Block2.h" />
     <ClInclude Include="Map\Box.h" />
+    <ClInclude Include="Map\Building_a.h" />
+    <ClInclude Include="Map\Building_b.h" />
+    <ClInclude Include="Map\Building_e.h" />
     <ClInclude Include="Map\Coin.h" />
     <ClInclude Include="Map\Floor.h" />
     <ClInclude Include="Map\Map.h" />

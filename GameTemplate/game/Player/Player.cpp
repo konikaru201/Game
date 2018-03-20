@@ -214,7 +214,7 @@ void Player::Update()
 		
 		//慣性
 		if (m_moveFloorInertia) {
-			m_ineltiaTime += 1.0f;
+			m_ineltiaTime += Timer::GetFrameDeltaTime();
 			//空気抵抗で少し慣性の速度を減らす
 			m_airResistance = m_moveFloorSpeed * 60.0f;
 			D3DXVec3Normalize(&m_airResistance, &m_airResistance);
@@ -223,7 +223,7 @@ void Player::Update()
 			moveSpeed += m_moveFloorSpeed - m_airResistance;
 		}
 		else if (m_moveFloor2Inertia) {
-			m_ineltiaTime += 1.0f;
+			m_ineltiaTime += Timer::GetFrameDeltaTime();
 			//空気抵抗で少し慣性の速度を減らす
 			m_airResistance = m_moveFloor2Speed * 60.0f;
 			D3DXVec3Normalize(&m_airResistance, &m_airResistance);
@@ -502,6 +502,7 @@ D3DXVECTOR3 Player::Move()
 		&& GetIsOnGround())
 	{
 		move.y = 10.0f;
+
 		playerController.Jump();
 
 		currentAnim = AnimationJump;

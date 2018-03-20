@@ -26,7 +26,7 @@ void Star::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	light.SetAmbientLight(D3DXVECTOR4(2.0f, 2.0f, 2.0f, 1.0f));
 	model.SetLight(&light);
 	model.UpdateWorldMatrix(pos, rot, { 1.0f,1.0f,1.0f });
 

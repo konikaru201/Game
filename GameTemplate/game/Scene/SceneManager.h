@@ -45,6 +45,11 @@ public:
 	{
 		return m_changeScene;
 	}
+
+	CStageSelectScene* GetstageSelectScene()
+	{
+		return stageSelectScene;
+	}
 private:
 	SceneState state;								//現在のシーン
 	FadeStep f_step;								//フェードの状態

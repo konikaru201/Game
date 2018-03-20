@@ -3,6 +3,7 @@
 #include "Scene/SceneManager.h"
 #include "myEngine/Physics/CollisionAttr.h"
 #include "myEngine/Timer/Timer.h"
+#include "myEngine/Sound/SoundSource.h"
 
 Killer::Killer()
 {
@@ -117,7 +118,6 @@ void Killer::Render()
 
 D3DXVECTOR3 Killer::Move()
 {
-	//移動速度を取得
 	D3DXVECTOR3 move = { 0.0f,0.0f,0.0f };
 
 	//プレイヤーの位置を取得
@@ -143,6 +143,11 @@ D3DXVECTOR3 Killer::Move()
 	//particleEmitter.SetPosition(position);
 	//particleEmitter.Update();
 
+	//プレイヤーがステージクリアしたらそのまま直進
+	if(player->GetStar()){
+		state = State_Miss;
+	}
+
 	switch (state)
 	{
 	//探索状態
@@ -150,14 +155,15 @@ D3DXVECTOR3 Killer::Move()
 		length = D3DXVec3Length(&toPlayer);
 		D3DXVec3Normalize(&toPlayer, &toPlayer);
 		angle = D3DXVec3Dot(&toPlayer, &direction);
-		angle = acos(angle);
+		angle = acosf(angle);
 
 		//発見された
 		if (fabsf(angle) < D3DXToRadian(30.0f) && length < 12.0f) {
 			state = State_Find;
 		}
 
-		move.x = direction.x * moveSpeed;
+		move = direction * moveSpeed;
+		//move.x = direction.x * moveSpeed;
 
 		break;
 	//発見状態
@@ -177,7 +183,7 @@ D3DXVECTOR3 Killer::Move()
 		else if(angle < -1.0f){
 			angle = -1.0f;
 		}
-		angle = acos(angle);
+		angle = acosf(angle);
 		D3DXVec3Cross(&Cross, &toPlayer, &direction);
 		if (Cross.y > 0.0f) {
 			angle *= -1.0f;
@@ -238,6 +244,10 @@ void Killer::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 			//キラーが死亡
 			player->SetTreadOnEnemy(true);
 			state = State_Dead;
+
+			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+			SE->Init("Assets/sound/Humituke.wav");
+			SE->Play(false);
 		}
 		//X方向に当たった
 		else if (lengthY <= 0.5f && lengthX <= 1.5f) {

@@ -150,6 +150,10 @@ void GameOverScene::Update()
 
 void GameOverScene::Render()
 {
+}
+
+void GameOverScene::PostRender()
+{
 	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);

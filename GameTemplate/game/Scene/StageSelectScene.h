@@ -55,6 +55,27 @@ public:
 		return stageNumber;
 	}
 
+	void SetChangeStage(bool changeStage, int number) 
+	{
+		m_changeStage = changeStage;
+		stageNumber = number;
+	}
+
+	void SetBottonReneder(bool bottonRender, int bottonNumber)
+	{
+		m_bottonRender[bottonNumber] = bottonRender;
+	}
+
+	bool GetBottonRender()
+	{
+		for (int i = 0; i < 3; i++) {
+			if (m_bottonRender[i] == true) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 private:
 	Map* map;									//マップ
 	DepthStencilRender* depthStencilRender;		//シルエット
@@ -62,4 +83,6 @@ private:
 	CSoundSource* bgmSource = nullptr;			//BGM
 	bool m_waitFadeOut = false;					//フェードアウト待ちフラグ
 	int stageNumber = 0;
+	bool m_changeStage = false;
+	bool m_bottonRender[3];
 };

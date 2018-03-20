@@ -110,6 +110,18 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 			Floor* floor = goMgr->NewGameObject<Floor>();
 			floor->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
+		else if (strcmp("Building_a", mapLocInfo[i].modelName) == 0) {
+			Building_a* building_a = goMgr->NewGameObject<Building_a>();
+			building_a->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		}
+		else if (strcmp("Building_b", mapLocInfo[i].modelName) == 0) {
+			Building_b* building_b = goMgr->NewGameObject<Building_b>();
+			building_b->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		}
+		else if (strcmp("Building_e", mapLocInfo[i].modelName) == 0) {
+			Building_e* building_e = goMgr->NewGameObject<Building_e>();
+			building_e->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		}
 		else 
 		{
 			//インスタンスを動的に生成

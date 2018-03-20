@@ -24,7 +24,8 @@ namespace {
 		LPDIRECT3DCUBETEXTURE9 cubeMap,
 		bool isDrawShadowMap,
 		bool isRecieveShadow,
-		bool isDepthStencilRender
+		bool isDepthStencilRender,
+		float alpha
 	)
 	{
 		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
@@ -75,6 +76,7 @@ namespace {
 			);
 			//シャドウレシーバーフラグを転送
 			pEffect->SetBool("g_isShadowReciever", isRecieveShadow);
+			pEffect->SetFloat("g_alpha", alpha);
 		}
 		if (specularMap != NULL) {
 			//スペキュラマップがあるので、シェーダーに転送する。
@@ -198,7 +200,8 @@ namespace {
 		LPDIRECT3DCUBETEXTURE9 cubeMap,
 		bool isDrawShadowMap,
 		bool isRecieveShadow,
-		bool isDepthStencilRender
+		bool isDepthStencilRender,
+		float alpha
 	)
 	{
 		LPD3DXMESHCONTAINER pMeshContainer;
@@ -221,7 +224,8 @@ namespace {
 				cubeMap,
 				isDrawShadowMap,
 				isRecieveShadow,
-				isDepthStencilRender
+				isDepthStencilRender,
+				alpha
 				);
 
 			pMeshContainer = pMeshContainer->pNextMeshContainer;
@@ -243,7 +247,8 @@ namespace {
 				cubeMap,
 				isDrawShadowMap,
 				isRecieveShadow,
-				isDepthStencilRender
+				isDepthStencilRender,
+				alpha
 				);
 		}
 
@@ -263,7 +268,8 @@ namespace {
 				cubeMap,
 				isDrawShadowMap,
 				isRecieveShadow,
-				isDepthStencilRender
+				isDepthStencilRender,
+				alpha
 				);
 		}
 	}
@@ -315,7 +321,8 @@ void SkinModel::Draw(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix)
 			cubeMap,
 			isDrawShadowMap,
 			isRecieveShadow,
-			isDepthStencilRender
+			isDepthStencilRender,
+			m_alpha
 		);
 	}
 }

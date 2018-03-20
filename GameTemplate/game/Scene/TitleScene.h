@@ -27,6 +27,7 @@ public:
 	}
 private:
 	Sprite* sprite;				//スプライト
+	Sprite* m_pressA;
 	float alpha = 1.0f;			//不透明度。1.0は黒
 	float timer = 0.0f;			//タイマー
 	bool m_changeScene = false; //シーン切り替えフラグ

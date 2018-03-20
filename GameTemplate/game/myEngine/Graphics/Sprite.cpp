@@ -101,7 +101,7 @@ void Sprite::Render()
 	D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &scale);
 	D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &trans);
 
-	uvPos += 0.005f;
+	//uvPos += 0.005f;
 	m_pEffect->SetTechnique("Sprite");
 	m_pEffect->Begin(NULL, D3DXFX_DONOTSAVESHADERSTATE);
 	m_pEffect->BeginPass(0);

@@ -202,7 +202,7 @@ private:
 	bool m_moveFloorInertia = false;								//ˆÚ“®°‚ÌŠµ«
 	bool m_moveFloor2Inertia = false;								//ˆÚ“®°‚Q‚ÌŠµ«
 	D3DXVECTOR3 m_airResistance = { 0.0f,0.0f,0.0f };				//‹ó‹C’ïR
-	bool m_ineltiaTime = 0.0f;
+	float m_ineltiaTime = 0.0f;
 
 	D3DXMATRIX moveFloorWorldMatrix;
 	D3DXVECTOR3 moveFloorChildPosition = { 0.0f,0.0f,0.0f };

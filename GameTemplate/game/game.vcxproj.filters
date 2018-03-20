@@ -255,6 +255,15 @@
     <ClCompile Include="Map\Floor.cpp">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClCompile>
+    <ClCompile Include="Map\Building_a.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Building_b.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Building_e.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -474,6 +483,15 @@
       <Filter>ソース ファイル\Enemy\StoneMonster</Filter>
     </ClInclude>
     <ClInclude Include="Map\Floor.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Building_a.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Building_b.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Building_e.h">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClInclude>
   </ItemGroup>

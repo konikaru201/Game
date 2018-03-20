@@ -27,6 +27,8 @@ public:
 	//描画
 	void Render();
 
+	void PostRender();
+
 	//ゲームオーバーシーン終了フラグを取得
 	bool GetGameOverSceneEnd()
 	{

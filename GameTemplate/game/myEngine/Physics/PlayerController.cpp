@@ -15,10 +15,9 @@ namespace {
 		bool isJumpBlockHit = false;
 		bool isBlockHit = false;
 		bool isBlock_2Hit = false;
-		bool isBoxHit = false;
 		D3DXVECTOR3 hitPos = { 0.0f, 0.0f, 0.0f };			//衝突点。
-		D3DXVECTOR3 startPos = { 0.0f, 0.0f, 0.0f };			//レイの始点。
-		D3DXVECTOR3 hitNormal = { 0.0f, 0.0f, 0.0f };			//衝突点の法線。
+		D3DXVECTOR3 startPos = { 0.0f, 0.0f, 0.0f };		//レイの始点。
+		D3DXVECTOR3 hitNormal = { 0.0f, 0.0f, 0.0f };		//衝突点の法線。
 		btCollisionObject* me = nullptr;					//自分自身。自分自身との衝突を除外するためのメンバ。
 		float dist = FLT_MAX;								//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
 
@@ -41,7 +40,9 @@ namespace {
 				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Ground //もしくはコリジョン属性が地面と指定されている。
 				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_MoveFloor
 				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_MoveFloor2
-				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_JumpBlock) {
+				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_JumpBlock
+				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Block
+				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Block2) {
 				//移動床に衝突している。
 				if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_MoveFloor)
 				{
@@ -64,11 +65,6 @@ namespace {
 				else if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Block2)
 				{
 					isBlock_2Hit = true;
-				}
-				//ボックスに衝突している。
-				else if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Box)
-				{
-					isBoxHit = true;
 				}
 				//地面に衝突している。
 				else
@@ -407,13 +403,6 @@ void PlayerController::Execute()
 			m_moveSpeed.y = 0.0f;
 			m_isJump = false;
 			m_isOnBlock2 = true;
-			nextPosition.y = callback.hitPos.y;
-		}
-		else if (callback.isBoxHit)
-		{
-			m_moveSpeed.y = 0.0f;
-			m_isJump = false;
-			m_isOnBox = true;
 			nextPosition.y = callback.hitPos.y;
 		}
 		else {
