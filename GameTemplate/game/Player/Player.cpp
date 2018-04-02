@@ -113,56 +113,59 @@ void Player::Update()
 	{
 		//移動中
 	case State_Walk:
-		moveSpeed = Move();
-
-		if (getStar == false && (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f))
+		if (!gameCamera->GetCameraReset()) 
 		{
-			m_rotationFrameCount++;
-			//移動しているなら向きを変える
-			D3DXVECTOR3 playerDir = GetPlayerDir();
-			D3DXVec3Normalize(&playerDir, &playerDir);
-			D3DXVECTOR3 stickDir = dir;
-			D3DXVec3Normalize(&stickDir, &stickDir);
-			angle = D3DXVec3Dot(&playerDir, &stickDir);
-			if (angle < -1.0f)
+			moveSpeed = Move();
+
+			if (getStar == false && (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f))
 			{
-				angle = -1.0f;
-			}
-			if (angle > 1.0f)
-			{
-				angle = 1.0f;
-			}
-			angle = acosf(angle);
-			D3DXVECTOR3 hoge;
-			D3DXVec3Cross(&hoge, &playerDir, &stickDir);
-			//ベクトルが下向きか判定
-			if (hoge.y < 0.0f) {
-				angle *= -1.0f;
-			}
-
-			angle /= 5;
-			if (m_rotationFrameCount <= 5) {
-				D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
-				D3DXQuaternionMultiply(&rotation, &rotation, &rot);
-				m_rotationFrameCount = 0;
-			}
-
-			if (!(playerController.IsJump())) {
-				currentAnim = AnimationRun;
-
-				timer += Timer::GetFrameDeltaTime();
-
-				if (timer >= 0.4f) {
-					CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
-					SE->Init("Assets/sound/FootStep.wav");
-					SE->Play(false);
-					timer = 0.0f;
+				m_rotationFrameCount++;
+				//移動しているなら向きを変える
+				D3DXVECTOR3 playerDir = GetPlayerDir();
+				D3DXVec3Normalize(&playerDir, &playerDir);
+				D3DXVECTOR3 stickDir = dir;
+				D3DXVec3Normalize(&stickDir, &stickDir);
+				angle = D3DXVec3Dot(&playerDir, &stickDir);
+				if (angle < -1.0f)
+				{
+					angle = -1.0f;
 				}
-			}	
-		}
-		else {
-			if (!(playerController.IsJump())) {
-				currentAnim = AnimationStand;
+				if (angle > 1.0f)
+				{
+					angle = 1.0f;
+				}
+				angle = acosf(angle);
+				D3DXVECTOR3 hoge;
+				D3DXVec3Cross(&hoge, &playerDir, &stickDir);
+				//ベクトルが下向きか判定
+				if (hoge.y < 0.0f) {
+					angle *= -1.0f;
+				}
+
+				angle /= 5;
+				if (m_rotationFrameCount <= 5) {
+					D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
+					D3DXQuaternionMultiply(&rotation, &rotation, &rot);
+					m_rotationFrameCount = 0;
+				}
+
+				if (!(playerController.IsJump())) {
+					currentAnim = AnimationRun;
+
+					timer += Timer::GetFrameDeltaTime();
+
+					if (timer >= 0.4f) {
+						CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+						SE->Init("Assets/sound/FootStep.wav");
+						SE->Play(false);
+						timer = 0.0f;
+					}
+				}
+			}
+			else {
+				if (!(playerController.IsJump())) {
+					currentAnim = AnimationStand;
+				}
 			}
 		}
 
@@ -505,53 +508,11 @@ D3DXVECTOR3 Player::Move()
 
 		playerController.Jump();
 
+		animation.PlayAnimation(AnimationJump);
 		currentAnim = AnimationJump;
 		CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
 		SE->Init("Assets/sound/U_Voice_1.wav");
 		SE->Play(false);
 	}
-
-	////壁に当たった時
-	//if (playerController.IsOnWall()) {
-	//	isOnWall = true;
-	//}
-
-	////壁に当たっている間
-	//if (isOnWall) {
-	//	if (pad->IsTrigger(pad->enButtonA)) {
-	//		wallJump = true;
-	//		wallJumpExecute = true;
-	//		isOnWall = false;
-	//		//プレイヤーの向きを取得する
-	//		playerDir = GetPlayerDir();
-	//		playerDir = playerDir * 10.0f;
-	//	}
-	//	move.x = 0.0f;
-	//	move.y = -0.2f;
-	//	move.z = 0.0f;
-	//}
-
-	////壁ジャンプ中
-	//if (wallJump) {
-	//	//壁の法線を取得する
-	//	D3DXVECTOR3 hitNormal = playerController.GethitNormal();
-	//	D3DXVec3Normalize(&hitNormal, &hitNormal);
-	//	
-	//	//反射ベクトルを求める
-	//	D3DXVECTOR3 playerDirR = -playerDir;
-	//	float dot = D3DXVec3Dot(&hitNormal, &playerDirR);
-	//	hitNormal = hitNormal * dot * 2.0f;
-	//	D3DXVECTOR3 R = playerDir + hitNormal;
-	//	D3DXVec3Normalize(&R, &R);
-	//	if (wallJumpExecute) {
-	//		move.y = 8.0f;
-	//		wallJumpExecute = false;
-	//	}
-	//	move.x = R.x * 8.0f;
-	//	move.z = R.z * 8.0f;
-
-	//	D3DXQuaternionRotationAxis(&rotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), atan2f(R.x, R.z));
-	//}
-
 	return move;
 }

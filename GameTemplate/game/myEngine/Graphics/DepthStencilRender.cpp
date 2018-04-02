@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "DepthStencilRender.h"
 #include "Player/Player.h"
-#include "Scene/GameScene.h"
+#include "Scene/SceneManager.h"
 
 DepthStencilRender::DepthStencilRender()
 {
@@ -25,9 +25,9 @@ void DepthStencilRender::Render()
 {
 	g_pd3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_GREATER);
 	g_pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-	if (player != nullptr) {
-		player->DepthStencilRender(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
-	}
+	//if (player != nullptr) {
+	//	player->DepthStencilRender(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+	//}
 	g_pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	g_pd3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 }

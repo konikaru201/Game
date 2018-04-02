@@ -80,7 +80,7 @@ void GameCamera::Move()
 	}
 
 	//カメラリセット
-	if (pad->IsTrigger(pad->enButtonLB1)) {
+	if (pad->IsTrigger(pad->enButtonLB1) && m_cameraReset == false) {
 		m_cameraReset = true;
 	}
 
@@ -111,7 +111,7 @@ void GameCamera::Move()
 			else if(Cross.y <= 0.0f) {
 				angle *= -1.0f;
 			}
-			angle /= 10;
+			angle /= 5;
 
 			D3DXMATRIX rot;
 			D3DXMatrixIdentity(&rot);

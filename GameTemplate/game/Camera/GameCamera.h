@@ -61,6 +61,12 @@ public:
 	{
 		return camera.GetProjectionMatrix();
 	}
+	//カメラのリセットフラグを取得
+	bool GetCameraReset()
+	{
+		return m_cameraReset;
+	}
+
 private:
 	D3DXVECTOR3 toCameraPos;	//注視点から視点へのベクトル
 	Camera camera;				//カメラインスタンス

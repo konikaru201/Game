@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Map.h"
+#include "Scene/SceneManager.h"
 #include "myEngine/GameObject/GameObjectManager.h"
 
 Map* map = nullptr;
@@ -105,6 +106,7 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 		else if (strcmp("StoneMonster", mapLocInfo[i].modelName) == 0) {
 			StoneMonster* stoneMonster = goMgr->NewGameObject<StoneMonster>();
 			stoneMonster->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+			m_stoneMonsterList.push_back(stoneMonster);
 		}
 		else if (strcmp("MoveFloor_3", mapLocInfo[i].modelName) == 0) {
 			Floor* floor = goMgr->NewGameObject<Floor>();

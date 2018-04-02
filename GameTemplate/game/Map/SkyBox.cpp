@@ -24,7 +24,6 @@ void SkyBox::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 		model.SetCubeMap(m_cubeMapTexture);
 	}
 
-	//modelData.LoadModelData("Assets/modelData/skyBox.x", NULL);
 	modelData.LoadModelData("Assets/modelData/sky.x", NULL);
 
 	model.Init(&modelData);

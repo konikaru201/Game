@@ -59,8 +59,8 @@ Bloom::Bloom()
 		);
 	}
 	m_combineRenderTarget.Create(
-		FRAME_BUFFER_WIDTH/*w*/ / 2,
-		FRAME_BUFFER_HEIGHT/*h*/ / 2,
+		FRAME_BUFFER_WIDTH / 2,
+		FRAME_BUFFER_HEIGHT / 2,
 		1,
 		D3DFMT_A16B16G16R16F,
 		D3DFMT_D16,

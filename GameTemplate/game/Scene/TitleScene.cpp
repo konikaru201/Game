@@ -14,6 +14,7 @@ TitleScene::~TitleScene()
 {
 	delete sprite;
 	delete m_pressA;
+	delete m_titleName;
 }
 
 bool TitleScene::Start()
@@ -24,6 +25,11 @@ bool TitleScene::Start()
 	m_pressA = new Sprite;
 	m_pressA->Initialize("Assets/sprite/PressA.png");
 	m_pressA->SetPosition(D3DXVECTOR2(0.0f, -320.0f));
+
+	m_titleName = new Sprite;
+	m_titleName->Initialize("Assets/sprite/TitleName.png");
+	m_titleName->SetPosition(D3DXVECTOR2(0.0f, 300.0f));
+	m_titleName->SetSize(D3DXVECTOR2(1280.0f, 720.0f));
 
 	g_fade->StartFadeIn();
 
@@ -51,6 +57,7 @@ void TitleScene::Render()
 	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 	m_pressA->Render();
+	m_titleName->Render();
 
 	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 }
