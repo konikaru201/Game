@@ -76,6 +76,7 @@ namespace {
 			);
 			//シャドウレシーバーフラグを転送
 			pEffect->SetBool("g_isShadowReciever", isRecieveShadow);
+			//アルファ値
 			pEffect->SetFloat("g_alpha", alpha);
 		}
 		if (specularMap != NULL) {
@@ -104,9 +105,12 @@ namespace {
 			pEffect->SetTechnique("NoSkinModelSkyCubeMap");
 		}
 		if (isRecieveShadow) {
-			pEffect->SetTexture("g_shadowMapTexture", g_shadowMap.GetTexture());
-			pEffect->SetMatrix("g_lightViewMatrix", &g_shadowMap.GetLightViewMatrix());
-			pEffect->SetMatrix("g_lightProjectionMatrix", &g_shadowMap.GetLightProjectionMatrix());
+			pEffect->SetTexture("g_shadowMapTexture", g_shadowMap.GetTexture(0));
+			pEffect->SetTexture("g_shadowMapTexture2", g_shadowMap.GetTexture(1));
+			pEffect->SetTexture("g_shadowMapTexture3", g_shadowMap.GetTexture(2));
+			pEffect->SetMatrix("g_LVPMatrix", &g_shadowMap.GetLightViewProjectionMatrix(0));
+			pEffect->SetMatrix("g_LVPMatrix2", &g_shadowMap.GetLightViewProjectionMatrix(1));
+			pEffect->SetMatrix("g_LVPMatrix3", &g_shadowMap.GetLightViewProjectionMatrix(2));
 		}
 		if (pMeshContainer->pSkinInfo != NULL)
 		{

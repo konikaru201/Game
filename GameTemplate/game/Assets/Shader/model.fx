@@ -16,8 +16,10 @@ float4x4	g_viewMatrixRotInv;		//!<カメラの回転行列の逆行列。
 float3		vEyePos;
 
 bool g_isShadowReciever;				//シャドウレシーバー？１ならシャドウレシーバー。
-float4x4 g_lightViewMatrix;			//ライトビュー行列。
-float4x4 g_lightProjectionMatrix;	//ライトプロジェクション行列。
+
+float4x4 g_LVPMatrix;				//ライトビュープロジェクション行列
+float4x4 g_LVPMatrix2;
+float4x4 g_LVPMatrix3;
 
 bool g_isHasSpecularMap;		//スペキュラマップ保持している？
 bool g_isHasNormalMap;			//法線マップ保持している？
@@ -63,7 +65,8 @@ sampler_state
 	AddressV = Wrap;
 };
 
-texture g_shadowMapTexture;		//シャドウマップテクスチャ。
+//シャドウマップテクスチャ。
+texture g_shadowMapTexture;		
 sampler g_shadowMapTextureSampler = 
 sampler_state
 {
@@ -72,6 +75,32 @@ sampler_state
     MinFilter = LINEAR;
     MagFilter = LINEAR;
     AddressU = CLAMP;
+	AddressV = CLAMP;
+};
+
+//シャドウマップテクスチャ2。
+texture g_shadowMapTexture2;		
+sampler g_shadowMapTextureSampler2 =
+sampler_state
+{
+	Texture = <g_shadowMapTexture2>;
+	MipFilter = LINEAR;
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
+	AddressU = CLAMP;
+	AddressV = CLAMP;
+};
+
+//シャドウマップテクスチャ3。
+texture g_shadowMapTexture3;		
+sampler g_shadowMapTextureSampler3 =
+sampler_state
+{
+	Texture = <g_shadowMapTexture3>;
+	MipFilter = LINEAR;
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
+	AddressU = CLAMP;
 	AddressV = CLAMP;
 };
 
@@ -113,6 +142,8 @@ struct VS_OUTPUT
 	float3	worldPos		: TEXCOORD2;
 	float4	lightViewPos 	: TEXCOORD3;		//ワールド空間->ライトビュー空間->ライト射影空間に変換された座標。
 	float4  PosInProj		: TEXCOORD4;
+	float4	lightViewPos2	: TEXCOORD5;
+	float4	lightViewPos3	: TEXCOORD6;
 };
 /*!
  *@brief	ワールド座標とワールド法線をスキン行列から計算する。
@@ -186,8 +217,11 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 	if(g_isShadowReciever){
 		//シャドウレシーバー。
 		//ワールド座標をライトカメラから見た射影空間に変換する。
-		o.lightViewPos = mul(float4(o.worldPos,1.0f), g_lightViewMatrix);
-		o.lightViewPos = mul(o.lightViewPos, g_lightProjectionMatrix);
+		o.lightViewPos = mul(float4(o.worldPos, 1.0f), g_LVPMatrix);
+		
+		o.lightViewPos2 = mul(float4(o.worldPos, 1.0f), g_LVPMatrix2);
+		
+		o.lightViewPos3 = mul(float4(o.worldPos, 1.0f), g_LVPMatrix3);
 	}
 
 	return o;
@@ -228,10 +262,12 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	lig += pow(max(0, dot(L, R)), 10) * g_light.diffuseLightColor[0] * length(spec) * 10.0f;
 	color *= lig;
 
-	if (g_isShadowReciever) {
+	float angle = dot(normal, float3(0.0f, 1.0f, 0.0f));
+
+	if (g_isShadowReciever && angle > 0.001f) {
 		//ライトのZ値を計算
 		float lightViewPosZ = In.lightViewPos.z / In.lightViewPos.w;
-		//射影空間(スクリーン座標系)に変換された座標はw成分で割ってやると(-1.0f～1.0)の範囲の正規化座標系になる。
+		//射影空間(スクリーン座標系)に変換された座標はw成分で割ってやると(-1.0～1.0)の範囲の正規化座標系になる。
 		//これをUV座標系(0.0～1.0)に変換して、シャドウマップをフェッチするためのUVとして活用する。
 		float2 shadowMapUV = In.lightViewPos.xy / In.lightViewPos.w;	//この計算で(-1.0～1.0)の範囲になる。
 		if(-1.0f <= shadowMapUV.x && shadowMapUV.x <= 1.0f && -1.0f <= shadowMapUV.y && shadowMapUV.y <= 1.0f){
@@ -239,6 +275,34 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 			shadowMapUV += float2(0.5f, 0.5f);								//そしてこれで(0.0～1.0)の範囲になってＵＶ座標系に変換できた。やったね。
 			float4 shadowVal = tex2D(g_shadowMapTextureSampler, shadowMapUV);	//シャドウマップは影が落ちているところはグレースケールになっている。
 			if (shadowVal.r < lightViewPosZ) {
+				color *= float4(0.0f, 0.0f, 0.0f, 1.0f);
+			}
+		}
+
+		//ライトのZ値を計算
+		float lightViewPosZ2 = In.lightViewPos2.z / In.lightViewPos2.w;
+		//射影空間(スクリーン座標系)に変換された座標はw成分で割ってやると(-1.0f～1.0)の範囲の正規化座標系になる。
+		//これをUV座標系(0.0～1.0)に変換して、シャドウマップをフェッチするためのUVとして活用する。
+		float2 shadowMapUV2 = In.lightViewPos2.xy / In.lightViewPos2.w;	//この計算で(-1.0～1.0)の範囲になる。
+		if (-1.0f <= shadowMapUV2.x && shadowMapUV2.x <= 1.0f && -1.0f <= shadowMapUV2.y && shadowMapUV2.y <= 1.0f) {
+			shadowMapUV2 *= float2(0.5f, -0.5f);								//この計算で(-0.5～0.5)の範囲になる。
+			shadowMapUV2 += float2(0.5f, 0.5f);								//そしてこれで(0.0～1.0)の範囲になってＵＶ座標系に変換できた。やったね。
+			float4 shadowVal2 = tex2D(g_shadowMapTextureSampler2, shadowMapUV2);	//シャドウマップは影が落ちているところはグレースケールになっている。
+			if (shadowVal2.r < lightViewPosZ2) {
+				color *= float4(0.0f, 0.0f, 0.0f, 1.0f);
+			}
+		}
+
+		//ライトのZ値を計算
+		float lightViewPosZ3 = In.lightViewPos3.z / In.lightViewPos3.w;
+		//射影空間(スクリーン座標系)に変換された座標はw成分で割ってやると(-1.0f～1.0)の範囲の正規化座標系になる。
+		//これをUV座標系(0.0～1.0)に変換して、シャドウマップをフェッチするためのUVとして活用する。
+		float2 shadowMapUV3 = In.lightViewPos3.xy / In.lightViewPos3.w;	//この計算で(-1.0～1.0)の範囲になる。
+		if (-1.0f <= shadowMapUV3.x && shadowMapUV3.x <= 1.0f && -1.0f <= shadowMapUV3.y && shadowMapUV3.y <= 1.0f) {
+			shadowMapUV3 *= float2(0.5f, -0.5f);								//この計算で(-0.5～0.5)の範囲になる。
+			shadowMapUV3 += float2(0.5f, 0.5f);								//そしてこれで(0.0～1.0)の範囲になってＵＶ座標系に変換できた。やったね。
+			float4 shadowVal3 = tex2D(g_shadowMapTextureSampler3, shadowMapUV3);	//シャドウマップは影が落ちているところはグレースケールになっている。
+			if (shadowVal3.r < lightViewPosZ3) {
 				color *= float4(0.0f, 0.0f, 0.0f, 1.0f);
 			}
 		}

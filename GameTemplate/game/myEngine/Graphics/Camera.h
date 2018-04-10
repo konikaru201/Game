@@ -10,9 +10,12 @@ private:
 	D3DXVECTOR3				vEyePt;				//!<カメラクラスを作るためのヒント。カメラの視点。この辺りはメンバ変数に変更する。
 	D3DXVECTOR3				vLookatPt;			//!<カメラクラスを作るためのヒント。カメラの注視点。どこを見ているかという情報。この辺りはメンバ変数に変更する。
 	D3DXVECTOR3				vUpVec;				//!<カメラクラスを作るためのヒント。カメラの上方向。基本的にY方向でかまわない。基本的には・・・。この辺りはメンバ変数に変更する。
+	D3DXVECTOR3				vForward;			//!<前方向。
+	D3DXVECTOR3				vRight;				//!<右方向。
 	float					Far;				//!<遠平面。
 	float					Near;				//!<近平面。
 	float					aspect;				//!<アスペクト比
+	float					angle;				//!<画角
 public:
 	/*!
 	 *@brief	コンストラクタ。
@@ -30,6 +33,14 @@ public:
 	 *@brief	アスペクト比を取得。
 	 */
 	float GetAspect();
+	/*!
+	*@brief		画角を設定。
+	*/
+	void SetAngle(float _angle);
+	/*!
+	*@brief		画角を取得。
+	*/
+	float GetAngle();
 	/*!
 	 *@brief	ファーを設定。
 	 */
@@ -62,6 +73,22 @@ public:
 	 *@brief	注視点の取得。
 	 */
 	const D3DXVECTOR3& GetLookatPt();
+	/*!
+	*@brief		前方向の設定。
+	*/
+	void SetForwardVec(const D3DXVECTOR3& forward);
+	/*!
+	*@brief		前方向の取得。
+	*/
+	const D3DXVECTOR3& GetForwardVec();
+	/*!
+	*@brief		右方向の設定。
+	*/
+	void SetRightVec(const D3DXVECTOR3& right);
+	/*!
+	*@brief		右方向の取得。
+	*/
+	const D3DXVECTOR3& GetRightVec();
 	/*!
 	 *@brief	上方向の設定。
 	 */

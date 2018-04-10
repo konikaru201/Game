@@ -41,6 +41,16 @@ public:
 	{
 		camera.SetFar(_far);
 	}
+	//アスペクト比を取得
+	float GetAspect()
+	{
+		return camera.GetAspect();
+	}
+	//画角を取得
+	float GetAngle()
+	{
+		return camera.GetAngle();
+	}
 	//注視点を取得
 	const D3DXVECTOR3& GetTarget()
 	{
@@ -50,6 +60,16 @@ public:
 	const D3DXVECTOR3& GetPosition()
 	{
 		return camera.GetEyePt();
+	}
+	//前方向を取得
+	const D3DXVECTOR3& GetForward()
+	{
+		return camera.GetForwardVec();
+	}
+	//右方向を取得
+	const D3DXVECTOR3& GetRight()
+	{
+		return camera.GetRightVec();
 	}
 	//ビュー行列を取得
 	const D3DXMATRIX& GetViewMatrix()
@@ -68,11 +88,10 @@ public:
 	}
 
 private:
-	D3DXVECTOR3 toCameraPos;	//注視点から視点へのベクトル
 	Camera camera;				//カメラインスタンス
 	CameraCollisionSolver cameraCollisionSolver;	//カメラコリジョンインスタンス
+	D3DXVECTOR3 toCameraPos;	//注視点から視点へのベクトル
 	bool ResetFlg = false;	//カメラリセットフラグ
-	//float Angle = 0.0f;		//XZ方向の回転量
 	float UpAngle = 0.0f;
 	D3DXVECTOR3 currentEyePos;
 	int m_rotationFrameCount = 0;

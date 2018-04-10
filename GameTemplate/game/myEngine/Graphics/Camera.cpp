@@ -7,6 +7,7 @@ Camera::Camera()
 	Near = 0.1f;
 	Far = 100.0f;
 	aspect = (float)FRAME_BUFFER_WIDTH / (float)FRAME_BUFFER_HEIGHT;
+	angle = D3DX_PI / 4;
 }
 //デストラクタ
 Camera::~Camera()
@@ -21,6 +22,16 @@ void Camera::SetAspect(float _aspect)
 float Camera::GetAspect()
 {
 	return aspect;
+}
+//画角を設定
+void Camera::SetAngle(float _angle)
+{
+	angle = _angle;
+}
+//画角を取得
+float Camera::GetAngle()
+{
+	return angle;
 }
 //ファーを設定。
 void Camera::SetFar(float _far)
@@ -62,6 +73,26 @@ const D3DXVECTOR3& Camera::GetLookatPt()
 {
 	return vLookatPt;
 }
+//前方向のセッター
+void Camera::SetForwardVec(const D3DXVECTOR3 & forward)
+{
+	vForward = forward;
+}
+//前方向のゲッター
+const D3DXVECTOR3 & Camera::GetForwardVec()
+{
+	return vForward;
+}
+//右方向のセッター
+void Camera::SetRightVec(const D3DXVECTOR3 & right)
+{
+	vRight = right;
+}
+//右方向のゲッター
+const D3DXVECTOR3 & Camera::GetRightVec()
+{
+	return vRight;
+}
 //上方向のセッター
 void Camera::SetUpVec(const D3DXVECTOR3& up)
 {
@@ -96,7 +127,7 @@ const D3DXMATRIX& Camera::GetProjectionMatrix()
 void Camera::Update()
 {
 	D3DXMatrixLookAtLH(&viewMatrix, &vEyePt, &vLookatPt, &vUpVec);
-	D3DXMatrixPerspectiveFovLH(&projectionMatrix, D3DX_PI / 4, aspect, Near, Far);
+	D3DXMatrixPerspectiveFovLH(&projectionMatrix, angle, aspect, Near, Far);
 }
 //カメラの初期化。
 void Camera::Init()

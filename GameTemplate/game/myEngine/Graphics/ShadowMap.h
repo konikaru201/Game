@@ -11,9 +11,9 @@ public:
 	~CShadowMap();
 
 	//テクスチャを取得。
-	LPDIRECT3DTEXTURE9 GetTexture()
+	LPDIRECT3DTEXTURE9 GetTexture(int number)
 	{
-		return renderTarget.GetTexture();
+		return renderTarget[number].GetTexture();
 	}
 
 	//初期化。
@@ -32,15 +32,21 @@ public:
 	}
 
 	//ライトビュー行列を取得。
-	const D3DXMATRIX& GetLightViewMatrix()
+	const D3DXMATRIX& GetLightViewMatrix(int number)
 	{
-		return lightViewMatrix;
+		return lightViewMatrix[number];
 	}
 
 	//ライトプロジェクション行列を取得。
-	const D3DXMATRIX& GetLightProjectionMatrix()
+	const D3DXMATRIX& GetLightProjectionMatrix(int number)
 	{
-		return lightProjMatrix;
+		return lightProjMatrix[number];
+	}
+
+	//ライトビュープロジェクション行列を取得
+	const D3DXMATRIX& GetLightViewProjectionMatrix(int number)
+	{
+		return m_LVPMatrix[number];
 	}
 
 	//更新。
@@ -49,11 +55,15 @@ public:
 	//シャドウマップに書き込み。
 	void Draw();
 private:
-	CRenderTarget renderTarget;		//シャドウマップを書きこむレンダリングターゲット。
-	D3DXMATRIX  lightViewMatrix;	//ライトビューマトリクス。
-	D3DXMATRIX	lightProjMatrix;	//ライトプロジェクションマトリクス。
-	D3DXVECTOR3 viewPosition;		//ライトビューの視点。
-	D3DXVECTOR3 viewTarget;			//ライトビューの注視点。
+	static const int NUM_SHADOW_MAP = 3;			//シャドウマップを作る数。
+	CRenderTarget renderTarget[NUM_SHADOW_MAP];		//シャドウマップを書きこむレンダリングターゲット。
+	D3DXMATRIX  lightViewMatrix[NUM_SHADOW_MAP];	//ライトビューマトリクス。
+	D3DXMATRIX	lightProjMatrix[NUM_SHADOW_MAP];	//ライトプロジェクションマトリクス。
+	D3DXMATRIX  m_LVPMatrix[NUM_SHADOW_MAP];		//ライトビュープロジェクション行列。
+	D3DXVECTOR3 viewPosition;						//ライトビューの視点。
+	D3DXVECTOR3 viewTarget;							//ライトビューの注視点。
+	D3DXVECTOR3 m_lightDirection;					//ライトの方向
+	float		m_lightHeight = 1.0f;				//ライトの高さ
 };
 
 extern CShadowMap g_shadowMap;

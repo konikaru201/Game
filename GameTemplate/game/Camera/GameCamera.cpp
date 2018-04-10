@@ -20,12 +20,20 @@ bool GameCamera::Start()
 	camera.Init();
 	camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 10.0f));
 	camera.SetLookatPt(D3DXVECTOR3(0.0f, 10.5f, 3.0f));
-	//テスト用
-	//camera.SetLookatPt(D3DXVECTOR3(0.0f, 12.0f, 8.0f));
 	camera.SetFar(1000.0f);
 	camera.Update();
+	//カメラの当たり判定を初期化
 	cameraCollisionSolver.Init(0.2f);
+	//注視点からカメラまでのベクトルを計算。
 	toCameraPos = camera.GetEyePt() - camera.GetLookatPt();
+	//カメラの前方向を計算。
+	D3DXVECTOR3 cameraForward = camera.GetLookatPt() - camera.GetEyePt();
+	D3DXVec3Normalize(&cameraForward, &cameraForward);
+	camera.SetForwardVec(cameraForward);
+	//カメラの右方向を計算。
+	D3DXVECTOR3 cameraRight;
+	D3DXVec3Cross(&cameraRight, &cameraForward, &camera.GetUpVec());
+	camera.SetRightVec(cameraRight);
 
 	return true;
 }
@@ -33,6 +41,15 @@ bool GameCamera::Start()
 void GameCamera::Update()
 {
 	Move();
+
+	//カメラの前方向を計算。
+	D3DXVECTOR3 cameraForward = camera.GetLookatPt() - camera.GetEyePt();
+	D3DXVec3Normalize(&cameraForward, &cameraForward);
+	camera.SetForwardVec(cameraForward);
+	//カメラの右方向を計算。
+	D3DXVECTOR3 cameraRight;
+	D3DXVec3Cross(&cameraRight, &cameraForward, &camera.GetUpVec());
+	camera.SetRightVec(cameraRight);
 
 	//カメラ更新
 	camera.Update();

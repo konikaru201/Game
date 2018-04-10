@@ -181,19 +181,9 @@ void Update()
 	displayCoin->Update();
 	g_fade->Update();
 
-	if (player != nullptr && player->GetState() != player->State_Dead) {
-		D3DXVECTOR3 target = player->GetPosition();
-		D3DXVECTOR3 viewPos = target;
-		viewPos.y += 10.0f;
-		g_shadowMap.SetLightViewPosition(viewPos);
-		g_shadowMap.SetLightViewTarget(target);
+	if (gameCamera != nullptr) {
+		g_shadowMap.Update();
 	}
-	else {
-		g_shadowMap.SetLightViewPosition(D3DXVECTOR3(0.0f, 10.0f, 0.0f));
-		g_shadowMap.SetLightViewTarget(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	}
-
-	g_shadowMap.Update();
 }
 //-----------------------------------------------------------------------------
 //ƒQ[ƒ€‚ªI—¹‚·‚é‚Æ‚«‚ÉŒÄ‚Î‚ê‚éˆ—B
