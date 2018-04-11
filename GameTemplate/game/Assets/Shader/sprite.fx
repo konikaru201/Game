@@ -14,6 +14,8 @@ float4x4 g_world;
 float g_alpha;
 float g_uvPos;
 bool g_uvMove;
+float4x4 g_WVP;
+bool g_isTrans;
 
 texture g_texture;
 sampler TextureSampler = 
@@ -28,7 +30,12 @@ VS_OUTPUT VSMain(VS_INPUT In)
 	VS_OUTPUT Out;
 
 	Out.pos = In.pos;
-	Out.pos = mul(In.pos, g_world);
+	if (g_isTrans) {
+		Out.pos = mul(In.pos, g_WVP);
+	}
+	else {
+		Out.pos = mul(In.pos, g_world);
+	}
 	Out.uv = In.uv;
 	return Out;
 }

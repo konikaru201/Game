@@ -117,5 +117,5 @@ void MoveFloor2::Move()
 void MoveFloor2::Render()
 {
 	model.SetDrawShadowMap(false, true);
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }

@@ -75,5 +75,5 @@ void Building_a::Update()
 void Building_a::Render()
 {
 	model.SetDrawShadowMap(false, true);
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }

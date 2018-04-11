@@ -81,5 +81,5 @@ void SkyBox::Update()
 void SkyBox::Render()
 {
 	model.SetDrawShadowMap(false, false);
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }

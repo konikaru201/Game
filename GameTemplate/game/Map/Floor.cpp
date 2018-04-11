@@ -68,5 +68,5 @@ void Floor::Update()
 void Floor::Render()
 {
 	model.SetDrawShadowMap(false, true);
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }

@@ -67,6 +67,12 @@ public:
 	{
 		m_uvMove = uvMove;
 	}
+
+	//カメラ空間に変換するフラグ
+	void SetIsTrans(bool isTrans)
+	{
+		m_isTrans = isTrans;
+	}
 private:
 	LPDIRECT3DTEXTURE9 m_pTexture;		//テクスチャ
 	D3DXIMAGE_INFO m_imginfo;
@@ -78,4 +84,5 @@ private:
 	float m_alpha = 1.0f;
 	bool m_uvMove = false;				//UVを動かすフラグ
 	float uvPos = 0.0f;
+	bool m_isTrans = false;
 };

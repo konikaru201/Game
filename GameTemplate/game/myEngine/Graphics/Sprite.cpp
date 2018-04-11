@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Sprite.h"
+#include "Camera/GameCamera.h"
+#include "Player/Player.h"
 
 Sprite::Sprite(){}
 Sprite::~Sprite()
@@ -101,7 +103,35 @@ void Sprite::Render()
 	D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &scale);
 	D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &trans);
 
-	//uvPos += 0.005f;
+	D3DXMATRIX WVP;
+	if (m_isTrans) {
+		D3DXVECTOR3 playerPosition = player->GetPosition();
+		playerPosition.y += 2.0f;
+		D3DXMATRIX mTrans;
+		D3DXMatrixTranslation(&mTrans, playerPosition.x, playerPosition.y, playerPosition.z);
+		D3DXMATRIX mWorldMatrix;
+		D3DXMatrixIdentity(&mWorldMatrix);
+		D3DXMatrixMultiply(&mWorldMatrix, &mWorldMatrix, &scale);
+
+		D3DXMATRIX viewMatrix = gameCamera->GetViewMatrix();
+		D3DXMATRIX projMatrix = gameCamera->GetProjectionMatrix();
+
+		//ƒJƒƒ‰‚Ì‰ñ“]s—ñ‚ð‹‚ß‚é
+		D3DXMATRIX viewMatrixInv;
+		D3DXMatrixInverse(&viewMatrixInv, NULL, &viewMatrix);
+		viewMatrixInv.m[3][0] = 0.0f;
+		viewMatrixInv.m[3][1] = 0.0f;
+		viewMatrixInv.m[3][2] = 0.0f;
+		viewMatrixInv.m[3][3] = 1.0f;
+
+		//‰ñ“]s—ñ‚ðƒ[ƒ‹ƒhs—ñ‚ÉæŽZ‚·‚é
+		mWorldMatrix = mWorldMatrix * viewMatrixInv;
+
+		D3DXMatrixMultiply(&mWorldMatrix, &mWorldMatrix, &mTrans);
+		
+		WVP = mWorldMatrix * viewMatrix * projMatrix;
+	}
+
 	m_pEffect->SetTechnique("Sprite");
 	m_pEffect->Begin(NULL, D3DXFX_DONOTSAVESHADERSTATE);
 	m_pEffect->BeginPass(0);
@@ -110,6 +140,8 @@ void Sprite::Render()
 	m_pEffect->SetFloat("g_alpha", m_alpha);
 	m_pEffect->SetFloat("g_uvPos", uvPos);
 	m_pEffect->SetBool("g_uvMove", m_uvMove);
+	m_pEffect->SetMatrix("g_WVP", &WVP);
+	m_pEffect->SetBool("g_isTrans", m_isTrans);
 	m_pEffect->CommitChanges();
 
 	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

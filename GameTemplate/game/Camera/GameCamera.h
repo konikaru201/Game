@@ -77,7 +77,7 @@ public:
 		return camera.GetViewMatrix();
 	}
 	//プロジェクション行列を取得
-	const D3DXMATRIX& GetViewProjectionMatrix()
+	const D3DXMATRIX& GetProjectionMatrix()
 	{
 		return camera.GetProjectionMatrix();
 	}

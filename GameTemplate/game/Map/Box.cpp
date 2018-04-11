@@ -123,7 +123,7 @@ void Box::PostRender()
 	//“§–¾“x‚ðÝ’è
 	model.SetAlpha(m_alpha);
 	model.SetDrawShadowMap(false, true);
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 
 	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 }

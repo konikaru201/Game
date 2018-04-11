@@ -98,5 +98,5 @@ void Block2::Update()
 void Block2::Render()
 {
 	model.SetDrawShadowMap(false, true);
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }

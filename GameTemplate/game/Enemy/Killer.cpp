@@ -113,7 +113,7 @@ void Killer::Update()
 
 void Killer::Render()
 {
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }
 
 D3DXVECTOR3 Killer::Move()

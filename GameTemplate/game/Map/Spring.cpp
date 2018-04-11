@@ -118,7 +118,7 @@ void Spring::Update()
 void Spring::Render()
 {
 	m_model.SetDrawShadowMap(false, true);
-	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }
 
 void Spring::CollisionDetection()

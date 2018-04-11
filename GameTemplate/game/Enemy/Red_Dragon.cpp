@@ -108,7 +108,7 @@ void Red_Dragon::Update()
 
 void Red_Dragon::Render()
 {
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }
 
 D3DXVECTOR3 Red_Dragon::Move()

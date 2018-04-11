@@ -40,6 +40,8 @@ namespace {
 	//コインのスプライトのサイズと座標
 	const D3DXVECTOR2 coinSize = { 128.0f,72.0f };
 	const D3DXVECTOR2 coinPos = { 900.0f, 600.0f };
+	//Aボタン表示のサイズ
+	const D3DXVECTOR2 bottonSize = { 640.0f,360.0f };
 }
 
 //-----------------------------------------------------------------------------
@@ -152,17 +154,19 @@ VOID Render()
 		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
 
-	//if (sceneManager->GetstageSelectScene() != nullptr
-	//	&& sceneManager->GetstageSelectScene()->GetBottonRender())
-	//{
-	//	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	//	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	//	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	if (sceneManager->GetstageSelectScene() != nullptr
+		&& sceneManager->GetstageSelectScene()->GetBottonRender())
+	{
+		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-	//	m_aBotton->Render();
+		m_aBotton->SetSize(bottonSize);
+		m_aBotton->SetIsTrans(true);
+		m_aBotton->Render();
 
-	//	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	//}
+		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	}
 
 	//フェードのレンダリング
 	g_fade->Render();
