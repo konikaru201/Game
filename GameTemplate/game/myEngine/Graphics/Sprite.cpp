@@ -104,6 +104,7 @@ void Sprite::Render()
 	D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &trans);
 
 	D3DXMATRIX WVP;
+	//ビルボード処理
 	if (m_isTrans) {
 		D3DXVECTOR3 playerPosition = player->GetPosition();
 		playerPosition.y += 2.0f;

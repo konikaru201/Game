@@ -2,14 +2,14 @@
 
 #include "Number.h"
 
-class DisplayCoin : public GameObject
+class RemainNumber : public GameObject
 {
 public:
 	//コンストラクタ
-	DisplayCoin();
+	RemainNumber();
 
 	//デストラクタ
-	~DisplayCoin();
+	~RemainNumber();
 
 	//初期化
 	void Init(D3DXVECTOR2 position);
@@ -26,15 +26,20 @@ public:
 	//描画
 	void Render();
 
-	//コインの枚数をカウント
-	void CoinCount()
+	void RemainCount(int count)
 	{
-		m_coinNum++;
+		m_remainNum += count;
+	}
+
+	//残機数を獲得
+	int GetRemainNum()
+	{
+		return m_remainNum;
 	}
 private:
 	Number*		num[3];						//数字
 	D3DXVECTOR2 m_position = { 0.0f,0.0f }; //座標
-	int			m_coinNum = 0;				//コインの枚数
+	int			m_remainNum = 3;			//残機数
 };
 
-extern DisplayCoin* CoinUI;
+extern RemainNumber* remainNumber;

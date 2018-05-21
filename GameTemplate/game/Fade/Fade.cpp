@@ -13,7 +13,7 @@ Fade::~Fade(){}
 bool Fade::Start()
 {
 	sprite = new Sprite();
-	sprite->Initialize("Assets/sprite/loding.png");
+	sprite->Initialize("Assets/sprite/Loading.png");
 
 	sprite->SetAlpha(0.0f);
 

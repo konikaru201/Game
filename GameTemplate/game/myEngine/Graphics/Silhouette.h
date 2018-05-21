@@ -2,14 +2,14 @@
 
 #include "myEngine/GameObject/GameObject.h"
 
-class DepthStencilRender : public GameObject
+class Silhouette : public GameObject
 {
 public:
 	//コンストラクタ
-	DepthStencilRender();
+	Silhouette();
 
 	//デストラクタデストラクタ
-	~DepthStencilRender();
+	~Silhouette();
 
 	//更新する前に呼ばれる関数
 	bool Start();

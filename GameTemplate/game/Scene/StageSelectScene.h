@@ -8,7 +8,7 @@
 #include "myEngine/Physics/Physics.h"
 #include "myEngine/GameObject/GameObject.h"
 #include "myEngine/Graphics/Sprite.h"
-#include "myEngine/Graphics/DepthStencilRender.h"
+#include "myEngine/Graphics/Silhouette.h"
 #include "myEngine/Sound/SoundSource.h"
 
 class CStageSelectScene : public GameObject
@@ -78,7 +78,7 @@ public:
 
 private:
 	Map* map;									//マップ
-	DepthStencilRender* depthStencilRender;		//シルエット
+	Silhouette* silhouette;						//シルエット
 	Step step = step_WaitFadeOut;				//状態
 	CSoundSource* bgmSource = nullptr;			//BGM
 	bool m_waitFadeOut = false;					//フェードアウト待ちフラグ

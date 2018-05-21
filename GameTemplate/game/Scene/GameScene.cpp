@@ -3,6 +3,7 @@
 #include "myEngine/GameObject/GameObjectManager.h"
 #include "Fade/Fade.h"
 #include "myEngine/Timer/Timer.h"
+#include "Number/RemainNumber.h"
 
 SMapInfo Stage1[] = {
 #include "locationinfo/stage2.h"
@@ -38,7 +39,7 @@ bool GameScene::Start()
 	//ステージ作成
 	StageCreate(m_stageNumber);
 
-	depthStencilRender = goMgr->NewGameObject<DepthStencilRender>();	//シルエット生成
+	silhouette = goMgr->NewGameObject<Silhouette>();	//シルエット生成
 	player = goMgr->NewGameObject<Player>();			//プレイヤー生成
 	gameCamera = goMgr->NewGameObject<GameCamera>();	//カメラ生成
 
@@ -70,7 +71,10 @@ void GameScene::Update()
 		if (player->GetPlayerDead()) {
 			bgmSource->SetisDead();
 			bgmSource = nullptr;
-			gameOverScene = goMgr->NewGameObject<GameOverScene>();
+			if (remainNumber->GetRemainNum() <= 0) {
+				gameOverScene = goMgr->NewGameObject<GameOverScene>();
+				m_restart = false;
+			}
 			step = step_GameOver;
 		}
 		//スター獲得時
@@ -84,8 +88,14 @@ void GameScene::Update()
 		break;
 	//ゲームオーバー時
 	case step_GameOver:
+		//残機数が０でないならリスタート
+		if (m_restart) {
+			g_fade->StartFadeOut();
+			m_gameOverSceneEnd = true;
+			m_restart = false;
+		}
 		//ゲームオーバーシーンが終了
-		if (gameOverScene != nullptr && gameOverScene->GetGameOverSceneEnd()) {
+		else if (gameOverScene != nullptr && gameOverScene->GetGameOverSceneEnd()) {
 			m_gameOverSceneStateNumber = gameOverScene->GetStateNumber();
 			g_fade->StartFadeOut();
 			m_gameOverSceneEnd = true;
@@ -121,7 +131,6 @@ void GameScene::StageCreate(int number)
 
 		bgmSource = goMgr->NewGameObject<CSoundSource>();
 		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
-		//bgmSource->Init("Assets/sound/bgm_2.wav");
 		bgmSource->Play(true);
 	}
 	//ステージ２
@@ -132,7 +141,6 @@ void GameScene::StageCreate(int number)
 
 		bgmSource = goMgr->NewGameObject<CSoundSource>();
 		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
-		//bgmSource->Init("Assets/sound/bgm_2.wav");
 		bgmSource->Play(true);
 	}
 	//ステージ３
@@ -143,7 +151,6 @@ void GameScene::StageCreate(int number)
 
 		bgmSource = goMgr->NewGameObject<CSoundSource>();
 		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
-		//bgmSource->Init("Assets/sound/bgm_2.wav");
 		bgmSource->Play(true);
 	}
 
@@ -154,8 +161,8 @@ void GameScene::Release()
 {
 	player->SetisDead();
 	player = nullptr;
-	depthStencilRender->SetisDead();
-	depthStencilRender = nullptr;
+	silhouette->SetisDead();
+	silhouette = nullptr;
 	gameCamera->SetisDead();
 	gameCamera = nullptr;
 	map->SetisDead();

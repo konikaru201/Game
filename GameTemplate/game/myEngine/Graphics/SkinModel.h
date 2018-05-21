@@ -19,6 +19,7 @@ public:
 	*@brief	初期化
 	*/
 	void Init(SkinModelData* modelData);
+	
 	/*!
 	*@brief	描画。
 	*/
@@ -31,6 +32,10 @@ public:
 	*@param[in]		scale	拡大。
 	*/
 	void UpdateWorldMatrix( const D3DXVECTOR3& trans, const D3DXQUATERNION& rot, const D3DXVECTOR3& scale );
+
+	//インスタンシング描画のデータ作成
+	void CreateInstancingDrawData(LPD3DXFRAME frame);
+
 	/*!
 	*@brief	ライトを設定。
 	*/
@@ -72,14 +77,24 @@ public:
 		isRecieveShadow = RecieveShadow;
 	}
 	//深度テストをするか設定
-	void SetDepthStencilRender(bool DepthStencilRender)
+	void SetSilhouetteRender(bool SilhouetteRender)
 	{
-		isDepthStencilRender = DepthStencilRender;
+		isSilhouetteRender = SilhouetteRender;
 	}
 	//透明度を設定
 	void SetAlpha(float alpha)
 	{
 		m_alpha = alpha;
+	}
+	//インスタンシング描画フラグを設定
+	void SetInstancingDraw(bool isInstancingDraw)
+	{
+		m_isInstancingDraw = isInstancingDraw;
+	}
+	//インスタンシング描画する数を設定
+	void SetNumInstancing(int numInstancing)
+	{
+		m_numInstancing = numInstancing;
 	}
 	/*!
 	*@brief	オリジナルメッシュの先頭を取得する。
@@ -98,6 +113,8 @@ private:
 	LPDIRECT3DCUBETEXTURE9 cubeMap = NULL;			//!<キューブマップ
 	bool isDrawShadowMap = false;
 	bool isRecieveShadow = false;
-	bool isDepthStencilRender = false;
+	bool isSilhouetteRender = false;
+	bool m_isInstancingDraw = false;
 	float m_alpha = 1.0f;
+	int m_numInstancing = 0;
 };

@@ -8,6 +8,7 @@
 
 extern UINT                 g_NumBoneMatricesMax;
 extern D3DXMATRIXA16*       g_pBoneMatrices ;
+
 namespace {
 	void DrawMeshContainer(
 		IDirect3DDevice9* pd3dDevice, 
@@ -24,7 +25,9 @@ namespace {
 		LPDIRECT3DCUBETEXTURE9 cubeMap,
 		bool isDrawShadowMap,
 		bool isRecieveShadow,
-		bool isDepthStencilRender,
+		bool isSilhouetteRender,
+		bool isInstancingDraw,
+		int numInstancing,
 		float alpha
 	)
 	{
@@ -42,25 +45,31 @@ namespace {
 		//テクニックを設定。
 		{
 			if (pMeshContainer->pSkinInfo != NULL) {
-				if (!isDrawShadowMap) {
+				if (isInstancingDraw) {
+					pEffect->SetTechnique("SkinModelInstancing");
+				}
+				else if (!isDrawShadowMap) {
 					pEffect->SetTechnique("SkinModel");
 				}
 				else {
 					pEffect->SetTechnique("SkinModelRenderToShadowMap");
 				}
-				if (isDepthStencilRender) {
-					pEffect->SetTechnique("DepthStencilRender");
+				if (isSilhouetteRender) {
+					pEffect->SetTechnique("SilhouetteRender");
 				}
 			}
 			else {
-				if (!isDrawShadowMap) {
+				if (isInstancingDraw) {
+					pEffect->SetTechnique("NoSkinModelInstancing");
+				}
+				else if (!isDrawShadowMap) {
 					pEffect->SetTechnique("NoSkinModel");
 				}
 				else {
 					pEffect->SetTechnique("NoSkinModelRenderToShadowMap");
 				}
-				if (isDepthStencilRender) {
-					pEffect->SetTechnique("NoSkinDepthStencilRender");
+				if (isSilhouetteRender) {
+					pEffect->SetTechnique("NoSkinSilhouetteRender");
 				}
 			}
 		}
@@ -167,25 +176,77 @@ namespace {
 			}
 		}
 		else {
-						
-			D3DXMATRIX mWorld;
-			if (pFrame != NULL) {
-				mWorld = pFrame->CombinedTransformationMatrix;
+			if (isInstancingDraw) {
+				pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
+				pEffect->BeginPass(0);
+
+				pEffect->SetTexture("g_diffuseTexture", pMeshContainer->ppTextures[0]);
+
+				LPDIRECT3DVERTEXBUFFER9 vb;
+				LPDIRECT3DINDEXBUFFER9 ib;
+				pMeshContainer->MeshData.pMesh->GetVertexBuffer(&vb);
+				pMeshContainer->MeshData.pMesh->GetIndexBuffer(&ib);
+
+				D3DVERTEXELEMENT9 declElement[MAX_FVF_DECL_SIZE];
+				pMeshContainer->MeshData.pMesh->GetDeclaration(declElement);
+
+				DWORD stride = D3DXGetDeclVertexSize(declElement, 0);
+
+				g_pd3dDevice->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | numInstancing);
+				g_pd3dDevice->SetStreamSourceFreq(1, D3DSTREAMSOURCE_INSTANCEDATA | 1);
+
+				g_pd3dDevice->SetVertexDeclaration(vertexDecl);
+
+				g_pd3dDevice->SetStreamSource(0, vb, 0, stride);
+				g_pd3dDevice->SetStreamSource(1, worldMatrixBuffer, 0, sizeof(D3DXMATRIX));
+
+				//ワールド行列を頂点バッファにコピー
+				D3DVERTEXBUFFER_DESC desc;
+				worldMatrixBuffer->GetDesc(&desc);
+				D3DXMATRIX* pData;
+				worldMatrixBuffer->Lock(0, desc.Size, (void**)&pData, D3DLOCK_DISCARD);
+
+				for (int i = 0; i < numInstancing; i++) {
+					*pData = IWorldMatrix[i];
+					pData++;
+				}
+				worldMatrixBuffer->Unlock();
+
+				g_pd3dDevice->SetIndices(ib);
+				pEffect->CommitChanges();
+				g_pd3dDevice->DrawIndexedPrimitive(
+					D3DPT_TRIANGLELIST, 
+					0, 
+					0,
+					pMeshContainer->MeshData.pMesh->GetNumVertices(), 
+					0, 
+					pMeshContainer->MeshData.pMesh->GetNumFaces()
+				);
+
+				g_pd3dDevice->SetStreamSourceFreq(0, 1);
+				g_pd3dDevice->SetStreamSourceFreq(1, 1);
 			}
 			else {
-				mWorld = *worldMatrix;
-			}
-			
-			pEffect->SetMatrix("g_worldMatrix", &mWorld);
-			pEffect->SetMatrix("g_rotationMatrix", rotationMatrix);
-			pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
-			pEffect->BeginPass(0);
+				D3DXMATRIX mWorld;
+				if (pFrame != NULL) {
+					mWorld = pFrame->CombinedTransformationMatrix;
+				}
+				else {
+					mWorld = *worldMatrix;
+				}
 
-			for (DWORD i = 0; i < pMeshContainer->NumMaterials; i++) {
-				pEffect->SetTexture("g_diffuseTexture", pMeshContainer->ppTextures[i]);
-				pEffect->CommitChanges();
-				pMeshContainer->MeshData.pMesh->DrawSubset(i);
+				pEffect->SetMatrix("g_worldMatrix", &mWorld);
+				pEffect->SetMatrix("g_rotationMatrix", rotationMatrix);
+				pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
+				pEffect->BeginPass(0);
+
+				for (DWORD i = 0; i < pMeshContainer->NumMaterials; i++) {
+					pEffect->SetTexture("g_diffuseTexture", pMeshContainer->ppTextures[i]);
+					pEffect->CommitChanges();
+					pMeshContainer->MeshData.pMesh->DrawSubset(i);
+				}
 			}
+
 			pEffect->EndPass();
 			pEffect->End();
 		}
@@ -204,7 +265,9 @@ namespace {
 		LPDIRECT3DCUBETEXTURE9 cubeMap,
 		bool isDrawShadowMap,
 		bool isRecieveShadow,
-		bool isDepthStencilRender,
+		bool isSilhouetteRender,
+		bool isInstancingDraw,
+		int numInstancing,
 		float alpha
 	)
 	{
@@ -228,7 +291,9 @@ namespace {
 				cubeMap,
 				isDrawShadowMap,
 				isRecieveShadow,
-				isDepthStencilRender,
+				isSilhouetteRender,
+				isInstancingDraw,
+				numInstancing,
 				alpha
 				);
 
@@ -251,7 +316,9 @@ namespace {
 				cubeMap,
 				isDrawShadowMap,
 				isRecieveShadow,
-				isDepthStencilRender,
+				isSilhouetteRender,
+				isInstancingDraw,
+				numInstancing,
 				alpha
 				);
 		}
@@ -272,7 +339,9 @@ namespace {
 				cubeMap,
 				isDrawShadowMap,
 				isRecieveShadow,
-				isDepthStencilRender,
+				isSilhouetteRender,
+				isInstancingDraw,
+				numInstancing,
 				alpha
 				);
 		}
@@ -292,8 +361,43 @@ SkinModel::~SkinModel()
 void SkinModel::Init(SkinModelData* modelData)
 {
 	pEffect = g_effectManager->LoadEffect("Assets/Shader/Model.fx");
-	skinModelData = modelData;
+	skinModelData = modelData;	
+
+	if (m_isInstancingDraw) {
+		CreateInstancingDrawData(skinModelData->GetFrameRoot());
+	}
 }
+
+void SkinModel::CreateInstancingDrawData(LPD3DXFRAME frame)
+{
+	if (frame->pMeshContainer) {
+		D3DVERTEXELEMENT9 declElement[MAX_FVF_DECL_SIZE];
+		frame->pMeshContainer->MeshData.pMesh->GetDeclaration(declElement);
+		int elementIndex = 0;
+		while (true) {
+			if (declElement[elementIndex].Type == D3DDECLTYPE_UNUSED) {
+				//終端を発見。
+				//ここからインスタンシング用の頂点レイアウトを埋め込む。
+				declElement[elementIndex]     = { 1,  0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 };  // WORLD 1行目
+				declElement[elementIndex + 1] = { 1, 16, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 };  // WORLD 2行目
+				declElement[elementIndex + 2] = { 1, 32, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 3 };  // WORLD 3行目
+				declElement[elementIndex + 3] = { 1, 48, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 4 };  // WORLD 4行目
+				declElement[elementIndex + 4] = D3DDECL_END();
+				break;
+			}
+			elementIndex++;
+		}
+		g_pd3dDevice->CreateVertexDeclaration(declElement, &vertexDecl);
+		g_pd3dDevice->CreateVertexBuffer(sizeof(D3DXMATRIX) * m_numInstancing, 0, 0, D3DPOOL_DEFAULT, &worldMatrixBuffer, 0);
+	}
+	else if (frame->pFrameSibling != nullptr) {
+		CreateInstancingDrawData(frame->pFrameSibling);
+	}
+	else if (frame->pFrameFirstChild != nullptr) {
+		CreateInstancingDrawData(frame->pFrameFirstChild);
+	}
+}
+
 void SkinModel::UpdateWorldMatrix(const D3DXVECTOR3& trans, const D3DXQUATERNION& rot, const D3DXVECTOR3& scale)
 {
 	D3DXMATRIX mTrans, mScale;
@@ -325,7 +429,9 @@ void SkinModel::Draw(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix)
 			cubeMap,
 			isDrawShadowMap,
 			isRecieveShadow,
-			isDepthStencilRender,
+			isSilhouetteRender,
+			m_isInstancingDraw,
+			m_numInstancing,
 			m_alpha
 		);
 	}

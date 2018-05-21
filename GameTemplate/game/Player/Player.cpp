@@ -426,12 +426,12 @@ void Player::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix, bool
 	}
 }
 
-void Player::DepthStencilRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix)
+void Player::SilhouetteRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix)
 {
 	if (player != nullptr && gameCamera != nullptr) {
-		model.SetDepthStencilRender(true);
+		model.SetSilhouetteRender(true);
 		model.Draw(viewMatrix, projMatrix);
-		model.SetDepthStencilRender(false);
+		model.SetSilhouetteRender(false);
 	}
 }
 

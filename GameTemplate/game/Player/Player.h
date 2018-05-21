@@ -25,7 +25,7 @@ public:
 	//‰e‚ğ•`‰æ
 	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
 
-	void DepthStencilRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix);
+	void SilhouetteRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix);
 
 	//ˆÚ“®
 	//–ß‚è’l@ˆÚ“®‘¬“x‚ğ•Ô‚·

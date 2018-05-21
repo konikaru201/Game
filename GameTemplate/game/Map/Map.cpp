@@ -11,6 +11,8 @@ Map::Map()
 
 Map::~Map()
 {
+	m_moveFloorList.clear();
+	m_moveFloor2List.clear();
 }
 
 bool Map::Start()
@@ -23,6 +25,8 @@ bool Map::Start()
 
 void Map::Create(SMapInfo* mapLocInfo, int numObject)
 {
+	std::list<CoinInfo> m_coinInfoList;
+	int coinNum = 0;
 	//オブジェクトを一個ずつロードしていく
 	for (int i = 0; i < numObject; i++) {
 		if (strcmp("MoveFloor_1", mapLocInfo[i].modelName) == 0) {
@@ -43,10 +47,12 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 		}
 		else if (strcmp("Coin", mapLocInfo[i].modelName) == 0)
 		{
-			//インスタンスを動的に生成
-			Coin* coin = goMgr->NewGameObject<Coin>();
-			//座標と回転の情報を渡して初期化
-			coin->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+			//座標と回転を保存
+			CoinInfo coinInfo;
+			coinInfo.position = mapLocInfo[i].position;
+			coinInfo.rotation = mapLocInfo[i].rotation;
+			m_coinInfoList.push_back(coinInfo);
+			coinNum++;
 		}
 		else if (strcmp("Killer", mapLocInfo[i].modelName) == 0)
 		{
@@ -106,7 +112,7 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 		else if (strcmp("StoneMonster", mapLocInfo[i].modelName) == 0) {
 			StoneMonster* stoneMonster = goMgr->NewGameObject<StoneMonster>();
 			stoneMonster->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
-			m_stoneMonsterList.push_back(stoneMonster);
+			//m_stoneMonsterList.push_back(stoneMonster);
 		}
 		else if (strcmp("MoveFloor_3", mapLocInfo[i].modelName) == 0) {
 			Floor* floor = goMgr->NewGameObject<Floor>();
@@ -131,6 +137,17 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 			//マップチップの情報を渡して初期化
 			mapChip->Init(mapLocInfo[i].modelName, mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
+	}
+
+	if (!m_coinInfoList.empty()) {
+		//インスタンスを動的に生成
+		Coin* coin = goMgr->NewGameObject<Coin>();
+		//コインの座標と回転を渡す
+		coin->SetCoinInfoList(m_coinInfoList);
+		//初期化
+		coin->Init(coinNum);
+		//リストをクリア
+		m_coinInfoList.clear();
 	}
 }
 

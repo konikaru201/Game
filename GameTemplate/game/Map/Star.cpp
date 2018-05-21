@@ -33,6 +33,9 @@ void Star::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	position = pos;
 	rotation = rot;
 	InitPosition = pos;
+
+	//‰e‚ð•`‰æ‚·‚éƒtƒ‰ƒO‚ð—§‚Ä‚é
+	SetRenderToShadow();
 }
 
 void Star::Update()
@@ -83,4 +86,13 @@ void Star::Update()
 void Star::Render()
 {
 	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+}
+
+void Star::RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
+{
+	if (gameCamera != nullptr) {
+		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
+		model.Draw(viewMatrix, projMatrix);
+		model.SetDrawShadowMap(false, false);
+	}
 }

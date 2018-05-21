@@ -12,6 +12,7 @@
 #include "Player/Player.h"
 #include "myEngine/Graphics/Primitive.h"
 #include "myEngine/Graphics/Bloom.h"
+#include "Number/RemainNumber.h"
 
 GameObjectManager* goMgr = nullptr;
 Pad* pad = nullptr;
@@ -21,9 +22,13 @@ Fade* g_fade = nullptr;
 CShadowMap g_shadowMap;				//シャドウマップ。
 Bloom* bloom = nullptr;				//ブルーム
 
-DisplayCoin* displayCoin = nullptr;	//コイン枚数のスプライト
-Sprite* CoinNum = nullptr;			//コインの絵のスプライト
-Sprite* m_aBotton;
+DisplayCoin* CoinUI = nullptr;			//コイン枚数のスプライト
+Sprite* Coin = nullptr;					//コインの絵のスプライト
+Sprite* m_aBotton = nullptr;			//Aボタン表示のスプライト
+Sprite* remain = nullptr;				//残機のスプライト
+RemainNumber* remainNumber = nullptr;	//残機数のスプライト
+Sprite* kakeru = nullptr;				//×記号のスプライト
+Sprite* kakeru2 = nullptr;
 
 CRenderTarget* mainRenderTarget;	//メインレンダリングターゲット
 CPrimitive* quadPrimitive;			//四角形の板ポリプリミティブ
@@ -39,9 +44,16 @@ void DrawQuadPrimitive();
 namespace {
 	//コインのスプライトのサイズと座標
 	const D3DXVECTOR2 coinSize = { 128.0f,72.0f };
-	const D3DXVECTOR2 coinPos = { 900.0f, 600.0f };
+	const D3DXVECTOR2 coinPos = { 920.0f, 600.0f };
 	//Aボタン表示のサイズ
-	const D3DXVECTOR2 bottonSize = { 640.0f,360.0f };
+	const D3DXVECTOR2 bottonSize = { 320.0f,180.0f };
+	//残機のスプライトのサイズと座標
+	const D3DXVECTOR2 remainSize = { 320.0f,240.0f };
+	const D3DXVECTOR2 remainPos = { 900.0f,400.0f };
+	//×記号のスプライトのサイズと座標
+	const D3DXVECTOR2 kakeruSize = { 320.0f,160.0f };
+	const D3DXVECTOR2 kakeruPos = { 1030.0f,600.0f };
+	const D3DXVECTOR2 kakeru2Pos = { 1030.0f,400.0f };
 }
 
 //-----------------------------------------------------------------------------
@@ -81,17 +93,35 @@ void Init()
 
 	//スプライトの初期化
 	//コインの絵
-	CoinNum = new Sprite();
-	CoinNum->Initialize("Assets/sprite/Coin2.png");
-	CoinNum->SetPosition(coinPos);
-	CoinNum->SetSize(coinSize);
+	Coin = new Sprite();
+	Coin->Initialize("Assets/sprite/Coin2.png");
+	Coin->SetPosition(coinPos);
+	Coin->SetSize(coinSize);
 	//コインの枚数
-	displayCoin = new DisplayCoin();
-	displayCoin->Init(coinPos);
-	displayCoin->Start();
+	CoinUI = new DisplayCoin();
+	CoinUI->Init(kakeruPos);
+	CoinUI->Start();
 	//Aボタン
 	m_aBotton = new Sprite;
 	m_aBotton->Initialize("Assets/sprite/ABotton.png");
+	//残機
+	remain = new Sprite;
+	remain->Initialize("Assets/sprite/unityChan.png");
+	remain->SetPosition(remainPos);
+	remain->SetSize(remainSize);
+	//残機数
+	remainNumber = new RemainNumber;
+	remainNumber->Init(kakeru2Pos);
+	remainNumber->Start();
+	//×記号
+	kakeru = new Sprite;
+	kakeru->Initialize("Assets/sprite/×.png");
+	kakeru->SetPosition(kakeruPos);
+	kakeru->SetSize(kakeruSize);
+	kakeru2 = new Sprite;
+	kakeru2->Initialize("Assets/sprite/×.png");
+	kakeru2->SetPosition(kakeru2Pos);
+	kakeru2->SetSize(kakeruSize);
 }
 //-----------------------------------------------------------------------------
 // Name: 描画処理。％
@@ -148,8 +178,14 @@ VOID Render()
 		g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 		//コインの絵と枚数を描画
-		CoinNum->Render();
-		displayCoin->Render();
+		Coin->Render();
+		CoinUI->Render();
+		//残機の描画
+		remain->Render();
+		remainNumber->Render();
+		//×記号の描画
+		kakeru->Render();
+		kakeru2->Render();
 		//アルファブレンディングを無効にする。
 		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
@@ -160,7 +196,7 @@ VOID Render()
 		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 		g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
+		//Aボタン表示
 		m_aBotton->SetSize(bottonSize);
 		m_aBotton->SetIsTrans(true);
 		m_aBotton->Render();
@@ -182,12 +218,14 @@ VOID Render()
 void Update()
 {
 	goMgr->Update();
-	displayCoin->Update();
+	CoinUI->Update();
+	remainNumber->Update();
 	g_fade->Update();
 
 	if (gameCamera != nullptr) {
 		g_shadowMap.Update();
 	}
+	g_soundEngine->Update();
 }
 //-----------------------------------------------------------------------------
 //ゲームが終了するときに呼ばれる処理。
@@ -198,8 +236,13 @@ void Terminate()
 	delete g_fade;
 	delete g_effectManager;
 	delete g_physicsWorld;
-	delete CoinNum;
-	delete displayCoin;
+	delete Coin;
+	delete CoinUI;
+	delete m_aBotton;
+	delete remain;
+	delete remainNumber;
+	delete kakeru;
+	delete kakeru2;
 }
 
 //オブジェクトをデリートする処理
@@ -259,8 +302,10 @@ void InitQuadPrimitive()
 		{ 0, 16 ,  D3DDECLTYPE_FLOAT2		, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD	, 0 },
 		D3DDECL_END()
 	};
+
 	//インデックスバッファ。
 	unsigned short indexBuffer[] = { 0, 1, 2, 3 };
+
 	quadPrimitive->Create(
 		CPrimitive::eTriangleStrip,	//今回はプリミティブの種類はトライアングルストリップ。
 		4,							//頂点の数。四角形の板ポリでトライアングルストリップなので４。

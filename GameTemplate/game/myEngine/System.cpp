@@ -6,6 +6,10 @@ LPDIRECT3DDEVICE9       g_pd3dDevice = NULL;
 EffectManager*			g_effectManager = NULL;
 CSoundEngine*			g_soundEngine = NULL;
 
+IDirect3DVertexBuffer9* worldMatrixBuffer = NULL;	//ワールド行列のバッファ
+IDirect3DVertexDeclaration9* vertexDecl = NULL;		//頂点定義
+D3DXMATRIX IWorldMatrix[NUM_COIN];
+
 extern void Init();
 extern void Render();
 extern void Update();
@@ -99,7 +103,6 @@ INT WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, INT)
 			DispatchMessage(&msg);
 		}
 		else {
-			g_soundEngine->Update();
 			Update();
 			Render();
 			Delete();

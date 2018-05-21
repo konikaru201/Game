@@ -145,6 +145,18 @@ struct VS_OUTPUT
 	float4	lightViewPos2	: TEXCOORD5;
 	float4	lightViewPos3	: TEXCOORD6;
 };
+
+//インスタンシング描画用の入力頂点
+struct VS_INPUT_INSTANCING
+{
+	VS_INPUT	base;
+	float4 world1	: TEXCOORD1;	//ワールド行列の1行目
+	float4 world2	: TEXCOORD2;	//ワールド行列の2行目
+	float4 world3	: TEXCOORD3;	//ワールド行列の3行目
+	float4 world4	: TEXCOORD4;	//ワールド行列の4行目
+};
+
+
 /*!
  *@brief	ワールド座標とワールド法線をスキン行列から計算する。
  *@param[in]	In		入力頂点。
@@ -223,6 +235,27 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 		
 		o.lightViewPos3 = mul(float4(o.worldPos, 1.0f), g_LVPMatrix3);
 	}
+
+	return o;
+}
+//インスタンシング描画用の頂点シェーダー
+VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In )
+{
+	VS_OUTPUT o = (VS_OUTPUT)0;
+	float4 Pos;
+	float4x4 worldMat;
+	worldMat[0] = In.world1;
+	worldMat[1] = In.world2;
+	worldMat[2] = In.world3;
+	worldMat[3] = In.world4;
+	Pos = mul(In.base.Pos, worldMat);
+
+	o.worldPos = Pos;
+	o.Pos = mul(Pos, g_mViewProj);
+	o.PosInProj = o.Pos;
+	o.Normal = normalize(In.base.Normal);
+	o.Tangent = normalize(In.base.Tangent);
+	o.Tex0 = In.base.Tex0;
 
 	return o;
 }
@@ -325,7 +358,7 @@ float4 PSRenderToShadowMapMain(VS_OUTPUT In) : COLOR
 /*!
  *@brief	シルエット用のピクセルシェーダー。
  */
-float4 PSDepthStencilRenderMain(VS_OUTPUT In) : COLOR
+float4 PSSilhouetteRenderMain(VS_OUTPUT In) : COLOR
 {
 	return float4(0.5f, 0.5f, 0.5f, 1.0f);
 }
@@ -374,6 +407,28 @@ technique NoSkinModel
 	}
 }
 
+//スキンあり
+//インスタンシング描画用のテクニック
+technique SkinModelInstancing
+{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMainInstancing();
+		PixelShader = compile ps_3_0 PSMain();
+	}
+}
+
+//スキンなし
+//インスタンシング描画用のテクニック
+technique NoSkinModelInstancing
+{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMainInstancing();
+		PixelShader = compile ps_3_0 PSMain();
+	}
+}
+
 /*!
  *@brief	スキンあり
  *@brief	シャドウマップ書き込み用のテクニック
@@ -404,12 +459,12 @@ technique NoSkinModelRenderToShadowMap
 *@brief	スキンあり
 *@brief	シルエット用のテクニック
 */
-technique DepthStencilRender
+technique SilhouetteRender
 {
 	pass p0
 	{
 		VertexShader = compile vs_3_0 VSMain(true);
-		PixelShader = compile ps_3_0 PSDepthStencilRenderMain();
+		PixelShader = compile ps_3_0 PSSilhouetteRenderMain();
 	}
 }
 
@@ -417,11 +472,11 @@ technique DepthStencilRender
 *@brief	スキンなし
 *@brief	シルエット用のテクニック
 */
-technique NoSkinDepthStencilRender
+technique NoSkinSilhouetteRender
 {
 	pass p0
 	{
 		VertexShader = compile vs_3_0 VSMain(false);
-		PixelShader = compile ps_3_0 PSDepthStencilRenderMain();
+		PixelShader = compile ps_3_0 PSSilhouetteRenderMain();
 	}
 }

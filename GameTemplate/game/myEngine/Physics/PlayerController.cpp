@@ -523,12 +523,12 @@ void PlayerController::Execute()
 	addPosXZ.y = 0.0f;
 	if(D3DXVec3Length(&addPosXZ) <= 0.0f){
 		D3DXVECTOR3 addRayPos[6] = {
-			D3DXVECTOR3( 0.3,  0.0,  0.0),		//右方向
-			D3DXVECTOR3(-0.3,  0.0,  0.0),		//左方向
-			D3DXVECTOR3( 0.0,  0.0,  0.3),		//前方向
-			D3DXVECTOR3( 0.0,  0.0, -0.3),		//後方向
-			D3DXVECTOR3( 0.0, -0.3,  0.0),		//下方向
-			D3DXVECTOR3( 0.0,  0.3,  0.0)		//上方向
+			D3DXVECTOR3( 0.1,  0.0,  0.0),		//右方向
+			D3DXVECTOR3(-0.1,  0.0,  0.0),		//左方向
+			D3DXVECTOR3( 0.0,  0.0,  0.1),		//前方向
+			D3DXVECTOR3( 0.0,  0.0, -0.1),		//後方向
+			D3DXVECTOR3( 0.0, -0.1,  0.0),		//下方向
+			D3DXVECTOR3( 0.0,  0.1,  0.0)		//上方向
 		};
 
 		////次の移動先となる座標を計算する。

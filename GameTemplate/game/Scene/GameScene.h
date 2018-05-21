@@ -8,7 +8,7 @@
 #include "myEngine/Physics/Physics.h"
 #include "myEngine/GameObject/GameObject.h"
 #include "myEngine/Graphics/Sprite.h"
-#include "myEngine/Graphics/DepthStencilRender.h"
+#include "myEngine/Graphics/Silhouette.h"
 #include "myEngine/Sound/SoundSource.h"
 
 
@@ -79,8 +79,7 @@ public:
 	}
 private:
 	GameOverScene* gameOverScene = nullptr;
-	//Map* map;								//マップ
-	DepthStencilRender* depthStencilRender;	//シルエット
+	Silhouette* silhouette;					//シルエット
 	CSoundSource* bgmSource = nullptr;		//BGM
 
 	Step step = step_StageLoad;				//状態
@@ -90,4 +89,5 @@ private:
 	bool m_stageClearFlag = false;			//ステージクリアフラグ
 	int m_gameOverSceneStateNumber = 0;		//ゲームオーバーシーンのステート番号
 	int m_stageNumber = 0;
+	bool m_restart = true;
 };

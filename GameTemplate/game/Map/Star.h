@@ -23,6 +23,9 @@ public:
 	//描画
 	void Render();
 
+	//シャドウマップ描画
+	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
+
 	//座標を取得
 	const D3DXVECTOR3& GetPosition()
 	{

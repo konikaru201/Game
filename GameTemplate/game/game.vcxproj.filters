@@ -186,9 +186,6 @@
     <ClCompile Include="myEngine\Physics\PlayerController.cpp">
       <Filter>ソース ファイル\myEngine\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="myEngine\Graphics\DepthStencilRender.cpp">
-      <Filter>ソース ファイル\myEngine\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Map\Spring.cpp">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClCompile>
@@ -263,6 +260,12 @@
     </ClCompile>
     <ClCompile Include="Map\Building_e.cpp">
       <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Number\RemainNumber.cpp">
+      <Filter>ソース ファイル\Number</Filter>
+    </ClCompile>
+    <ClCompile Include="myEngine\Graphics\Silhouette.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -404,9 +407,6 @@
     <ClInclude Include="myEngine\Physics\PlayerController.h">
       <Filter>ソース ファイル\myEngine\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="myEngine\Graphics\DepthStencilRender.h">
-      <Filter>ソース ファイル\myEngine\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Map\Spring.h">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClInclude>
@@ -493,6 +493,12 @@
     </ClInclude>
     <ClInclude Include="Map\Building_e.h">
       <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Number\RemainNumber.h">
+      <Filter>ソース ファイル\Number</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\Silhouette.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

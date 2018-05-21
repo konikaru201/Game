@@ -1,32 +1,32 @@
 #include "stdafx.h"
-#include "DepthStencilRender.h"
+#include "Silhouette.h"
 #include "Player/Player.h"
 #include "Scene/SceneManager.h"
 
-DepthStencilRender::DepthStencilRender()
+Silhouette::Silhouette()
 {
 }
 
-DepthStencilRender::~DepthStencilRender()
+Silhouette::~Silhouette()
 {
 }
 
-bool DepthStencilRender::Start()
+bool Silhouette::Start()
 {
 	return true;
 }
 
-void DepthStencilRender::Update()
+void Silhouette::Update()
 {
 
 }
 
-void DepthStencilRender::Render()
+void Silhouette::Render()
 {
 	g_pd3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_GREATER);
 	g_pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 	//if (player != nullptr) {
-	//	player->DepthStencilRender(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
+	//	player->SilhouetteRender(&gameCamera->GetViewMatrix(), &gameCamera->GetViewProjectionMatrix());
 	//}
 	g_pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	g_pd3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);

@@ -77,14 +77,6 @@ public:
 	{
 		return m_isMoveFloor2;
 	}
-
-	void StoneMonsterSilhouette();
-
-	std::list<StoneMonster*> GetStoneMonsterList()
-	{
-		return m_stoneMonsterList;
-	}
-
 private:
 	std::list<MoveFloor*> m_moveFloorList;
 	std::list<MoveFloor2*> m_moveFloor2List;
@@ -92,7 +84,6 @@ private:
 	D3DXMATRIX moveFloor2Matrix;
 	bool m_isMoveFloor = false;
 	bool m_isMoveFloor2 = false;
-	std::list<StoneMonster*> m_stoneMonsterList;
 };
 
 extern Map* map;

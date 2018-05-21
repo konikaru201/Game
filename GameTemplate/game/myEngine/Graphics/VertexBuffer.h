@@ -56,6 +56,7 @@ public:
 	{
 		return m_pVertexDecl;
 	}
+
 private:
 	LPDIRECT3DVERTEXBUFFER9			m_pVB;			//頂点バッファ
 	IDirect3DVertexDeclaration9*	m_pVertexDecl;	//頂点定義

@@ -75,5 +75,7 @@
 #include "myEngine/Graphics/RenderTarget.h"
 #include "myEngine/Timer/Timer.h"
 
+
+
 extern CRenderTarget* mainRenderTarget;
 extern void DrawQuadPrimitive();

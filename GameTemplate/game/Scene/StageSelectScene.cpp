@@ -24,7 +24,7 @@ bool CStageSelectScene::Start()
 		StageCreate();
 
 		//シルエット生成
-		depthStencilRender = goMgr->NewGameObject<DepthStencilRender>();
+		silhouette = goMgr->NewGameObject<Silhouette>();
 		//プレイヤー生成
 		player = goMgr->NewGameObject<Player>();
 		//カメラ生成
@@ -97,8 +97,8 @@ void CStageSelectScene::Release()
 {
 	map->SetisDead();
 	map = nullptr;
-	depthStencilRender->SetisDead();
-	depthStencilRender = nullptr;
+	silhouette->SetisDead();
+	silhouette = nullptr;
 	player->SetisDead();
 	player = nullptr;
 	gameCamera->SetisDead();
