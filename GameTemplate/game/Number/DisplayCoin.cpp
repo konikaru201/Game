@@ -39,11 +39,6 @@ bool DisplayCoin::Start()
 
 void DisplayCoin::Update()
 {
-	//if (player != nullptr && sceneManager != nullptr
-	//	&& player->GetPlayerDead() && sceneManager->GetChangeSceneFlag())
-	//{
-	//	m_coinNum = 0;
-	//}
 
 	if (m_coinNum > 99) {
 		remainNumber->RemainCount(1);

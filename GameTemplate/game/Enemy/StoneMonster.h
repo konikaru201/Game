@@ -75,7 +75,6 @@ public:
 	void SetMoveSpeed(const D3DXVECTOR3& moveSpeed)
 	{
 		m_moveSpeed = moveSpeed;
-		//m_characterController.SetMoveSpeed(moveSpeed);
 	}
 
 	//“¥‚Ü‚ê‚½ƒtƒ‰ƒO‚ðŽæ“¾

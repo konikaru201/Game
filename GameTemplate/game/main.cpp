@@ -14,13 +14,13 @@
 #include "myEngine/Graphics/Bloom.h"
 #include "Number/RemainNumber.h"
 
-GameObjectManager* goMgr = nullptr;
-Pad* pad = nullptr;
-SceneManager* sceneManager = nullptr;
-Fade* g_fade = nullptr;
+GameObjectManager* goMgr = nullptr;		//ゲームオブジェクト
+Pad* pad = nullptr;						//パッド
+SceneManager* sceneManager = nullptr;	//シーンマネージャー
+Fade* g_fade = nullptr;					//フェード
 
-CShadowMap g_shadowMap;				//シャドウマップ。
-Bloom* bloom = nullptr;				//ブルーム
+CShadowMap g_shadowMap;					//シャドウマップ。
+Bloom* bloom = nullptr;					//ブルーム
 
 DisplayCoin* CoinUI = nullptr;			//コイン枚数のスプライト
 Sprite* Coin = nullptr;					//コインの絵のスプライト
@@ -30,10 +30,10 @@ RemainNumber* remainNumber = nullptr;	//残機数のスプライト
 Sprite* kakeru = nullptr;				//×記号のスプライト
 Sprite* kakeru2 = nullptr;
 
-CRenderTarget* mainRenderTarget;	//メインレンダリングターゲット
-CPrimitive* quadPrimitive;			//四角形の板ポリプリミティブ
-LPD3DXEFFECT copyEffect;			//コピーを行うシェーダー
-LPD3DXEFFECT monochromeEffect;		//モノクロフィルターをかけるシェーダー
+CRenderTarget* mainRenderTarget;		//メインレンダリングターゲット
+CPrimitive* quadPrimitive;				//四角形の板ポリプリミティブ
+LPD3DXEFFECT copyEffect;				//コピーを行うシェーダー
+LPD3DXEFFECT monochromeEffect;			//モノクロフィルターをかけるシェーダー
 
 void InitMainRenderTarget();
 void InitQuadPrimitive();

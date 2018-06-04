@@ -176,7 +176,7 @@ void GameCamera::Move()
 	//カメラの座標
 	D3DXVECTOR3 eyePos = targetPos + toCameraPos;
 
-	if (player->GetState() != player->State_Dead) {
+	if (!player->GetHitEnemy() && !player->GetFallPlayer()) {
 		//カメラの座標を保存
 		currentEyePos = eyePos;
 	}
@@ -184,7 +184,7 @@ void GameCamera::Move()
 	//カメラの座標を設定
 	camera.SetEyePt(currentEyePos);
 
-	if (!player->GetStar()) {
+	if (!player->GetStar() && !player->GetFallPlayer() && !player->GetHitEnemy()) {
 		//カメラの当たり判定
 		D3DXVECTOR3 newPos;
 		if (cameraCollisionSolver.Execute(newPos, camera.GetEyePt(), camera.GetLookatPt()))

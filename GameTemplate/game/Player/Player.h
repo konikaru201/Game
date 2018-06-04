@@ -3,6 +3,8 @@
 #include "myEngine/Physics/PlayerController.h"
 #include "myEngine/GameObject/GameObject.h"
 #include "myEngine/Graphics/Light.h"
+#include "PlayerStateMachine.h"
+#include "IPlayerState.h"
 
 class Player : public GameObject
 {
@@ -27,25 +29,39 @@ public:
 
 	void SilhouetteRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix);
 
-	//移動
-	//戻り値　移動速度を返す
-	D3DXVECTOR3 Move();
-
 	//座標の取得
 	const D3DXVECTOR3& GetPosition() {
 		return position;
 	}
 
+	//座標の設定
+	void SetPosition(const D3DXVECTOR3& pos) 
+	{
+		position = pos;
+	}
+
 	//移動速度を取得
 	const D3DXVECTOR3& GetMoveSpeed()
 	{
-		return moveSpeed;
+		return playerController.GetMoveSpeed();
 	}
 
-	//スター獲得フラグを設定
-	void SetGetStar(bool getstar)
+	//移動速度を設定
+	void SetMoveSpeed(const D3DXVECTOR3& speed)
 	{
-		getStar = getstar;
+		moveSpeed = speed;
+	}
+
+	//回転を取得
+	const D3DXQUATERNION& GetRotation()
+	{
+		return rotation;
+	}
+
+	//回転を設定
+	void SetRotation(const D3DXQUATERNION& rot)
+	{
+		rotation = rot;
 	}
 
 	//地面の上か判定
@@ -62,6 +78,23 @@ public:
 			return true;
 		}
 		return false;
+	}
+
+	//ジャンプ中か判定
+	bool GetIsJump()
+	{
+		return playerController.IsJump();
+	}
+
+	void SetIsJump()
+	{
+		playerController.Jump();
+	}
+
+	//アニメーション中か判定
+	bool GetAnimationIsPlay()
+	{
+		return animation.IsPlay();
 	}
 
 	//プレイヤーの向きを取得
@@ -110,13 +143,18 @@ public:
 		return animationEnd;
 	}
 
+	void SetStarAnimationEnd(bool flag)
+	{
+		animationEnd = flag;
+	}
+
 	//敵を踏みつけ時のフラグを設定
 	void SetTreadOnEnemy(bool treadOnEnemy)
 	{
 		m_treadOnEnemy = treadOnEnemy;
 	}
 
-	//スプリングを踏みつけ時のフラグを設定
+	//バネを踏みつけ時のフラグを設定
 	void SetTreadOnSpring(bool treadOnSpring) 
 	{
 		m_treadOnSpring = treadOnSpring;
@@ -134,41 +172,60 @@ public:
 		return m_hitEnemy;
 	}
 
+	//プレイヤーが落下したフラグを取得
+	bool GetFallPlayer()
+	{
+		return m_fallPlayer;
+	}
+
+	//プレイヤーの死亡フラグを設定
+	void SetPlayerDead(bool playerDead)
+	{
+		m_playerDead = playerDead;
+	}
+
 	//プレイヤーの死亡フラグを取得
 	bool GetPlayerDead()
 	{
 		return m_playerDead;
 	}
 
-	//スター獲得フラグ
+	//スター獲得フラグを取得
 	bool GetStar()
 	{
 		return getStar;
 	}
 
-	//プレイヤーの状態
-	enum State {
-		State_Walk,				//移動
-		State_Dead,				//死亡
-		State_WallJump,			//壁ジャンプ
-		State_GetStar,			//スターを獲得
-	};
-
-	//状態を取得　
-	State GetState()
+	//スター獲得フラグを設定
+	void SetGetStar(bool getstar)
 	{
-		return state;
+		getStar = getstar;
 	}
 
-	//アニメーションの状態
-	enum AnimationNo {
-		AnimationStand,	//立ち
-		AnimationWalk,	//歩く
-		AnimationRun,	//走る
-		AnimationJump,	//ジャンプ
-		AnimationPose,	//ポーズ
-		AnimationDead,	//死亡
-	};
+	//現在のアニメーションを設定
+	void SetCurrentAnim(IPlayerState::AnimationNo anim)
+	{
+		m_currentAnim = anim;
+	}
+
+	//現在のアニメーションを取得
+	IPlayerState::AnimationNo GetCurrentAnim()
+	{
+		return m_currentAnim;
+	}
+
+	//1フレーム前のアニメーションを更新
+	void SetPrevAnim(IPlayerState::AnimationNo anim)
+	{
+		m_prevAnim = anim;
+	}
+
+	//1フレーム前のアニメーションを取得
+	IPlayerState::AnimationNo GetPrevAnim()
+	{
+		return m_prevAnim;
+	}
+
 
 private:
 	SkinModel model;												//スキンモデル
@@ -178,27 +235,19 @@ private:
 	PlayerController playerController;								//プレイヤーコントローラー
 	D3DXVECTOR3	position;											//座標
 	D3DXQUATERNION rotation;										//回転
-	D3DXVECTOR3 dir = { 0.0f,0.0f,0.0f };							//方向
-	AnimationNo currentAnim;										//現在のアニメーション
-	AnimationNo prevAnim;											//前のアニメーション
-	D3DXVECTOR3 playerDir;											//キャラクターのZ方向
-	float angle = 0.0f;												//回転角度
-	float timer = 0.0f;												//タイマー
+	IPlayerState::AnimationNo m_currentAnim;						//現在のアニメーション
+	IPlayerState::AnimationNo m_prevAnim;							//前のアニメーション
 	D3DXVECTOR3 moveSpeed = { 0.0f,0.0f,0.0f };						//移動速度
-	float acceleration = 0.0f;										//加速度
-	const float speedLimit = 6.0f;									//限界速度
-	D3DXVECTOR3 currentDir = { 0.0f,0.0f,0.0f };					//1フレーム前のZ方向
 	bool parentFirstHit = true;										//親との最初の当たり判定フラグ
 	bool secondParentFirstHit = true;								//親との最初の当たり判定フラグ
 	bool getStar = false;											//スター獲得フラグ
-	State state = State_Walk;										//状態
 	bool animationEnd = false;										//スター獲得時のアニメーション終了フラグ
 	bool m_treadOnEnemy = false;									//敵を踏んだフラグ
 	float jumpSpeed = 10.0f;										//ジャンプ時の速度
 	bool m_hitEnemy = false;										//敵に当たったフラグ
+	bool m_fallPlayer = false;
 	bool m_playerDead = false;										//プレイヤーの死亡フラグ
 	bool m_treadOnSpring = false;									//スプリングを踏んだフラグ
-	int m_rotationFrameCount = 0;									//回転フレームカウント
 	bool m_moveFloorInertia = false;								//移動床の慣性
 	bool m_moveFloor2Inertia = false;								//移動床２の慣性
 	D3DXVECTOR3 m_airResistance = { 0.0f,0.0f,0.0f };				//空気抵抗
@@ -212,10 +261,6 @@ private:
 	D3DXVECTOR3 moveFloor2ChildPosition = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 m_moveFloor2Speed = { 0.0f,0.0f,0.0f };
 
-	bool isOnWall = false;
-	bool wallJump = false;
-	bool wallJumpExecute = false;
-
 	D3DXMATRIX parentWorldMatrix;									//親のワールド行列
 	D3DXVECTOR3 childPosition = { 0.0f,0.0f,0.0f };					//親のローカル座標からみたプレイヤーの座標
 
@@ -224,6 +269,8 @@ private:
 
 	LPDIRECT3DTEXTURE9 specularMap = NULL;							//スペキュラマップ
 	LPDIRECT3DTEXTURE9 normalMap = NULL;							//法線マップ
+
+	PlayerStateMachine m_playerStateMachine;						//ステートマシン
 };
 
 extern Player* player;

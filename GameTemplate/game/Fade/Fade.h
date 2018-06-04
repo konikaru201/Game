@@ -4,6 +4,7 @@
 #include "myEngine/Graphics/Sprite.h"
 #include "myEngine/Graphics/Texture.h"
 
+
 class Fade : public GameObject {
 public:
 	Fade();
@@ -42,9 +43,9 @@ private:
 	Sprite* sprite;
 	
 	const float FADE_TIME = 0.2f;	//フェードする時間
-	State m_state = FadeIn;		//状態
-	bool m_isExecute = false;	//フェード実行中か
-	float m_timer = 1.0f;		//タイマー
+	State m_state = FadeIn;			//状態
+	bool m_isExecute = false;		//フェード実行中か
+	float m_timer = 1.0f;			//タイマー
 };
 
 extern Fade* g_fade;

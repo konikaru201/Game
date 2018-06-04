@@ -214,6 +214,11 @@
     <ClCompile Include="Number\Number.cpp" />
     <ClCompile Include="Number\RemainNumber.cpp" />
     <ClCompile Include="Player\Player.cpp" />
+    <ClCompile Include="Player\PlayerDead.cpp" />
+    <ClCompile Include="Player\PlayerGetStar.cpp" />
+    <ClCompile Include="Player\PlayerIdle.cpp" />
+    <ClCompile Include="Player\PlayerMove.cpp" />
+    <ClCompile Include="Player\PlayerStateMachine.cpp" />
     <ClCompile Include="Scene\GameScene.cpp" />
     <ClCompile Include="Scene\GameOverScene.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
@@ -296,7 +301,14 @@
     <ClInclude Include="Number\DisplayCoin.h" />
     <ClInclude Include="Number\Number.h" />
     <ClInclude Include="Number\RemainNumber.h" />
+    <ClInclude Include="Player\IPlayerState.h" />
     <ClInclude Include="Player\Player.h" />
+    <ClInclude Include="Player\PlayerDead.h" />
+    <ClInclude Include="Player\PlayerGetStar.h" />
+    <ClInclude Include="Player\PlayerIdle.h" />
+    <ClInclude Include="Player\PlayerMove.h" />
+    <ClInclude Include="Player\PlayerState.h" />
+    <ClInclude Include="Player\PlayerStateMachine.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\GameScene.h" />
     <ClInclude Include="Scene\GameOverScene.h" />

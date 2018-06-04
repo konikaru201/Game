@@ -48,18 +48,6 @@ void SkyBox::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	//スキンモデルからメッシュコライダーを作成する
 	D3DXMATRIX* rootBoneMatrix = modelData.GetRootBoneWorldMatrix();
 	meshCollider.CreateFromSkinModel(&model, rootBoneMatrix);
-
-	//剛体を作るための情報を設定
-	RigidBodyInfo rbInfo;
-	rbInfo.collider = &meshCollider;		//剛体のコリジョンを設定する
-	rbInfo.mass = 0.0f;					//質量を0にすると動かない剛体になる
-	rbInfo.pos = position;
-	rbInfo.rot = rotation;
-	//剛体を作成
-	rigidBody.Create(rbInfo);
-
-	//作成した剛体を物理ワールドに追加
-	g_physicsWorld->AddRigidBody(&rigidBody);
 }
 
 bool SkyBox::Start()
@@ -72,8 +60,6 @@ void SkyBox::Update()
 	if (sceneManager->GetChangeSceneFlag())
 	{
 		SetisDead();
-		//剛体を削除
-		g_physicsWorld->RemoveRigidBody(&rigidBody);
 		return;
 	}
 }
