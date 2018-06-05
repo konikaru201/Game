@@ -1,3 +1,6 @@
+/*!
+*@brief	移動床１クラス
+*/
 #pragma once
 
 #include "myEngine/Physics/BoxCollider.h"
@@ -8,50 +11,65 @@
 class MoveFloor : public GameObject 
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	MoveFloor();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~MoveFloor();
-
-	//初期化
-	//pos	座標
-	//rot	回転
+	/*!
+	*@brief	初期化
+	* @param[in]	pos		座標
+	* @param[in]	rot		回転
+	*/
 	void Init(D3DXVECTOR3 pos, D3DXQUATERNION rot);
-
-	//更新する前に一度だけ呼ばれる関数
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる関数
+	*/
 	bool Start();
-
-	//Update関数より前に呼ばれる更新関数
+	/*!
+	*@brief	Update関数より前に呼ばれる更新関数
+	*/
 	void PreUpdate();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
-	
-	//移動
+	/*!
+	*@brief	移動
+	*/
 	void Move();
-
+	/*!
+	* @brief	床の座標の取得
+	*@return	床の座標
+	*/
 	const D3DXVECTOR3& GetPosition()
 	{
-		return position;
+		return m_position;
 	}
-
+	/*!
+	* @brief	床のワールド行列の取得
+	*@return	床のワールド行列
+	*/
 	const D3DXMATRIX& GetWorldMatrix()
 	{
-		return model.GetWorldMatrix();
+		return m_model.GetWorldMatrix();
 	}
 
 private:
-	SkinModel model;								//スキンモデル
-	SkinModelData modelData;						//スキンモデルデータ
-	RigidBody rigidBody;							//剛体
-	Light light;									//ライト
-	D3DXVECTOR3 position;							//座標
-	D3DXQUATERNION rotation;						//回転
-	D3DXVECTOR3 moveSpeed/* = { 0.07f,0.0f,0.0f }*/;	//移動速度
-	float Timer = 0.0f;								//タイマー
-	bool moveFlag = false;							//移動フラグ
+	SkinModel		m_model;			//スキンモデル
+	SkinModelData	m_modelData;		//スキンモデルデータ
+	RigidBody		m_rigidBody;		//剛体
+	Light			m_light;			//ライト
+	D3DXVECTOR3		m_position;			//座標
+	D3DXQUATERNION	m_rotation;			//回転
+	D3DXVECTOR3		m_moveSpeed;		//移動速度
+	float			m_timer = 0.0f;		//タイマー
+	bool			m_moveFlag = false;	//移動フラグ
 };

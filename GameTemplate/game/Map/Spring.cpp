@@ -17,17 +17,17 @@ void Spring::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	m_modelData.LoadModelData("Assets/modelData/Spring.x", NULL);
 	m_model.Init(&m_modelData);
 	//ライトを設定
-	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
 
-	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
-	m_model.SetLight(&light);
+	m_light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	m_model.SetLight(&m_light);
 
 	m_model.UpdateWorldMatrix({ 0.0f,0.0f,0.0f }, {0.0f,0.0f,0.0f,1.0f}, { 1.0f,1.0f,1.0f });
 
@@ -61,18 +61,18 @@ void Spring::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 bool Spring::Start()
 {
-	D3DXMatrixIdentity(&parentWorldMatrix);
+	D3DXMatrixIdentity(&m_parentWorldMatrix);
 	//一番近い移動床のワールド行列を取得
 	if (!map->GetMoveFloor2List().empty()) {
-		parentWorldMatrix = map->MoveFloor2WorldMatrix(m_position);
-		moveFloor2Position = map->GetMoveFloor2Position(m_position);
-		moveFloor2Find = true;
+		m_parentWorldMatrix = map->GetMoveFloor2WorldMatrix(m_position);
+		m_moveFloor2Position = map->GetMoveFloor2Position(m_position);
+		m_moveFloor2Find = true;
 	}
 
 	//親のワールド行列から逆行列を生成
 	D3DXMATRIX parentWorldMatrixInv;
-	D3DXMatrixInverse(&parentWorldMatrixInv, NULL, &parentWorldMatrix);
-	D3DXVec3TransformCoord(&childPosition, &m_position, &parentWorldMatrixInv);
+	D3DXMatrixInverse(&parentWorldMatrixInv, NULL, &m_parentWorldMatrix);
+	D3DXVec3TransformCoord(&m_childPosition, &m_position, &parentWorldMatrixInv);
 
 	return true;
 }
@@ -88,24 +88,24 @@ void Spring::Update()
 	}
 
 	if (!map->GetMoveFloor2List().empty()) {
-		parentWorldMatrix = map->MoveFloor2WorldMatrix(m_position);
-		moveFloor2Position = map->GetMoveFloor2Position(m_position);
+		m_parentWorldMatrix = map->GetMoveFloor2WorldMatrix(m_position);
+		m_moveFloor2Position = map->GetMoveFloor2Position(m_position);
 	}
 
-	if (moveFloor2Find) {
-		D3DXVECTOR3 toMoveFloor2Position = moveFloor2Position - m_position;
+	if (m_moveFloor2Find) {
+		D3DXVECTOR3 toMoveFloor2Position = m_moveFloor2Position - m_position;
 		float length = D3DXVec3Length(&toMoveFloor2Position);
 		if (length <= 3.0f) {
 			//ワールド座標に変換する
-			D3DXVec3TransformCoord(&m_position, &childPosition, &parentWorldMatrix);
+			D3DXVec3TransformCoord(&m_position, &m_childPosition, &m_parentWorldMatrix);
 
 			btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
 			trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
 
 			//親から見たプレイヤーの座標を更新
 			D3DXMATRIX worldMatrixInv;
-			D3DXMatrixInverse(&worldMatrixInv, NULL, &parentWorldMatrix);
-			D3DXVec3TransformCoord(&childPosition, &m_position, &worldMatrixInv);
+			D3DXMatrixInverse(&worldMatrixInv, NULL, &m_parentWorldMatrix);
+			D3DXVec3TransformCoord(&m_childPosition, &m_position, &worldMatrixInv);
 		}
 	}
 

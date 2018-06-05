@@ -1,3 +1,6 @@
+/*!
+*@brief	ストーンモンスターのステートマシン
+*/
 #pragma once
 
 #include "StoneMonsterIdle.h"
@@ -9,35 +12,43 @@
 class StoneMonsterStateMachine : public GameObject
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	* @param[in]	sm		ストーンモンスター
+	*/
 	StoneMonsterStateMachine(StoneMonster* sm) :
 		m_stoneMonsterIdle(sm, this),
 		m_stoneMonsterFollow(sm, this)
 	{
 	}
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~StoneMonsterStateMachine()
 	{
 	}
-
-	//更新する前に一度だけ呼ばれる関数
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update()
 	{
 	}
-
-	//ステート切り替え
+	/*!
+	*@brief	ステート切り替え
+	* @param[in]	nextState		次のステート
+	*/
 	void ChangeState(StoneMonsterState::EnState nextState);
-
-	//解放
+	/*!
+	*@brief	解放
+	*/
 	void Release();
-
 private:
-	StoneMonsterState::EnState m_state = StoneMonsterState::enState_Invald;
-	IStoneMonsterState* m_currentState = nullptr;
-	StoneMonsterIdle m_stoneMonsterIdle;
-	StoneMonsterFollow m_stoneMonsterFollow;
+	StoneMonsterState::EnState	m_state = StoneMonsterState::enState_Invald;	//ストーンモンスターの状態
+	IStoneMonsterState*			m_currentState = nullptr;						//現在の状態
+	StoneMonsterIdle			m_stoneMonsterIdle;								//待機ステート
+	StoneMonsterFollow			m_stoneMonsterFollow;							//追従ステート
 };

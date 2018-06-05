@@ -1,3 +1,6 @@
+/*!
+*@brief	シーンマネージャークラス
+*/
 #pragma once
 #include "myEngine/GameObject/GameObject.h"
 #include "TitleScene.h"
@@ -9,56 +12,70 @@
 class SceneManager : public GameObject
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	SceneManager();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~SceneManager();
-
-	//初期化
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//シーンの状態
+	/*!
+	*@brief	シーンの状態
+	*/
 	enum SceneState {
-		stateTitle,
-		stateGame,
-		stateGameOver,
-		stateStageSelect,
+		stateTitle,			//タイトル
+		stateGame,			//ゲーム
+		stateGameOver,		//ゲームオーバー
+		stateStageSelect,	//ステージセレクト
 	};
-
+	/*!
+	*@brief	フェードの状態
+	*/
 	enum FadeStep {
-		step_WaitFadeIn,
-		step_WaitFadeOut,
+		step_WaitFadeIn,	//フェードイン
+		step_WaitFadeOut,	//フェードアウト
 		step_normal,		//何もない
 	};
-
-	//現在のシーンを取得
+	/*!
+	*@brief	現在のシーンを取得
+	*@return	現在のシーン
+	*/
 	const SceneState& GetScene() {
-		return state;
+		return m_state;
 	}
-
-	//シーン切り替えフラグを取得
+	/*!
+	*@brief	シーン切り替えフラグを取得
+	*/
 	bool GetChangeSceneFlag()
 	{
 		return m_changeScene;
 	}
-
+	/*!
+	*@brief	ステージセレクトシーンを取得
+	*@return	ステージセレクトシーン
+	*/
 	CStageSelectScene* GetstageSelectScene()
 	{
-		return stageSelectScene;
+		return m_stageSelectScene;
 	}
 private:
-	SceneState state;								//現在のシーン
-	FadeStep f_step;								//フェードの状態
-	TitleScene* titleScene = nullptr;				//タイトルシーン
-	CStageSelectScene* stageSelectScene = nullptr;	//ステージセレクトシーン
-	GameScene* gameScene = nullptr;					//ゲームシーン
-	bool m_changeScene = false;						//シーン切り替えフラグ
-	int m_gameOverSceneStateNumber = 0;				//ゲームオーバーシーンのステート番号
-	int m_stageNumber = 1;
+	SceneState			m_state;						//現在のシーン
+	FadeStep			m_step;							//フェードの状態
+	TitleScene*			m_titleScene = nullptr;			//タイトルシーン
+	CStageSelectScene*	m_stageSelectScene = nullptr;	//ステージセレクトシーン
+	GameScene*			m_gameScene = nullptr;			//ゲームシーン
+	bool				m_changeScene = false;			//シーン切り替えフラグ
+	int					m_gameOverSceneStateNumber = 0;	//ゲームオーバーシーンのステート番号
+	int					m_stageNumber = 1;
 };
 
 extern SceneManager* sceneManager;

@@ -25,7 +25,7 @@ void StoneMonsterIdle::Update()
 	Move();
 
 	//移動し始めたら
-	if (isMove) {
+	if (m_isMove) {
 		if (m_stoneMonster->GetIsOnMoveFloor() || m_stoneMonster->GetIsOnMoveFloor2()) {
 			TurnOnMoveFloor();
 		}
@@ -50,8 +50,8 @@ bool StoneMonsterIdle::Start()
 	m_destination = m_stoneMonster->GetPosition();
 	m_initPosition = m_stoneMonster->GetPosition();
 
-	timer = 0.0f;
-	isMove = false;
+	m_timer = 0.0f;
+	m_isMove = false;
 
 	return true;
 }
@@ -67,8 +67,8 @@ void StoneMonsterIdle::Move()
 	float length = D3DXVec3Length(&toDestination);
 	//移動先との距離が近い
 	if (length <= 0.6f) {
-		timer += Timer::GetFrameDeltaTime();
-		if (timer >= 2.0f) {
+		m_timer += Timer::GetFrameDeltaTime();
+		if (m_timer >= 2.0f) {
 			//ランダムに移動先を決定
 			//0.0～1.0の値に変換
 			float randomPositionX;
@@ -98,8 +98,8 @@ void StoneMonsterIdle::Move()
 			m_moveSpeed.x = toRandomPosition.x;
 			m_moveSpeed.z = toRandomPosition.z;
 			//タイマーを初期化
-			timer = 0.0f;
-			isMove = true;
+			m_timer = 0.0f;
+			m_isMove = true;
 		}
 		else {
 			//動かない
@@ -122,11 +122,11 @@ void StoneMonsterIdle::Move()
 			toDestination *= m_speed;
 			m_moveSpeed.x = toDestination.x;
 			m_moveSpeed.z = toDestination.z;
-			timer += Timer::GetFrameDeltaTime();
+			m_timer += Timer::GetFrameDeltaTime();
 			//崖際で詰まっていたら移動先を初期位置に戻す
-			if (timer >= 7.0f) {
+			if (m_timer >= 7.0f) {
 				m_destination = m_initPosition;
-				timer = 0.0f;
+				m_timer = 0.0f;
 			}
 		}
 	}
@@ -230,11 +230,11 @@ void StoneMonsterIdle::TurnOnMoveFloor()
 	
 	m_turnCount++;
 	if (m_turnCount % 300 == 0) {
-		moveDirection.z *= -1.0f;
+		m_moveDirection.z *= -1.0f;
 		m_turnCount = 0;
 	}
 
-	float angle = D3DXVec3Dot(&forward, &moveDirection);
+	float angle = D3DXVec3Dot(&forward, &m_moveDirection);
 	if (angle < -1.0f) {
 		angle = -1.0f;
 	}
@@ -244,7 +244,7 @@ void StoneMonsterIdle::TurnOnMoveFloor()
 	}
 	angle = acosf(angle);
 	D3DXVECTOR3 Cross;
-	D3DXVec3Cross(&Cross, &forward, &moveDirection);
+	D3DXVec3Cross(&Cross, &forward, &m_moveDirection);
 	if (Cross.y < 0.0f) {
 		angle *= -1.0f;
 	}

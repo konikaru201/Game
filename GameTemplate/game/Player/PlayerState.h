@@ -1,3 +1,7 @@
+/*!
+*@brief	プレイヤーの状態クラス
+*/
+
 #pragma once
 
 class PlayerState {

@@ -16,7 +16,7 @@ CStageSelectScene::~CStageSelectScene()
 
 bool CStageSelectScene::Start()
 {
-	if (step = step_WaitFadeOut) {
+	if (m_step = step_WaitFadeOut) {
 		//マップ生成
 		map = goMgr->NewGameObject<Map>();
 
@@ -31,7 +31,7 @@ bool CStageSelectScene::Start()
 		gameCamera = goMgr->NewGameObject<GameCamera>();
 	}
 	else {
-		step = step_WaitFadeIn;
+		m_step = step_WaitFadeIn;
 		g_fade->StartFadeIn();
 	}
 	
@@ -40,18 +40,18 @@ bool CStageSelectScene::Start()
 
 void CStageSelectScene::Update()
 {
-	switch (step) {
+	switch (m_step) {
 	//ステージ読み込みが終了
 	case step_StageLoad:
 		g_fade->StartFadeIn();
-		step = step_WaitFadeIn;
+		m_step = step_WaitFadeIn;
 		break;
 
 	//フェードイン時
 	case step_WaitFadeIn:
 		//フェードが終了
 		if (!g_fade->IsExecute()) {
-			step = step_normal;
+			m_step = step_normal;
 		}
 		break;
 
@@ -59,7 +59,7 @@ void CStageSelectScene::Update()
 	case step_normal:
 		if (m_changeStage) {
 			g_fade->StartFadeOut();
-			step = step_WaitFadeOut;
+			m_step = step_WaitFadeOut;
 		}
 		break;
 
@@ -68,6 +68,8 @@ void CStageSelectScene::Update()
 		//フェードが終了
 		if (!g_fade->IsExecute() && !m_waitFadeOut) {
 			m_waitFadeOut = true;
+			bgmSource->SetisDead();
+			bgmSource = nullptr;
 		}
 		break;
 	}
@@ -89,7 +91,7 @@ void CStageSelectScene::StageCreate()
 	bgmSource->InitStreaming("Assets/sound/bgm_1.wav");
 	bgmSource->Play(true);
 
-	step = step_StageLoad;
+	m_step = step_StageLoad;
 }
 
 void CStageSelectScene::Release()
@@ -102,6 +104,4 @@ void CStageSelectScene::Release()
 	player = nullptr;
 	gameCamera->SetisDead();
 	gameCamera = nullptr;
-	bgmSource->SetisDead();
-	bgmSource = nullptr;
 }

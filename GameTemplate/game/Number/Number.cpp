@@ -29,10 +29,10 @@ void Number::Init(D3DXVECTOR2 numPos, D3DXVECTOR2 numSize)
 
 void Number::NumSet(int n)
 {
-	num = n;
+	m_num = n;
 }
 
 void Number::Render()
 {
-	m_number[num]->Render();
+	m_number[m_num]->Render();
 }

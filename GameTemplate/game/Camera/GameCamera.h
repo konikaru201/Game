@@ -1,3 +1,6 @@
+/*!
+*@brief	ゲームカメラクラス
+*/
 #pragma once
 
 #include "myEngine/Graphics/Camera.h"
@@ -8,97 +11,133 @@
 class GameCamera : public GameObject
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	GameCamera();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~GameCamera();
-
-	//初期化
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//移動
+	/*!
+	*@brief	移動
+	*/
 	void Move();
-
-	//リセット
+	/*!
+	*@brief	リセット
+	*/
 	void Reset();
-
-	//注視点を設定
+	/*!
+	*@brief	注視点を設定
+	* @param[in]	target		注視点
+	*/
 	void SetTarget(const D3DXVECTOR3& target)
 	{
-		camera.SetLookatPt(target);
+		m_camera.SetLookatPt(target);
 	}
-	//視点を設定
+	/*!
+	*@brief	視点を設定
+	* @param[in]	position	視点
+	*/
 	void SetPosition(const D3DXVECTOR3& position)
 	{
-		camera.SetEyePt(position);
+		m_camera.SetEyePt(position);
 	}
-	//遠平面を設定
+	/*!
+	*@brief	遠平面を設定
+	* @param[in]	_far		遠平面
+	*/
 	void SetFar(const float& _far)
 	{
-		camera.SetFar(_far);
+		m_camera.SetFar(_far);
 	}
-	//アスペクト比を取得
+	/*!
+	*@brief	アスペクト比を取得
+	* @return アスペクト比
+	*/
 	float GetAspect()
 	{
-		return camera.GetAspect();
+		return m_camera.GetAspect();
 	}
-	//画角を取得
+	/*!
+	*@brief	画角を取得
+	* @return 画角
+	*/
 	float GetAngle()
 	{
-		return camera.GetAngle();
+		return m_camera.GetAngle();
 	}
-	//注視点を取得
+	/*!
+	*@brief	注視点を取得
+	* @return 注視点
+	*/
 	const D3DXVECTOR3& GetTarget()
 	{
-		return camera.GetLookatPt();
+		return m_camera.GetLookatPt();
 	}
-	//視点を取得
+	/*!
+	*@brief	視点を取得
+	* @return 視点
+	*/
 	const D3DXVECTOR3& GetPosition()
 	{
-		return camera.GetEyePt();
+		return m_camera.GetEyePt();
 	}
-	//前方向を取得
+	/*!
+	*@brief	前方向を取得
+	* @return 前方向
+	*/
 	const D3DXVECTOR3& GetForward()
 	{
-		return camera.GetForwardVec();
+		return m_camera.GetForwardVec();
 	}
-	//右方向を取得
+	/*!
+	*@brief	右方向を取得
+	* @return 右方向
+	*/
 	const D3DXVECTOR3& GetRight()
 	{
-		return camera.GetRightVec();
+		return m_camera.GetRightVec();
 	}
-	//ビュー行列を取得
+	/*!
+	*@brief	ビュー行列を取得
+	* @return ビュー行列
+	*/
 	const D3DXMATRIX& GetViewMatrix()
 	{
-		return camera.GetViewMatrix();
+		return m_camera.GetViewMatrix();
 	}
-	//プロジェクション行列を取得
+	/*!
+	*@brief	プロジェクション行列を取得
+	* @return プロジェクション行列
+	*/
 	const D3DXMATRIX& GetProjectionMatrix()
 	{
-		return camera.GetProjectionMatrix();
+		return m_camera.GetProjectionMatrix();
 	}
-	//カメラのリセットフラグを取得
+	/*!
+	*@brief	カメラのリセットフラグを取得
+	*/
 	bool GetCameraReset()
 	{
 		return m_cameraReset;
 	}
-
 private:
-	Camera camera;				//カメラインスタンス
-	CameraCollisionSolver cameraCollisionSolver;	//カメラコリジョンインスタンス
-	D3DXVECTOR3 toCameraPos;	//注視点から視点へのベクトル
-	bool ResetFlg = false;	//カメラリセットフラグ
-	float UpAngle = 0.0f;
-	D3DXVECTOR3 currentEyePos;
-	int m_rotationFrameCount = 0;
-	bool m_stopRotation = false;
-	bool m_downRotation = false;
-	bool m_upRotation = false;
-	bool m_cameraReset = false;
+	Camera					m_camera;					//カメラインスタンス
+	CameraCollisionSolver	m_cameraCollisionSolver;	//カメラコリジョンインスタンス
+	D3DXVECTOR3				m_toCameraPos;				//注視点から視点へのベクトル
+	D3DXVECTOR3				m_currentEyePos;			//プレイヤー死亡時のカメラの座標
+	int						m_rotationFrameCount = 0;	//回転フレームカウント
+	bool					m_stopRotation = false;		//回転ストップフラグ
+	bool					m_cameraReset = false;		//カメラリセットフラグ
 };
 
 extern GameCamera* gameCamera;

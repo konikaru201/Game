@@ -1,3 +1,7 @@
+/*!
+*@brief	プレイヤークラス
+*/
+
 #pragma once
 
 #include "myEngine/Physics/PlayerController.h"
@@ -9,98 +13,132 @@
 class Player : public GameObject
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	Player();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~Player();
-
-	//初期化
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
-
-	//影を描画
+	/*!
+	* @brief	影を描画
+	* @param[in]	viewMatrix		ビュー行列
+	* @param[in]	projMatrix		プロジェクション行列
+	* @param[in]	isDrawShadowMap	シャドウマップを描くフラグ
+	* @param[in]	isRecieveShadow	シャドウレシーバーかどうか
+	*/
 	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
-
+	/*!
+	* @brief	シルエットの描画
+	* @param[in]	viewMatrix		ビュー行列
+	* @param[in]	projMatrix		プロジェクション行列
+	*/
 	void SilhouetteRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix);
-
-	//座標の取得
+	/*!
+	* @brief	プレイヤーの座標の取得
+	*@return	プレイヤーの座標
+	*/
 	const D3DXVECTOR3& GetPosition() {
-		return position;
+		return m_position;
 	}
-
-	//座標の設定
+	/*!
+	*@brief	座標の設定
+	* @param[in]	pos		座標
+	*/
 	void SetPosition(const D3DXVECTOR3& pos) 
 	{
-		position = pos;
+		m_position = pos;
 	}
-
-	//移動速度を取得
+	/*!
+	* @brief	移動速度を取得
+	*@return	移動速度
+	*/
 	const D3DXVECTOR3& GetMoveSpeed()
 	{
-		return playerController.GetMoveSpeed();
+		return m_playerController.GetMoveSpeed();
 	}
-
-	//移動速度を設定
+	/*!
+	*@brief	移動速度を設定
+	* @param[in]	speed	移動速度
+	*/
 	void SetMoveSpeed(const D3DXVECTOR3& speed)
 	{
-		moveSpeed = speed;
+		m_moveSpeed = speed;
 	}
-
-	//回転を取得
+	/*!
+	* @brief	回転を取得
+	*@return	回転
+	*/
 	const D3DXQUATERNION& GetRotation()
 	{
-		return rotation;
+		return m_rotation;
 	}
-
-	//回転を設定
+	/*!
+	*@brief	回転を設定
+	* @param[in]	rot		回転
+	*/
 	void SetRotation(const D3DXQUATERNION& rot)
 	{
-		rotation = rot;
+		m_rotation = rot;
 	}
-
-	//地面の上か判定
+	/*!
+	* @brief	地面の上か判定
+	*/
 	bool GetIsOnGround()
 	{
-		if (playerController.IsOnGround()
-			|| playerController.IsOnMoveFloor()
-			|| playerController.IsOnMoveFloor2()
-			|| playerController.IsOnSpring()
-			|| playerController.IsOnBlock()
-			|| playerController.IsOnBlock2()
-			|| playerController.IsOnBox())
+		if (m_playerController.IsOnGround()
+			|| m_playerController.IsOnMoveFloor()
+			|| m_playerController.IsOnMoveFloor2()
+			|| m_playerController.IsOnSpring()
+			|| m_playerController.IsOnBlock()
+			|| m_playerController.IsOnBlock2()
+			|| m_playerController.IsOnBox())
 		{
 			return true;
 		}
 		return false;
 	}
-
-	//ジャンプ中か判定
+	/*!
+	* @brief	ジャンプ中か判定
+	*/
 	bool GetIsJump()
 	{
-		return playerController.IsJump();
+		return m_playerController.IsJump();
 	}
-
+	/*!
+	*@brief	プレイヤーをジャンプさせる
+	*/
 	void SetIsJump()
 	{
-		playerController.Jump();
+		m_playerController.Jump();
 	}
-
-	//アニメーション中か判定
+	/*!
+	* @brief	アニメーション中か判定
+	*/
 	bool GetAnimationIsPlay()
 	{
-		return animation.IsPlay();
+		return m_animation.IsPlay();
 	}
-
-	//プレイヤーの向きを取得
+	/*!
+	* @brief	プレイヤーの向きを取得
+	*@return	プレイヤーの向き
+	*/
 	D3DXVECTOR3 GetPlayerDir()
 	{
-		D3DXMATRIX matrix = model.GetWorldMatrix();
+		D3DXMATRIX matrix = m_model.GetWorldMatrix();
 		D3DXVECTOR3 direction;
 		direction.x = matrix.m[2][0];
 		direction.y = matrix.m[2][1];
@@ -108,169 +146,196 @@ public:
 		D3DXVec3Normalize(&direction, &direction);
 		return direction;
 	}
-
-	//移動床１
-	//移動床の速度を設定
+	/*!
+	* @brief	移動床１の速度を設定
+	* @param[in]	speed		移動速度
+	*/
 	void SetMoveFloorSpeed(const D3DXVECTOR3& speed)
 	{
 		m_moveFloorSpeed = speed;
 	}
-
-	//移動床２
-	//移動床の速度を設定
+	/*!
+	* @brief	移動床２の速度を設定
+	* @param[in]	speed		移動速度
+	*/
 	void SetMoveFloor2Speed(const D3DXVECTOR3& speed)
 	{
 		m_moveFloor2Speed = speed;
 	}
-
-	//ブロック１
-	//親のワールド行列を設定
+	/*!
+	* @brief	ブロック１のワールド行列を設定
+	* @param[in]	worldMatrix		ワールド行列
+	*/
 	void SetParentWorldMatrix(const D3DXMATRIX& worldMatrix)
 	{
-		parentWorldMatrix = worldMatrix;
+		m_parentWorldMatrix = worldMatrix;
 	}
-
-	//ブロック２
-	//親のワールド行列を設定
+	/*!
+	* @brief	ブロック２のワールド行列を設定
+	* @param[in]	worldMatrix		ワールド行列
+	*/
 	void SetSecondParentWorldMatrix(const D3DXMATRIX& worldMatrix)
 	{
-		secondParentWorldMatrix = worldMatrix;
+		m_secondParentWorldMatrix = worldMatrix;
 	}
-
-	//スター獲得時のアニメーション終了フラグを取得
+	/*!
+	* @brief	スター獲得時のアニメーション終了フラグを取得
+	*/
 	bool GetStarAnimationEnd()
 	{
-		return animationEnd;
+		return m_animationEnd;
 	}
-
+	/*!
+	* @brief	スター獲得時のアニメーション終了フラグを設定
+	* @param[in]	flag		スター獲得時のアニメーションが終了したか
+	*/
 	void SetStarAnimationEnd(bool flag)
 	{
-		animationEnd = flag;
+		m_animationEnd = flag;
 	}
-
-	//敵を踏みつけ時のフラグを設定
+	/*!
+	* @brief	敵を踏みつけ時のフラグを設定
+	* @param[in]	treadOnEnemy		敵を踏みつけたか
+	*/
 	void SetTreadOnEnemy(bool treadOnEnemy)
 	{
 		m_treadOnEnemy = treadOnEnemy;
 	}
-
-	//バネを踏みつけ時のフラグを設定
+	/*!
+	* @brief	バネを踏みつけ時のフラグを設定
+	* @param[in]	treadOnSpring		バネを踏みつけたか
+	*/
 	void SetTreadOnSpring(bool treadOnSpring) 
 	{
 		m_treadOnSpring = treadOnSpring;
 	}
-
-	//敵に当たった時のフラグを設定
+	/*!
+	* @brief	敵に当たった時のフラグを設定
+	* @param[in]	hitEnemy		敵に当たったか
+	*/
 	void SetHitEnemy(bool hitEnemy)
 	{
 		m_hitEnemy = hitEnemy;
 	}
-
-	//敵に当たった時のフラグを取得
+	/*!
+	* @brief	敵に当たった時のフラグを取得
+	*/
 	bool GetHitEnemy()
 	{
 		return m_hitEnemy;
 	}
-
-	//プレイヤーが落下したフラグを取得
+	/*!
+	* @brief	プレイヤーが落下したフラグを取得
+	*/
 	bool GetFallPlayer()
 	{
 		return m_fallPlayer;
 	}
-
-	//プレイヤーの死亡フラグを設定
+	/*!
+	* @brief	プレイヤーの死亡フラグを設定
+	* @param[in]	playerDead		プレイヤーの死亡フラグ
+	*/
 	void SetPlayerDead(bool playerDead)
 	{
 		m_playerDead = playerDead;
 	}
-
-	//プレイヤーの死亡フラグを取得
+	/*!
+	* @brief	プレイヤーの死亡フラグを取得
+	*/
 	bool GetPlayerDead()
 	{
 		return m_playerDead;
 	}
-
-	//スター獲得フラグを取得
+	/*!
+	* @brief	スター獲得フラグを取得
+	*/
 	bool GetStar()
 	{
-		return getStar;
+		return m_getStar;
 	}
-
-	//スター獲得フラグを設定
-	void SetGetStar(bool getstar)
+	/*!
+	* @brief	スター獲得フラグを設定
+	* @param[in]	getstar		スター獲得フラグ
+	*/
+	void SetGetStar(bool getStar)
 	{
-		getStar = getstar;
+		m_getStar = getStar;
 	}
-
-	//現在のアニメーションを設定
+	/*!
+	* @brief	現在のアニメーションを設定
+	* @param[in]	anim		現在のアニメーション
+	*/
 	void SetCurrentAnim(IPlayerState::AnimationNo anim)
 	{
 		m_currentAnim = anim;
 	}
-
-	//現在のアニメーションを取得
+	/*!
+	* @brief	現在のアニメーションを取得
+	*@return	現在のアニメーション
+	*/
 	IPlayerState::AnimationNo GetCurrentAnim()
 	{
 		return m_currentAnim;
 	}
-
-	//1フレーム前のアニメーションを更新
+	/*!
+	* @brief	1フレーム前のアニメーションを更新
+	* @param[in]	anim		1フレーム前のアニメーション
+	*/
 	void SetPrevAnim(IPlayerState::AnimationNo anim)
 	{
 		m_prevAnim = anim;
 	}
-
-	//1フレーム前のアニメーションを取得
+	/*!
+	* @brief	1フレーム前のアニメーションを取得
+	*@return	1フレーム前のアニメーション
+	*/
 	IPlayerState::AnimationNo GetPrevAnim()
 	{
 		return m_prevAnim;
 	}
-
-
 private:
-	SkinModel model;												//スキンモデル
-	SkinModelData modelData;										//スキンモデルデータ
-	Animation animation;											//アニメーション
-	Light light;													//ライト
-	PlayerController playerController;								//プレイヤーコントローラー
-	D3DXVECTOR3	position;											//座標
-	D3DXQUATERNION rotation;										//回転
-	IPlayerState::AnimationNo m_currentAnim;						//現在のアニメーション
-	IPlayerState::AnimationNo m_prevAnim;							//前のアニメーション
-	D3DXVECTOR3 moveSpeed = { 0.0f,0.0f,0.0f };						//移動速度
-	bool parentFirstHit = true;										//親との最初の当たり判定フラグ
-	bool secondParentFirstHit = true;								//親との最初の当たり判定フラグ
-	bool getStar = false;											//スター獲得フラグ
-	bool animationEnd = false;										//スター獲得時のアニメーション終了フラグ
-	bool m_treadOnEnemy = false;									//敵を踏んだフラグ
-	float jumpSpeed = 10.0f;										//ジャンプ時の速度
-	bool m_hitEnemy = false;										//敵に当たったフラグ
-	bool m_fallPlayer = false;
-	bool m_playerDead = false;										//プレイヤーの死亡フラグ
-	bool m_treadOnSpring = false;									//スプリングを踏んだフラグ
-	bool m_moveFloorInertia = false;								//移動床の慣性
-	bool m_moveFloor2Inertia = false;								//移動床２の慣性
-	D3DXVECTOR3 m_airResistance = { 0.0f,0.0f,0.0f };				//空気抵抗
-	float m_ineltiaTime = 0.0f;
+	SkinModel			m_model;								//スキンモデル
+	SkinModelData		m_modelData;							//スキンモデルデータ
+	Animation			m_animation;							//アニメーション
+	Light				m_light;								//ライト
+	PlayerController	m_playerController;						//プレイヤーコントローラー
+	D3DXVECTOR3			m_position;								//座標
+	D3DXQUATERNION		m_rotation;								//回転
+	IPlayerState::AnimationNo m_currentAnim;					//現在のアニメーション
+	IPlayerState::AnimationNo m_prevAnim;						//前のアニメーション
+	D3DXVECTOR3			m_moveSpeed = { 0.0f,0.0f,0.0f };		//移動速度
+	bool				m_parentFirstHit = true;				//親との最初の当たり判定フラグ
+	bool				m_secondParentFirstHit = true;			//親との最初の当たり判定フラグ
+	bool				m_getStar = false;						//スター獲得フラグ
+	bool				m_animationEnd = false;					//スター獲得時のアニメーション終了フラグ
+	bool				m_treadOnEnemy = false;					//敵を踏んだフラグ
+	const float			m_jumpSpeed = 10.0f;					//ジャンプ時の速度
+	bool				m_hitEnemy = false;						//敵に当たったフラグ
+	bool				m_fallPlayer = false;					//プレイヤーの落下フラグ
+	bool				m_playerDead = false;					//プレイヤーの死亡フラグ
+	bool				m_treadOnSpring = false;				//スプリングを踏んだフラグ
+	bool				m_moveFloorInertia = false;				//移動床の慣性
+	bool				m_moveFloor2Inertia = false;			//移動床２の慣性
+	D3DXVECTOR3			m_airResistance = { 0.0f,0.0f,0.0f };	//空気抵抗
+	float				m_ineltiaTime = 0.0f;					//慣性が働く時間
 
-	D3DXMATRIX moveFloorWorldMatrix;
-	D3DXVECTOR3 moveFloorChildPosition = { 0.0f,0.0f,0.0f };
-	D3DXVECTOR3 m_moveFloorSpeed = { 0.0f,0.0f,0.0f };
+	D3DXMATRIX			m_moveFloorWorldMatrix;							//移動床１のワールド行列
+	D3DXVECTOR3			m_moveFloorChildPosition = { 0.0f,0.0f,0.0f };	//移動床１から見たプレイヤーのローカル座標
+	D3DXVECTOR3			m_moveFloorSpeed = { 0.0f,0.0f,0.0f };			//移動床１の移動速度
+	D3DXMATRIX			m_moveFloor2WorldMatrix;						//移動床２のワールド行列
+	D3DXVECTOR3			m_moveFloor2ChildPosition = { 0.0f,0.0f,0.0f };	//移動床２から見たプレイヤーのローカル座標
+	D3DXVECTOR3			m_moveFloor2Speed = { 0.0f,0.0f,0.0f };			//移動床２の移動速度
 
-	D3DXMATRIX moveFloor2WorldMatrix;
-	D3DXVECTOR3 moveFloor2ChildPosition = { 0.0f,0.0f,0.0f };
-	D3DXVECTOR3 m_moveFloor2Speed = { 0.0f,0.0f,0.0f };
+	D3DXMATRIX			m_parentWorldMatrix;							//ブロック１のワールド行列
+	D3DXVECTOR3			m_childPosition = { 0.0f,0.0f,0.0f };			//ブロック１のローカル座標からみたプレイヤーの座標
 
-	D3DXMATRIX parentWorldMatrix;									//親のワールド行列
-	D3DXVECTOR3 childPosition = { 0.0f,0.0f,0.0f };					//親のローカル座標からみたプレイヤーの座標
+	D3DXMATRIX			m_secondParentWorldMatrix;						//ブロック２のワールド行列
+	D3DXVECTOR3			m_secondChildPosition = { 0.0f,0.0f,0.0f };		//ブロック２のローカル座標からみたプレイヤーの座標
 
-	D3DXMATRIX secondParentWorldMatrix;								//親のワールド行列
-	D3DXVECTOR3 secondChildPosition = { 0.0f,0.0f,0.0f };			//親のローカル座標からみたプレイヤーの座標
+	LPDIRECT3DTEXTURE9	m_specularMap = NULL;					//スペキュラマップ
+	LPDIRECT3DTEXTURE9	m_normalMap = NULL;						//法線マップ
 
-	LPDIRECT3DTEXTURE9 specularMap = NULL;							//スペキュラマップ
-	LPDIRECT3DTEXTURE9 normalMap = NULL;							//法線マップ
-
-	PlayerStateMachine m_playerStateMachine;						//ステートマシン
+	PlayerStateMachine	m_playerStateMachine;					//ステートマシン
 };
 
 extern Player* player;

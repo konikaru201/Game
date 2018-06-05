@@ -1,3 +1,6 @@
+/*!
+*@brief	数字クラス
+*/
 #pragma once
 
 #include "myEngine/GameObject/GameObject.h"
@@ -5,21 +8,30 @@
 
 class Number{
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	Number();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~Number();
-
-	//初期化
+	/*!
+	*@brief	初期化
+	* @param[in]	numPos		座標
+	* @param[in]	numSize		サイズ
+	*/
 	void Init(D3DXVECTOR2 numPos, D3DXVECTOR2 numSize);
-
-	//数値を設定
+	/*!
+	*@brief	数値を設定
+	* @param[in]	n		数字
+	*/
 	void NumSet(int n);
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
 private:
-	Sprite* m_number[10];
-	int num = 0;
+	Sprite* m_number[10];	//0～9の数字のスプライト
+	int		m_num = 0;		//数字を保持する変数
 };

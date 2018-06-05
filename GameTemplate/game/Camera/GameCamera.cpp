@@ -17,23 +17,23 @@ GameCamera::~GameCamera()
 bool GameCamera::Start()
 {
 	//カメラ初期化
-	camera.Init();
-	camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 10.0f));
-	camera.SetLookatPt(D3DXVECTOR3(0.0f, 10.5f, 3.0f));
-	camera.SetFar(1000.0f);
-	camera.Update();
+	m_camera.Init();
+	m_camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 10.0f));
+	m_camera.SetLookatPt(D3DXVECTOR3(0.0f, 10.5f, 3.0f));
+	m_camera.SetFar(1000.0f);
+	m_camera.Update();
 	//カメラの当たり判定を初期化
-	cameraCollisionSolver.Init(0.2f);
+	m_cameraCollisionSolver.Init(0.2f);
 	//注視点からカメラまでのベクトルを計算。
-	toCameraPos = camera.GetEyePt() - camera.GetLookatPt();
+	m_toCameraPos = m_camera.GetEyePt() - m_camera.GetLookatPt();
 	//カメラの前方向を計算。
-	D3DXVECTOR3 cameraForward = camera.GetLookatPt() - camera.GetEyePt();
+	D3DXVECTOR3 cameraForward = m_camera.GetLookatPt() - m_camera.GetEyePt();
 	D3DXVec3Normalize(&cameraForward, &cameraForward);
-	camera.SetForwardVec(cameraForward);
+	m_camera.SetForwardVec(cameraForward);
 	//カメラの右方向を計算。
 	D3DXVECTOR3 cameraRight;
-	D3DXVec3Cross(&cameraRight, &cameraForward, &camera.GetUpVec());
-	camera.SetRightVec(cameraRight);
+	D3DXVec3Cross(&cameraRight, &cameraForward, &m_camera.GetUpVec());
+	m_camera.SetRightVec(cameraRight);
 
 	return true;
 }
@@ -43,16 +43,16 @@ void GameCamera::Update()
 	Move();
 
 	//カメラの前方向を計算。
-	D3DXVECTOR3 cameraForward = camera.GetLookatPt() - camera.GetEyePt();
+	D3DXVECTOR3 cameraForward = m_camera.GetLookatPt() - m_camera.GetEyePt();
 	D3DXVec3Normalize(&cameraForward, &cameraForward);
-	camera.SetForwardVec(cameraForward);
+	m_camera.SetForwardVec(cameraForward);
 	//カメラの右方向を計算。
 	D3DXVECTOR3 cameraRight;
-	D3DXVec3Cross(&cameraRight, &cameraForward, &camera.GetUpVec());
-	camera.SetRightVec(cameraRight);
+	D3DXVec3Cross(&cameraRight, &cameraForward, &m_camera.GetUpVec());
+	m_camera.SetRightVec(cameraRight);
 
 	//カメラ更新
-	camera.Update();
+	m_camera.Update();
 }
 
 void GameCamera::Move()
@@ -61,7 +61,7 @@ void GameCamera::Move()
 	D3DXVECTOR3 targetPos = player->GetPosition();
 	targetPos.y += 0.5f;
 	//カメラの注視点を設定
-	camera.SetLookatPt(targetPos);
+	m_camera.SetLookatPt(targetPos);
 
 	if (!player->GetStar()) {
 		//Y軸周りの回転行列を作成
@@ -71,28 +71,28 @@ void GameCamera::Move()
 		if (fabsf(pad->GetRStickXF()) > 0.0f) {		//横回転
 			D3DXMatrixRotationY(&rot, 0.03f * pad->GetRStickXF());
 		}
-		D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
+		D3DXVec3TransformCoord(&m_toCameraPos, &m_toCameraPos, &rot);
 
 		//単位行列にする
 		D3DXMatrixIdentity(&rot);
 		D3DXVECTOR3 rotAxis;
 		//カメラの上方向を取得
-		D3DXVECTOR3 up = camera.GetUpVec();
+		D3DXVECTOR3 up = m_camera.GetUpVec();
 		//回転軸を求める
-		D3DXVec3Cross(&rotAxis, &up, &toCameraPos);
+		D3DXVec3Cross(&rotAxis, &up, &m_toCameraPos);
 		//回転軸を正規化
 		D3DXVec3Normalize(&rotAxis, &rotAxis);
 		if (fabsf(pad->GetRStickYF()) > 0.0f) {			//縦回転
 			D3DXMatrixRotationAxis(&rot, &rotAxis, 0.03f * pad->GetRStickYF());
 		}
 
-		D3DXVECTOR3 toCameraPosOld = toCameraPos;
-		D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
+		D3DXVECTOR3 toCameraPosOld = m_toCameraPos;
+		D3DXVec3TransformCoord(&m_toCameraPos, &m_toCameraPos, &rot);
 		D3DXVECTOR3 toCameraPosNormalize;
-		D3DXVec3Normalize(&toCameraPosNormalize, &toCameraPos);
+		D3DXVec3Normalize(&toCameraPosNormalize, &m_toCameraPos);
 		if (fabsf(toCameraPosNormalize.x) < 0.1f && fabsf(toCameraPosNormalize.z) < 0.1f) {
 			//可動域を超えた
-			toCameraPos = toCameraPosOld;
+			m_toCameraPos = toCameraPosOld;
 		}
 	}
 
@@ -104,7 +104,7 @@ void GameCamera::Move()
 	if (m_cameraReset) {
 		D3DXVECTOR3 playerBack = player->GetPlayerDir();
 		playerBack *= -1.0f;
-		D3DXVECTOR3 toCameraPosition = toCameraPos;
+		D3DXVECTOR3 toCameraPosition = m_toCameraPos;
 		D3DXVec3Normalize(&toCameraPosition, &toCameraPosition);
 		float angle = D3DXVec3Dot(&playerBack, &toCameraPosition);
 		if (angle < -1.0f) {
@@ -133,14 +133,14 @@ void GameCamera::Move()
 			D3DXMATRIX rot;
 			D3DXMatrixIdentity(&rot);
 			D3DXMatrixRotationAxis(&rot, &Cross, angle);
-			D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
+			D3DXVec3TransformCoord(&m_toCameraPos, &m_toCameraPos, &rot);
 		}
 	}
 
 	//ステージクリア時にプレイヤーの正面に向かせる
 	if (player->GetStar() && !m_stopRotation) {
 		D3DXVECTOR3 playerForward = player->GetPlayerDir();
-		D3DXVECTOR3 toCameraPosition = toCameraPos;
+		D3DXVECTOR3 toCameraPosition = m_toCameraPos;
 		D3DXVec3Normalize(&toCameraPosition, &toCameraPosition);
 		float angle = D3DXVec3Dot(&playerForward, &toCameraPosition);
 		if (angle < -1.0f) {
@@ -169,27 +169,27 @@ void GameCamera::Move()
 			D3DXMATRIX rot;
 			D3DXMatrixIdentity(&rot);
 			D3DXMatrixRotationAxis(&rot, &Cross, angle);
-			D3DXVec3TransformCoord(&toCameraPos, &toCameraPos, &rot);
+			D3DXVec3TransformCoord(&m_toCameraPos, &m_toCameraPos, &rot);
 		}
 	}
 
 	//カメラの座標
-	D3DXVECTOR3 eyePos = targetPos + toCameraPos;
+	D3DXVECTOR3 eyePos = targetPos + m_toCameraPos;
 
 	if (!player->GetHitEnemy() && !player->GetFallPlayer()) {
 		//カメラの座標を保存
-		currentEyePos = eyePos;
+		m_currentEyePos = eyePos;
 	}
 
 	//カメラの座標を設定
-	camera.SetEyePt(currentEyePos);
+	m_camera.SetEyePt(m_currentEyePos);
 
 	if (!player->GetStar() && !player->GetFallPlayer() && !player->GetHitEnemy()) {
 		//カメラの当たり判定
 		D3DXVECTOR3 newPos;
-		if (cameraCollisionSolver.Execute(newPos, camera.GetEyePt(), camera.GetLookatPt()))
+		if (m_cameraCollisionSolver.Execute(newPos, m_camera.GetEyePt(), m_camera.GetLookatPt()))
 		{
-			camera.SetEyePt(newPos);
+			m_camera.SetEyePt(newPos);
 		}
 	}
 }
@@ -197,9 +197,9 @@ void GameCamera::Move()
 void GameCamera::Reset()
 {
 	//カメラ初期化
-	camera.Init();
-	camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 7.0f));
-	camera.SetLookatPt(D3DXVECTOR3(0.0f, 10.5f, 0.0f));
-	camera.Update();
-	toCameraPos = camera.GetEyePt() - camera.GetLookatPt();
+	m_camera.Init();
+	m_camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 7.0f));
+	m_camera.SetLookatPt(D3DXVECTOR3(0.0f, 10.5f, 0.0f));
+	m_camera.Update();
+	m_toCameraPos = m_camera.GetEyePt() - m_camera.GetLookatPt();
 }

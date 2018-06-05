@@ -15,34 +15,34 @@ Red_Dragon::~Red_Dragon()
 void Red_Dragon::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 {
 	//モデルの初期化
-	modelData.LoadModelData("Assets/modelData/Red_Dragon.x", &animation);
-	model.Init(&modelData);
+	m_modelData.LoadModelData("Assets/modelData/Red_Dragon.x", &m_animation);
+	m_model.Init(&m_modelData);
 	//ライトを設定
-	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
 
-	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
-	model.SetLight(&light);
+	m_light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	m_model.SetLight(&m_light);
 
-	model.UpdateWorldMatrix(pos, rot, { 1.0f,1.0f,1.0f });
+	m_model.UpdateWorldMatrix(pos, rot, { 1.0f,1.0f,1.0f });
 
-	matrix = modelData.FindBoneWorldMatrix("B_bip01");
+	m_matrix = m_modelData.FindBoneWorldMatrix("B_bip01");
 
-	position = pos;
-	rotation = rot;
-	initPosition = pos;
+	m_position = pos;
+	m_rotation = rot;
+	m_initPosition = pos;
 
-	state = State_Wait;
-	currentAnim = AnimationWait;
+	m_state = State_Wait;
+	m_currentAnim = AnimationWait;
 
-	animation.SetAnimationLoopflg(AnimationDead, false);
-	animation.PlayAnimation(AnimationWait, 0.3f);
+	m_animation.SetAnimationLoopflg(AnimationDead, false);
+	m_animation.PlayAnimation(AnimationWait, 0.3f);
 
 	//剛体の作成
 	CapsuleCollider* coll = new CapsuleCollider;
@@ -52,16 +52,16 @@ void Red_Dragon::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	RigidBodyInfo rbinfo;
 	rbinfo.collider = coll;
 	rbinfo.mass = 0.0f;
-	rbinfo.pos = position;
-	rbinfo.rot = rotation;
+	rbinfo.pos = m_position;
+	rbinfo.rot = m_rotation;
 	//剛体を作成
-	rigidBody.Create(rbinfo);
+	m_rigidBody.Create(rbinfo);
 
-	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
-	trans.setOrigin(btVector3(position.x, position.y, position.z));
+	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
+	trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
 
 	//作成した剛体を物理ワールドに追加
-	g_physicsWorld->AddRigidBody(&rigidBody);
+	g_physicsWorld->AddRigidBody(&m_rigidBody);
 
 	//影を描画するフラグを立てる
 	SetRenderToShadow();
@@ -73,9 +73,9 @@ void Red_Dragon::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	param.h = 0.5f;
 	param.intervalTime = 0.05f;
 	param.initSpeed = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
-	param.position = position;
+	param.position = m_position;
 	param.alpha = 1.0f;
-	particleEmitter.Init(param);
+	m_particleEmitter.Init(param);
 }
 
 void Red_Dragon::Update()
@@ -84,31 +84,31 @@ void Red_Dragon::Update()
 	{
 		SetisDead();
 		//剛体を削除
-		g_physicsWorld->RemoveRigidBody(&rigidBody);
+		g_physicsWorld->RemoveRigidBody(&m_rigidBody);
 		return;
 	}
 
 	D3DXVECTOR3 moveSpeed = Move();
-	position += moveSpeed / 60.0f;
+	m_position += moveSpeed / 60.0f;
 
-	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
-	trans.setOrigin(btVector3(position.x, position.y, position.z));
+	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
+	trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
 
 	//アニメーションが変わっていたら変更
-	if (currentAnim != prevAnim) {
-		animation.PlayAnimation(currentAnim, 0.3f);
+	if (m_currentAnim != m_prevAnim) {
+		m_animation.PlayAnimation(m_currentAnim, 0.3f);
 	}
 
 	//前のアニメーションを保存
-	prevAnim = currentAnim;
+	m_prevAnim = m_currentAnim;
 
-	animation.Update(1.0f / 60.0f);
-	model.UpdateWorldMatrix(position, rotation, D3DXVECTOR3( 1.0f,1.0f,1.0f ));
+	m_animation.Update(1.0f / 60.0f);
+	m_model.UpdateWorldMatrix(m_position, m_rotation, D3DXVECTOR3( 1.0f,1.0f,1.0f ));
 }
 
 void Red_Dragon::Render()
 {
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }
 
 D3DXVECTOR3 Red_Dragon::Move()
@@ -118,15 +118,15 @@ D3DXVECTOR3 Red_Dragon::Move()
 
 	//モデルのZ方向を取得
 	D3DXVECTOR3 direction;
-	D3DXMATRIX mWorld = model.GetWorldMatrix();
+	D3DXMATRIX mWorld = m_model.GetWorldMatrix();
 	direction.x = mWorld.m[2][0];
 	direction.y = mWorld.m[2][1];
 	direction.z = mWorld.m[2][2];
 	//モデルの中心座標を取得
 	D3DXVECTOR3 modelPosition;
-	modelPosition.x = matrix->m[3][0];
-	modelPosition.y = matrix->m[3][1];
-	modelPosition.z = matrix->m[3][2];
+	modelPosition.x = m_matrix->m[3][0];
+	modelPosition.y = m_matrix->m[3][1];
+	modelPosition.z = m_matrix->m[3][2];
 
 	//プレイヤーの位置を取得
 	D3DXVECTOR3 playerPos = player->GetPosition();
@@ -143,14 +143,14 @@ D3DXVECTOR3 Red_Dragon::Move()
 	D3DXQUATERNION rot;
 	D3DXQuaternionIdentity(&rot);
 
-	if (state != State_Dead && state != State_Hit) {
+	if (m_state != State_Dead && m_state != State_Hit) {
 		//プレイヤーとの当たり判定を調べる
 		CollisionDetection(length, toPlayer);
 	}
 
 	toPlayer.y = 0.0f;
 
-	switch (state)
+	switch (m_state)
 	{
 		//待機中
 	case State_Wait:
@@ -161,18 +161,18 @@ D3DXVECTOR3 Red_Dragon::Move()
 		angle = acos(angle);
 		//発見された
 		if (fabsf(angle) < D3DXToRadian(30.0f) && length < 12.0f) {
-			state = State_Find;
-			timer = 0.0f;
+			m_state = State_Find;
+			m_timer = 0.0f;
 			break;
 		}
 
-		timer += Timer::GetFrameDeltaTime();
-		if (timer > 5.0f){
-			state = State_Move;
-			timer = 0.0f;
+		m_timer += Timer::GetFrameDeltaTime();
+		if (m_timer > 5.0f){
+			m_state = State_Move;
+			m_timer = 0.0f;
 			break;
 		}
-		currentAnim = AnimationWait;
+		m_currentAnim = AnimationWait;
 		break;
 
 		//移動中
@@ -184,35 +184,35 @@ D3DXVECTOR3 Red_Dragon::Move()
 		angle = acos(angle);
 		//発見された
 		if (fabsf(angle) < D3DXToRadian(30.0f) && length < 12.0f) {
-			state = State_Find;
+			m_state = State_Find;
 			break;
 		}
 
-		move = moveSpeed * XDir;
+		move = m_moveSpeed * m_XDir;
 
 		//移動方向に向きを変える
-		angle = D3DXVec3Dot(&direction, &XDir);
+		angle = D3DXVec3Dot(&direction, &m_XDir);
 		angle = acosf(angle);
-		D3DXVec3Cross(&Cross, &direction, &XDir);
+		D3DXVec3Cross(&Cross, &direction, &m_XDir);
 		//ベクトルが下向きか判定
 		if (Cross.y < 0.0f) {
 			angle *= -1.0f;
 		}
 		D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
-		D3DXQuaternionMultiply(&rotation, &rotation, &rot);
+		D3DXQuaternionMultiply(&m_rotation, &m_rotation, &rot);
 
 		//現在の座標から初期座標の距離を計算
-		toInitPosition = position - initPosition;
+		toInitPosition = m_position - m_initPosition;
 		toInitPosition += move / 60.0f;
 		length = D3DXVec3Length(&toInitPosition);
 		//移動範囲を超えたら待機
 		if (length > 8.0f) {
-			state = State_Wait;
-			XDir *= -1.0f;
+			m_state = State_Wait;
+			m_XDir *= -1.0f;
 			break;
 		}
 
-		currentAnim = AnimationRun;
+		m_currentAnim = AnimationRun;
 		break;
 
 		//発見状態
@@ -224,31 +224,31 @@ D3DXVECTOR3 Red_Dragon::Move()
 		if (toPlayer.x <= 0.0f) {
 			angle *= -1.0f;
 		}
-		toPlayer *= moveSpeed;
+		toPlayer *= m_moveSpeed;
 		move = toPlayer;
 		move.y = 0.0f;
 
 		//プレイヤーとの距離が離れると見失う
 		if (length > 20.0f) {
-			state = State_Miss;
+			m_state = State_Miss;
 			break;
 		}
 		//プレイヤーとの距離が近ければ攻撃に移行
 		else if(length < 2.0f){
-			state = State_Attack;
+			m_state = State_Attack;
 			break;
 		}
 
-		D3DXQuaternionRotationAxis(&rotation, &up, angle);
+		D3DXQuaternionRotationAxis(&m_rotation, &m_up, angle);
 
-		currentAnim = AnimationRun;
+		m_currentAnim = AnimationRun;
 		break;
 
 		//見失った状態
 	case State_Miss:
-		changeDir = true;
-		currentAnim = AnimationWait;
-		timer += Timer::GetFrameDeltaTime();
+		m_changeDir = true;
+		m_currentAnim = AnimationWait;
+		m_timer += Timer::GetFrameDeltaTime();
 		//プレイヤーとの距離と視野角で発見されたか判定
 		length = D3DXVec3Length(&toPlayer);
 		D3DXVec3Normalize(&toPlayer, &toPlayer);
@@ -256,19 +256,19 @@ D3DXVECTOR3 Red_Dragon::Move()
 		angle = acos(angle);
 		//発見された
 		if (fabsf(angle) < D3DXToRadian(30.0f) && length < 12.0f) {
-			state = State_Find;
-			timer = 0.0f;
+			m_state = State_Find;
+			m_timer = 0.0f;
 			break;
 		}
 
 		//一定時間経つと初期座標に戻る
-		if (timer > 3.0f) {
+		if (m_timer > 3.0f) {
 			//現在の座標から初期座標への距離と方向を計算
-			toInitPosition = initPosition - position;
+			toInitPosition = m_initPosition - m_position;
 			length = D3DXVec3Length(&toInitPosition);
 			D3DXVec3Normalize(&toInitPosition, &toInitPosition);
 
-			if (changeDir) {
+			if (m_changeDir) {
 				//移動方向に向きを変える
 				angle = D3DXVec3Dot(&direction, &toInitPosition);
 				if (angle < -1.0f)
@@ -286,81 +286,81 @@ D3DXVECTOR3 Red_Dragon::Move()
 					angle *= -1.0f;
 				}
 				D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
-				D3DXQuaternionMultiply(&rotation, &rotation, &rot);
+				D3DXQuaternionMultiply(&m_rotation, &m_rotation, &rot);
 
-				changeDir = false;
+				m_changeDir = false;
 			}
 
 			//移動速度を計算
-			toInitPosition *= moveSpeed;
+			toInitPosition *= m_moveSpeed;
 			move = toInitPosition;
 			move.y = 0.0f;
 
 			//初期座標に戻ったら待機状態
 			if (length < 0.2f) {
-				state = State_Wait;
-				timer = 0.0f;
+				m_state = State_Wait;
+				m_timer = 0.0f;
 				break;
 			}
-			currentAnim = AnimationRun;
+			m_currentAnim = AnimationRun;
 		}
 		break;
 
 		//攻撃中
 	case State_Attack:
-		particleEmitter.SetSpeed(GetDirection() * 1.5f);
-		particleEmitter.SetPosition(modelPosition);
-		particleEmitter.Update();
-		timer += Timer::GetFrameDeltaTime();
+		m_particleEmitter.SetSpeed(GetDirection() * 1.5f);
+		m_particleEmitter.SetPosition(modelPosition);
+		m_particleEmitter.Update();
+		m_timer += Timer::GetFrameDeltaTime();
 
-		attackTimer += Timer::GetFrameDeltaTime();
-		if (attackTimer >= 0.5f) {
+		m_attackTimer += Timer::GetFrameDeltaTime();
+		if (m_attackTimer >= 0.5f) {
 			length = D3DXVec3Length(&toPlayer);
 			D3DXVec3Normalize(&toPlayer, &toPlayer);
 			angle = D3DXVec3Dot(&toPlayer, &direction);
 			angle = acos(angle);
 			//攻撃が当たった
 			if (fabsf(angle) < D3DXToRadian(15.0f) && length < 5.0f) {
-				if (attackTimer >= 0.8f) {
+				if (m_attackTimer >= 0.8f) {
 					//プレイヤーが死亡
 					m_hitPlayer = true;
 					player->SetHitEnemy(m_hitPlayer);
-					state = State_Hit;
+					m_state = State_Hit;
 				}
 			}
 			else {
-				attackTimer = 0.0f;
+				m_attackTimer = 0.0f;
 			}
 		}
 
-		if (timer > 2.5f) {
+		if (m_timer > 2.5f) {
 			length = D3DXVec3Length(&toPlayer);
 			D3DXVec3Normalize(&toPlayer, &toPlayer);
 			angle = D3DXVec3Dot(&toPlayer, &direction);
 			angle = acos(angle);
 			//発見された
 			if (fabsf(angle) < D3DXToRadian(30.0f) && length < 12.0f) {
-				findAgainFlag = true;
+				m_findAgainFlag = true;
 			}
 
-			if (findAgainFlag) {
-				state = State_Find;
-				findAgainFlag = false;
+			if (m_findAgainFlag) {
+				m_state = State_Find;
+				m_findAgainFlag = false;
 			}
-			else if (!findAgainFlag && length > 2.0f) {
-				state = State_Miss;
+			else if (!m_findAgainFlag && length > 2.0f) {
+				m_state = State_Miss;
 			}
-			timer = 0.0f;
+			m_timer = 0.0f;
 		}
 
-		currentAnim = AnimationAttack;
+		m_currentAnim = AnimationAttack;
 
-		soundTimer += Timer::GetFrameDeltaTime();
-		if (soundTimer >= 1.0f) {
+		m_soundTimer += Timer::GetFrameDeltaTime();
+		if (m_soundTimer >= 1.0f) {
 			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
 			SE->Init("Assets/sound/Fire.wav");
 			SE->Play(false);
-			soundTimer = 0.0f;
+			m_soundTimer = 0.0f;
 			SE->SetisDead();
 		}
 
@@ -368,21 +368,21 @@ D3DXVECTOR3 Red_Dragon::Move()
 		//死亡時
 	case State_Dead:
 		move = { 0.0f,0.0f,0.0f };
-		currentAnim = AnimationDead;
-		if (!animation.IsPlay()) {
+		m_currentAnim = AnimationDead;
+		if (!m_animation.IsPlay()) {
 			SetisDead();
 			//剛体を削除
-			g_physicsWorld->RemoveRigidBody(&rigidBody);
+			g_physicsWorld->RemoveRigidBody(&m_rigidBody);
 		}
 
 		break;
 		//プレイヤーにヒット
 	case State_Hit:
-		timer += Timer::GetFrameDeltaTime();
+		m_timer += Timer::GetFrameDeltaTime();
 		move = { 0.0f,0.0f,0.0f };
-		if (timer >= 5.0f) {
-			isDead = true;
-			timer = 0.0f;
+		if (m_timer >= 5.0f) {
+			m_isDead = true;
+			m_timer = 0.0f;
 		}
 		break;
 	}
@@ -390,20 +390,20 @@ D3DXVECTOR3 Red_Dragon::Move()
 	return move;
 }
 
-void Red_Dragon::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
+void Red_Dragon::CollisionDetection(float length, const D3DXVECTOR3& toPlayer)
 {
-	if (Length <= 1.5f) {
-		D3DXVECTOR3 toPlayerXZ = { ToPlayer.x,0.0f,ToPlayer.z };
+	if (length <= 1.5f) {
+		D3DXVECTOR3 toPlayerXZ = { toPlayer.x,0.0f,toPlayer.z };
 		float lengthXZ = D3DXVec3Length(&toPlayerXZ);
 
-		D3DXVECTOR3 toPlayerY = { 0.0f,ToPlayer.y,0.0f };
+		D3DXVECTOR3 toPlayerY = { 0.0f,toPlayer.y,0.0f };
 		float lengthY = D3DXVec3Length(&toPlayerY);
 
 		//Y方向に当たった
 		if (toPlayerY.y > 0.0f && lengthY <= 0.95f && lengthXZ <= 0.7f) {
 			//ドラゴンが死亡
 			player->SetTreadOnEnemy(true);
-			state = State_Dead;
+			m_state = State_Dead;
 
 			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
 			SE->Init("Assets/sound/Humituke.wav");
@@ -414,7 +414,7 @@ void Red_Dragon::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 			//プレイヤーが死亡
 			m_hitPlayer = true;
 			player->SetHitEnemy(m_hitPlayer);
-			state = State_Hit;
+			m_state = State_Hit;
 		}
 	}
 }
@@ -422,8 +422,8 @@ void Red_Dragon::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 void Red_Dragon::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
 {
 	if (gameCamera != nullptr) {
-		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
-		model.Draw(viewMatrix, projMatrix);
-		model.SetDrawShadowMap(false, false);
+		m_model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
+		m_model.Draw(viewMatrix, projMatrix);
+		m_model.SetDrawShadowMap(false, false);
 	}
 }

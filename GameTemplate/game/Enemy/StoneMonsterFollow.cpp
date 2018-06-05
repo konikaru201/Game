@@ -59,8 +59,8 @@ void StoneMonsterFollow::Move()
 
 		float length = D3DXVec3Length(&toMoveFloorPosition);
 		if (length >= 2.4f) {
-			timer += Timer::GetFrameDeltaTime();
-			if (timer >= 2.0f) {
+			m_timer += Timer::GetFrameDeltaTime();
+			if (m_timer >= 2.0f) {
 				D3DXVec3Normalize(&toMoveFloorPosition, &toMoveFloorPosition);
 				toMoveFloorPosition *= m_speed;
 				m_moveSpeed.x = toMoveFloorPosition.x;

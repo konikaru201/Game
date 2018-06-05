@@ -6,7 +6,7 @@
 
 void PlayerGetStar::Update()
 {
-	if (animationEnd) {
+	if (m_animationEnd) {
 		return;
 	}
 
@@ -22,8 +22,8 @@ void PlayerGetStar::Update()
 		m_player->SetCurrentAnim(m_currentAnim);
 
 		if (!m_player->GetAnimationIsPlay()) {
-			animationEnd = true;
-			m_player->SetStarAnimationEnd(animationEnd);
+			m_animationEnd = true;
+			m_player->SetStarAnimationEnd(m_animationEnd);
 		}
 	}
 }

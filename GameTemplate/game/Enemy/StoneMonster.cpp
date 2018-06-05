@@ -52,12 +52,12 @@ bool StoneMonster::Start()
 
 	//一番近い移動床のワールド行列を取得
 	if (!map->GetMoveFloorList().empty()){
-		parentWorldMatrix = map->MoveFloorWorldMatrix(m_position);
-		moveFloorPosition = map->GetMoveFloorPosition(m_position);
+		m_parentWorldMatrix = map->GetMoveFloorWorldMatrix(m_position);
+		m_moveFloorPosition = map->GetMoveFloorPosition(m_position);
 	}
 	if (!map->GetMoveFloor2List().empty()) {
-		secondParentWorldMatrix = map->MoveFloor2WorldMatrix(m_position);
-		moveFloor2Position = map->GetMoveFloor2Position(m_position);
+		m_secondParentWorldMatrix = map->GetMoveFloor2WorldMatrix(m_position);
+		m_moveFloor2Position = map->GetMoveFloor2Position(m_position);
 	}
 
 	//最初に親のワールド行列から自身のローカル座標を計算
@@ -66,16 +66,16 @@ bool StoneMonster::Start()
 	if (m_characterController.IsOnMoveFloor()) {
 		//親のワールド行列から逆行列を生成
 		D3DXMATRIX parentWorldMatrixInv;
-		D3DXMatrixInverse(&parentWorldMatrixInv, NULL, &parentWorldMatrix);
-		D3DXVec3TransformCoord(&childPosition, &m_position, &parentWorldMatrixInv);
-		moveFloorHit = true;
+		D3DXMatrixInverse(&parentWorldMatrixInv, NULL, &m_parentWorldMatrix);
+		D3DXVec3TransformCoord(&m_childPosition, &m_position, &parentWorldMatrixInv);
+		m_moveFloorHit = true;
 	}
 	if (m_characterController.IsOnMoveFloor2()) {
 		//親のワールド行列から逆行列を生成
 		D3DXMATRIX secondParentWorldMatrixInv;
-		D3DXMatrixInverse(&secondParentWorldMatrixInv, NULL, &secondParentWorldMatrix);
-		D3DXVec3TransformCoord(&secondChildPosition, &m_position, &secondParentWorldMatrixInv);
-		moveFloor2Hit = true;
+		D3DXMatrixInverse(&secondParentWorldMatrixInv, NULL, &m_secondParentWorldMatrix);
+		D3DXVec3TransformCoord(&m_secondChildPosition, &m_position, &secondParentWorldMatrixInv);
+		m_moveFloor2Hit = true;
 	}
 
 	return true;
@@ -129,19 +129,19 @@ void StoneMonster::Update()
 	}
 
 	//毎フレーム親のワールド行列を更新
-	if (moveFloorHit == true && !map->GetMoveFloorList().empty()){
-		parentWorldMatrix = map->MoveFloorWorldMatrix(m_position);
-		moveFloorPosition = map->GetMoveFloorPosition(m_position);
+	if (m_moveFloorHit == true && !map->GetMoveFloorList().empty()){
+		m_parentWorldMatrix = map->GetMoveFloorWorldMatrix(m_position);
+		m_moveFloorPosition = map->GetMoveFloorPosition(m_position);
 	}
-	else if (moveFloor2Hit == true && !map->GetMoveFloor2List().empty()) {
-		secondParentWorldMatrix = map->MoveFloor2WorldMatrix(m_position);
-		moveFloor2Position = map->GetMoveFloor2Position(m_position);
+	else if (m_moveFloor2Hit == true && !map->GetMoveFloor2List().empty()) {
+		m_secondParentWorldMatrix = map->GetMoveFloor2WorldMatrix(m_position);
+		m_moveFloor2Position = map->GetMoveFloor2Position(m_position);
 	}
 
 	//移動床に当たっている
-	if (moveFloorHit) {
+	if (m_moveFloorHit) {
 		//ワールド座標に変換する
-		D3DXVec3TransformCoord(&m_position, &childPosition, &parentWorldMatrix);
+		D3DXVec3TransformCoord(&m_position, &m_childPosition, &m_parentWorldMatrix);
 		m_characterController.SetPosition(m_position);
 
 		m_characterController.SetMoveSpeed(m_moveSpeed);
@@ -152,12 +152,12 @@ void StoneMonster::Update()
 
 		//親から見たプレイヤーの座標を更新
 		D3DXMATRIX worldMatrixInv;
-		D3DXMatrixInverse(&worldMatrixInv, NULL, &parentWorldMatrix);
-		D3DXVec3TransformCoord(&childPosition, &m_position, &worldMatrixInv);
+		D3DXMatrixInverse(&worldMatrixInv, NULL, &m_parentWorldMatrix);
+		D3DXVec3TransformCoord(&m_childPosition, &m_position, &worldMatrixInv);
 	}
-	else if (moveFloor2Hit){
+	else if (m_moveFloor2Hit){
 		//ワールド座標に変換する
-		D3DXVec3TransformCoord(&m_position, &secondChildPosition, &secondParentWorldMatrix);
+		D3DXVec3TransformCoord(&m_position, &m_secondChildPosition, &m_secondParentWorldMatrix);
 		m_characterController.SetPosition(m_position);
 
 		m_characterController.SetMoveSpeed(m_moveSpeed);
@@ -168,8 +168,8 @@ void StoneMonster::Update()
 
 		//親から見た座標を更新
 		D3DXMATRIX worldMatrixInv;
-		D3DXMatrixInverse(&worldMatrixInv, NULL, &secondParentWorldMatrix);
-		D3DXVec3TransformCoord(&secondChildPosition, &m_position, &worldMatrixInv);
+		D3DXMatrixInverse(&worldMatrixInv, NULL, &m_secondParentWorldMatrix);
+		D3DXVec3TransformCoord(&m_secondChildPosition, &m_position, &worldMatrixInv);
 	}
 	else {
 		m_characterController.SetMoveSpeed(m_moveSpeed);

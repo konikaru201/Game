@@ -16,35 +16,35 @@ Killer::~Killer()
 void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 {
 	//モデルの初期化
-	modelData.LoadModelData("Assets/modelData/Killer.x", NULL);
-	model.Init(&modelData);
+	m_modelData.LoadModelData("Assets/modelData/Killer.x", NULL);
+	m_model.Init(&m_modelData);
 	//ライトを設定
-	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
 
-	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
-	model.SetLight(&light);
+	m_light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	m_model.SetLight(&m_light);
 
-	model.UpdateWorldMatrix( pos, rot, { 1.0f,1.0f,1.0f });
+	m_model.UpdateWorldMatrix( pos, rot, { 1.0f,1.0f,1.0f });
 
-	position = pos;
-	rotation = rot;
-	initPosition = pos;
-	initRotation = rot;
+	m_position = pos;
+	m_rotation = rot;
+	m_initPosition = pos;
+	m_initRotation = rot;
 
 	//移動限界ラインを設定
-	moveLimitLine[0] = position.x + -80.0f;	//左
-	moveLimitLine[1] = position.x + 80.0f;	//右		
-	moveLimitLine[2] = position.z + 80.0f;	//前
-	moveLimitLine[3] = position.z + -80.0f;	//後
+	m_moveLimitLine[0] = m_position.x + -80.0f;	//左
+	m_moveLimitLine[1] = m_position.x + 80.0f;	//右		
+	m_moveLimitLine[2] = m_position.z + 80.0f;	//前
+	m_moveLimitLine[3] = m_position.z + -80.0f;	//後
 
-	state = State_Search;
+	m_state = State_Search;
 
 	////剛体の作成
 	CapsuleCollider* coll = new CapsuleCollider;
@@ -54,16 +54,16 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	RigidBodyInfo rbInfo;
 	rbInfo.collider = coll;		//剛体のコリジョンを設定する
 	rbInfo.mass = 0.0f;			//質量を0にすると動かない剛体になる
-	rbInfo.pos = position;
-	rbInfo.rot = rotation;
+	rbInfo.pos = m_position;
+	rbInfo.rot = m_rotation;
 	//剛体を作成
-	rigidBody.Create(rbInfo);
+	m_rigidBody.Create(rbInfo);
 
-	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
-	trans.setOrigin(btVector3(position.x, position.y, position.z));
+	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
+	trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
 
 	//作成した剛体を物理ワールドに追加
-	g_physicsWorld->AddRigidBody(&rigidBody);
+	g_physicsWorld->AddRigidBody(&m_rigidBody);
 
 	//影を描画するフラグを立てる
 	SetRenderToShadow();
@@ -82,38 +82,38 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 void Killer::Update()
 {
-	if (sceneManager->GetChangeSceneFlag() || isDead)
+	if (sceneManager->GetChangeSceneFlag() || m_isDead)
 	{
 		SetisDead();
 		//剛体を削除
-		g_physicsWorld->RemoveRigidBody(&rigidBody);
+		g_physicsWorld->RemoveRigidBody(&m_rigidBody);
 		return;
 	}
 
 	//初期位置に戻す
-	if (position.x < moveLimitLine[0] || position.x > moveLimitLine[1]
-		|| position.z < moveLimitLine[3] || position.z > moveLimitLine[2]
-		|| isRespawn)
+	if (m_position.x < m_moveLimitLine[0] || m_position.x > m_moveLimitLine[1]
+		|| m_position.z < m_moveLimitLine[3] || m_position.z > m_moveLimitLine[2]
+		|| m_isRespawn)
 	{
 		SetisDead();
-		g_physicsWorld->RemoveRigidBody(&rigidBody);
+		g_physicsWorld->RemoveRigidBody(&m_rigidBody);
 
 		Killer* killer = goMgr->NewGameObject<Killer>();
-		killer->Init(initPosition,initRotation);
+		killer->Init(m_initPosition,m_initRotation);
 	}
 
 	D3DXVECTOR3 moveSpeed = Move();
-	position += moveSpeed / 60.0f;
+	m_position += moveSpeed / 60.0f;
 
-	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
-	trans.setOrigin(btVector3(position.x, position.y, position.z));
+	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
+	trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
 
-	model.UpdateWorldMatrix(position, rotation, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
+	m_model.UpdateWorldMatrix(m_position, m_rotation, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 }
 
 void Killer::Render()
 {
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }
 
 D3DXVECTOR3 Killer::Move()
@@ -122,10 +122,10 @@ D3DXVECTOR3 Killer::Move()
 
 	//プレイヤーの位置を取得
 	D3DXVECTOR3 playerPos = player->GetPosition();
-	D3DXVECTOR3 toPlayer = playerPos - position;
+	D3DXVECTOR3 toPlayer = playerPos - m_position;
 	//モデルのZ方向を取得
 	D3DXVECTOR3 direction;
-	D3DXMATRIX mWorld = model.GetWorldMatrix();
+	D3DXMATRIX mWorld = m_model.GetWorldMatrix();
 	direction.x = mWorld.m[2][0];
 	direction.y = mWorld.m[2][1];
 	direction.z = mWorld.m[2][2];
@@ -145,10 +145,10 @@ D3DXVECTOR3 Killer::Move()
 
 	//プレイヤーがステージクリアしたらそのまま直進
 	if(player->GetStar()){
-		state = State_Miss;
+		m_state = State_Miss;
 	}
 
-	switch (state)
+	switch (m_state)
 	{
 	//探索状態
 	case State_Search:
@@ -159,10 +159,10 @@ D3DXVECTOR3 Killer::Move()
 
 		//発見された
 		if (fabsf(angle) < D3DXToRadian(30.0f) && length < 12.0f) {
-			state = State_Find;
+			m_state = State_Find;
 		}
 
-		move = direction * moveSpeed;
+		move = direction * m_moveSpeed;
 		//move.x = direction.x * moveSpeed;
 
 		break;
@@ -170,8 +170,8 @@ D3DXVECTOR3 Killer::Move()
 	case State_Find:
 		//プレイヤーとの距離が離れる
 		//又はプレイヤーにジャンプで避けられると見失う
-		if (length > 30.0f || (position.y + 1.0f < playerPos.y && position.x < playerPos.x)) {
-			state = State_Miss;
+		if (length > 30.0f || (m_position.y + 1.0f < playerPos.y && m_position.x < playerPos.x)) {
+			m_state = State_Miss;
 			break;
 		}
 
@@ -191,34 +191,34 @@ D3DXVECTOR3 Killer::Move()
 
 		angle /= 30;
 		D3DXQuaternionRotationAxis(&rot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
-		D3DXQuaternionMultiply(&rotation, &rotation, &rot);
+		D3DXQuaternionMultiply(&m_rotation, &m_rotation, &rot);
 
-		direction *= moveSpeed;
+		direction *= m_moveSpeed;
 		move = direction;
 		move.y = 0.0f;
 
 		break;
 	//見失った状態
 	case State_Miss:
-		moveDir = direction * moveSpeed;
-		move = moveDir;
+		m_moveDir = direction * m_moveSpeed;
+		move = m_moveDir;
 		break;
 	//死亡状態
 	case State_Dead:
-		timer += Timer::GetFrameDeltaTime();
-		move = { 0.0f, -moveSpeed * (timer + 1.0f), 0.0f };
-		if (timer > 5.0f) {
-			isRespawn = true;
-			timer = 0.0f;
+		m_timer += Timer::GetFrameDeltaTime();
+		move = { 0.0f, -m_moveSpeed * (m_timer + 1.0f), 0.0f };
+		if (m_timer > 5.0f) {
+			m_isRespawn = true;
+			m_timer = 0.0f;
 		}
 		break;
 	//プレイヤーにヒットした状態
 	case State_Hit:
-		timer += Timer::GetFrameDeltaTime();
+		m_timer += Timer::GetFrameDeltaTime();
 		move = { 0.0f,0.0f,0.0f };
-		if (timer > 5.0f) {
-			isDead = true;
-			timer = 0.0f;
+		if (m_timer > 5.0f) {
+			m_isDead = true;
+			m_timer = 0.0f;
 		}
 		break;
 	}
@@ -226,24 +226,24 @@ D3DXVECTOR3 Killer::Move()
 	return move;
 }
 
-void Killer::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
+void Killer::CollisionDetection(float length, const D3DXVECTOR3& toPlayer)
 {
 	//プレイヤーとの距離が近ければ自身かプレイヤーの死亡フラグを立てる
-	if (Length <= 1.5f) {
-		D3DXVECTOR3 toPlayerX = { ToPlayer.x,0.0f,0.0f };
+	if (length <= 1.5f) {
+		D3DXVECTOR3 toPlayerX = { toPlayer.x,0.0f,0.0f };
 		float lengthX = D3DXVec3Length(&toPlayerX);
 
-		D3DXVECTOR3 toPlayerY = { 0.0f,ToPlayer.y,0.0f };
+		D3DXVECTOR3 toPlayerY = { 0.0f,toPlayer.y,0.0f };
 		float lengthY = D3DXVec3Length(&toPlayerY);
 
-		D3DXVECTOR3 toPlayerZ = { 0.0f,0.0f,ToPlayer.z };
+		D3DXVECTOR3 toPlayerZ = { 0.0f,0.0f,toPlayer.z };
 		float lengthZ = D3DXVec3Length(&toPlayerZ);
 
 		//Y方向に当たった
 		if (toPlayerY.y > 0.0f && lengthY <= 1.3f) {
 			//キラーが死亡
 			player->SetTreadOnEnemy(true);
-			state = State_Dead;
+			m_state = State_Dead;
 
 			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
 			SE->Init("Assets/sound/Humituke.wav");
@@ -254,14 +254,14 @@ void Killer::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 			//プレイヤーが死亡
 			m_hitPlayer = true;
 			player->SetHitEnemy(m_hitPlayer);
-			state = State_Hit;
+			m_state = State_Hit;
 		}
 		//Z方向に当たった
 		else if (lengthY <= 0.5f && lengthZ <= 0.5f) {
 			//プレイヤーが死亡
 			m_hitPlayer = true;
 			player->SetHitEnemy(m_hitPlayer);
-			state = State_Hit;
+			m_state = State_Hit;
 		}
 	}
 
@@ -270,8 +270,8 @@ void Killer::CollisionDetection(float Length, const D3DXVECTOR3& ToPlayer)
 void Killer::RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
 {
 	if (gameCamera != nullptr) {
-		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
-		model.Draw(viewMatrix, projMatrix);
-		model.SetDrawShadowMap(false, false);
+		m_model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
+		m_model.Draw(viewMatrix, projMatrix);
+		m_model.SetDrawShadowMap(false, false);
 	}
 }

@@ -24,13 +24,13 @@ void PlayerMove::Update()
 		else {
 			//走りアニメーションを設定
 			m_currentAnim = AnimationRun;
-			timer += Timer::GetFrameDeltaTime();
+			m_timer += Timer::GetFrameDeltaTime();
 
-			if (timer >= 0.4f) {
+			if (m_timer >= 0.4f) {
 				CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
 				SE->Init("Assets/sound/FootStep.wav");
 				SE->Play(false);
-				timer = 0.0f;
+				m_timer = 0.0f;
 			}
 		}
 		//アニメーションの設定
@@ -42,7 +42,7 @@ void PlayerMove::Update()
 		cameraRiset = true;
 	}
 
-	if (acceleration == 0.0f && !m_player->GetIsJump()) {
+	if (m_acceleration == 0.0f && !m_player->GetIsJump()) {
 		m_psm->ChangeState(PlayerState::plState_Idle);
 	}
 	else if (m_player->GetHitEnemy() || m_player->GetFallPlayer()) {
@@ -89,37 +89,37 @@ D3DXVECTOR3 PlayerMove::Move()
 	D3DXVec3Normalize(&cameraVecX, &cameraVecX);
 
 	//キャラクターの向きを計算
-	dir.x = cameraVecX.x * moveDir.x + cameraVecZ.x * moveDir.z;
-	dir.y = 0.0f;
-	dir.z = cameraVecX.z * moveDir.x + cameraVecZ.z * moveDir.z;
+	m_dir.x = cameraVecX.x * moveDir.x + cameraVecZ.x * moveDir.z;
+	m_dir.y = 0.0f;
+	m_dir.z = cameraVecX.z * moveDir.x + cameraVecZ.z * moveDir.z;
 
 	//向きが90度以上変わったら速度を下げる
-	if (D3DXVec3Dot(&currentDir, &dir) < -0.1f) {
-		acceleration = 1.0f;
+	if (D3DXVec3Dot(&m_currentDir, &m_dir) < -0.1f) {
+		m_acceleration = 1.0f;
 	}
 
 	//1フレーム前の向きを保存
-	currentDir = dir;
+	m_currentDir = m_dir;
 
 	//移動してるなら徐々に加速
 	if (moveDir.x != 0.0f || moveDir.z != 0.0f) {
-		acceleration += 0.1f;
+		m_acceleration += 0.1f;
 	}
 	else {
-		acceleration -= 0.8f;
-		if (acceleration < 0.0f) {
-			acceleration = 0.0f;
+		m_acceleration -= 0.8f;
+		if (m_acceleration < 0.0f) {
+			m_acceleration = 0.0f;
 		}
 	}
 
 	//限界速度を超えたら移動速度を限界速度に設定
-	if (acceleration > speedLimit) {
-		acceleration = speedLimit;
+	if (m_acceleration > m_speedLimit) {
+		m_acceleration = m_speedLimit;
 	}
 
 	//移動速度を計算
-	moveSpeed.x = dir.x * acceleration;
-	moveSpeed.z = dir.z * acceleration;
+	moveSpeed.x = m_dir.x * m_acceleration;
+	moveSpeed.z = m_dir.z * m_acceleration;
 
 	//ジャンプ中でなければジャンプさせる
 	if (pad->IsTrigger(pad->enButtonA) 
@@ -152,7 +152,7 @@ void PlayerMove::Turn()
 	//移動しているなら向きを変える
 	D3DXVECTOR3 playerDir = m_player->GetPlayerDir();
 	D3DXVec3Normalize(&playerDir, &playerDir);
-	D3DXVECTOR3 stickDir = dir;
+	D3DXVECTOR3 stickDir = m_dir;
 	D3DXVec3Normalize(&stickDir, &stickDir);
 	float angle = D3DXVec3Dot(&playerDir, &stickDir);
 	if (angle < -1.0f)

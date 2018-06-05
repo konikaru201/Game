@@ -1,40 +1,47 @@
+/*!
+*@brief	スカイボックスクラス
+*/
 #pragma once
 
 #include "myEngine/Physics/MeshCollider.h"
-#include "myEngine/Physics/RigidBody.h"
 #include "myEngine/GameObject/GameObject.h"
 
 class SkyBox : public GameObject
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	SkyBox();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~SkyBox();
-
-	//初期化
-	//pos	座標
-	//rot	回転
+	/*!
+	*@brief	初期化
+	* @param[in]	pos		座標
+	* @param[in]	rot		回転
+	*/
 	void Init(D3DXVECTOR3 pos, D3DXQUATERNION rot);
-
-	//アップデートが呼ばれる前に呼ばれる関数
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
 private:
-	SkinModel model;								//スキンモデル
-	SkinModelData modelData;						//スキンモデルデータ
-	MeshCollider meshCollider;						//メッシュコライダー
-	RigidBody rigidBody;							//剛体
-	D3DXVECTOR3 rotationAxis;
-	D3DXVECTOR3 position;							//座標
-	D3DXQUATERNION rotation;						//回転
-	Light light;									//ライト
+	SkinModel		m_model;			//スキンモデル
+	SkinModelData	m_modelData;		//スキンモデルデータ
+	MeshCollider	m_meshCollider;		//メッシュコライダー
+	D3DXVECTOR3		m_position;			//座標
+	D3DXQUATERNION	m_rotation;			//回転
+	Light			m_light;			//ライト
 	
-	LPDIRECT3DCUBETEXTURE9	m_cubeMapTexture = nullptr;
+	LPDIRECT3DCUBETEXTURE9	m_cubeMapTexture = nullptr;	//キューブマップテクスチャ
 };

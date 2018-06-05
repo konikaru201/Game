@@ -112,7 +112,6 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 		else if (strcmp("StoneMonster", mapLocInfo[i].modelName) == 0) {
 			StoneMonster* stoneMonster = goMgr->NewGameObject<StoneMonster>();
 			stoneMonster->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
-			//m_stoneMonsterList.push_back(stoneMonster);
 		}
 		else if (strcmp("MoveFloor_3", mapLocInfo[i].modelName) == 0) {
 			Floor* floor = goMgr->NewGameObject<Floor>();
@@ -159,7 +158,7 @@ void Map::Render()
 {
 }
 
-const D3DXMATRIX& Map::MoveFloorWorldMatrix(const D3DXVECTOR3& pos)
+const D3DXMATRIX& Map::GetMoveFloorWorldMatrix(const D3DXVECTOR3& pos)
 {
 	float minLength = 1000.0f;
 	for (auto moveFloor : m_moveFloorList) {
@@ -175,7 +174,7 @@ const D3DXMATRIX& Map::MoveFloorWorldMatrix(const D3DXVECTOR3& pos)
 	return moveFloorMatrix;
 }
 
-const D3DXMATRIX& Map::MoveFloor2WorldMatrix(const D3DXVECTOR3& pos)
+const D3DXMATRIX& Map::GetMoveFloor2WorldMatrix(const D3DXVECTOR3& pos)
 {
 	float minLength = 1000.0f;
 	for (auto moveFloor2 : m_moveFloor2List) {

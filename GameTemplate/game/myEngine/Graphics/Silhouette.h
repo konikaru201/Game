@@ -1,3 +1,6 @@
+/*!
+*@brief	シルエットクラス
+*/
 #pragma once
 
 #include "myEngine/GameObject/GameObject.h"
@@ -5,18 +8,24 @@
 class Silhouette : public GameObject
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	Silhouette();
-
-	//デストラクタデストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~Silhouette();
-
-	//更新する前に呼ばれる関数
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
 };

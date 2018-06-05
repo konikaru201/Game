@@ -1,3 +1,6 @@
+/*!
+*@brief	ブロック１クラス
+*/
 #pragma once
 
 #include "myEngine/Physics/MeshCollider.h"
@@ -8,44 +11,55 @@
 class Block : public GameObject
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	Block();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~Block();
-
-	//初期化
-	//pos	座標
-	//rot	回転
+	/*!
+	*@brief	初期化
+	* @param[in]	pos		座標
+	* @param[in]	rot		回転
+	*/
 	void Init(D3DXVECTOR3 pos, D3DXQUATERNION rot);
-
-	//アップデートが呼ばれる前に呼ばれる関数
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
-
-	//ワールド行列を取得
+	/*!
+	* @brief	ワールド行列を取得
+	*@return	ワールド行列
+	*/
 	const D3DXMATRIX& GetWorldMatrix()
 	{
-		return model.GetWorldMatrix();
+		return m_model.GetWorldMatrix();
 	}
-
-	//回転行列を取得
+	/*!
+	* @brief	回転行列を取得
+	*@return	回転行列
+	*/
 	const D3DXMATRIX& GetRotationMatrix()
 	{
-		return model.GetRotationMatrix();
+		return m_model.GetRotationMatrix();
 	}
 private:
-	SkinModel model;								//スキンモデル
-	SkinModelData modelData;						//スキンモデルデータ
-	MeshCollider meshCollider;						//メッシュコライダー
-	RigidBody rigidBody;							//剛体
-	Light light;									//ライト
-	D3DXVECTOR3 rotationAxis;
-	D3DXVECTOR3 position;							//座標
-	D3DXQUATERNION rotation;						//回転
+	SkinModel		m_model;			//スキンモデル
+	SkinModelData	m_modelData;		//スキンモデルデータ
+	MeshCollider	m_meshCollider;		//メッシュコライダー
+	RigidBody		m_rigidBody;		//剛体
+	Light			m_light;			//ライト
+	D3DXVECTOR3		m_rotationAxis;		//回転軸
+	D3DXVECTOR3		m_position;			//座標
+	D3DXQUATERNION	m_rotation;			//回転
 };

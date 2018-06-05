@@ -1,3 +1,6 @@
+/*!
+*@brief	マップクラス
+*/
 #pragma once
 
 #include "myEngine/GameObject/GameObject.h"
@@ -30,60 +33,94 @@ struct SMapInfo {
 class Map : public GameObject
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	Map();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~Map();
-
-	//初期化
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる関数
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//マップの生成
-	//mapLocInfo	マップの配置情報
-	//numObject		マップのオブジェクト数
+	/*!
+	*@brief	マップの生成
+	*@param[in] mapLocInfo	マップの配置情報
+	*@param[in] numObject	マップのオブジェクト数
+	*@param[in] stageNumber	ステージ番号
+	*/
 	void Create(SMapInfo* mapLocInfo, int numObject);
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
-
-	const D3DXMATRIX& MoveFloorWorldMatrix(const D3DXVECTOR3& pos);
-
-	const D3DXMATRIX& MoveFloor2WorldMatrix(const D3DXVECTOR3& pos);
-
+	/*!
+	*@brief	一番近い移動床１のワールド行列を計算
+	*@param[in]		pos		比較するオブジェクトの座標
+	*@return 一番近い移動床１のワールド行列
+	*/
+	const D3DXMATRIX& GetMoveFloorWorldMatrix(const D3DXVECTOR3& pos);
+	/*!
+	*@brief	一番近い移動床２のワールド行列を計算
+	*@param[in]		pos		比較するオブジェクトの座標
+	*@return 一番近い移動床２のワールド行列
+	*/
+	const D3DXMATRIX& GetMoveFloor2WorldMatrix(const D3DXVECTOR3& pos);
+	/*!
+	*@brief	移動床１のリストを取得
+	*@return 移動床１のリスト
+	*/
 	std::list<MoveFloor*> GetMoveFloorList()
 	{
 		return m_moveFloorList;
 	}
-
+	/*!
+	*@brief	移動床２のリストを取得
+	*@return 移動床２のリスト
+	*/
 	std::list<MoveFloor2*> GetMoveFloor2List()
 	{
 		return m_moveFloor2List;
 	}
-
+	/*!
+	*@brief	一番近い移動床１の座標を計算
+	*@param[in]		pos		比較するオブジェクトの座標
+	*@return 一番近い移動床１の座標
+	*/
 	const D3DXVECTOR3& GetMoveFloorPosition(const D3DXVECTOR3& pos);
-
+	/*!
+	*@brief	一番近い移動床１の座標を計算
+	*@param[in]		pos		比較するオブジェクトの座標
+	*@return 一番近い移動床１の座標
+	*/
 	const D3DXVECTOR3& GetMoveFloor2Position(const D3DXVECTOR3& pos);
-
-	bool GetIsMoveFloor()
-	{
-		return m_isMoveFloor;
-	}
-
-	bool GetIsMoveFloor2()
-	{
-		return m_isMoveFloor2;
-	}
+	///*!
+	//*@brief	移動床１が生成されているか
+	//*/
+	//bool GetIsMoveFloor()
+	//{
+	//	return m_isMoveFloor;
+	//}
+	///*!
+	//*@brief	移動床２が生成されているか
+	//*/
+	//bool GetIsMoveFloor2()
+	//{
+	//	return m_isMoveFloor2;
+	//}
 private:
-	std::list<MoveFloor*> m_moveFloorList;
-	std::list<MoveFloor2*> m_moveFloor2List;
-	D3DXMATRIX moveFloorMatrix;
-	D3DXMATRIX moveFloor2Matrix;
-	bool m_isMoveFloor = false;
-	bool m_isMoveFloor2 = false;
+	std::list<MoveFloor*> m_moveFloorList;		//移動床１のリスト
+	std::list<MoveFloor2*> m_moveFloor2List;	//移動床２のリスト
+	D3DXMATRIX moveFloorMatrix;					//移動床１のワールド行列
+	D3DXMATRIX moveFloor2Matrix;				//移動床２のワールド行列
+	bool m_isMoveFloor = false;					//移動床１が生成されているか
+	bool m_isMoveFloor2 = false;				//移動床２が生成されているか
 };
 
 extern Map* map;

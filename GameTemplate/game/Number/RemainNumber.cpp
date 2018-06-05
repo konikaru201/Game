@@ -27,14 +27,14 @@ bool RemainNumber::Start()
 {
 	for (int i = 0; i < 2; i++) 
 	{
-		num[i] = new Number;
+		m_num[i] = new Number;
 	}
 
-	num[0]->Init(m_position + D3DXVECTOR2(NumSizeX, 0.0f), NumScale);
-	num[1]->Init(m_position + D3DXVECTOR2(NumSizeX * 2.0f, 0.0f), NumScale);
+	m_num[0]->Init(m_position + D3DXVECTOR2(NumSizeX, 0.0f), NumScale);
+	m_num[1]->Init(m_position + D3DXVECTOR2(NumSizeX * 2.0f, 0.0f), NumScale);
 
-	num[0]->NumSet(0);
-	num[1]->NumSet(m_remainNum);
+	m_num[0]->NumSet(0);
+	m_num[1]->NumSet(m_remainNum);
 
 	return true;
 }
@@ -56,15 +56,15 @@ void RemainNumber::Update()
 		m_remainNum = 3;
 	}
 
-	num[0]->NumSet(m_remainNum / 10);
-	num[1]->NumSet(m_remainNum % 10);
+	m_num[0]->NumSet(m_remainNum / 10);
+	m_num[1]->NumSet(m_remainNum % 10);
 }
 
 void RemainNumber::Render()
 {
 	for (int i = 0; i < 2; i++)
 	{
-		num[i]->Render();
+		m_num[i]->Render();
 	}
 }
 
@@ -72,6 +72,6 @@ void RemainNumber::DeleteNum()
 {
 	for (int i = 0; i < 2; i++)
 	{
-		delete num[i];
+		delete m_num[i];
 	}
 }

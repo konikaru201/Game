@@ -50,18 +50,18 @@ bool GameScene::Start()
 */
 void GameScene::Update()
 {
-	switch (step){
+	switch (m_step){
 	//ステージ読み込みが終了
 	case step_StageLoad:
 		g_fade->StartFadeIn();
-		step = step_WaitFadeIn;
+		m_step = step_WaitFadeIn;
 		break;
 
 	//フェードイン時
 	case step_WaitFadeIn:
 		//フェードが終了
 		if (!g_fade->IsExecute()) {
-			step = step_normal;
+			m_step = step_normal;
 		}
 		break;
 
@@ -75,14 +75,14 @@ void GameScene::Update()
 				gameOverScene = goMgr->NewGameObject<GameOverScene>();
 				m_restart = false;
 			}
-			step = step_GameOver;
+			m_step = step_GameOver;
 		}
 		//スター獲得時
 		else if (player->GetStarAnimationEnd()) {
 			bgmSource->SetisDead();
 			bgmSource = nullptr;
 			g_fade->StartFadeOut();
-			step = step_StageClear;
+			m_step = step_StageClear;
 		}
 		g_physicsWorld->Update();
 		break;
@@ -154,7 +154,7 @@ void GameScene::StageCreate(int number)
 		bgmSource->Play(true);
 	}
 
-	step = step_StageLoad;
+	m_step = step_StageLoad;
 }
 
 void GameScene::Release()

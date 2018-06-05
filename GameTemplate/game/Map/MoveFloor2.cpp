@@ -15,26 +15,26 @@ MoveFloor2::~MoveFloor2()
 
 void MoveFloor2::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 {
-	modelData.LoadModelData("Assets/modelData/MoveFloor_2.x", NULL);
-	model.Init(&modelData);
+	m_modelData.LoadModelData("Assets/modelData/MoveFloor_2.x", NULL);
+	m_model.Init(&m_modelData);
 	//ライトの設定
-	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
 
-	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
-	model.SetLight(&light);
+	m_light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	m_model.SetLight(&m_light);
 
-	model.UpdateWorldMatrix(pos, rot, { 1.0f,1.0f,1.0f });
+	m_model.UpdateWorldMatrix(pos, rot, { 1.0f,1.0f,1.0f });
 
-	position = pos;
-	rotation = rot;
-	moveSpeed = { -0.05f,0.0f,0.0f };
+	m_position = pos;
+	m_rotation = rot;
+	m_moveSpeed = { -0.05f,0.0f,0.0f };
 
 	//衝突判定の初期化
 	//スキンモデルからボックスコライダーを作成する
@@ -45,20 +45,20 @@ void MoveFloor2::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	RigidBodyInfo rbInfo;
 	rbInfo.collider = boxCollider;		//剛体のコリジョンを設定する
 	rbInfo.mass = 0.0f;					//質量を0にすると動かない剛体になる
-	rbInfo.pos = position;
-	rbInfo.rot = rotation;
+	rbInfo.pos = m_position;
+	rbInfo.rot = m_rotation;
 	//剛体を作成
-	rigidBody.Create(rbInfo);
+	m_rigidBody.Create(rbInfo);
 
-	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
-	trans.setOrigin(btVector3(position.x, position.y, position.z));
+	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
+	trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
 
-	rigidBody.GetBody()->setUserIndex(enCollisionAttr_MoveFloor2);
-	rigidBody.GetBody()->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
-	rigidBody.GetBody()->setActivationState(DISABLE_DEACTIVATION);
+	m_rigidBody.GetBody()->setUserIndex(enCollisionAttr_MoveFloor2);
+	m_rigidBody.GetBody()->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
+	m_rigidBody.GetBody()->setActivationState(DISABLE_DEACTIVATION);
 
 	//作成した剛体を物理ワールドに追加
-	g_physicsWorld->AddRigidBody(&rigidBody);
+	g_physicsWorld->AddRigidBody(&m_rigidBody);
 }
 
 bool MoveFloor2::Start()
@@ -77,45 +77,45 @@ void MoveFloor2::PreUpdate()
 	{
 		SetisDead();
 		//剛体を削除
-		g_physicsWorld->RemoveRigidBody(&rigidBody);
+		g_physicsWorld->RemoveRigidBody(&m_rigidBody);
 		return;
 	}
 
 	Move();
 
-	if (moveFlg) {
-		player->SetMoveFloor2Speed(moveSpeed);
+	if (m_moveFlg) {
+		player->SetMoveFloor2Speed(m_moveSpeed);
 	}
 	else {
 		player->SetMoveFloor2Speed(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
 
-	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
-	trans.setOrigin(btVector3(position.x, position.y, position.z));
+	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
+	trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
 
-	model.UpdateWorldMatrix(position, rotation, { 1.0f,1.0f,1.0f });
+	m_model.UpdateWorldMatrix(m_position, m_rotation, { 1.0f,1.0f,1.0f });
 }
 
 void MoveFloor2::Move()
 {
-	Timer += Timer::GetFrameDeltaTime();
-	moveFlg = true;
-	if (Timer >= 10.0f) {
-		moveSpeed *= -1.0f;
-		Timer = 0.0f;
+	m_timer += Timer::GetFrameDeltaTime();
+	m_moveFlg = true;
+	if (m_timer >= 10.0f) {
+		m_moveSpeed *= -1.0f;
+		m_timer = 0.0f;
 	}
-	if (Timer >= 2.0f)
+	if (m_timer >= 2.0f)
 	{
-		position += moveSpeed;
+		m_position += m_moveSpeed;
 	}
 	else
 	{
-		moveFlg = false;
+		m_moveFlg = false;
 	}
 }
 
 void MoveFloor2::Render()
 {
-	model.SetDrawShadowMap(false, true);
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+	m_model.SetDrawShadowMap(false, true);
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }

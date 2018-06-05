@@ -7,11 +7,11 @@
 CShadowMap::CShadowMap()
 {
 	for (int i = 0; i < NUM_SHADOW_MAP; i++) {
-		D3DXMatrixIdentity(&lightViewMatrix[i]);
-		D3DXMatrixIdentity(&lightProjMatrix[i]);
+		D3DXMatrixIdentity(&m_lightViewMatrix[i]);
+		D3DXMatrixIdentity(&m_lightProjMatrix[i]);
 	}
-	viewPosition = { 0.0f,0.0f,0.0f };
-	viewTarget = { 0.0f,0.0f,0.0f };
+	m_viewPosition = { 0.0f,0.0f,0.0f };
+	m_viewTarget = { 0.0f,0.0f,0.0f };
 	m_lightDirection = { 0.0f,-1.0f,0.0f };
 }
 CShadowMap::~CShadowMap()
@@ -25,7 +25,7 @@ void CShadowMap::Init()
 	int h = 2048;	//高さ
 	//レンダリングターゲットを初期化。
 	for (int i = 0; i < 3; i++) {
-		renderTarget[i].Create(
+		m_renderTarget[i].Create(
 			w,
 			h,
 			1,						
@@ -103,14 +103,14 @@ void CShadowMap::Update()
 			lightTarget.y = -50.0f;
 
 			//ライトビュー行列を計算。
-			D3DXMatrixLookAtLH(&lightViewMatrix[i], &lightPos, &lightTarget, &cameraDirXZ);
+			D3DXMatrixLookAtLH(&m_lightViewMatrix[i], &lightPos, &lightTarget, &cameraDirXZ);
 
 			//視推台を構成する8頂点が計算できたので、ライト空間に座標変換して、AABBを求める。
 			D3DXVECTOR3 vMax = { -FLT_MAX , -FLT_MAX , -FLT_MAX };
 			D3DXVECTOR3 vMin = {  FLT_MAX ,  FLT_MAX ,  FLT_MAX };
 			for (auto& vInLight : v) {
 				//ワールド空間の座標からライト空間の座標に変換
-				D3DXVec3TransformCoord(&vInLight, &vInLight, &lightViewMatrix[i]);
+				D3DXVec3TransformCoord(&vInLight, &vInLight, &m_lightViewMatrix[i]);
 				D3DXVec3Maximize(&vMax, &vMax, &vInLight);
 				D3DXVec3Minimize(&vMin, &vMin, &vInLight);
 			}
@@ -120,7 +120,7 @@ void CShadowMap::Update()
 
 		//プロジェクション行列を計算。
 		D3DXMatrixOrthoLH(
-			&lightProjMatrix[i],
+			&m_lightProjMatrix[i],
 			w,
 			h,
 			0.1f,
@@ -128,7 +128,7 @@ void CShadowMap::Update()
 		);
 
 		//ライトビュープロジェクション行列を作成。
-		D3DXMatrixMultiply(&m_LVPMatrix[i], &lightViewMatrix[i], &lightProjMatrix[i]);
+		D3DXMatrixMultiply(&m_LVPMatrix[i], &m_lightViewMatrix[i], &m_lightProjMatrix[i]);
 
 		//近平面を更新
 		nearPlaneZ = farPlaneZ;
@@ -144,12 +144,12 @@ void CShadowMap::Draw()
 
 	for (int i = 0; i < NUM_SHADOW_MAP; i++) {
 		//レンダリングターゲットを変更する。
-		g_pd3dDevice->SetRenderTarget(0, renderTarget[i].GetRenderTarget());
-		g_pd3dDevice->SetDepthStencilSurface(renderTarget[i].GetDepthStencilBuffer());
+		g_pd3dDevice->SetRenderTarget(0, m_renderTarget[i].GetRenderTarget());
+		g_pd3dDevice->SetDepthStencilSurface(m_renderTarget[i].GetDepthStencilBuffer());
 		//書き込み先を変更したのでクリア。
 		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0);
 
-		goMgr->RenderToShadow(&lightViewMatrix[i], &lightProjMatrix[i], true, false);
+		goMgr->RenderToShadow(&m_lightViewMatrix[i], &m_lightProjMatrix[i], true, false);
 	}
 	g_pd3dDevice->SetRenderTarget(0, renderTargetBackup);		//戻す。
 	g_pd3dDevice->SetDepthStencilSurface(depthBufferBackup);	//戻す。

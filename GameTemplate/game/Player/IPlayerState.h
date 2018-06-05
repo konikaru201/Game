@@ -1,3 +1,7 @@
+/*!
+*@brief	プレイヤーのステートのインターフェース
+*/
+
 #pragma once
 
 #include "../myEngine/GameObject/GameObject.h"
@@ -7,16 +11,23 @@ class PlayerStateMachine;
 
 class IPlayerState : public GameObject {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	* @param[in]	player		プレイヤー
+	* @param[in]	psm			ステートマシン
+	*/
 	IPlayerState(Player* player, PlayerStateMachine* psm) :
 		m_player(player),
 		m_psm(psm)
 	{
 	}
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~IPlayerState() {};
-
+	/*!
+	*@brief	更新
+	*/
 	virtual void Update() = 0;
 
 	//アニメーションの状態
@@ -30,7 +41,7 @@ public:
 	};
 
 protected:
-	AnimationNo m_currentAnim = AnimationStand;
-	Player* m_player = nullptr;
-	PlayerStateMachine* m_psm = nullptr;
+	AnimationNo			m_currentAnim = AnimationStand;	//現在のアニメーション
+	Player*				m_player = nullptr;				//プレイヤー
+	PlayerStateMachine* m_psm = nullptr;				//ステートマシン
 };

@@ -1,3 +1,6 @@
+/*!
+*@brief	建物３クラス
+*/
 #pragma once
 
 #include "myEngine/Physics/MeshCollider.h"
@@ -6,28 +9,35 @@
 
 class Building_e : public GameObject {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	Building_e();
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~Building_e();
-
-	//初期化
-	//position		座標
-	//rotation		回転
+	/*!
+	*@brief	初期化
+	* @param[in]	pos		座標
+	* @param[in]	rot		回転
+	*/
 	void Init(D3DXVECTOR3 position, D3DXQUATERNION rotation);
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
 
 private:
-	SkinModel model;				//スキンモデル
-	SkinModelData modelData;		//スキンモデルデータ
-	MeshCollider meshCollider;		//メッシュコライダー
-	RigidBody rigidBody;			//剛体
-	Light light;					//ライト
-	D3DXVECTOR3 m_position;
-	D3DXQUATERNION m_rotation;
+	SkinModel		m_model;		//スキンモデル
+	SkinModelData	m_modelData;	//スキンモデルデータ
+	MeshCollider	m_meshCollider;	//メッシュコライダー
+	RigidBody		m_rigidBody;	//剛体
+	Light			m_light;		//ライト
+	D3DXVECTOR3		m_position;		//座標
+	D3DXQUATERNION	m_rotation;		//回転
 };

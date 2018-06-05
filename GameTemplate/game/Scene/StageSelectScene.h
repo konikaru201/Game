@@ -1,3 +1,6 @@
+/*!
+*@brief	ステージセレクトシーンクラス
+*/
 #pragma once
 
 #include "Map/Map.h"
@@ -14,58 +17,79 @@
 class CStageSelectScene : public GameObject
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	CStageSelectScene();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~CStageSelectScene();
-
-	//更新される前に一度だけ呼ばれる関数
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
-
-	//ステージ作成
+	/*!
+	*@brief	ステージ作成
+	*/
 	void StageCreate();
-
-	//解放
+	/*!
+	*@brief	解放
+	*/
 	void Release();
-
-	//ゲーム進行の状態
+	/*!
+	*@brief	ゲーム進行の状態
+	*/
 	enum Step {
 		step_WaitFadeIn,
 		step_WaitFadeOut,
 		step_normal,		//通常時
 		step_StageLoad,		//ステージをロード
 	};
-
-	//フェードアウト待ちであるか取得
+	/*!
+	*@brief	フェードアウト待ちであるか取得
+	*/
 	bool GetWaitFadeOut()
 	{
 		return m_waitFadeOut;
 	}
-
-	//ステージ番号を取得
+	/*!
+	*@brief	ステージ番号を取得
+	*/
 	int GetStageNumber()
 	{
-		return stageNumber;
+		return m_stageNumber;
 	}
-
+	/*!
+	*@brief	ステージ番号を取得
+	*@param[in]		changeStage		ステージ変更フラグ
+	*@param[in]		number			ステージ番号
+	*/
 	void SetChangeStage(bool changeStage, int number) 
 	{
 		m_changeStage = changeStage;
-		stageNumber = number;
+		m_stageNumber = number;
 	}
-
+	/*!
+	*@brief	表示するAボタンを設定
+	*@param[in]		bottonRender	Aボタンを表示するか	
+	*@param[in]		bottonNumber	建物の番号
+	*/
 	void SetBottonReneder(bool bottonRender, int bottonNumber)
 	{
 		m_bottonRender[bottonNumber] = bottonRender;
 	}
-
+	/*!
+	*@brief	Aボタンを表示しているか
+	*/
 	bool GetBottonRender()
 	{
 		for (int i = 0; i < 3; i++) {
@@ -77,12 +101,12 @@ public:
 	}
 
 private:
-	Map* map;									//マップ
-	Silhouette* silhouette;						//シルエット
-	Step step = step_WaitFadeOut;				//状態
-	CSoundSource* bgmSource = nullptr;			//BGM
-	bool m_waitFadeOut = false;					//フェードアウト待ちフラグ
-	int stageNumber = 0;
-	bool m_changeStage = false;
-	bool m_bottonRender[3];
+	Map*			map;						//マップ
+	Silhouette*		silhouette;				//シルエット
+	Step			m_step = step_WaitFadeOut;	//状態
+	CSoundSource*	bgmSource = nullptr;		//BGM
+	bool			m_waitFadeOut = false;		//フェードアウト待ちフラグ
+	int				m_stageNumber = 0;			//ステージ番号
+	bool			m_changeStage = false;		//ステージを変更するか
+	bool			m_bottonRender[3];			//ボタンを表示するか
 };

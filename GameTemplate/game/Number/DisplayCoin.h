@@ -1,3 +1,6 @@
+/*!
+*@brief	コインUIクラス
+*/
 #pragma once
 
 #include "Number.h"
@@ -5,34 +8,44 @@
 class DisplayCoin : public GameObject
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	DisplayCoin();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~DisplayCoin();
-
-	//初期化
+	/*!
+	*@brief	初期化
+	*@param[in] position	座標
+	*/
 	void Init(D3DXVECTOR2 position);
-
-	//更新する前に呼ばれる関数
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる関数
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//削除
+	/*!
+	*@brief	削除
+	*/
 	void DeleteNum();
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
-
-	//コインの枚数をカウント
+	/*!
+	*@brief	コインの枚数をカウント
+	*/
 	void CoinCount()
 	{
 		m_coinNum++;
 	}
 private:
-	Number*		num[3];						//数字
+	Number*		m_num[3];						//数字
 	D3DXVECTOR2 m_position = { 0.0f,0.0f }; //座標
 	int			m_coinNum = 0;				//コインの枚数
 };

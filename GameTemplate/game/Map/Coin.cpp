@@ -15,27 +15,27 @@ Coin::~Coin()
 void Coin::Init(int numInstancing)
 {
 	//モデルの初期化
-	model.SetInstancingDraw(true);
+	m_model.SetInstancingDraw(true);
 	m_numInstancing = numInstancing;
 	//インスタンシング描画する数を設定
-	model.SetNumInstancing(m_numInstancing);
-	modelData.LoadModelData("Assets/modelData/Coin.x", NULL);
-	model.Init(&modelData);
+	m_model.SetNumInstancing(m_numInstancing);
+	m_modelData.LoadModelData("Assets/modelData/Coin.x", NULL);
+	m_model.Init(&m_modelData);
 
-	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
 
-	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.0f));
-	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbientLight(D3DXVECTOR4(2.0f, 2.0f, 2.0f, 1.0f));
-	model.SetLight(&light);
-	model.UpdateWorldMatrix({ 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f,1.0f }, { 1.0f,1.0f,1.0f });
+	m_light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(2, D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.0f));
+	m_light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetAmbientLight(D3DXVECTOR4(2.0f, 2.0f, 2.0f, 1.0f));
+	m_model.SetLight(&m_light);
+	m_model.UpdateWorldMatrix({ 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f,1.0f }, { 1.0f,1.0f,1.0f });
 
-	scale = { 0.06f,0.06f,0.06f };
+	m_scale = { 0.06f,0.06f,0.06f };
 	
 	//影を描画するフラグを立てる
 	SetRenderToShadow();
@@ -64,15 +64,15 @@ void Coin::Update()
 
 void Coin::Render()
 {
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }
 
 void Coin::RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow)
 {
 	if (gameCamera != nullptr) {
-		model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
-		model.Draw(viewMatrix, projMatrix);
-		model.SetDrawShadowMap(false, false);
+		m_model.SetDrawShadowMap(isDrawShadowMap, isRecieveShadow);
+		m_model.Draw(viewMatrix, projMatrix);
+		m_model.SetDrawShadowMap(false, false);
 	}
 }
 
@@ -84,7 +84,7 @@ void Coin::InitInstancingWorldMatrix()
 		D3DXQUATERNION rot = coinInfo.rotation;
 		//ワールド行列の計算
 		D3DXMATRIX mTrans, mScale, mRotationMatrix;
-		D3DXMatrixScaling(&mScale, scale.x, scale.y, scale.z);
+		D3DXMatrixScaling(&mScale, m_scale.x, m_scale.y, m_scale.z);
 		D3DXMatrixTranslation(&mTrans, pos.x, pos.y, pos.z);
 		D3DXMatrixRotationQuaternion(&mRotationMatrix, &rot);
 
@@ -129,7 +129,7 @@ void Coin::UpdateInstancingWorldMatrix()
 
 		//ワールド行列の計算
 		D3DXMATRIX mTrans, mScale, mRotationMatrix;
-		D3DXMatrixScaling(&mScale, scale.x, scale.y, scale.z);
+		D3DXMatrixScaling(&mScale, m_scale.x, m_scale.y, m_scale.z);
 		D3DXMatrixTranslation(&mTrans, position.x, position.y, position.z);
 		D3DXMatrixRotationQuaternion(&mRotationMatrix, &rotation);
 
@@ -137,5 +137,5 @@ void Coin::UpdateInstancingWorldMatrix()
 		index++;
 	}
 
-	model.SetNumInstancing(m_numInstancing);
+	m_model.SetNumInstancing(m_numInstancing);
 }

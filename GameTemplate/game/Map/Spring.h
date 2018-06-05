@@ -1,3 +1,6 @@
+/*!
+*@brief	バネクラス
+*/
 #pragma once
 
 #include "myEngine/Physics/MeshCollider.h"
@@ -8,46 +11,57 @@
 class Spring : public GameObject
 {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	Spring();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~Spring();
-
-	//初期化
-	//pos	座標
-	//rot	回転
+	/*!
+	*@brief	初期化
+	* @param[in]	pos		座標
+	* @param[in]	rot		回転
+	*/
 	void Init(D3DXVECTOR3 pos, D3DXQUATERNION rot);
-
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
-
-	//プレイヤーとの当たり判定
+	/*!
+	*@brief	プレイヤーとの当たり判定
+	*/
 	void CollisionDetection();
-
-	//移動速度を取得
+	/*!
+	* @brief	移動速度を取得
+	*@return	移動速度
+	*/
 	const D3DXVECTOR3& GetMoveSpeed()
 	{
 		return m_jumpSpeed;
 	}
 
 private:
-	SkinModel m_model;									//スキンモデル
-	SkinModelData m_modelData;							//スキンモデルデータ
-	MeshCollider m_meshCollider;						//メッシュコライダー
-	RigidBody m_rigidBody;								//剛体
-	Light light;										//ライト
-	D3DXVECTOR3 m_position;								//座標
-	D3DXQUATERNION m_rotation;							//回転
-	D3DXVECTOR3 m_jumpSpeed = { 0.0f, 20.0f, 0.0f };	//ジャンプ速度
+	SkinModel		m_model;								//スキンモデル
+	SkinModelData	m_modelData;							//スキンモデルデータ
+	MeshCollider	m_meshCollider;							//メッシュコライダー
+	RigidBody		m_rigidBody;							//剛体
+	Light			m_light;								//ライト
+	D3DXVECTOR3		m_position;								//座標
+	D3DXQUATERNION	m_rotation;								//回転
+	D3DXVECTOR3		m_jumpSpeed = { 0.0f, 20.0f, 0.0f };	//ジャンプ速度
 
-	D3DXMATRIX parentWorldMatrix;						//親のワールド行列
-	D3DXVECTOR3 childPosition = { 0.0f,0.0f,0.0f };		//親のローカル座標からみた座標
-	bool moveFloor2Find = false;
-	D3DXVECTOR3 moveFloor2Position = { 0.0f,0.0f,0.0f };
+	D3DXMATRIX		m_parentWorldMatrix;						//移動床２のワールド行列
+	D3DXVECTOR3		m_childPosition = { 0.0f,0.0f,0.0f };		//移動床２のローカル座標からみた座標
+	bool			m_moveFloor2Find = false;					//移動床２を発見したか
+	D3DXVECTOR3		m_moveFloor2Position = { 0.0f,0.0f,0.0f };	//移動床２の座標
 };

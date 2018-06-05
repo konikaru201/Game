@@ -1,3 +1,6 @@
+/*!
+*@brief	ゲームシーンクラス
+*/
 #pragma once
 
 #include "Map/Map.h"
@@ -23,7 +26,7 @@ public:
 	*/
 	~GameScene();
 	/*!
-	* @brief	ゲームが起動してから一度だけ呼ばれる関数。
+	* @brief	更新する前に一度だけ呼ばれる関数。
 	*/
 	bool Start();
 	/*!
@@ -34,17 +37,23 @@ public:
 	* @brief	描画。
 	*/
 	void Render();
-
-	//ステージ作成
+	/*!
+	* @brief	ステージ作成
+	* @param[in]	number		番号
+	*/
 	void StageCreate(int number);
-
-	//解放
+	/*!
+	* @brief	解放
+	*/
 	void Release();
-
-	//ステージ番号を設定
+	/*!
+	* @brief	ステージ番号を設定
+	* @param[in]	number		番号
+	*/
 	void SetStageNumber(int number);
-
-	//ゲーム進行の状態
+	/*!
+	* @brief	ゲーム進行の状態
+	*/
 	enum Step {
 		step_WaitFadeIn,
 		step_WaitGameOver,
@@ -53,41 +62,46 @@ public:
 		step_GameOver,
 		step_StageClear,
 	};
-
-	//進行状況を返却
+	/*!
+	* @brief	状態を返却
+	* @return	状態
+	*/
 	const Step& IsStep()
 	{
-		return step;
+		return m_step;
 	}
-
-	//ステージクリアフラグを取得
+	/*!
+	* @brief	ステージクリアフラグを取得
+	*/
 	bool GetStageClearFlag()
 	{
 		return m_stageClearFlag;
 	}
-
-	//ゲームオーバーシーンの終了フラグを取得
+	/*!
+	* @brief	ゲームオーバーシーンの終了フラグを取得
+	*/
 	bool GetGameOverEnd()
 	{
 		return m_gameOverSceneEnd;
 	}
-
-	//ゲームオーバーシーンの状態を数字で取得。
+	/*!
+	* @brief	ゲームオーバーシーンの状態を数字で取得
+	*/
 	int GetGameOverSceneStateNumber()
 	{
 		return m_gameOverSceneStateNumber;
 	}
 private:
-	GameOverScene* gameOverScene = nullptr;
-	Silhouette* silhouette;					//シルエット
-	CSoundSource* bgmSource = nullptr;		//BGM
+	GameOverScene*	gameOverScene = nullptr;		//ゲームオーバーシーン
+	Silhouette*		silhouette;						//シルエット
+	CSoundSource*	bgmSource = nullptr;			//BGM
 
-	Step step = step_StageLoad;				//状態
+	Step			m_step = step_StageLoad;		//状態
 
-	float timer = 0.0f;						//タイマー
-	bool m_gameOverSceneEnd = false;		//ゲームオーバーシーンの終了フラグ
-	bool m_stageClearFlag = false;			//ステージクリアフラグ
-	int m_gameOverSceneStateNumber = 0;		//ゲームオーバーシーンのステート番号
-	int m_stageNumber = 0;
-	bool m_restart = true;
+	float			m_timer = 0.0f;					//タイマー
+	bool			m_gameOverSceneEnd = false;		//ゲームオーバーシーンの終了フラグ
+	bool			m_stageClearFlag = false;		//ステージクリアフラグ
+	int				m_gameOverSceneStateNumber = 0;	//ゲームオーバーシーンのステート番号
+	int				m_stageNumber = 0;				//ステージ番号
+	bool			m_restart = true;				//リスタートするか
 };

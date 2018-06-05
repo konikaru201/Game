@@ -1,3 +1,6 @@
+/*!
+*@brief	プレイヤーのステートマシン
+*/
 #pragma once
 
 #include "myEngine/GameObject/GameObject.h"
@@ -10,7 +13,10 @@
 
 class PlayerStateMachine : public GameObject {
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	* @param[in]	pl		プレイヤー
+	*/
 	PlayerStateMachine(Player* pl) :
 		m_playerIdle(pl, this),
 		m_playerMove(pl, this),
@@ -18,29 +24,34 @@ public:
 		m_playerGetStar(pl, this)
 	{
 	}
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~PlayerStateMachine()
 	{
 	}
-
-	//更新する前に一度だけ呼ばれる
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update() {}
-
-	//ステート切り替え
+	/*!
+	*@brief	ステート切り替え
+	* @param[in]	nextState		次のステート
+	*/
 	void ChangeState(PlayerState::PlState nextState);
-
-	//解放
+	/*!
+	*@brief	解放
+	*/
 	void Release();
-
 private:
-	PlayerState::PlState m_state = PlayerState::plState_Invald;
-	IPlayerState* m_currentState = nullptr;
-	PlayerIdle m_playerIdle;
-	PlayerMove m_playerMove;
-	PlayerDead m_playerDead;
-	PlayerGetStar m_playerGetStar;
+	PlayerState::PlState m_state = PlayerState::plState_Invald;	//プレイヤーの状態
+	IPlayerState* m_currentState = nullptr;						//現在の状態
+	PlayerIdle m_playerIdle;									//待機ステート
+	PlayerMove m_playerMove;									//移動ステート
+	PlayerDead m_playerDead;									//死亡ステート
+	PlayerGetStar m_playerGetStar;								//スター獲得ステート
 };

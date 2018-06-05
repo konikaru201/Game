@@ -21,33 +21,33 @@ void SkyBox::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 		MessageBox(NULL, "テクスチャのロードに失敗しました。キューブマップ", "エラー", MB_OK);
 	}
 	if (m_cubeMapTexture != NULL) {
-		model.SetCubeMap(m_cubeMapTexture);
+		m_model.SetCubeMap(m_cubeMapTexture);
 	}
 
-	modelData.LoadModelData("Assets/modelData/sky.x", NULL);
+	m_modelData.LoadModelData("Assets/modelData/sky.x", NULL);
 
-	model.Init(&modelData);
+	m_model.Init(&m_modelData);
 	//ライトを初期化
-	light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
-	light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(0, D3DXVECTOR4(0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(1, D3DXVECTOR4(-0.707f, 0.0f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(2, D3DXVECTOR4(0.0f, 0.707f, -0.707f, 1.0f));
+	m_light.SetDiffuseLightDirection(3, D3DXVECTOR4(0.0f, -0.707f, -0.707f, 1.0f));
 
-	light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
-	model.SetLight(&light);
-	model.UpdateWorldMatrix(pos, rot, { 1.0f,1.0f,1.0f });
+	m_light.SetDiffuseLightColor(0, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(2, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
+	m_light.SetAmbientLight(D3DXVECTOR4(0.6f, 0.6f, 0.6f, 1.0f));
+	m_model.SetLight(&m_light);
+	m_model.UpdateWorldMatrix(pos, rot, { 1.0f,1.0f,1.0f });
 
-	position = pos;
-	rotation = rot;
+	m_position = pos;
+	m_rotation = rot;
 
 	//衝突判定の初期化
 	//スキンモデルからメッシュコライダーを作成する
-	D3DXMATRIX* rootBoneMatrix = modelData.GetRootBoneWorldMatrix();
-	meshCollider.CreateFromSkinModel(&model, rootBoneMatrix);
+	D3DXMATRIX* rootBoneMatrix = m_modelData.GetRootBoneWorldMatrix();
+	m_meshCollider.CreateFromSkinModel(&m_model, rootBoneMatrix);
 }
 
 bool SkyBox::Start()
@@ -66,6 +66,6 @@ void SkyBox::Update()
 
 void SkyBox::Render()
 {
-	model.SetDrawShadowMap(false, false);
-	model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+	m_model.SetDrawShadowMap(false, false);
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }

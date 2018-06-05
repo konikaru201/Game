@@ -1,27 +1,38 @@
+/*!
+*@brief	死亡ステート
+*/
 #pragma once
 
 #include "IPlayerState.h"
 
 class PlayerDead : public IPlayerState{
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	* @param[in]	player		プレイヤー
+	* @param[in]	psm			ステートマシン
+	*/
 	PlayerDead(Player* player, PlayerStateMachine* psm) :
 		IPlayerState(player, psm)
 	{
 	}
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~PlayerDead()
 	{
 	}
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//更新する前に一度だけ呼ばれる
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//死亡処理
+	/*!
+	*@brief	死亡処理
+	*/
 	void Dead();
 private:
 	float m_timer = 0.0f;			//タイマー

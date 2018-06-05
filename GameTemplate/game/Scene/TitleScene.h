@@ -5,31 +5,36 @@
 
 class TitleScene : public GameObject{
 public:
-	//コンストラクタ
+	/*!
+	*@brief	コンストラクタ
+	*/
 	TitleScene();
-
-	//デストラクタ
+	/*!
+	*@brief	デストラクタ
+	*/
 	~TitleScene();
-
-	//更新される前に一度だけ呼ばれる関数
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
-
-	//シーン切り替えフラグを取得
+	/*!
+	*@brief	シーン切り替えフラグを取得
+	*/
 	bool GetChangeSceneFlag()
 	{
 		return m_changeScene;
 	}
 private:
-	Sprite* sprite;				//スプライト
+	Sprite* sprite;					//スプライト
 	Sprite* m_pressA;
 	Sprite* m_titleName;
-	float alpha = 1.0f;			//不透明度。1.0は黒
-	float timer = 0.0f;			//タイマー
-	bool m_changeScene = false; //シーン切り替えフラグ
+	bool	m_changeScene = false;	//シーン切り替えフラグ
 };

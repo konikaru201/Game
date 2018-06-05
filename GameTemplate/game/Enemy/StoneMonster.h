@@ -1,3 +1,6 @@
+/*!
+*@brief	ストーンモンスタークラス
+*/
 #pragma once
 
 #include "myEngine/GameObject/GameObject.h"
@@ -9,52 +12,82 @@
 class StoneMonster : public GameObject
 {
 public:
+	/*!
+	*@brief	コンストラクタ
+	*/
 	StoneMonster();
+	/*!
+	*@brief	デストラクタ
+	*/
 	~StoneMonster();
-
-	//初期化
-	//pos	座標
-	//rot	回転
+	/*!
+	*@brief	初期化
+	* @param[in]	pos		座標
+	* @param[in]	rot		回転
+	*/
 	void Init(D3DXVECTOR3 pos, D3DXQUATERNION rot);
-
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
-	//更新
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
-	//描画
+	/*!
+	*@brief	描画
+	*/
 	void Render();
-
-	//影の描画
+	/*!
+	* @brief	影を描画
+	* @param[in]	viewMatrix		ビュー行列
+	* @param[in]	projMatrix		プロジェクション行列
+	* @param[in]	isDrawShadowMap	シャドウマップを描くフラグ
+	* @param[in]	isRecieveShadow	シャドウレシーバーかどうか
+	*/
 	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
-
+	/*!
+	* @brief	シルエットの描画
+	* @param[in]	viewMatrix		ビュー行列
+	* @param[in]	projMatrix		プロジェクション行列
+	*/
 	void SilhouetteRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix);
-
-	//座標を取得
+	/*!
+	* @brief	ストーンモンスターの座標の取得
+	*@return	ストーンモンスターの座標
+	*/
 	const D3DXVECTOR3& GetPosition()
 	{
 		return m_position;
 	}
-
-	//座標を設定
+	/*!
+	*@brief	座標の設定
+	* @param[in]	position		座標
+	*/
 	void SetPosition(const D3DXVECTOR3& position)
 	{
 		m_position = position;
 	}
-
-	//回転を取得
+	/*!
+	* @brief	回転を取得
+	*@return	回転
+	*/
 	const D3DXQUATERNION& GetRotation()
 	{
 		return m_rotation;
 	}
-
-	//回転を設定
+	/*!
+	*@brief	回転を設定
+	* @param[in]	rotation		回転
+	*/
 	void SetRotation(const D3DXQUATERNION& rotation)
 	{
 		m_rotation = rotation;
 	}
-
-	//モデルの向きを取得
+	/*!
+	* @brief	ストーンモンスターの向きを取得
+	*@return	ストーンモンスターの向き
+	*/
 	const D3DXVECTOR3& GetDirection()
 	{
 		D3DXMATRIX matrix = m_model.GetWorldMatrix();
@@ -64,43 +97,58 @@ public:
 		D3DXVec3Normalize(&m_direction, &m_direction);
 		return m_direction;
 	}
-
-	//移動速度を取得
+	/*!
+	* @brief	移動速度を取得
+	*@return	移動速度
+	*/
 	const D3DXVECTOR3& GetMoveSpeed()
 	{
 		return m_characterController.GetMoveSpeed();
 	}
-
-	//移動速度を設定
+	/*!
+	*@brief	移動速度を設定
+	* @param[in]	moveSpeed	移動速度
+	*/
 	void SetMoveSpeed(const D3DXVECTOR3& moveSpeed)
 	{
 		m_moveSpeed = moveSpeed;
 	}
-
-	//踏まれたフラグを取得
+	/*!
+	*@brief	踏まれたフラグを取得
+	*/
 	bool GetIsStepOn()
 	{
 		return m_isStepOn;
 	}
-
+	/*!
+	*@brief	移動床１の上にいるか判定
+	*/
 	bool GetIsOnMoveFloor()
 	{
-		return moveFloorHit;
+		return m_moveFloorHit;
 	}
-
+	/*!
+	*@brief	移動床２の上にいるか判定
+	*/
 	bool GetIsOnMoveFloor2()
 	{
-		return moveFloor2Hit;
+		return m_moveFloor2Hit;
 	}
-
+	/*!
+	* @brief	移動床１の座標を取得
+	*@return	移動床１の座標
+	*/
 	const D3DXVECTOR3& GetMoveFloorPosition()
 	{
-		return moveFloorPosition;
+		return m_moveFloorPosition;
 	}
-
+	/*!
+	* @brief	移動床２の座標を取得
+	*@return	移動床２の座標
+	*/
 	const D3DXVECTOR3& GetMoveFloor2Position()
 	{
-		return moveFloor2Position;
+		return m_moveFloor2Position;
 	}
 private:
 	SkinModel					m_model;							//スキンモデル
@@ -115,17 +163,17 @@ private:
 	CharacterController			m_characterController;				//キャラクターコントローラー
 	StoneMonsterStateMachine	m_stoneMonsterStateMachine;			//ステートマシン
 
-	D3DXMATRIX parentWorldMatrix;									//親のワールド行列
-	D3DXVECTOR3 childPosition = { 0.0f,0.0f,0.0f };					//親のローカル座標からみた座標
-	bool moveFloorHit = false;
-	D3DXVECTOR3 moveFloorPosition = { 0.0f,0.0f,0.0f };
+	D3DXMATRIX					m_parentWorldMatrix;						//移動床１のワールド行列
+	D3DXVECTOR3					m_childPosition = { 0.0f,0.0f,0.0f };		//移動床１のローカル座標からみた座標
+	bool						m_moveFloorHit = false;						//移動床１の上にいるか
+	D3DXVECTOR3					m_moveFloorPosition = { 0.0f,0.0f,0.0f };	//移動床１の座標
 
-	D3DXMATRIX secondParentWorldMatrix;								//親のワールド行列
-	D3DXVECTOR3 secondChildPosition = { 0.0f,0.0f,0.0f };			//親のローカル座標からみたプレイヤーの座標
-	bool moveFloor2Hit = false;
-	D3DXVECTOR3 moveFloor2Position = { 0.0f,0.0f,0.0f };
+	D3DXMATRIX					m_secondParentWorldMatrix;					//移動床２のワールド行列
+	D3DXVECTOR3					m_secondChildPosition = { 0.0f,0.0f,0.0f };	//移動床２のローカル座標からみたプレイヤーの座標
+	bool						m_moveFloor2Hit = false;					//移動床２の上にいるか
+	D3DXVECTOR3					m_moveFloor2Position = { 0.0f,0.0f,0.0f };	//移動床２の座標
 
-	float m_deadTimer = 0.0f;
-	bool m_isStepOn = false;
-	bool m_isHitPlaer = false;
+	float						m_deadTimer = 0.0f;					//死亡してからのタイマー
+	bool						m_isStepOn = false;					//踏まれたフラグ
+	bool						m_isHitPlaer = false;				//プレイヤーに当たったか
 };

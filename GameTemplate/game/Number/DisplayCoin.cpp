@@ -28,11 +28,11 @@ bool DisplayCoin::Start()
 {
 	for (int i = 0; i < 2; i++)
 	{
-		num[i] = new Number;
+		m_num[i] = new Number;
 	}
 
-	num[0]->Init(m_position + D3DXVECTOR2(NumSizeX, 0.0f), NumScale);
-	num[1]->Init(m_position + D3DXVECTOR2(NumSizeX * 2.0f, 0.0f), NumScale);
+	m_num[0]->Init(m_position + D3DXVECTOR2(NumSizeX, 0.0f), NumScale);
+	m_num[1]->Init(m_position + D3DXVECTOR2(NumSizeX * 2.0f, 0.0f), NumScale);
 
 	return true;
 }
@@ -45,8 +45,8 @@ void DisplayCoin::Update()
 		m_coinNum = 0;
 	}
 
-	num[0]->NumSet(m_coinNum / 10);
-	num[1]->NumSet(m_coinNum % 10);
+	m_num[0]->NumSet(m_coinNum / 10);
+	m_num[1]->NumSet(m_coinNum % 10);
 
 }
 
@@ -54,7 +54,7 @@ void DisplayCoin::Render()
 {
 	for (int i = 0; i < 2; i++)
 	{
-		num[i]->Render();
+		m_num[i]->Render();
 	}
 }
 
@@ -62,6 +62,6 @@ void DisplayCoin::DeleteNum()
 {
 	for (int i = 0; i < 2; i++)
 	{
-		delete num[i];
+		delete m_num[i];
 	}
 }
