@@ -13,12 +13,13 @@
 #include "myEngine/Graphics/Primitive.h"
 #include "myEngine/Graphics/Bloom.h"
 #include "Number/RemainNumber.h"
+#include "Fade/WipeEffect.h"
 
 GameObjectManager* goMgr = nullptr;		//ゲームオブジェクト
 Pad* pad = nullptr;						//パッド
 SceneManager* sceneManager = nullptr;	//シーンマネージャー
 Fade* g_fade = nullptr;					//フェード
-
+WipeEffect* wipeEffect;					//ワイプエフェクト
 CShadowMap g_shadowMap;					//シャドウマップ。
 Bloom* bloom = nullptr;					//ブルーム
 
@@ -82,6 +83,9 @@ void Init()
 	g_fade = new Fade;
 	g_fade->Start();
 
+	wipeEffect = new WipeEffect;
+	wipeEffect->Start();
+
 	//ゲームオブジェクト生成
 	goMgr = new GameObjectManager;
 
@@ -129,7 +133,7 @@ void Init()
 VOID Render()
 {
 	// 画面をクリア。
-	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0);
+	g_pd3dDevice->Clear(0, NULL,  D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0);
 
 	//シーンの描画開始。
 	g_pd3dDevice->BeginScene();
@@ -204,6 +208,8 @@ VOID Render()
 		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
 
+	wipeEffect->Render();
+
 	//フェードのレンダリング
 	g_fade->Render();
 
@@ -220,6 +226,7 @@ void Update()
 	goMgr->Update();
 	CoinUI->Update();
 	remainNumber->Update();
+	wipeEffect->Update();
 	g_fade->Update();
 
 	if (gameCamera != nullptr) {
@@ -234,6 +241,7 @@ void Terminate()
 {
 	delete goMgr;
 	delete g_fade;
+	delete wipeEffect;
 	delete g_effectManager;
 	delete g_physicsWorld;
 	delete Coin;

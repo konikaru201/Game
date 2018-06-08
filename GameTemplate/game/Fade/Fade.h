@@ -63,7 +63,7 @@ private:
 		FadeOut,	//フェードアウト
 		FadeIn,		//フェードイン
 	};
-	Sprite*		m_sprite;					//ロード中のスプライト
+	Sprite*		m_sprite;				//ロード中のスプライト
 	
 	const float FADE_TIME = 0.2f;		//フェードする時間
 	State		m_state = FadeIn;		//状態

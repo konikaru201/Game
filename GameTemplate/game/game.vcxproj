@@ -161,6 +161,7 @@
     <ClCompile Include="Enemy\StoneMonsterFollow.cpp" />
     <ClCompile Include="Enemy\StoneMonsterStateMachine.cpp" />
     <ClCompile Include="Fade\Fade.cpp" />
+    <ClCompile Include="Fade\WipeEffect.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\Block.cpp" />
     <ClCompile Include="Map\Block2.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="Enemy\StoneMonsterState.h" />
     <ClInclude Include="Enemy\StoneMonsterStateMachine.h" />
     <ClInclude Include="Fade\Fade.h" />
+    <ClInclude Include="Fade\WipeEffect.h" />
     <ClInclude Include="locationinfo\stage1.h" />
     <ClInclude Include="locationinfo\stage2.h" />
     <ClInclude Include="locationinfo\stage3.h" />

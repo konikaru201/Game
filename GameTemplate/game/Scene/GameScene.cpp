@@ -4,6 +4,7 @@
 #include "Fade/Fade.h"
 #include "myEngine/Timer/Timer.h"
 #include "Number/RemainNumber.h"
+#include "Fade/WipeEffect.h"
 
 SMapInfo Stage1[] = {
 #include "locationinfo/stage2.h"
@@ -53,14 +54,15 @@ void GameScene::Update()
 	switch (m_step){
 	//ステージ読み込みが終了
 	case step_StageLoad:
-		g_fade->StartFadeIn();
+		wipeEffect->StartWipeIn();
+		//g_fade->StartFadeIn();
 		m_step = step_WaitFadeIn;
 		break;
 
 	//フェードイン時
 	case step_WaitFadeIn:
 		//フェードが終了
-		if (!g_fade->IsExecute()) {
+		if (/*!g_fade->IsExecute()*/!wipeEffect->IsExecute()) {
 			m_step = step_normal;
 		}
 		break;
@@ -81,7 +83,8 @@ void GameScene::Update()
 		else if (player->GetStarAnimationEnd()) {
 			bgmSource->SetisDead();
 			bgmSource = nullptr;
-			g_fade->StartFadeOut();
+			wipeEffect->StartWipeOut();
+			//g_fade->StartFadeOut();
 			m_step = step_StageClear;
 		}
 		g_physicsWorld->Update();
@@ -90,14 +93,20 @@ void GameScene::Update()
 	case step_GameOver:
 		//残機数が０でないならリスタート
 		if (m_restart) {
-			g_fade->StartFadeOut();
+			wipeEffect->StartWipeOut();
+			//g_fade->StartFadeOut();
 			m_gameOverSceneEnd = true;
 			m_restart = false;
 		}
 		//ゲームオーバーシーンが終了
 		else if (gameOverScene != nullptr && gameOverScene->GetGameOverSceneEnd()) {
 			m_gameOverSceneStateNumber = gameOverScene->GetStateNumber();
-			g_fade->StartFadeOut();
+			if (m_gameOverSceneStateNumber == 0 || m_gameOverSceneStateNumber == 1) {
+				wipeEffect->StartWipeOut();
+			}
+			else {
+				g_fade->StartFadeOut();
+			}
 			m_gameOverSceneEnd = true;
 			gameOverScene->SetisDead();
 			gameOverScene = nullptr;
@@ -107,7 +116,7 @@ void GameScene::Update()
 	//ステージクリア時
 	case step_StageClear:
 		//フェードが終了
-		if (!g_fade->IsExecute()) {
+		if (/*!g_fade->IsExecute()*/!wipeEffect->IsExecute()) {
 			m_stageClearFlag = true;
 		}
 		break;

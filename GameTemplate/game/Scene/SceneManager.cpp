@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "SceneManager.h"
 #include "myEngine/Physics/Physics.h"
-#include "../Fade/Fade.h"
+#include "Fade/Fade.h"
 #include "myEngine/GameObject/GameObjectManager.h"
+#include "Fade/WipeEffect.h"
 
 SceneManager::SceneManager()
 {
@@ -48,6 +49,7 @@ void SceneManager::Update()
 				//タイトルシーンを削除
 				m_titleScene->SetisDead();
 				m_titleScene = nullptr;
+				g_fade->StartFadeIn();
 				//ステージセレクトシーンに遷移
 				m_stageSelectScene = goMgr->NewGameObject<CStageSelectScene>();
 				m_state = stateStageSelect;
@@ -97,7 +99,7 @@ void SceneManager::Update()
 		//フェードアウト時
 		if (m_step == step_WaitFadeOut) {
 			//フェードが終了
-			if (!g_fade->IsExecute()) {
+			if (!g_fade->IsExecute() && !wipeEffect->IsExecute()) {
 				//ゲームシーンの現在の状態を取得
 				GameScene::Step g_step = m_gameScene->IsStep();
 				//ステージクリア時

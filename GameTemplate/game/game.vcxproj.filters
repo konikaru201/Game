@@ -282,6 +282,9 @@
     <ClCompile Include="Player\PlayerIdle.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Fade\WipeEffect.cpp">
+      <Filter>ソース ファイル\Fade</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -535,6 +538,9 @@
     </ClInclude>
     <ClInclude Include="Player\PlayerIdle.h">
       <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Fade\WipeEffect.h">
+      <Filter>ソース ファイル\Fade</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

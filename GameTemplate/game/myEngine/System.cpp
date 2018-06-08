@@ -30,7 +30,8 @@ void InitD3D(HWND hWnd)
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
 	d3dpp.EnableAutoDepthStencil = TRUE;
-	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
+	//d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;
 	//D3Dデバイスを作成する。
 	g_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,
 		D3DCREATE_HARDWARE_VERTEXPROCESSING,

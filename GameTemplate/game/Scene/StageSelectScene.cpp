@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "StageSelectScene.h"
 #include "Fade/Fade.h"
+#include "Fade/WipeEffect.h"
 
 SMapInfo Stage0[] = {
 #include "locationinfo/stage1.h"
@@ -43,14 +44,15 @@ void CStageSelectScene::Update()
 	switch (m_step) {
 	//ステージ読み込みが終了
 	case step_StageLoad:
-		g_fade->StartFadeIn();
+		wipeEffect->StartWipeIn();
+		//g_fade->StartFadeIn();
 		m_step = step_WaitFadeIn;
 		break;
 
 	//フェードイン時
 	case step_WaitFadeIn:
 		//フェードが終了
-		if (!g_fade->IsExecute()) {
+		if (/*!g_fade->IsExecute()*/!wipeEffect->IsExecute()) {
 			m_step = step_normal;
 		}
 		break;
@@ -58,7 +60,8 @@ void CStageSelectScene::Update()
 	//通常時
 	case step_normal:
 		if (m_changeStage) {
-			g_fade->StartFadeOut();
+			wipeEffect->StartWipeOut();
+			//g_fade->StartFadeOut();
 			m_step = step_WaitFadeOut;
 		}
 		break;
@@ -66,7 +69,7 @@ void CStageSelectScene::Update()
 	//フェードアウト時
 	case step_WaitFadeOut:
 		//フェードが終了
-		if (!g_fade->IsExecute() && !m_waitFadeOut) {
+		if (/*!g_fade->IsExecute()*/!wipeEffect->IsExecute() && !m_waitFadeOut) {
 			m_waitFadeOut = true;
 			bgmSource->SetisDead();
 			bgmSource = nullptr;
