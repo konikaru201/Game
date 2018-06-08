@@ -55,14 +55,13 @@ void GameScene::Update()
 	//ステージ読み込みが終了
 	case step_StageLoad:
 		wipeEffect->StartWipeIn();
-		//g_fade->StartFadeIn();
 		m_step = step_WaitFadeIn;
 		break;
 
 	//フェードイン時
 	case step_WaitFadeIn:
-		//フェードが終了
-		if (/*!g_fade->IsExecute()*/!wipeEffect->IsExecute()) {
+		//ワイプエフェクトが終了
+		if (!wipeEffect->IsExecute()) {
 			m_step = step_normal;
 		}
 		break;
@@ -84,7 +83,6 @@ void GameScene::Update()
 			bgmSource->SetisDead();
 			bgmSource = nullptr;
 			wipeEffect->StartWipeOut();
-			//g_fade->StartFadeOut();
 			m_step = step_StageClear;
 		}
 		g_physicsWorld->Update();
@@ -94,7 +92,6 @@ void GameScene::Update()
 		//残機数が０でないならリスタート
 		if (m_restart) {
 			wipeEffect->StartWipeOut();
-			//g_fade->StartFadeOut();
 			m_gameOverSceneEnd = true;
 			m_restart = false;
 		}
@@ -115,8 +112,8 @@ void GameScene::Update()
 		break;
 	//ステージクリア時
 	case step_StageClear:
-		//フェードが終了
-		if (/*!g_fade->IsExecute()*/!wipeEffect->IsExecute()) {
+		//ワイプエフェクトが終了
+		if (!wipeEffect->IsExecute()) {
 			m_stageClearFlag = true;
 		}
 		break;

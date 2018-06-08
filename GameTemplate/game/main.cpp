@@ -83,6 +83,7 @@ void Init()
 	g_fade = new Fade;
 	g_fade->Start();
 
+	//ワイプエフェクトを初期化
 	wipeEffect = new WipeEffect;
 	wipeEffect->Start();
 
@@ -208,9 +209,10 @@ VOID Render()
 		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
 
+	//ワイプエフェクトの描画
 	wipeEffect->Render();
 
-	//フェードのレンダリング
+	//フェードの描画
 	g_fade->Render();
 
 	// シーンの描画終了。

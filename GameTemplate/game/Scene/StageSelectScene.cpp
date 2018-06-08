@@ -45,14 +45,13 @@ void CStageSelectScene::Update()
 	//ステージ読み込みが終了
 	case step_StageLoad:
 		wipeEffect->StartWipeIn();
-		//g_fade->StartFadeIn();
 		m_step = step_WaitFadeIn;
 		break;
 
 	//フェードイン時
 	case step_WaitFadeIn:
-		//フェードが終了
-		if (/*!g_fade->IsExecute()*/!wipeEffect->IsExecute()) {
+		//ワイプエフェクトが終了
+		if (!wipeEffect->IsExecute()) {
 			m_step = step_normal;
 		}
 		break;
@@ -61,15 +60,14 @@ void CStageSelectScene::Update()
 	case step_normal:
 		if (m_changeStage) {
 			wipeEffect->StartWipeOut();
-			//g_fade->StartFadeOut();
 			m_step = step_WaitFadeOut;
 		}
 		break;
 
 	//フェードアウト時
 	case step_WaitFadeOut:
-		//フェードが終了
-		if (/*!g_fade->IsExecute()*/!wipeEffect->IsExecute() && !m_waitFadeOut) {
+		//ワイプエフェクトが終了
+		if (!wipeEffect->IsExecute() && !m_waitFadeOut) {
 			m_waitFadeOut = true;
 			bgmSource->SetisDead();
 			bgmSource = nullptr;

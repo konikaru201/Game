@@ -31,7 +31,7 @@ public:
 	*/
 	void Render();
 	/*!
-	*@brief	フェードアウト中か?
+	*@brief	フェード実行中か?
 	*/
 	bool IsExecute()
 	{

@@ -1,3 +1,6 @@
+/*!
+*@brief	ワイプエフェクトクラス
+*/
 #pragma once
 
 #include "myEngine/GameObject/GameObject.h"
@@ -5,16 +8,29 @@
 
 class WipeEffect : public GameObject {
 public:
+	/*!
+	*@brief	コンストラクタ
+	*/
 	WipeEffect();
-
+	/*!
+	*@brief	デストラクタ
+	*/
 	~WipeEffect();
-
+	/*!
+	*@brief	更新する前に一度だけ呼ばれる
+	*/
 	bool Start();
-
+	/*!
+	*@brief	更新
+	*/
 	void Update();
-
+	/*!
+	*@brief	描画
+	*/
 	void Render();
-
+	/*!
+	*@brief	ワイプアウト開始
+	*/
 	void StartWipeOut()
 	{
 		m_isWipe = true;
@@ -22,7 +38,9 @@ public:
 		m_back->SetAlpha(1.0f);
 		m_state = WipeOut;
 	}
-
+	/*!
+	*@brief	ワイプイン開始
+	*/
 	void StartWipeIn()
 	{
 		m_isWipe = true;
@@ -30,7 +48,9 @@ public:
 		m_back->SetAlpha(1.0f);
 		m_state = WipeIn;
 	}
-
+	/*!
+	*@brief	ワイプ実行中か?
+	*/
 	bool IsExecute()
 	{
 		return m_isWipe;
