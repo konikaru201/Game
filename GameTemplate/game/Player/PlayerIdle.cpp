@@ -21,6 +21,9 @@ void PlayerIdle::Update()
 	else if (m_player->GetHitEnemy() || m_player->GetFallPlayer()) {
 		m_psm->ChangeState(PlayerState::plState_Dead);
 	}
+	else if (m_player->GetChangeStage()) {
+		m_psm->ChangeState(PlayerState::plState_ChangeStage);
+	}
 }
 
 bool PlayerIdle::Start()

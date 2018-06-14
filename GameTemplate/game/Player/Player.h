@@ -179,17 +179,17 @@ public:
 		m_secondParentWorldMatrix = worldMatrix;
 	}
 	/*!
-	* @brief	スター獲得時のアニメーション終了フラグを取得
+	* @brief	ステージ変更時のアニメーション終了フラグを取得
 	*/
-	bool GetStarAnimationEnd()
+	bool GetAnimationEnd()
 	{
 		return m_animationEnd;
 	}
 	/*!
-	* @brief	スター獲得時のアニメーション終了フラグを設定
-	* @param[in]	flag		スター獲得時のアニメーションが終了したか
+	* @brief	ステージ変更時のアニメーション終了フラグを設定
+	* @param[in]	flag		ステージ変更時のアニメーションが終了したか
 	*/
-	void SetStarAnimationEnd(bool flag)
+	void SetAnimationEnd(bool flag)
 	{
 		m_animationEnd = flag;
 	}
@@ -247,19 +247,19 @@ public:
 		return m_playerDead;
 	}
 	/*!
-	* @brief	スター獲得フラグを取得
+	* @brief	ステージ変更フラグを取得
 	*/
-	bool GetStar()
+	bool GetChangeStage()
 	{
-		return m_getStar;
+		return m_changeStage;
 	}
 	/*!
-	* @brief	スター獲得フラグを設定
-	* @param[in]	getstar		スター獲得フラグ
+	* @brief	ステージ変更フラグを設定
+	* @param[in]	changeStage		ステージ変更フラグ
 	*/
-	void SetGetStar(bool getStar)
+	void SetChangeStage(bool changeStage)
 	{
-		m_getStar = getStar;
+		m_changeStage = changeStage;
 	}
 	/*!
 	* @brief	現在のアニメーションを設定
@@ -306,7 +306,7 @@ private:
 	D3DXVECTOR3			m_moveSpeed = { 0.0f,0.0f,0.0f };		//移動速度
 	bool				m_parentFirstHit = true;				//親との最初の当たり判定フラグ
 	bool				m_secondParentFirstHit = true;			//親との最初の当たり判定フラグ
-	bool				m_getStar = false;						//スター獲得フラグ
+	bool				m_changeStage = false;					//ステージ変更フラグ
 	bool				m_animationEnd = false;					//スター獲得時のアニメーション終了フラグ
 	bool				m_treadOnEnemy = false;					//敵を踏んだフラグ
 	const float			m_jumpSpeed = 10.0f;					//ジャンプ時の速度

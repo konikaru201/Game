@@ -3,6 +3,7 @@
 #include "myEngine/Physics/Physics.h"
 #include "myEngine/Physics/CollisionAttr.h"
 #include "ICollider.h"
+#include "myEngine/HID/Pad.h"
 
 namespace {
 
@@ -241,7 +242,7 @@ void PlayerController::Execute()
 			}
 			//カプセルコライダーの中心座標 + 0.2の座標をposTmpに求める。
 			D3DXVECTOR3 posTmp = m_position;
-			posTmp.y += m_collider->GetHalfSize().y/*m_height * 0.5f + m_radius*/ + 0.2f;
+			posTmp.y += m_collider->GetHalfSize().y + 0.2f;
 			//レイを作成。
 			btTransform start, end;
 			start.setIdentity();
@@ -523,12 +524,12 @@ void PlayerController::Execute()
 	addPosXZ.y = 0.0f;
 	if(D3DXVec3Length(&addPosXZ) <= 0.0f){
 		D3DXVECTOR3 addRayPos[6] = {
-			D3DXVECTOR3( 0.1,  0.0,  0.0),		//右方向
-			D3DXVECTOR3(-0.1,  0.0,  0.0),		//左方向
-			D3DXVECTOR3( 0.0,  0.0,  0.1),		//前方向
-			D3DXVECTOR3( 0.0,  0.0, -0.1),		//後方向
-			D3DXVECTOR3( 0.0, -0.1,  0.0),		//下方向
-			D3DXVECTOR3( 0.0,  0.1,  0.0)		//上方向
+			D3DXVECTOR3( 0.1f,  0.0f,  0.0f),		//右方向
+			D3DXVECTOR3(-0.1f,  0.0f,  0.0f),		//左方向
+			D3DXVECTOR3( 0.0f,  0.0f,  0.1f),		//前方向
+			D3DXVECTOR3( 0.0f,  0.0f, -0.1f),		//後方向
+			D3DXVECTOR3( 0.0f, -0.1f,  0.0f),		//下方向
+			D3DXVECTOR3( 0.0f,  0.1f,  0.0f)		//上方向
 		};
 
 		////次の移動先となる座標を計算する。
@@ -576,7 +577,6 @@ void PlayerController::Execute()
 					if (callback.isHit) {
 						//当たった。
 						//壁。
-
 						D3DXVECTOR3 vT0, vT1;
 						//XZ平面上での移動後の座標をvT0に、交点の座標をvT1に設定する。
 						vT0 = { m_position.x, 0.0f, m_position.z };
@@ -606,7 +606,6 @@ void PlayerController::Execute()
 						vOffset *= (-fT0 + halfSizeSide);
 
 						D3DXVECTOR3 nextPosition = m_position + vOffset;
-						//hoge = hoge + vOffset;
 
 						D3DXVECTOR3 currentDir;
 						currentDir = nextPosition - m_position;

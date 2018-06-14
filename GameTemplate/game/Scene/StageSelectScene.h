@@ -69,7 +69,7 @@ public:
 		return m_stageNumber;
 	}
 	/*!
-	*@brief	ステージ番号を取得
+	*@brief	ステージ番号を設定
 	*@param[in]		changeStage		ステージ変更フラグ
 	*@param[in]		number			ステージ番号
 	*/
@@ -81,11 +81,11 @@ public:
 	/*!
 	*@brief	表示するAボタンを設定
 	*@param[in]		bottonRender	Aボタンを表示するか	
-	*@param[in]		bottonNumber	建物の番号
+	*@param[in]		number	ステージの番号
 	*/
-	void SetBottonReneder(bool bottonRender, int bottonNumber)
+	void SetBottonReneder(bool bottonRender, int number)
 	{
-		m_bottonRender[bottonNumber] = bottonRender;
+		m_bottonRender[number] = bottonRender;
 	}
 	/*!
 	*@brief	Aボタンを表示しているか
@@ -101,7 +101,6 @@ public:
 	}
 
 private:
-	Map*			map;						//マップ
 	Silhouette*		silhouette;				//シルエット
 	Step			m_step = step_WaitFadeOut;	//状態
 	CSoundSource*	bgmSource = nullptr;		//BGM

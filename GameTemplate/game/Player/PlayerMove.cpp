@@ -48,8 +48,8 @@ void PlayerMove::Update()
 	else if (m_player->GetHitEnemy() || m_player->GetFallPlayer()) {
 		m_psm->ChangeState(PlayerState::plState_Dead);
 	}
-	else if (m_player->GetStar()) {
-		m_psm->ChangeState(PlayerState::plState_GetStar);
+	else if (m_player->GetChangeStage()) {
+		m_psm->ChangeState(PlayerState::plState_ChangeStage);
 	}
 }
 
@@ -164,10 +164,10 @@ void PlayerMove::Turn()
 		angle = 1.0f;
 	}
 	angle = acosf(angle);
-	D3DXVECTOR3 hoge;
-	D3DXVec3Cross(&hoge, &playerDir, &stickDir);
+	D3DXVECTOR3 Cross;
+	D3DXVec3Cross(&Cross, &playerDir, &stickDir);
 	//ƒxƒNƒgƒ‹‚ª‰ºŒü‚«‚©”»’è
-	if (hoge.y < 0.0f) {
+	if (Cross.y < 0.0f) {
 		angle *= -1.0f;
 	}
 

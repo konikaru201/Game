@@ -9,7 +9,7 @@
 #include "PlayerIdle.h"
 #include "PlayerMove.h"
 #include "PlayerDead.h"
-#include "PlayerGetStar.h"
+#include "PlayerChangeStage.h"
 
 class PlayerStateMachine : public GameObject {
 public:
@@ -21,7 +21,7 @@ public:
 		m_playerIdle(pl, this),
 		m_playerMove(pl, this),
 		m_playerDead(pl, this),
-		m_playerGetStar(pl, this)
+		m_playerChangeStage(pl, this)
 	{
 	}
 	/*!
@@ -53,5 +53,5 @@ private:
 	PlayerIdle m_playerIdle;									//待機ステート
 	PlayerMove m_playerMove;									//移動ステート
 	PlayerDead m_playerDead;									//死亡ステート
-	PlayerGetStar m_playerGetStar;								//スター獲得ステート
+	PlayerChangeStage m_playerChangeStage;						//スター獲得ステート
 };

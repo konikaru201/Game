@@ -19,7 +19,7 @@ bool SceneManager::Start()
 	m_titleScene = goMgr->NewGameObject<TitleScene>();
 
 	m_state = stateTitle;
-	m_step = step_normal;
+	m_step = step_WaitFadeIn;
 
 	return true;
 }
@@ -71,7 +71,7 @@ void SceneManager::Update()
 		//フェードアウト時
 		if (m_step == step_WaitFadeOut) {
 			//フェードが終了
-			if (!g_fade->IsExecute()) {
+			if (!wipeEffect->IsExecute()) {
 				//ステージセレクトシーンを削除
 				m_stageSelectScene->Release();
 				m_stageSelectScene->SetisDead();

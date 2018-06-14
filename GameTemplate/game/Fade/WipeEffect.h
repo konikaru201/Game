@@ -56,17 +56,20 @@ public:
 		return m_isWipe;
 	}
 private:
+	/*!
+	*@brief	ワイプの状態
+	*/
 	enum State {
-		WipeIn,
-		WipeOut
+		WipeIn,		//ワイプイン
+		WipeOut		//ワイプアウト
 	};
 
-	State m_state = WipeIn;
-	Sprite* m_circle;
-	Sprite* m_back;
-	float m_timer = 0.0f;
-	const float WIPE_TIME = 1.0f;
-	bool m_isWipe = false;
+	State		m_state = WipeIn;		//状態
+	Sprite*		m_circle;				//円のスプライト
+	Sprite*		m_back;					//黒背景のスプライト
+	float		m_timer = 0.0f;			//タイマー
+	const float WIPE_TIME = 1.0f;		//ワイプする時間
+	bool		m_isWipe = false;		//ワイプしているか
 };
 
 extern WipeEffect* wipeEffect;

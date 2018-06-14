@@ -144,7 +144,7 @@ D3DXVECTOR3 Killer::Move()
 	//particleEmitter.Update();
 
 	//プレイヤーがステージクリアしたらそのまま直進
-	if(player->GetStar()){
+	if(player->GetChangeStage()){
 		m_state = State_Miss;
 	}
 

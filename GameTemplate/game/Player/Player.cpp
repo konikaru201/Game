@@ -116,6 +116,12 @@ void Player::Update()
 		return;
 	}
 
+	if (sceneManager->GetScene() == SceneManager::stateStageSelect) {
+		m_moveSpeed.x = 0.0f;
+		m_moveSpeed.z = 0.0f;
+	}
+
+	//—Ž‰º‚µ‚½‚çƒtƒ‰ƒO‚ð‚½‚Ä‚é
 	if (m_position.y <= -20.0f) {
 		m_fallPlayer = true;
 	}

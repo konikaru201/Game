@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "GameCamera.h"
-#include "Scene/GameScene.h"
+#include "Scene/Scenemanager.h"
 #include "myEngine/HID/Pad.h"
 
 GameCamera* gameCamera;
@@ -18,7 +18,12 @@ bool GameCamera::Start()
 {
 	//カメラ初期化
 	m_camera.Init();
-	m_camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 10.0f));
+	if (sceneManager->GetScene() == SceneManager::stateStageSelect) {
+		m_camera.SetEyePt(D3DXVECTOR3(0.0f, 19.0f, 15.0f));
+	}
+	else {
+		m_camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 10.0f));
+	}
 	m_camera.SetLookatPt(D3DXVECTOR3(0.0f, 10.5f, 3.0f));
 	m_camera.SetFar(1000.0f);
 	m_camera.Update();
@@ -63,7 +68,13 @@ void GameCamera::Move()
 	//カメラの注視点を設定
 	m_camera.SetLookatPt(targetPos);
 
-	if (!player->GetStar()) {
+	bool isRotate = true;
+	if (sceneManager->GetScene() == SceneManager::stateStageSelect) {
+		isRotate = false;
+	}
+
+	if (!player->GetChangeStage() && isRotate)
+	{
 		//Y軸周りの回転行列を作成
 		D3DXMATRIX rot;
 		//単位行列を作成
@@ -97,7 +108,7 @@ void GameCamera::Move()
 	}
 
 	//カメラリセット
-	if (pad->IsTrigger(pad->enButtonLB1) && m_cameraReset == false) {
+	if (pad->IsTrigger(pad->enButtonLB1) && !m_cameraReset && isRotate) {
 		m_cameraReset = true;
 	}
 
@@ -138,7 +149,7 @@ void GameCamera::Move()
 	}
 
 	//ステージクリア時にプレイヤーの正面に向かせる
-	if (player->GetStar() && !m_stopRotation) {
+	if (player->GetChangeStage() && !m_stopRotation) {
 		D3DXVECTOR3 playerForward = player->GetPlayerDir();
 		D3DXVECTOR3 toCameraPosition = m_toCameraPos;
 		D3DXVec3Normalize(&toCameraPosition, &toCameraPosition);
@@ -184,7 +195,7 @@ void GameCamera::Move()
 	//カメラの座標を設定
 	m_camera.SetEyePt(m_currentEyePos);
 
-	if (!player->GetStar() && !player->GetFallPlayer() && !player->GetHitEnemy()) {
+	if (!player->GetChangeStage() && !player->GetFallPlayer() && !player->GetHitEnemy() && isRotate) {
 		//カメラの当たり判定
 		D3DXVECTOR3 newPos;
 		if (m_cameraCollisionSolver.Execute(newPos, m_camera.GetEyePt(), m_camera.GetLookatPt()))

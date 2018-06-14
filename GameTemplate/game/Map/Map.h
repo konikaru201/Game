@@ -18,10 +18,11 @@
 #include "Enemy/Red_Dragon.h"
 #include "Enemy/StoneMonster.h"
 #include "Floor.h"
-#include "Building_a.h"
-#include "Building_b.h"
-#include "Building_e.h"
-
+#include "GalaxyBox.h"
+#include "Earth.h"
+#include "StageMarker.h"
+#include "StageMarker2.h"
+#include "StageMarker3.h"
 
 //マップの配置情報
 struct SMapInfo {
@@ -100,20 +101,13 @@ public:
 	*@return 一番近い移動床１の座標
 	*/
 	const D3DXVECTOR3& GetMoveFloor2Position(const D3DXVECTOR3& pos);
-	///*!
-	//*@brief	移動床１が生成されているか
-	//*/
-	//bool GetIsMoveFloor()
-	//{
-	//	return m_isMoveFloor;
-	//}
-	///*!
-	//*@brief	移動床２が生成されているか
-	//*/
-	//bool GetIsMoveFloor2()
-	//{
-	//	return m_isMoveFloor2;
-	//}
+	/*
+	*@brief	地球のインスタンスを取得
+	*/
+	Earth* GetEarthInstance()
+	{
+		return earth;
+	}
 private:
 	std::list<MoveFloor*> m_moveFloorList;		//移動床１のリスト
 	std::list<MoveFloor2*> m_moveFloor2List;	//移動床２のリスト
@@ -121,6 +115,7 @@ private:
 	D3DXMATRIX moveFloor2Matrix;				//移動床２のワールド行列
 	bool m_isMoveFloor = false;					//移動床１が生成されているか
 	bool m_isMoveFloor2 = false;				//移動床２が生成されているか
+	Earth* earth = nullptr;
 };
 
 extern Map* map;

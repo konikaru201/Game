@@ -79,7 +79,7 @@ void GameScene::Update()
 			m_step = step_GameOver;
 		}
 		//ƒXƒ^[Šl“¾Žž
-		else if (player->GetStarAnimationEnd()) {
+		else if (player->GetAnimationEnd()) {
 			bgmSource->SetisDead();
 			bgmSource = nullptr;
 			wipeEffect->StartWipeOut();

@@ -1,48 +1,30 @@
-﻿//skyBox
+﻿//GalaxyBox
 {
-	"skyBox",
-	D3DXVECTOR3(0.00f, -60.00f, 0.00f),             //平行移動
+	"GalaxyBox",
+	D3DXVECTOR3(-0.07f, -60.00f, 15.00f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
-//SelectStage
+//earth
 {
-	"SelectStage",
-	D3DXVECTOR3(0.00f, -5.00f, 0.00f),             //平行移動
+	"earth",
+	D3DXVECTOR3(-0.07f, -12.00f, 15.00f),             //平行移動
 	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
-//Building_a
+//stageMarker
 {
-	"Building_a",
-	D3DXVECTOR3(26.80f, 2.00f, -14.60f),             //平行移動
-	D3DXQUATERNION(0.00f, -0.42f, 0.00f, 0.91f ),  //回転
+	"stageMarker",
+	D3DXVECTOR3(7.06f, -2.40f, 14.32f),             //平行移動
+	D3DXQUATERNION(-0.02f, 0.01f, -0.31f, 0.95f ),  //回転
 },
-//Building_b
+//stageMarker2
 {
-	"Building_b",
-	D3DXVECTOR3(-26.28f, 2.00f, -15.08f),             //平行移動
-	D3DXQUATERNION(0.00f, 0.37f, 0.00f, 0.93f ),  //回転
+	"stageMarker2",
+	D3DXVECTOR3(3.72f, -9.07f, 26.43f),             //平行移動
+	D3DXQUATERNION(0.62f, 0.10f, -0.10f, 0.77f ),  //回転
 },
-//Building_e
+//stageMarker3
 {
-	"Building_e",
-	D3DXVECTOR3(-1.20f, 2.50f, -41.50f),             //平行移動
-	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
-},
-//Board
-{
-	"Board",
-	D3DXVECTOR3(29.46f, -0.07f, -4.66f),             //平行移動
-	D3DXQUATERNION(0.00f, -0.42f, 0.00f, 0.91f ),  //回転
-},
-//Board_2
-{
-	"Board_2",
-	D3DXVECTOR3(-27.70f, -0.11f, -8.40f),             //平行移動
-	D3DXQUATERNION(0.00f, 0.37f, 0.00f, 0.93f ),  //回転
-},
-//Board_3
-{
-	"Board_3",
-	D3DXVECTOR3(-5.70f, -0.24f, -29.97f),             //平行移動
-	D3DXQUATERNION(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+	"stageMarker3",
+	D3DXVECTOR3(-10.51f, -14.03f, 20.90f),             //平行移動
+	D3DXQUATERNION(0.21f, 0.15f, 0.73f, 0.63f ),  //回転
 },

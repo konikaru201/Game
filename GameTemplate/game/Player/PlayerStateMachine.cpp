@@ -31,8 +31,8 @@ void PlayerStateMachine::ChangeState(PlayerState::PlState nextState)
 	case PlayerState::plState_Dead:
 		m_currentState = &m_playerDead;
 		break;
-	case PlayerState::plState_GetStar:
-		m_currentState = &m_playerGetStar;
+	case PlayerState::plState_ChangeStage:
+		m_currentState = &m_playerChangeStage;
 		break;
 	}
 

@@ -252,15 +252,6 @@
     <ClCompile Include="Map\Floor.cpp">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClCompile>
-    <ClCompile Include="Map\Building_a.cpp">
-      <Filter>ソース ファイル\Map\object</Filter>
-    </ClCompile>
-    <ClCompile Include="Map\Building_b.cpp">
-      <Filter>ソース ファイル\Map\object</Filter>
-    </ClCompile>
-    <ClCompile Include="Map\Building_e.cpp">
-      <Filter>ソース ファイル\Map\object</Filter>
-    </ClCompile>
     <ClCompile Include="Number\RemainNumber.cpp">
       <Filter>ソース ファイル\Number</Filter>
     </ClCompile>
@@ -276,14 +267,29 @@
     <ClCompile Include="Player\PlayerDead.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Player\PlayerGetStar.cpp">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Player\PlayerIdle.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
     <ClCompile Include="Fade\WipeEffect.cpp">
       <Filter>ソース ファイル\Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\GalaxyBox.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Earth.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\StageMarker.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\StageMarker2.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\StageMarker3.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\PlayerChangeStage.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -503,15 +509,6 @@
     <ClInclude Include="Map\Floor.h">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClInclude>
-    <ClInclude Include="Map\Building_a.h">
-      <Filter>ソース ファイル\Map\object</Filter>
-    </ClInclude>
-    <ClInclude Include="Map\Building_b.h">
-      <Filter>ソース ファイル\Map\object</Filter>
-    </ClInclude>
-    <ClInclude Include="Map\Building_e.h">
-      <Filter>ソース ファイル\Map\object</Filter>
-    </ClInclude>
     <ClInclude Include="Number\RemainNumber.h">
       <Filter>ソース ファイル\Number</Filter>
     </ClInclude>
@@ -533,14 +530,29 @@
     <ClInclude Include="Player\PlayerDead.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Player\PlayerGetStar.h">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Player\PlayerIdle.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="Fade\WipeEffect.h">
       <Filter>ソース ファイル\Fade</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\GalaxyBox.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Earth.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\StageMarker.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\StageMarker2.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\StageMarker3.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\PlayerChangeStage.h">
+      <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -60,7 +60,7 @@ void Star::Update()
 	if (length <= 1.0f)
 	{
 		m_flag = true;
-		player->SetGetStar(m_flag);
+		player->SetChangeStage(m_flag);
 	}
 
 	if (m_flag)

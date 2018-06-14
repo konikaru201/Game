@@ -117,17 +117,25 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 			Floor* floor = goMgr->NewGameObject<Floor>();
 			floor->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
-		else if (strcmp("Building_a", mapLocInfo[i].modelName) == 0) {
-			Building_a* building_a = goMgr->NewGameObject<Building_a>();
-			building_a->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		else if (strcmp("GalaxyBox", mapLocInfo[i].modelName) == 0) {
+			GalaxyBox* galaxyBox = goMgr->NewGameObject<GalaxyBox>();
+			galaxyBox->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
-		else if (strcmp("Building_b", mapLocInfo[i].modelName) == 0) {
-			Building_b* building_b = goMgr->NewGameObject<Building_b>();
-			building_b->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		else if (strcmp("earth", mapLocInfo[i].modelName) == 0) {
+			earth = goMgr->NewGameObject<Earth>();
+			earth->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
-		else if (strcmp("Building_e", mapLocInfo[i].modelName) == 0) {
-			Building_e* building_e = goMgr->NewGameObject<Building_e>();
-			building_e->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		else if (strcmp("stageMarker", mapLocInfo[i].modelName) == 0) {
+			StageMarker* stageMarker = goMgr->NewGameObject<StageMarker>();
+			stageMarker->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		}
+		else if (strcmp("stageMarker2", mapLocInfo[i].modelName) == 0) {
+			StageMarker2* stageMarker2 = goMgr->NewGameObject<StageMarker2>();
+			stageMarker2->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
+		}
+		else if (strcmp("stageMarker3", mapLocInfo[i].modelName) == 0) {
+			StageMarker3* stageMarker3 = goMgr->NewGameObject<StageMarker3>();
+			stageMarker3->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 		}
 		else 
 		{
