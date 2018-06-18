@@ -23,14 +23,6 @@ WipeEffect* wipeEffect;					//ワイプエフェクト
 CShadowMap g_shadowMap;					//シャドウマップ。
 Bloom* bloom = nullptr;					//ブルーム
 
-DisplayCoin* CoinUI = nullptr;			//コイン枚数のスプライト
-Sprite* Coin = nullptr;					//コインの絵のスプライト
-Sprite* m_aBotton = nullptr;			//Aボタン表示のスプライト
-Sprite* remain = nullptr;				//残機のスプライト
-RemainNumber* remainNumber = nullptr;	//残機数のスプライト
-Sprite* kakeru = nullptr;				//×記号のスプライト
-Sprite* kakeru2 = nullptr;
-
 CRenderTarget* mainRenderTarget;		//メインレンダリングターゲット
 CPrimitive* quadPrimitive;				//四角形の板ポリプリミティブ
 LPD3DXEFFECT copyEffect;				//コピーを行うシェーダー
@@ -41,21 +33,6 @@ void InitQuadPrimitive();
 void LoadShaders();
 void CopyMainRTToCurrentRT();
 void DrawQuadPrimitive();
-
-namespace {
-	//コインのスプライトのサイズと座標
-	const D3DXVECTOR2 coinSize = { 128.0f,72.0f };
-	const D3DXVECTOR2 coinPos = { 920.0f, 600.0f };
-	//Aボタン表示のサイズ
-	const D3DXVECTOR2 bottonSize = { 320.0f,180.0f };
-	//残機のスプライトのサイズと座標
-	const D3DXVECTOR2 remainSize = { 320.0f,240.0f };
-	const D3DXVECTOR2 remainPos = { 900.0f,400.0f };
-	//×記号のスプライトのサイズと座標
-	const D3DXVECTOR2 kakeruSize = { 320.0f,160.0f };
-	const D3DXVECTOR2 kakeruPos = { 1030.0f,600.0f };
-	const D3DXVECTOR2 kakeru2Pos = { 1030.0f,400.0f };
-}
 
 //-----------------------------------------------------------------------------
 // Name: ゲームを初期化。
@@ -95,38 +72,6 @@ void Init()
 
 	//シーンマネージャー生成
 	sceneManager = goMgr->NewGameObject<SceneManager>();
-
-	//スプライトの初期化
-	//コインの絵
-	Coin = new Sprite();
-	Coin->Initialize("Assets/sprite/Coin2.png");
-	Coin->SetPosition(coinPos);
-	Coin->SetSize(coinSize);
-	//コインの枚数
-	CoinUI = new DisplayCoin();
-	CoinUI->Init(kakeruPos);
-	CoinUI->Start();
-	//Aボタン
-	m_aBotton = new Sprite;
-	m_aBotton->Initialize("Assets/sprite/ABotton.png");
-	//残機
-	remain = new Sprite;
-	remain->Initialize("Assets/sprite/unityChan.png");
-	remain->SetPosition(remainPos);
-	remain->SetSize(remainSize);
-	//残機数
-	remainNumber = new RemainNumber;
-	remainNumber->Init(kakeru2Pos);
-	remainNumber->Start();
-	//×記号
-	kakeru = new Sprite;
-	kakeru->Initialize("Assets/sprite/×.png");
-	kakeru->SetPosition(kakeruPos);
-	kakeru->SetSize(kakeruSize);
-	kakeru2 = new Sprite;
-	kakeru2->Initialize("Assets/sprite/×.png");
-	kakeru2->SetPosition(kakeru2Pos);
-	kakeru2->SetSize(kakeruSize);
 }
 //-----------------------------------------------------------------------------
 // Name: 描画処理。％
@@ -175,40 +120,6 @@ VOID Render()
 	//オフスクリーンレンダリングした絵をフレームバッファに貼り付ける
 	CopyMainRTToCurrentRT();
 
-	if (sceneManager->GetScene() == sceneManager->stateStageSelect
-		|| sceneManager->GetScene() == sceneManager->stateGame)
-	{
-		//アルファブレンディングを有効にする。
-		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-		g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-		//コインの絵と枚数を描画
-		Coin->Render();
-		CoinUI->Render();
-		//残機の描画
-		remain->Render();
-		remainNumber->Render();
-		//×記号の描画
-		kakeru->Render();
-		kakeru2->Render();
-		//アルファブレンディングを無効にする。
-		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	}
-
-	if (sceneManager->GetstageSelectScene() != nullptr
-		&& sceneManager->GetstageSelectScene()->GetBottonRender())
-	{
-		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-		g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-		//Aボタン表示
-		m_aBotton->SetSize(bottonSize);
-		m_aBotton->SetIsTrans(true);
-		m_aBotton->Render();
-
-		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	}
-
 	//ワイプエフェクトの描画
 	wipeEffect->Render();
 
@@ -226,8 +137,6 @@ VOID Render()
 void Update()
 {
 	goMgr->Update();
-	CoinUI->Update();
-	remainNumber->Update();
 	wipeEffect->Update();
 	g_fade->Update();
 
@@ -246,13 +155,6 @@ void Terminate()
 	delete wipeEffect;
 	delete g_effectManager;
 	delete g_physicsWorld;
-	delete Coin;
-	delete CoinUI;
-	delete m_aBotton;
-	delete remain;
-	delete remainNumber;
-	delete kakeru;
-	delete kakeru2;
 }
 
 //オブジェクトをデリートする処理

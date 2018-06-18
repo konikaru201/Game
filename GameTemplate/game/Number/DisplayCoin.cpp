@@ -3,7 +3,6 @@
 #include "myEngine/GameObject/GameObjectManager.h"
 #include "Player/Player.h"
 #include "Scene/SceneManager.h"
-#include "RemainNumber.h"
 
 namespace {
 	const float NumSizeX = 85.0f;
@@ -41,7 +40,7 @@ void DisplayCoin::Update()
 {
 
 	if (m_coinNum > 99) {
-		remainNumber->RemainCount(1);
+		sceneManager->GetRemainNumber()->RemainCount(1);
 		m_coinNum = 0;
 	}
 

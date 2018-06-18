@@ -43,17 +43,54 @@ public:
 	* @param[in]	isRecieveShadow	シャドウレシーバーかどうか
 	*/
 	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
+	/*!
+	* @brief	座標の取得
+	*@return	座標
+	*/
+	const D3DXVECTOR3& GetPosition() {
+		return m_position;
+	}
+	/*!
+	*@brief	UI描画フラグを取得
+	*/
+	bool GetUIRenderFlag()
+	{
+		return m_UIRender;
+	}
+	/*!
+	*@brief	ステージ変更フラグを取得
+	*/
+	bool GetStageChangeFlag()
+	{
+		return m_stageChange;
+	}
+	/*!
+	* @brief	ステージ番号の取得
+	*@return	ステージ番号
+	*/
+	int GetStageNumber() {
+		return m_stageNumber;
+	}
+	/*!
+	*@brief	決定フラグを取得
+	*/
+	bool GetDecisionFlag()
+	{
+		return m_decision;
+	}
 private:
-	SkinModel		m_model;			//スキンモデル
-	SkinModelData	m_modelData;		//スキンモデルデータ
-	MeshCollider	m_meshCollider;		//メッシュコライダー
-	RigidBody		m_rigidBody;		//剛体
-	Light			m_light;			//ライト
-	D3DXVECTOR3		m_position;			//座標
-	D3DXQUATERNION	m_rotation;			//回転
-	D3DXMATRIX		m_parentWorldMatrix;
-	D3DXVECTOR3		m_childPosition;
-	D3DXMATRIX		m_parentRotationMatrix;
-	D3DXQUATERNION	m_childRotation;
-	bool			m_stageChange = false;
+	SkinModel		m_model;				//スキンモデル
+	SkinModelData	m_modelData;			//スキンモデルデータ
+	MeshCollider	m_meshCollider;			//メッシュコライダー
+	RigidBody		m_rigidBody;			//剛体
+	Light			m_light;				//ライト
+	D3DXVECTOR3		m_position;				//座標
+	D3DXQUATERNION	m_rotation;				//回転
+	D3DXMATRIX		m_parentWorldMatrix;	//親のワールド行列
+	D3DXVECTOR3		m_childPosition;		//親から見た座標
+	D3DXQUATERNION	m_childRotation;		//親から見た回転
+	const int		m_stageNumber = 2;		//ステージ番号
+	bool			m_decision = false;		//決定を押したか
+	bool			m_stageChange = false;	//ステージ変更フラグ
+	bool			m_UIRender = false;		//UIを描画するフラグ
 };

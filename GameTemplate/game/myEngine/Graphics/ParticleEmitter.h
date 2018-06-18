@@ -16,6 +16,7 @@ struct SParticleEmitParameter {
 	D3DXVECTOR3 initSpeed;			//初速度
 	D3DXVECTOR3 position;			//座標
 	float		alpha;				//透明度
+	int			particleNum;		//パーティクルを発生させる個数
 };
 
 //パーティクルの発生機
@@ -46,6 +47,8 @@ public:
 		param.initSpeed = speed;
 	}
 private:
-	SParticleEmitParameter	param;			//パラメータ
-	float					timer;			//タイマー
+	SParticleEmitParameter	param;				//パラメータ
+	float					timer;				//タイマー
+	int						m_particleNum = 0;
+	std::list<CParticle*>	m_particleList;
 };

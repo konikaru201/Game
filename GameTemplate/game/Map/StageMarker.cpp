@@ -51,6 +51,18 @@ void StageMarker::Init(D3DXVECTOR3 position, D3DXQUATERNION rotation)
 
 	//作成した剛体を物理ワールドに追加
 	g_physicsWorld->AddRigidBody(&m_rigidBody);
+
+	////パーティクルの初期化
+	//SParticleEmitParameter param;
+	//param.texturePath = "Assets/sprite/FireParticleGlow.png";
+	//param.w = 0.5f;
+	//param.h = 0.5f;
+	//param.intervalTime = 0.3f;
+	//param.initSpeed = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	//param.position = position;
+	//param.alpha = 1.0f;
+	//param.particleNum = 5;
+	//m_particleEmitter.Init(param);
 }
 
 bool StageMarker::Start()
@@ -83,6 +95,9 @@ void StageMarker::Update()
 		return;
 	}
 
+	//m_particleEmitter.SetPosition(m_position);
+	//m_particleEmitter.Update();
+
 	if (map->GetEarthInstance()->GetIsRotate()) {
 		//親のワールド行列を取得
 		m_parentWorldMatrix = map->GetEarthInstance()->GetWorldMatrix();
@@ -107,19 +122,19 @@ void StageMarker::Update()
 	D3DXVECTOR3 toPlayerPos = player->GetPosition() - m_position;
 	float length = D3DXVec3Length(&toPlayerPos);
 	if (length <= 0.8f) {
-		sceneManager->GetstageSelectScene()->SetBottonReneder(true, 0);
+		m_UIRender = true;
 		if (pad->IsTrigger(pad->enButtonA)) {
-			m_stageChange = true;
-			player->SetChangeStage(m_stageChange);
+			m_decision = true;
+			player->SetChangeStage(m_decision);
 		}
 	}
 	else {
-		sceneManager->GetstageSelectScene()->SetBottonReneder(false, 0);
+		m_UIRender = false;
 	}
 
-	if (m_stageChange) {
+	if (m_decision) {
 		if (player->GetAnimationEnd()) {
-			sceneManager->GetstageSelectScene()->SetChangeStage(true, 1);
+			m_stageChange = true;
 		}
 	}
 

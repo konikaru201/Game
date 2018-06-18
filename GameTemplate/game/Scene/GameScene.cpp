@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "GameScene.h"
+#include "SceneManager.h"
 #include "myEngine/GameObject/GameObjectManager.h"
 #include "Fade/Fade.h"
 #include "myEngine/Timer/Timer.h"
-#include "Number/RemainNumber.h"
 #include "Fade/WipeEffect.h"
 
 SMapInfo Stage1[] = {
@@ -72,7 +72,7 @@ void GameScene::Update()
 		if (player->GetPlayerDead()) {
 			bgmSource->SetisDead();
 			bgmSource = nullptr;
-			if (remainNumber->GetRemainNum() <= 0) {
+			if (sceneManager->GetRemainNumber()->GetRemainNum() <= 0) {
 				gameOverScene = goMgr->NewGameObject<GameOverScene>();
 				m_restart = false;
 			}

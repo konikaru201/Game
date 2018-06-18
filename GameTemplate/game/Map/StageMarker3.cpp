@@ -107,19 +107,19 @@ void StageMarker3::Update()
 	D3DXVECTOR3 toPlayerPos = player->GetPosition() - m_position;
 	float length = D3DXVec3Length(&toPlayerPos);
 	if (length <= 0.8f) {
-		sceneManager->GetstageSelectScene()->SetBottonReneder(true, 2);
+		m_UIRender = true;
 		if (pad->IsTrigger(pad->enButtonA)) {
-			m_stageChange = true;
-			player->SetChangeStage(m_stageChange);
+			m_decision = true;
+			player->SetChangeStage(m_decision);
 		}
 	}
 	else {
-		sceneManager->GetstageSelectScene()->SetBottonReneder(false, 2);
+		m_UIRender = false;
 	}
 
-	if (m_stageChange) {
+	if (m_decision) {
 		if (player->GetAnimationEnd()) {
-			sceneManager->GetstageSelectScene()->SetChangeStage(true, 3);
+			m_stageChange = true;
 		}
 	}
 

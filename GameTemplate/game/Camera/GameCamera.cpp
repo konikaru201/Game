@@ -148,7 +148,7 @@ void GameCamera::Move()
 		}
 	}
 
-	//ステージクリア時にプレイヤーの正面に向かせる
+	//ステージ変更時にプレイヤーの正面に向かせる
 	if (player->GetChangeStage() && !m_stopRotation) {
 		D3DXVECTOR3 playerForward = player->GetPlayerDir();
 		D3DXVECTOR3 toCameraPosition = m_toCameraPos;

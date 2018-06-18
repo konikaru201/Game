@@ -23,14 +23,19 @@ public:
 
 	//描画
 	void Render();
-private:
+
 	enum State {
 		State_Run,
 		State_FadeOut,
 		State_Dead,
 	};
-	State				state;				//状態
 
+	State GetState()
+	{
+		return state;
+	}
+private:
+	State				state;				//状態
 	CPrimitive			primitive;			//プリミティブ
 	LPDIRECT3DTEXTURE9	texture;			//テクスチャ
 	ID3DXEffect*		shaderEffect;		//シェーダーエフェクト

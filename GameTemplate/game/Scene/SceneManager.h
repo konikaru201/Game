@@ -7,6 +7,8 @@
 #include "GameOverScene.h"
 #include "StageSelectScene.h"
 #include "Scene/GameScene.h"
+#include "Number/RemainNumber.h"
+#include "Number/DisplayCoin.h"
 #include "myEngine/HID/Pad.h"
 
 class SceneManager : public GameObject
@@ -28,6 +30,10 @@ public:
 	*@brief	更新
 	*/
 	void Update();
+	/*!
+	*@brief	後から描画
+	*/
+	void PostRender();
 	/*!
 	*@brief	シーンの状態
 	*/
@@ -67,6 +73,22 @@ public:
 	{
 		return m_stageSelectScene;
 	}
+	/*!
+	*@brief	コインUIのインスタンスを取得
+	*@return	コインUIのインスタンス
+	*/
+	DisplayCoin* GetCoinUI()
+	{
+		return m_coinUI;
+	}
+	/*!
+	*@brief	残機数のインスタンスを取得
+	*@return	残機数のインスタンス
+	*/
+	RemainNumber* GetRemainNumber()
+	{
+		return m_remainNumber;
+	}
 private:
 	SceneState			m_state;						//現在のシーン
 	FadeStep			m_step;							//フェードの状態
@@ -76,6 +98,12 @@ private:
 	bool				m_changeScene = false;			//シーン切り替えフラグ
 	int					m_gameOverSceneStateNumber = 0;	//ゲームオーバーシーンのステート番号
 	int					m_stageNumber = 1;
+	DisplayCoin*		m_coinUI = nullptr;				//コイン枚数のスプライト
+	Sprite*				m_coin = nullptr;					//コインの絵のスプライト
+	Sprite*				m_remain = nullptr;				//残機のスプライト
+	RemainNumber*		m_remainNumber = nullptr;			//残機数のスプライト
+	Sprite*				m_kakeru = nullptr;				//×記号のスプライト
+	Sprite*				m_kakeru2 = nullptr;
 };
 
 extern SceneManager* sceneManager;

@@ -69,7 +69,11 @@ void Earth::Update()
 	}
 
 	m_isRotate = false;
-	if ((pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f)) {
+	if ((pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f) 
+		&& !map->GetStageMarkerInstance()->GetDecisionFlag()
+		&& !map->GetStageMarker2Instance()->GetDecisionFlag()
+		&& !map->GetStageMarker3Instance()->GetDecisionFlag())
+	{
 		D3DXVECTOR3 rotationAxis = { 0.0f,1.0f,0.0f };
 		D3DXVECTOR3 stickDir;
 		stickDir.y = 0.0f;

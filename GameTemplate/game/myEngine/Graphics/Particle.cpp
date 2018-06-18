@@ -50,6 +50,8 @@ void CParticle::Init(const SParticleEmitParameter& param)
 	moveSpeed.y += add * 0.3f;
 	moveSpeed.z += add * 0.3f;
 
+	state = State_Run;
+
 	SShapeVertex_PT vb[] = {
 		{
 			-halfW, halfH, 0.0f, 1.0f,
@@ -133,7 +135,7 @@ void CParticle::Update()
 		}
 		break;
 	case State_Dead:
-		this->SetisDead();
+		//this->SetisDead();
 		break;
 	}
 }

@@ -7,6 +7,13 @@ SMapInfo Stage0[] = {
 #include "locationinfo/stage1.h"
 };
 
+namespace {
+	//Aボタン表示のサイズ
+	const D3DXVECTOR2 aBottonSize = { 320.0f,180.0f };
+	//ステージ名のサイズ
+	const D3DXVECTOR2 stageNameSize = { 1920.0f,1080.0f };
+}
+
 CStageSelectScene::CStageSelectScene()
 {
 }
@@ -25,11 +32,32 @@ bool CStageSelectScene::Start()
 		StageCreate();
 
 		//シルエット生成
-		silhouette = goMgr->NewGameObject<Silhouette>();
+		m_silhouette = goMgr->NewGameObject<Silhouette>();
 		//プレイヤー生成
 		player = goMgr->NewGameObject<Player>();
 		//カメラ生成
 		gameCamera = goMgr->NewGameObject<GameCamera>();
+
+		m_stage1 = new Sprite;
+		m_stage1->Initialize("Assets/sprite/Stage1.png");
+		m_stage1->SetSize(stageNameSize);
+		m_stage1->SetIsTrans(true);
+
+		m_stage2 = new Sprite;
+		m_stage2->Initialize("Assets/sprite/Stage2.png");
+		m_stage2->SetSize(stageNameSize);
+		m_stage2->SetIsTrans(true);
+
+		m_stage3 = new Sprite;
+		m_stage3->Initialize("Assets/sprite/Stage3.png");
+		m_stage3->SetSize(stageNameSize);
+		m_stage3->SetIsTrans(true);
+
+		//Aボタン
+		m_aBotton = new Sprite;
+		m_aBotton->Initialize("Assets/sprite/ABotton.png");
+		m_aBotton->SetSize(aBottonSize);
+		m_aBotton->SetIsTrans(true);
 	}
 	else {
 		m_step = step_WaitFadeIn;
@@ -58,7 +86,20 @@ void CStageSelectScene::Update()
 
 	//通常時
 	case step_normal:
-		if (m_changeStage) {
+		if (map->GetStageMarkerInstance()->GetStageChangeFlag()
+			|| map->GetStageMarker2Instance()->GetStageChangeFlag()
+			|| map->GetStageMarker3Instance()->GetStageChangeFlag()) 
+		{
+			if (map->GetStageMarkerInstance()->GetStageChangeFlag()) {
+				m_stageNumber = map->GetStageMarkerInstance()->GetStageNumber();
+			}
+			else if (map->GetStageMarker2Instance()->GetStageChangeFlag()) {
+				m_stageNumber = map->GetStageMarker2Instance()->GetStageNumber();
+			}
+			else if (map->GetStageMarker3Instance()->GetStageChangeFlag()) {
+				m_stageNumber = map->GetStageMarker3Instance()->GetStageNumber();
+			}
+			
 			wipeEffect->StartWipeOut();
 			m_step = step_WaitFadeOut;
 		}
@@ -69,8 +110,8 @@ void CStageSelectScene::Update()
 		//ワイプエフェクトが終了
 		if (!wipeEffect->IsExecute() && !m_waitFadeOut) {
 			m_waitFadeOut = true;
-			bgmSource->SetisDead();
-			bgmSource = nullptr;
+			m_bgmSource->SetisDead();
+			m_bgmSource = nullptr;
 		}
 		break;
 	}
@@ -82,15 +123,56 @@ void CStageSelectScene::Render()
 {
 }
 
+void CStageSelectScene::PostRender()
+{
+	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	D3DXVECTOR3 playerPos = player->GetPosition();
+	playerPos.y += 2.0f;
+	m_aBotton->SetPosition3D(playerPos);
+	D3DXVECTOR3 stageNumberPos;
+	if (map->GetStageMarkerInstance()->GetUIRenderFlag()) {
+		m_aBotton->Render();
+		D3DXVECTOR3 markerFromCamera = gameCamera->GetPosition() - map->GetStageMarkerInstance()->GetPosition();
+		D3DXVec3Normalize(&markerFromCamera, &markerFromCamera);
+		markerFromCamera.z *= 2.0f;
+		stageNumberPos = map->GetStageMarkerInstance()->GetPosition() + markerFromCamera;
+		m_stage1->SetPosition3D(stageNumberPos);
+		m_stage1->Render();
+	}
+	else if (map->GetStageMarker2Instance()->GetUIRenderFlag()) {
+		m_aBotton->Render();
+		D3DXVECTOR3 markerFromCamera = gameCamera->GetPosition() - map->GetStageMarker2Instance()->GetPosition();
+		D3DXVec3Normalize(&markerFromCamera, &markerFromCamera);
+		markerFromCamera.z *= 2.0f;
+		stageNumberPos = map->GetStageMarker2Instance()->GetPosition() + markerFromCamera;
+		m_stage2->SetPosition3D(stageNumberPos);
+		m_stage2->Render();
+	}
+	else if (map->GetStageMarker3Instance()->GetUIRenderFlag()) {
+		m_aBotton->Render();
+		D3DXVECTOR3 markerFromCamera = gameCamera->GetPosition() - map->GetStageMarker3Instance()->GetPosition();
+		D3DXVec3Normalize(&markerFromCamera, &markerFromCamera);
+		markerFromCamera.z *= 2.0f;
+		stageNumberPos = map->GetStageMarker3Instance()->GetPosition() + markerFromCamera;
+		m_stage3->SetPosition3D(stageNumberPos);
+		m_stage3->Render();
+	}
+
+	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+}
+
 void CStageSelectScene::StageCreate()
 {
 	//配置されているオブジェクトの数を計算
 	int numObject = sizeof(Stage0) / sizeof(Stage0[0]);
 	map->Create(Stage0, numObject);
 
-	bgmSource = goMgr->NewGameObject<CSoundSource>();
-	bgmSource->InitStreaming("Assets/sound/bgm_1.wav");
-	bgmSource->Play(true);
+	m_bgmSource = goMgr->NewGameObject<CSoundSource>();
+	m_bgmSource->InitStreaming("Assets/sound/bgm_1.wav");
+	m_bgmSource->Play(true);
 
 	m_step = step_StageLoad;
 }
@@ -99,8 +181,8 @@ void CStageSelectScene::Release()
 {
 	map->SetisDead();
 	map = nullptr;
-	silhouette->SetisDead();
-	silhouette = nullptr;
+	m_silhouette->SetisDead();
+	m_silhouette = nullptr;
 	player->SetisDead();
 	player = nullptr;
 	gameCamera->SetisDead();

@@ -5,12 +5,31 @@
 #include "myEngine/GameObject/GameObjectManager.h"
 #include "Fade/WipeEffect.h"
 
+namespace {
+	//コインのスプライトのサイズと座標
+	const D3DXVECTOR2 coinSize = { 128.0f,72.0f };
+	const D3DXVECTOR2 coinPos = { 920.0f, 600.0f };
+	//残機のスプライトのサイズと座標
+	const D3DXVECTOR2 remainSize = { 320.0f,240.0f };
+	const D3DXVECTOR2 remainPos = { 900.0f,400.0f };
+	//×記号のスプライトのサイズと座標
+	const D3DXVECTOR2 kakeruSize = { 320.0f,160.0f };
+	const D3DXVECTOR2 kakeruPos = { 1030.0f,600.0f };
+	const D3DXVECTOR2 kakeru2Pos = { 1030.0f,400.0f };
+}
+
 SceneManager::SceneManager()
 {
 }
 
 SceneManager::~SceneManager()
 {
+	delete m_coin;
+	delete m_coinUI;
+	delete m_remain;
+	delete m_remainNumber;
+	delete m_kakeru;
+	delete m_kakeru2;
 }
 
 bool SceneManager::Start()
@@ -20,6 +39,36 @@ bool SceneManager::Start()
 
 	m_state = stateTitle;
 	m_step = step_WaitFadeIn;
+
+	//スプライトの初期化
+	//コインの絵
+	m_coin = new Sprite();
+	m_coin->Initialize("Assets/sprite/Coin2.png");
+	m_coin->SetPosition(coinPos);
+	m_coin->SetSize(coinSize);
+	//コインの枚数
+	m_coinUI = new DisplayCoin();
+	m_coinUI->Init(kakeruPos);
+	m_coinUI->Start();
+	//残機
+	m_remain = new Sprite;
+	m_remain->Initialize("Assets/sprite/unityChan.png");
+	m_remain->SetPosition(remainPos);
+	m_remain->SetSize(remainSize);
+	//残機数
+	m_remainNumber = new RemainNumber;
+	m_remainNumber->Init(kakeru2Pos);
+	m_remainNumber->Start();
+	//×記号
+	m_kakeru = new Sprite;
+	m_kakeru->Initialize("Assets/sprite/×.png");
+	m_kakeru->SetPosition(kakeruPos);
+	m_kakeru->SetSize(kakeruSize);
+	m_kakeru2 = new Sprite;
+	m_kakeru2->Initialize("Assets/sprite/×.png");
+	m_kakeru2->SetPosition(kakeru2Pos);
+	m_kakeru2->SetSize(kakeruSize);
+
 
 	return true;
 }
@@ -93,6 +142,9 @@ void SceneManager::Update()
 				m_stageNumber = m_stageSelectScene->GetStageNumber();
 			}
 		}
+		m_coinUI->Update();
+		m_remainNumber->Update();
+
 		break;
 	//ゲームシーン
 	case stateGame:
@@ -134,6 +186,9 @@ void SceneManager::Update()
 				m_step = step_WaitFadeOut;
 			}
 		}
+		m_coinUI->Update();
+		m_remainNumber->Update();
+
 		break;
 	//ゲームオーバーシーン
 	case stateGameOver:
@@ -166,5 +221,26 @@ void SceneManager::Update()
 		m_step = step_WaitFadeIn;
 
 		break;
+	}
+}
+
+void SceneManager::PostRender()
+{
+	if (m_state == stateStageSelect || m_state == stateGame) {
+		//アルファブレンディングを有効にする。
+		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		//コインの絵と枚数を描画
+		m_coin->Render();
+		m_coinUI->Render();
+		//残機の描画
+		m_remain->Render();
+		m_remainNumber->Render();
+		//×記号の描画
+		m_kakeru->Render();
+		m_kakeru2->Render();
+		//アルファブレンディングを無効にする。
+		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
 }

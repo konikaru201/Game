@@ -291,6 +291,15 @@
     <ClCompile Include="Player\PlayerChangeStage.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Map\Needle.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Needle2.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Needle3.cpp">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -553,6 +562,15 @@
     </ClInclude>
     <ClInclude Include="Player\PlayerChangeStage.h">
       <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Needle.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Needle2.h">
+      <Filter>ソース ファイル\Map\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Needle3.h">
+      <Filter>ソース ファイル\Map\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

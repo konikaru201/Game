@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Coin.h"
-#include "Number/DisplayCoin.h"
 #include "Scene/SceneManager.h"
 #include "myEngine/Sound/SoundSource.h"
 
@@ -116,7 +115,7 @@ void Coin::UpdateInstancingWorldMatrix()
 		float length = D3DXVec3Length(&toPlayer);
 		if (length <= 0.9f) {
 			//コインの枚数をカウント
-			CoinUI->CoinCount();
+			sceneManager->GetCoinUI()->CoinCount();
 			it = m_coinInfoList.erase(it);
 			m_numInstancing--;
 			//音を鳴らす

@@ -73,6 +73,11 @@ public:
 	{
 		m_isTrans = isTrans;
 	}
+
+	void SetPosition3D(const D3DXVECTOR3& position) 
+	{
+		m_position3D = position;
+	}
 private:
 	LPDIRECT3DTEXTURE9 m_pTexture;		//テクスチャ
 	D3DXIMAGE_INFO m_imginfo;
@@ -81,6 +86,7 @@ private:
 	LPD3DXEFFECT m_pEffect;
 	D3DXVECTOR2 m_position;
 	D3DXVECTOR2 m_size;
+	D3DXVECTOR3 m_position3D;
 	float m_alpha = 1.0f;
 	bool m_uvMove = false;				//UVを動かすフラグ
 	float uvPos = 0.0f;

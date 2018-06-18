@@ -22,11 +22,22 @@ void CParticleEmitter::Init(const SParticleEmitParameter& param)
 
 void CParticleEmitter::Update()
 {
-	if (timer >= param.intervalTime) {
+	if (timer >= param.intervalTime && m_particleNum < param.particleNum) {
 		//パーティクル生成
 		CParticle* p = goMgr->NewGameObject<CParticle>();
 		p->Init(param);
+		m_particleList.push_back(p);
 		timer = 0.0f;
+		m_particleNum++;
 	}
+
+	if (m_particleNum >= param.particleNum) {
+		for (auto& particle : m_particleList) {
+			if (particle->GetState() == particle->State_Dead) {
+				particle->Init(param);
+			}
+		}
+	}
+
 	timer += 1.0f / 60.0f;
 }

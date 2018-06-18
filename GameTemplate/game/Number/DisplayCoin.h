@@ -49,5 +49,3 @@ private:
 	D3DXVECTOR2 m_position = { 0.0f,0.0f }; //À•W
 	int			m_coinNum = 0;				//ƒRƒCƒ“‚Ì–‡”
 };
-
-extern DisplayCoin* CoinUI;

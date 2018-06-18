@@ -23,6 +23,9 @@
 #include "StageMarker.h"
 #include "StageMarker2.h"
 #include "StageMarker3.h"
+#include "Needle.h"
+#include "Needle2.h"
+#include "Needle3.h"
 
 //マップの配置情報
 struct SMapInfo {
@@ -106,16 +109,40 @@ public:
 	*/
 	Earth* GetEarthInstance()
 	{
-		return earth;
+		return m_earth;
+	}
+	/*
+	*@brief	ステージマーカーのインスタンスを取得
+	*/
+	StageMarker* GetStageMarkerInstance()
+	{
+		return m_stageMarker;
+	}
+	/*
+	*@brief	ステージマーカー2のインスタンスを取得
+	*/
+	StageMarker2* GetStageMarker2Instance()
+	{
+		return m_stageMarker2;
+	}
+	/*
+	*@brief	ステージマーカー3のインスタンスを取得
+	*/
+	StageMarker3* GetStageMarker3Instance()
+	{
+		return m_stageMarker3;
 	}
 private:
-	std::list<MoveFloor*> m_moveFloorList;		//移動床１のリスト
-	std::list<MoveFloor2*> m_moveFloor2List;	//移動床２のリスト
-	D3DXMATRIX moveFloorMatrix;					//移動床１のワールド行列
-	D3DXMATRIX moveFloor2Matrix;				//移動床２のワールド行列
-	bool m_isMoveFloor = false;					//移動床１が生成されているか
-	bool m_isMoveFloor2 = false;				//移動床２が生成されているか
-	Earth* earth = nullptr;
+	std::list<MoveFloor*>	m_moveFloorList;		//移動床１のリスト
+	std::list<MoveFloor2*>	m_moveFloor2List;		//移動床２のリスト
+	D3DXMATRIX				moveFloorMatrix;		//移動床１のワールド行列
+	D3DXMATRIX				moveFloor2Matrix;		//移動床２のワールド行列
+	bool					m_isMoveFloor = false;	//移動床１が生成されているか
+	bool					m_isMoveFloor2 = false;	//移動床２が生成されているか
+	Earth*					m_earth = nullptr;		//地球のインスタンス
+	StageMarker*			m_stageMarker;
+	StageMarker2*			m_stageMarker2;
+	StageMarker3*			m_stageMarker3;
 };
 
 extern Map* map;
