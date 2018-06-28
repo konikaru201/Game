@@ -52,10 +52,6 @@ void Box::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 	//剛体の位置を更新。
 	trans.setOrigin(btVector3(rigidPos.x, rigidPos.y, rigidPos.z));
 
-	//rigidBody.GetBody()->setUserIndex(enCollisionAttr_Box);
-	//rigidBody.GetBody()->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
-	//rigidBody.GetBody()->setActivationState(DISABLE_DEACTIVATION);
-
 	//作成した剛体を物理ワールドに追加
 	g_physicsWorld->AddRigidBody(&m_rigidBody);
 }

@@ -31,9 +31,9 @@ public:
 	*/
 	void Update();
 	/*!
-	*@brief	後から描画
+	*@brief	UIを描画
 	*/
-	void PostRender();
+	void UIRender();
 	/*!
 	*@brief	シーンの状態
 	*/
@@ -55,13 +55,14 @@ public:
 	*@brief	現在のシーンを取得
 	*@return	現在のシーン
 	*/
-	const SceneState& GetScene() {
+	const SceneState& GetScene() const
+	{
 		return m_state;
 	}
 	/*!
 	*@brief	シーン切り替えフラグを取得
 	*/
-	bool GetChangeSceneFlag()
+	bool GetChangeSceneFlag() const
 	{
 		return m_changeScene;
 	}
@@ -69,7 +70,7 @@ public:
 	*@brief	ステージセレクトシーンを取得
 	*@return	ステージセレクトシーン
 	*/
-	CStageSelectScene* GetstageSelectScene()
+	CStageSelectScene* GetstageSelectScene() const
 	{
 		return m_stageSelectScene;
 	}
@@ -77,7 +78,7 @@ public:
 	*@brief	コインUIのインスタンスを取得
 	*@return	コインUIのインスタンス
 	*/
-	DisplayCoin* GetCoinUI()
+	DisplayCoin* GetCoinUI() const
 	{
 		return m_coinUI;
 	}
@@ -85,25 +86,25 @@ public:
 	*@brief	残機数のインスタンスを取得
 	*@return	残機数のインスタンス
 	*/
-	RemainNumber* GetRemainNumber()
+	RemainNumber* GetRemainNumber() const
 	{
 		return m_remainNumber;
 	}
 private:
-	SceneState			m_state;						//現在のシーン
-	FadeStep			m_step;							//フェードの状態
-	TitleScene*			m_titleScene = nullptr;			//タイトルシーン
-	CStageSelectScene*	m_stageSelectScene = nullptr;	//ステージセレクトシーン
-	GameScene*			m_gameScene = nullptr;			//ゲームシーン
-	bool				m_changeScene = false;			//シーン切り替えフラグ
-	int					m_gameOverSceneStateNumber = 0;	//ゲームオーバーシーンのステート番号
-	int					m_stageNumber = 1;
-	DisplayCoin*		m_coinUI = nullptr;				//コイン枚数のスプライト
-	Sprite*				m_coin = nullptr;					//コインの絵のスプライト
-	Sprite*				m_remain = nullptr;				//残機のスプライト
-	RemainNumber*		m_remainNumber = nullptr;			//残機数のスプライト
-	Sprite*				m_kakeru = nullptr;				//×記号のスプライト
-	Sprite*				m_kakeru2 = nullptr;
+	SceneState					m_state;						//現在のシーン
+	FadeStep					m_step;							//フェードの状態
+	TitleScene*					m_titleScene = nullptr;			//タイトルシーン
+	CStageSelectScene*			m_stageSelectScene = nullptr;	//ステージセレクトシーン
+	GameScene*					m_gameScene = nullptr;			//ゲームシーン
+	bool						m_changeScene = false;			//シーン切り替えフラグ
+	int							m_gameOverSceneStateNumber = 0;	//ゲームオーバーシーンのステート番号
+	int							m_stageNumber = 1;
+	DisplayCoin*				m_coinUI = nullptr;				//コイン枚数のスプライト
+	RemainNumber*				m_remainNumber = nullptr;		//残機数のスプライト
+	std::unique_ptr<Sprite>		m_coin = nullptr;				//コインの絵のスプライト
+	std::unique_ptr<Sprite>		m_remain = nullptr;				//残機のスプライト
+	std::unique_ptr<Sprite>		m_kakeru = nullptr;				//×記号のスプライト
+	std::unique_ptr<Sprite>		m_kakeru2 = nullptr;
 };
 
 extern SceneManager* sceneManager;

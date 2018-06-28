@@ -30,7 +30,7 @@ void Coin::Init(int numInstancing)
 	m_light.SetDiffuseLightColor(1, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
 	m_light.SetDiffuseLightColor(2, D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.0f));
 	m_light.SetDiffuseLightColor(3, D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f));
-	m_light.SetAmbientLight(D3DXVECTOR4(2.0f, 2.0f, 2.0f, 1.0f));
+	m_light.SetAmbientLight(D3DXVECTOR4(1.5f, 1.5f, 1.5f, 1.0f));
 	m_model.SetLight(&m_light);
 	m_model.UpdateWorldMatrix({ 0.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f,1.0f }, { 1.0f,1.0f,1.0f });
 

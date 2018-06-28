@@ -66,35 +66,35 @@ public:
 	* @brief	状態を返却
 	* @return	状態
 	*/
-	const Step& IsStep()
+	const Step& IsStep() const
 	{
 		return m_step;
 	}
 	/*!
 	* @brief	ステージクリアフラグを取得
 	*/
-	bool GetStageClearFlag()
+	bool GetStageClearFlag() const
 	{
 		return m_stageClearFlag;
 	}
 	/*!
 	* @brief	ゲームオーバーシーンの終了フラグを取得
 	*/
-	bool GetGameOverEnd()
+	bool GetGameOverEnd() const
 	{
 		return m_gameOverSceneEnd;
 	}
 	/*!
 	* @brief	ゲームオーバーシーンの状態を数字で取得
 	*/
-	int GetGameOverSceneStateNumber()
+	int GetGameOverSceneStateNumber() const
 	{
 		return m_gameOverSceneStateNumber;
 	}
 private:
-	GameOverScene*	gameOverScene = nullptr;		//ゲームオーバーシーン
-	Silhouette*		silhouette;						//シルエット
-	CSoundSource*	bgmSource = nullptr;			//BGM
+	GameOverScene*	m_gameOverScene = nullptr;		//ゲームオーバーシーン
+	Silhouette*		m_silhouette;						//シルエット
+	CSoundSource*	m_bgmSource = nullptr;			//BGM
 
 	Step			m_step = step_StageLoad;		//状態
 

@@ -45,7 +45,7 @@ public:
 	* @brief	ˆÚ“®‘¬“x‚ðŽæ“¾
 	*@return	ˆÚ“®‘¬“x
 	*/
-	const D3DXVECTOR3& GetMoveSpeed()
+	const D3DXVECTOR3& GetMoveSpeed() const
 	{
 		return m_jumpSpeed;
 	}

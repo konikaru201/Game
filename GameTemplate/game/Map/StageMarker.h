@@ -48,20 +48,21 @@ public:
 	* @brief	座標の取得
 	*@return	座標
 	*/
-	const D3DXVECTOR3& GetPosition() {
+	const D3DXVECTOR3& GetPosition() const
+	{
 		return m_position;
 	}
 	/*!
 	*@brief	UI描画フラグを取得
 	*/
-	bool GetUIRenderFlag()
+	bool GetUIRenderFlag() const
 	{
 		return m_UIRender;
 	}
 	/*!
 	*@brief	ステージ変更フラグを取得
 	*/
-	bool GetStageChangeFlag()
+	bool GetStageChangeFlag() const
 	{
 		return m_stageChange;
 	}
@@ -69,13 +70,14 @@ public:
 	* @brief	ステージ番号の取得
 	*@return	ステージ番号
 	*/
-	int GetStageNumber() {
+	int GetStageNumber() const
+	{
 		return m_stageNumber;
 	}
 	/*!
 	*@brief	決定フラグを取得
 	*/
-	bool GetDecisionFlag()
+	bool GetDecisionFlag() const
 	{
 		return m_decision;
 	}

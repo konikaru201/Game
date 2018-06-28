@@ -38,7 +38,7 @@ public:
 	/*!
 	*@brief	Start関数がすでに呼ばれたか
 	*/
-	virtual bool IsStart()
+	virtual bool IsStart() const
 	{
 		return m_isStart;
 	}
@@ -52,7 +52,7 @@ public:
 	/*!
 	*@brief	死亡フラグを返却
 	*/
-	bool GetisDead()
+	bool GetisDead() const
 	{
 		return m_isDead;
 	}
@@ -66,7 +66,7 @@ public:
 	/*!
 	*@brief	影の描画フラグを返却
 	*/
-	bool GetShadowToRender()
+	bool GetShadowToRender() const
 	{
 		return m_renderToShadow;
 	}
@@ -80,7 +80,7 @@ public:
 	/*!
 	*@brief	ゲームオブジェクトに登録されているか
 	*/
-	bool GetIsRegist()
+	bool GetIsRegist() const
 	{
 		return m_isRegist;
 	}
@@ -94,7 +94,7 @@ public:
 	/*!
 	*@brief	ステートを変更するか
 	*/
-	bool GetIsChangeState()
+	bool GetIsChangeState() const
 	{
 		return m_isChangeState;
 	}

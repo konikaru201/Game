@@ -24,12 +24,8 @@ SceneManager::SceneManager()
 
 SceneManager::~SceneManager()
 {
-	delete m_coin;
 	delete m_coinUI;
-	delete m_remain;
 	delete m_remainNumber;
-	delete m_kakeru;
-	delete m_kakeru2;
 }
 
 bool SceneManager::Start()
@@ -42,7 +38,7 @@ bool SceneManager::Start()
 
 	//スプライトの初期化
 	//コインの絵
-	m_coin = new Sprite();
+	m_coin = std::make_unique<Sprite>();
 	m_coin->Initialize("Assets/sprite/Coin2.png");
 	m_coin->SetPosition(coinPos);
 	m_coin->SetSize(coinSize);
@@ -51,7 +47,7 @@ bool SceneManager::Start()
 	m_coinUI->Init(kakeruPos);
 	m_coinUI->Start();
 	//残機
-	m_remain = new Sprite;
+	m_remain = std::make_unique<Sprite>();
 	m_remain->Initialize("Assets/sprite/unityChan.png");
 	m_remain->SetPosition(remainPos);
 	m_remain->SetSize(remainSize);
@@ -60,11 +56,11 @@ bool SceneManager::Start()
 	m_remainNumber->Init(kakeru2Pos);
 	m_remainNumber->Start();
 	//×記号
-	m_kakeru = new Sprite;
+	m_kakeru = std::make_unique<Sprite>();
 	m_kakeru->Initialize("Assets/sprite/×.png");
 	m_kakeru->SetPosition(kakeruPos);
 	m_kakeru->SetSize(kakeruSize);
-	m_kakeru2 = new Sprite;
+	m_kakeru2 = std::make_unique<Sprite>();
 	m_kakeru2->Initialize("Assets/sprite/×.png");
 	m_kakeru2->SetPosition(kakeru2Pos);
 	m_kakeru2->SetSize(kakeruSize);
@@ -224,7 +220,7 @@ void SceneManager::Update()
 	}
 }
 
-void SceneManager::PostRender()
+void SceneManager::UIRender()
 {
 	if (m_state == stateStageSelect || m_state == stateGame) {
 		//アルファブレンディングを有効にする。

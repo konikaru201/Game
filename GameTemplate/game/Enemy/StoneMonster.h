@@ -56,7 +56,7 @@ public:
 	* @brief	ストーンモンスターの座標の取得
 	*@return	ストーンモンスターの座標
 	*/
-	const D3DXVECTOR3& GetPosition()
+	const D3DXVECTOR3& GetPosition() const
 	{
 		return m_position;
 	}
@@ -72,7 +72,7 @@ public:
 	* @brief	回転を取得
 	*@return	回転
 	*/
-	const D3DXQUATERNION& GetRotation()
+	const D3DXQUATERNION& GetRotation() const
 	{
 		return m_rotation;
 	}
@@ -101,7 +101,7 @@ public:
 	* @brief	移動速度を取得
 	*@return	移動速度
 	*/
-	const D3DXVECTOR3& GetMoveSpeed()
+	const D3DXVECTOR3& GetMoveSpeed() const
 	{
 		return m_characterController.GetMoveSpeed();
 	}
@@ -116,21 +116,21 @@ public:
 	/*!
 	*@brief	踏まれたフラグを取得
 	*/
-	bool GetIsStepOn()
+	bool GetIsStepOn() const
 	{
 		return m_isStepOn;
 	}
 	/*!
 	*@brief	移動床１の上にいるか判定
 	*/
-	bool GetIsOnMoveFloor()
+	bool GetIsOnMoveFloor() const
 	{
 		return m_moveFloorHit;
 	}
 	/*!
 	*@brief	移動床２の上にいるか判定
 	*/
-	bool GetIsOnMoveFloor2()
+	bool GetIsOnMoveFloor2() const
 	{
 		return m_moveFloor2Hit;
 	}
@@ -138,7 +138,7 @@ public:
 	* @brief	移動床１の座標を取得
 	*@return	移動床１の座標
 	*/
-	const D3DXVECTOR3& GetMoveFloorPosition()
+	const D3DXVECTOR3& GetMoveFloorPosition() const
 	{
 		return m_moveFloorPosition;
 	}
@@ -146,7 +146,7 @@ public:
 	* @brief	移動床２の座標を取得
 	*@return	移動床２の座標
 	*/
-	const D3DXVECTOR3& GetMoveFloor2Position()
+	const D3DXVECTOR3& GetMoveFloor2Position() const
 	{
 		return m_moveFloor2Position;
 	}

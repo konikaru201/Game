@@ -40,7 +40,7 @@ bool GameScene::Start()
 	//ステージ作成
 	StageCreate(m_stageNumber);
 
-	silhouette = goMgr->NewGameObject<Silhouette>();	//シルエット生成
+	m_silhouette = goMgr->NewGameObject<Silhouette>();	//シルエット生成
 	player = goMgr->NewGameObject<Player>();			//プレイヤー生成
 	gameCamera = goMgr->NewGameObject<GameCamera>();	//カメラ生成
 
@@ -70,18 +70,18 @@ void GameScene::Update()
 	case step_normal:
 		//プレイヤー死亡時
 		if (player->GetPlayerDead()) {
-			bgmSource->SetisDead();
-			bgmSource = nullptr;
+			m_bgmSource->SetisDead();
+			m_bgmSource = nullptr;
 			if (sceneManager->GetRemainNumber()->GetRemainNum() <= 0) {
-				gameOverScene = goMgr->NewGameObject<GameOverScene>();
+				m_gameOverScene = goMgr->NewGameObject<GameOverScene>();
 				m_restart = false;
 			}
 			m_step = step_GameOver;
 		}
 		//スター獲得時
 		else if (player->GetAnimationEnd()) {
-			bgmSource->SetisDead();
-			bgmSource = nullptr;
+			m_bgmSource->SetisDead();
+			m_bgmSource = nullptr;
 			wipeEffect->StartWipeOut();
 			m_step = step_StageClear;
 		}
@@ -96,8 +96,8 @@ void GameScene::Update()
 			m_restart = false;
 		}
 		//ゲームオーバーシーンが終了
-		else if (gameOverScene != nullptr && gameOverScene->GetGameOverSceneEnd()) {
-			m_gameOverSceneStateNumber = gameOverScene->GetStateNumber();
+		else if (m_gameOverScene != nullptr && m_gameOverScene->GetGameOverSceneEnd()) {
+			m_gameOverSceneStateNumber = m_gameOverScene->GetStateNumber();
 			if (m_gameOverSceneStateNumber == 0 || m_gameOverSceneStateNumber == 1) {
 				wipeEffect->StartWipeOut();
 			}
@@ -105,8 +105,8 @@ void GameScene::Update()
 				g_fade->StartFadeOut();
 			}
 			m_gameOverSceneEnd = true;
-			gameOverScene->SetisDead();
-			gameOverScene = nullptr;
+			m_gameOverScene->SetisDead();
+			m_gameOverScene = nullptr;
 		}
 		g_physicsWorld->Update();
 		break;
@@ -135,9 +135,9 @@ void GameScene::StageCreate(int number)
 
 		map->Create(Stage1, numObject);
 
-		bgmSource = goMgr->NewGameObject<CSoundSource>();
-		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
-		bgmSource->Play(true);
+		m_bgmSource = goMgr->NewGameObject<CSoundSource>();
+		m_bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
+		m_bgmSource->Play(true);
 	}
 	//ステージ２
 	else if (number == 2) {
@@ -145,9 +145,9 @@ void GameScene::StageCreate(int number)
 
 		map->Create(Stage2, numObject);
 
-		bgmSource = goMgr->NewGameObject<CSoundSource>();
-		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
-		bgmSource->Play(true);
+		m_bgmSource = goMgr->NewGameObject<CSoundSource>();
+		m_bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
+		m_bgmSource->Play(true);
 	}
 	//ステージ３
 	else if (number == 3) {
@@ -155,9 +155,9 @@ void GameScene::StageCreate(int number)
 
 		map->Create(Stage3, numObject);
 
-		bgmSource = goMgr->NewGameObject<CSoundSource>();
-		bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
-		bgmSource->Play(true);
+		m_bgmSource = goMgr->NewGameObject<CSoundSource>();
+		m_bgmSource->InitStreaming("Assets/sound/bgm_2.wav");
+		m_bgmSource->Play(true);
 	}
 
 	m_step = step_StageLoad;
@@ -167,8 +167,8 @@ void GameScene::Release()
 {
 	player->SetisDead();
 	player = nullptr;
-	silhouette->SetisDead();
-	silhouette = nullptr;
+	m_silhouette->SetisDead();
+	m_silhouette = nullptr;
 	gameCamera->SetisDead();
 	gameCamera = nullptr;
 	map->SetisDead();

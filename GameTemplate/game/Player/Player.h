@@ -51,7 +51,7 @@ public:
 	* @brief	プレイヤーの座標の取得
 	*@return	プレイヤーの座標
 	*/
-	const D3DXVECTOR3& GetPosition() {
+	const D3DXVECTOR3& GetPosition() const {
 		return m_position;
 	}
 	/*!
@@ -66,7 +66,7 @@ public:
 	* @brief	移動速度を取得
 	*@return	移動速度
 	*/
-	const D3DXVECTOR3& GetMoveSpeed()
+	const D3DXVECTOR3& GetMoveSpeed() const
 	{
 		return m_playerController.GetMoveSpeed();
 	}
@@ -82,7 +82,7 @@ public:
 	* @brief	回転を取得
 	*@return	回転
 	*/
-	const D3DXQUATERNION& GetRotation()
+	const D3DXQUATERNION& GetRotation() const
 	{
 		return m_rotation;
 	}
@@ -97,7 +97,7 @@ public:
 	/*!
 	* @brief	地面の上か判定
 	*/
-	bool GetIsOnGround()
+	bool GetIsOnGround() const
 	{
 		if (m_playerController.IsOnGround()
 			|| m_playerController.IsOnMoveFloor()
@@ -114,7 +114,7 @@ public:
 	/*!
 	* @brief	ジャンプ中か判定
 	*/
-	bool GetIsJump()
+	bool GetIsJump() const
 	{
 		return m_playerController.IsJump();
 	}
@@ -128,7 +128,7 @@ public:
 	/*!
 	* @brief	アニメーション中か判定
 	*/
-	bool GetAnimationIsPlay()
+	bool GetAnimationIsPlay() const
 	{
 		return m_animation.IsPlay();
 	}
@@ -181,7 +181,7 @@ public:
 	/*!
 	* @brief	ステージ変更時のアニメーション終了フラグを取得
 	*/
-	bool GetAnimationEnd()
+	bool GetAnimationEnd() const
 	{
 		return m_animationEnd;
 	}
@@ -220,14 +220,14 @@ public:
 	/*!
 	* @brief	敵に当たった時のフラグを取得
 	*/
-	bool GetHitEnemy()
+	bool GetHitEnemy() const
 	{
 		return m_hitEnemy;
 	}
 	/*!
 	* @brief	プレイヤーが落下したフラグを取得
 	*/
-	bool GetFallPlayer()
+	bool GetFallPlayer() const
 	{
 		return m_fallPlayer;
 	}
@@ -242,14 +242,14 @@ public:
 	/*!
 	* @brief	プレイヤーの死亡フラグを取得
 	*/
-	bool GetPlayerDead()
+	bool GetPlayerDead() const
 	{
 		return m_playerDead;
 	}
 	/*!
 	* @brief	ステージ変更フラグを取得
 	*/
-	bool GetChangeStage()
+	bool GetChangeStage() const
 	{
 		return m_changeStage;
 	}
@@ -273,7 +273,7 @@ public:
 	* @brief	現在のアニメーションを取得
 	*@return	現在のアニメーション
 	*/
-	IPlayerState::AnimationNo GetCurrentAnim()
+	IPlayerState::AnimationNo GetCurrentAnim() const
 	{
 		return m_currentAnim;
 	}
@@ -289,7 +289,7 @@ public:
 	* @brief	1フレーム前のアニメーションを取得
 	*@return	1フレーム前のアニメーション
 	*/
-	IPlayerState::AnimationNo GetPrevAnim()
+	IPlayerState::AnimationNo GetPrevAnim() const
 	{
 		return m_prevAnim;
 	}

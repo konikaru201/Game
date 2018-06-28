@@ -59,12 +59,12 @@ public:
 		this->cubeMap = cubeMap;
 	}
 	//ワールド座標を取得
-	const D3DXMATRIX& GetWorldMatrix()
+	const D3DXMATRIX& GetWorldMatrix() const
 	{
 		return worldMatrix;
 	}
 	//回転行列を取得
-	const D3DXMATRIX& GetRotationMatrix()
+	const D3DXMATRIX& GetRotationMatrix() const
 	{
 		return rotationMatrix;
 	}

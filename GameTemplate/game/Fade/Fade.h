@@ -33,7 +33,7 @@ public:
 	/*!
 	*@brief	フェード実行中か?
 	*/
-	bool IsExecute()
+	bool IsExecute() const
 	{
 		return m_isExecute;
 	}

@@ -40,14 +40,14 @@ public:
 	* @brief	プレイヤーの座標の取得
 	*@return	プレイヤーの座標
 	*/
-	const D3DXVECTOR3& GetPosition()
+	const D3DXVECTOR3& GetPosition() const
 	{
 		return m_position;
 	}
 	/*!
 	*@brief	スター獲得フラグを取得
 	*/
-	bool GetStar()
+	bool GetStar() const
 	{
 		return m_flag;
 	}

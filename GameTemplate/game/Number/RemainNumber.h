@@ -30,10 +30,6 @@ public:
 	*/
 	void Update();
 	/*!
-	*@brief	削除
-	*/
-	void DeleteNum();
-	/*!
 	*@brief	描画
 	*/
 	void Render();
@@ -49,12 +45,12 @@ public:
 	*@brief	残機数を獲得
 	*@return	残機数
 	*/
-	int GetRemainNum()
+	int GetRemainNum() const
 	{
 		return m_remainNum;
 	}
 private:
-	Number*		m_num[3];						//数字
-	D3DXVECTOR2 m_position = { 0.0f,0.0f }; //座標
-	int			m_remainNum = 3;			//残機数
+	std::unique_ptr<Number>		m_num[3];					//数字
+	D3DXVECTOR2					m_position = { 0.0f,0.0f }; //座標
+	int							m_remainNum = 3;			//残機数
 };

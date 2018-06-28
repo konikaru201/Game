@@ -10,12 +10,6 @@
 GameOverScene::GameOverScene() {}
 GameOverScene::~GameOverScene()
 {
-	delete m_gameOver;
-	delete m_continue;
-	delete m_stageSelectReturn;
-	delete m_titleReturn;
-	delete m_triangle;
-	delete m_background;
 }
 
 bool GameOverScene::Start()
@@ -23,26 +17,26 @@ bool GameOverScene::Start()
 	m_preGameOverPos = { 0.0f, 720.0f };
 	m_preTrianglePos = trianglePos;
 
-	m_gameOver = new Sprite;
+	m_gameOver = std::make_unique<Sprite>();
 	m_gameOver->Initialize("Assets/sprite/GameOver.png");
 	m_gameOver->SetPosition(m_preGameOverPos);
 
-	m_continue = new Sprite;
+	m_continue = std::make_unique<Sprite>();
 	m_continue->Initialize("Assets/sprite/Continue.png");
 	m_continue->SetPosition(continuePos);
 	m_continue->SetAlpha(m_alpha);
 
-	m_stageSelectReturn = new Sprite;
+	m_stageSelectReturn = std::make_unique<Sprite>();
 	m_stageSelectReturn->Initialize("Assets/sprite/StageSelectReturn.png");
 	m_stageSelectReturn->SetPosition(stageSelectReturnPos);
 	m_stageSelectReturn->SetAlpha(m_alpha);
 
-	m_titleReturn = new Sprite;
+	m_titleReturn = std::make_unique<Sprite>();
 	m_titleReturn->Initialize("Assets/sprite/TitleReturn.png");
 	m_titleReturn->SetPosition(titleReturnPos);
 	m_titleReturn->SetAlpha(m_alpha);
 
-	m_triangle = new Sprite;
+	m_triangle = std::make_unique<Sprite>();
 	m_triangle->Initialize("Assets/sprite/triangle.png");
 	m_triangle->SetPosition(trianglePos);
 	m_triangle->SetAlpha(m_alpha);

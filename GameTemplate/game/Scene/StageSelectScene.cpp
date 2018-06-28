@@ -5,6 +5,7 @@
 
 SMapInfo Stage0[] = {
 #include "locationinfo/stage1.h"
+//#include "locationinfo/BossStage.h"
 };
 
 namespace {

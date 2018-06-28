@@ -28,13 +28,13 @@ public:
 	/*!
 	*@brief	シーン切り替えフラグを取得
 	*/
-	bool GetChangeSceneFlag()
+	bool GetChangeSceneFlag() const
 	{
 		return m_changeScene;
 	}
 private:
-	Sprite* sprite;					//スプライト
-	Sprite* m_pressA;
-	Sprite* m_titleName;
+	std::unique_ptr<Sprite> sprite;					//スプライト
+	std::unique_ptr<Sprite> m_pressA;
+	std::unique_ptr<Sprite> m_titleName;
 	bool	m_changeScene = false;	//シーン切り替えフラグ
 };

@@ -135,7 +135,7 @@ public:
 	/*!
 	* @brief	コライダーを取得。
 	*/
-	ICollider* GetCollider()
+	ICollider* GetCollider() const
 	{
 		return m_collider;
 	}
@@ -149,7 +149,7 @@ public:
 	/*!
 	* @brief	壁の法線を取得。
 	*/
-	const D3DXVECTOR3& GethitNormal()
+	const D3DXVECTOR3& GethitNormal() const
 	{
 		return m_hitNormal;
 	}

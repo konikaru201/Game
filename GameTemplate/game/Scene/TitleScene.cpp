@@ -12,21 +12,18 @@ TitleScene* titleScene;
 TitleScene::TitleScene(){}
 TitleScene::~TitleScene()
 {
-	delete sprite;
-	delete m_pressA;
-	delete m_titleName;
 }
 
 bool TitleScene::Start()
 {
-	sprite = new Sprite;
+	sprite = std::make_unique<Sprite>();
 	sprite->Initialize("Assets/sprite/Title.png");
 
-	m_pressA = new Sprite;
+	m_pressA = std::make_unique<Sprite>();
 	m_pressA->Initialize("Assets/sprite/PressA.png");
 	m_pressA->SetPosition(D3DXVECTOR2(0.0f, -320.0f));
 
-	m_titleName = new Sprite;
+	m_titleName = std::make_unique<Sprite>();
 	m_titleName->Initialize("Assets/sprite/TitleName.png");
 	m_titleName->SetPosition(D3DXVECTOR2(0.0f, 300.0f));
 	m_titleName->SetSize(D3DXVECTOR2(1280.0f, 720.0f));

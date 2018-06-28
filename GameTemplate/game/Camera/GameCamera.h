@@ -63,7 +63,7 @@ public:
 	*@brief	アスペクト比を取得
 	* @return アスペクト比
 	*/
-	float GetAspect()
+	float GetAspect() const
 	{
 		return m_camera.GetAspect();
 	}
@@ -71,7 +71,7 @@ public:
 	*@brief	画角を取得
 	* @return 画角
 	*/
-	float GetAngle()
+	float GetAngle() const
 	{
 		return m_camera.GetAngle();
 	}
@@ -79,7 +79,7 @@ public:
 	*@brief	注視点を取得
 	* @return 注視点
 	*/
-	const D3DXVECTOR3& GetTarget()
+	const D3DXVECTOR3& GetTarget() const
 	{
 		return m_camera.GetLookatPt();
 	}
@@ -87,7 +87,7 @@ public:
 	*@brief	視点を取得
 	* @return 視点
 	*/
-	const D3DXVECTOR3& GetPosition()
+	const D3DXVECTOR3& GetPosition() const
 	{
 		return m_camera.GetEyePt();
 	}
@@ -95,7 +95,7 @@ public:
 	*@brief	前方向を取得
 	* @return 前方向
 	*/
-	const D3DXVECTOR3& GetForward()
+	const D3DXVECTOR3& GetForward() const
 	{
 		return m_camera.GetForwardVec();
 	}
@@ -103,7 +103,7 @@ public:
 	*@brief	右方向を取得
 	* @return 右方向
 	*/
-	const D3DXVECTOR3& GetRight()
+	const D3DXVECTOR3& GetRight() const
 	{
 		return m_camera.GetRightVec();
 	}
@@ -111,7 +111,7 @@ public:
 	*@brief	ビュー行列を取得
 	* @return ビュー行列
 	*/
-	const D3DXMATRIX& GetViewMatrix()
+	const D3DXMATRIX& GetViewMatrix() const
 	{
 		return m_camera.GetViewMatrix();
 	}
@@ -119,14 +119,14 @@ public:
 	*@brief	プロジェクション行列を取得
 	* @return プロジェクション行列
 	*/
-	const D3DXMATRIX& GetProjectionMatrix()
+	const D3DXMATRIX& GetProjectionMatrix() const
 	{
 		return m_camera.GetProjectionMatrix();
 	}
 	/*!
 	*@brief	カメラのリセットフラグを取得
 	*/
-	bool GetCameraReset()
+	bool GetCameraReset() const
 	{
 		return m_cameraReset;
 	}

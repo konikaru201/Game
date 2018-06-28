@@ -32,6 +32,6 @@ public:
 	*/
 	void Render();
 private:
-	Sprite* m_number[10];	//0～9の数字のスプライト
-	int		m_num = 0;		//数字を保持する変数
+	std::unique_ptr<Sprite> m_number[10];	//0～9の数字のスプライト
+	int						m_num = 0;		//数字を保持する変数
 };

@@ -45,7 +45,7 @@ public:
 	/*!
 	*@brief	ゲームオーバーシーン終了フラグを取得
 	*/
-	bool GetGameOverSceneEnd()
+	bool GetGameOverSceneEnd() const
 	{
 		return m_gameOverSceneEnd;
 	}
@@ -61,19 +61,19 @@ public:
 	*@brief	状態を数字で取得
 	*@detail	0はコンティニュー。1はステージ選択に戻る。2はタイトルに戻る。
 	*/
-	int GetStateNumber()
+	int GetStateNumber() const
 	{
 		return m_stateNumber;
 	}
 
 private:
 	//スプライト
-	Sprite*		m_gameOver;					//ゲームオーバー
-	Sprite*		m_continue;					//コンティニュー
-	Sprite*		m_stageSelectReturn;		//ステージ選択し直す
-	Sprite*		m_titleReturn;				//タイトルに戻る
-	Sprite*		m_triangle;					//三角
-	Sprite*		m_background;				//背景
+	std::unique_ptr<Sprite>		m_gameOver;					//ゲームオーバー
+	std::unique_ptr<Sprite>		m_continue;					//コンティニュー
+	std::unique_ptr<Sprite>		m_stageSelectReturn;		//ステージ選択し直す
+	std::unique_ptr<Sprite>		m_titleReturn;				//タイトルに戻る
+	std::unique_ptr<Sprite>		m_triangle;					//三角
+	std::unique_ptr<Sprite>		m_background;				//背景
 
 	const float FADE_TIME = 1.0f;			//フェードする時間
 	float		m_alpha = 0.0f;				//不透明度。1.0は黒

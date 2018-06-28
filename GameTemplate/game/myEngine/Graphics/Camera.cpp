@@ -19,7 +19,7 @@ void Camera::SetAspect(float _aspect)
 	aspect = _aspect;
 }
 //アスペクト比を取得。
-float Camera::GetAspect()
+float Camera::GetAspect() const
 {
 	return aspect;
 }
@@ -29,7 +29,7 @@ void Camera::SetAngle(float _angle)
 	angle = _angle;
 }
 //画角を取得
-float Camera::GetAngle()
+float Camera::GetAngle() const
 {
 	return angle;
 }
@@ -39,12 +39,12 @@ void Camera::SetFar(float _far)
 	Far = _far;
 }
 //ニアーの取得。
-float Camera::GetNear()
+float Camera::GetNear() const
 {
 	return Near;
 }
 //ファーの取得。
-float Camera::GetFar()
+float Camera::GetFar() const
 {
 	return Far;
 }
@@ -59,7 +59,7 @@ void Camera::SetEyePt(const D3DXVECTOR3& pt)
 	vEyePt = pt;
 }
 //視点のゲッター
-const D3DXVECTOR3& Camera::GetEyePt()
+const D3DXVECTOR3& Camera::GetEyePt() const
 {
 	return vEyePt;
 }
@@ -69,7 +69,7 @@ void Camera::SetLookatPt(const D3DXVECTOR3& pt)
 	vLookatPt = pt;
 }
 //注視点のゲッター。
-const D3DXVECTOR3& Camera::GetLookatPt()
+const D3DXVECTOR3& Camera::GetLookatPt() const
 {
 	return vLookatPt;
 }
@@ -79,7 +79,7 @@ void Camera::SetForwardVec(const D3DXVECTOR3 & forward)
 	vForward = forward;
 }
 //前方向のゲッター
-const D3DXVECTOR3 & Camera::GetForwardVec()
+const D3DXVECTOR3 & Camera::GetForwardVec() const
 {
 	return vForward;
 }
@@ -89,7 +89,7 @@ void Camera::SetRightVec(const D3DXVECTOR3 & right)
 	vRight = right;
 }
 //右方向のゲッター
-const D3DXVECTOR3 & Camera::GetRightVec()
+const D3DXVECTOR3 & Camera::GetRightVec() const
 {
 	return vRight;
 }
@@ -99,7 +99,7 @@ void Camera::SetUpVec(const D3DXVECTOR3& up)
 	vUpVec = up;
 }
 //上方向のゲッター
-const D3DXVECTOR3& Camera::GetUpVec()
+const D3DXVECTOR3& Camera::GetUpVec() const
 {
 	return vUpVec;
 }
@@ -109,7 +109,7 @@ void Camera::SetViewMatrix(const D3DXMATRIX& mView)
 	viewMatrix = mView;
 }
 //ビュー行列のゲッター
-const D3DXMATRIX& Camera::GetViewMatrix()
+const D3DXMATRIX& Camera::GetViewMatrix() const
 {
 	return viewMatrix;
 }
@@ -119,7 +119,7 @@ void Camera::SetProjectionMatrix(const D3DXMATRIX& mProj)
 	projectionMatrix = mProj;
 }
 //プロジェクション行列のゲッター
-const D3DXMATRIX& Camera::GetProjectionMatrix()
+const D3DXMATRIX& Camera::GetProjectionMatrix() const
 {
 	return projectionMatrix;
 }

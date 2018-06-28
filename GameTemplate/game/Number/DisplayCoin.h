@@ -30,10 +30,6 @@ public:
 	*/
 	void Update();
 	/*!
-	*@brief	削除
-	*/
-	void DeleteNum();
-	/*!
 	*@brief	描画
 	*/
 	void Render();
@@ -45,7 +41,7 @@ public:
 		m_coinNum++;
 	}
 private:
-	Number*		m_num[3];						//数字
-	D3DXVECTOR2 m_position = { 0.0f,0.0f }; //座標
-	int			m_coinNum = 0;				//コインの枚数
+	std::unique_ptr<Number>		m_num[3];					//数字
+	D3DXVECTOR2					m_position = { 0.0f,0.0f }; //座標
+	int							m_coinNum = 0;				//コインの枚数
 };

@@ -80,7 +80,7 @@ public:
 	*@brief	移動床１のリストを取得
 	*@return 移動床１のリスト
 	*/
-	std::list<MoveFloor*> GetMoveFloorList()
+	std::list<MoveFloor*> GetMoveFloorList() const
 	{
 		return m_moveFloorList;
 	}
@@ -88,7 +88,7 @@ public:
 	*@brief	移動床２のリストを取得
 	*@return 移動床２のリスト
 	*/
-	std::list<MoveFloor2*> GetMoveFloor2List()
+	std::list<MoveFloor2*> GetMoveFloor2List() const
 	{
 		return m_moveFloor2List;
 	}
@@ -107,40 +107,38 @@ public:
 	/*
 	*@brief	地球のインスタンスを取得
 	*/
-	Earth* GetEarthInstance()
+	Earth* GetEarthInstance() const
 	{
 		return m_earth;
 	}
 	/*
 	*@brief	ステージマーカーのインスタンスを取得
 	*/
-	StageMarker* GetStageMarkerInstance()
+	StageMarker* GetStageMarkerInstance() const
 	{
 		return m_stageMarker;
 	}
 	/*
 	*@brief	ステージマーカー2のインスタンスを取得
 	*/
-	StageMarker2* GetStageMarker2Instance()
+	StageMarker2* GetStageMarker2Instance() const
 	{
 		return m_stageMarker2;
 	}
 	/*
 	*@brief	ステージマーカー3のインスタンスを取得
 	*/
-	StageMarker3* GetStageMarker3Instance()
+	StageMarker3* GetStageMarker3Instance() const
 	{
 		return m_stageMarker3;
 	}
 private:
-	std::list<MoveFloor*>	m_moveFloorList;		//移動床１のリスト
-	std::list<MoveFloor2*>	m_moveFloor2List;		//移動床２のリスト
-	D3DXMATRIX				moveFloorMatrix;		//移動床１のワールド行列
-	D3DXMATRIX				moveFloor2Matrix;		//移動床２のワールド行列
-	bool					m_isMoveFloor = false;	//移動床１が生成されているか
-	bool					m_isMoveFloor2 = false;	//移動床２が生成されているか
-	Earth*					m_earth = nullptr;		//地球のインスタンス
-	StageMarker*			m_stageMarker;
+	std::list<MoveFloor*>	m_moveFloorList;	//移動床１のリスト
+	std::list<MoveFloor2*>	m_moveFloor2List;	//移動床２のリスト
+	D3DXMATRIX				moveFloorMatrix;	//移動床１のワールド行列
+	D3DXMATRIX				moveFloor2Matrix;	//移動床２のワールド行列
+	Earth*					m_earth;			//地球のインスタンス
+	StageMarker*			m_stageMarker;		//ステージマーカーのインスタンス
 	StageMarker2*			m_stageMarker2;
 	StageMarker3*			m_stageMarker3;
 };

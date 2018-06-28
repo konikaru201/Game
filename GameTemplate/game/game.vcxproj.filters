@@ -572,6 +572,9 @@
     <ClInclude Include="Map\Needle3.h">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClInclude>
+    <ClInclude Include="locationinfo\BossStage.h">
+      <Filter>ソース ファイル\locationinfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

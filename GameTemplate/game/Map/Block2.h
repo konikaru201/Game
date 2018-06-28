@@ -41,7 +41,7 @@ public:
 	* @brief	ワールド行列を取得
 	*@return	ワールド行列
 	*/
-	const D3DXMATRIX& GetWorldMatrix()
+	const D3DXMATRIX& GetWorldMatrix() const
 	{
 		return m_model.GetWorldMatrix();
 	}
@@ -49,7 +49,7 @@ public:
 	* @brief	回転行列を取得
 	*@return	回転行列
 	*/
-	const D3DXMATRIX& GetRotationMatrix()
+	const D3DXMATRIX& GetRotationMatrix() const
 	{
 		return m_model.GetRotationMatrix();
 	}

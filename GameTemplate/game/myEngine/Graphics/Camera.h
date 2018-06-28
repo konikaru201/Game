@@ -32,7 +32,7 @@ public:
 	/*!
 	 *@brief	アスペクト比を取得。
 	 */
-	float GetAspect();
+	float GetAspect() const;
 	/*!
 	*@brief		画角を設定。
 	*/
@@ -40,7 +40,7 @@ public:
 	/*!
 	*@brief		画角を取得。
 	*/
-	float GetAngle();
+	float GetAngle() const;
 	/*!
 	 *@brief	ファーを設定。
 	 */
@@ -48,11 +48,11 @@ public:
 	/*!
 	 *@brief	ニアを取得。
 	 */
-	float GetNear();
+	float GetNear() const;
 	/*!
 	 *@brief	ファーを取得。
 	 */
-	float GetFar();
+	float GetFar() const;
 	/*!
 	 *@brief	ニアを設定。
 	 */
@@ -64,7 +64,7 @@ public:
 	/*!
 	 *@brief	視点を取得。
 	 */
-	const D3DXVECTOR3& GetEyePt();
+	const D3DXVECTOR3& GetEyePt() const;
 	/*!
 	 *@brief	注視点を設定。
 	 */
@@ -72,7 +72,7 @@ public:
 	/*!
 	 *@brief	注視点の取得。
 	 */
-	const D3DXVECTOR3& GetLookatPt();
+	const D3DXVECTOR3& GetLookatPt() const;
 	/*!
 	*@brief		前方向の設定。
 	*/
@@ -80,7 +80,7 @@ public:
 	/*!
 	*@brief		前方向の取得。
 	*/
-	const D3DXVECTOR3& GetForwardVec();
+	const D3DXVECTOR3& GetForwardVec() const;
 	/*!
 	*@brief		右方向の設定。
 	*/
@@ -88,7 +88,7 @@ public:
 	/*!
 	*@brief		右方向の取得。
 	*/
-	const D3DXVECTOR3& GetRightVec();
+	const D3DXVECTOR3& GetRightVec() const;
 	/*!
 	 *@brief	上方向の設定。
 	 */
@@ -96,7 +96,7 @@ public:
 	/*!
 	 *@brief	上方向の取得。
 	 */
-	const D3DXVECTOR3& GetUpVec();
+	const D3DXVECTOR3& GetUpVec() const;
 	/*!
 	 *@brief	ビュー行列の設定。
 	 */
@@ -104,7 +104,7 @@ public:
 	/*!
 	 *@brief	ビュー行列の取得。
 	 */
-	const D3DXMATRIX& GetViewMatrix();
+	const D3DXMATRIX& GetViewMatrix() const;
 	/*!
 	 *@brief	プロジェクション行列の設定。
 	 */
@@ -112,7 +112,7 @@ public:
 	/*!
 	 *@brief	プロジェクション行列の取得。
 	 */
-	const D3DXMATRIX& GetProjectionMatrix();
+	const D3DXMATRIX& GetProjectionMatrix() const;
 	/*!
 	 *@brief	カメラの更新処理。
 	 */

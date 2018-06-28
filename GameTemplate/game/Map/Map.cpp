@@ -35,7 +35,6 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 			//座標と回転の情報を渡して初期化
 			moveFloor->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 			m_moveFloorList.push_back(moveFloor);
-			m_isMoveFloor = true;
 		}
 		else if (strcmp("MoveFloor_2", mapLocInfo[i].modelName) == 0) {
 			//インスタンスを動的に生成
@@ -43,7 +42,6 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 			//座標と回転の情報を渡して初期化
 			moveFloor2->Init(mapLocInfo[i].position, mapLocInfo[i].rotation);
 			m_moveFloor2List.push_back(moveFloor2);
-			m_isMoveFloor2 = true;
 		}
 		else if (strcmp("Coin", mapLocInfo[i].modelName) == 0)
 		{
@@ -161,7 +159,7 @@ void Map::Create(SMapInfo* mapLocInfo, int numObject)
 	if (!m_coinInfoList.empty()) {
 		//インスタンスを動的に生成
 		Coin* coin = goMgr->NewGameObject<Coin>();
-		//コインの座標と回転を渡す
+		//コインのリストを渡す
 		coin->SetCoinInfoList(m_coinInfoList);
 		//初期化
 		coin->Init(coinNum);

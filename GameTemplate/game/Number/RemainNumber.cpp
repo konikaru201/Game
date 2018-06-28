@@ -15,7 +15,6 @@ RemainNumber::RemainNumber()
 
 RemainNumber::~RemainNumber()
 {
-	DeleteNum();
 }
 
 void RemainNumber::Init(D3DXVECTOR2 position)
@@ -27,7 +26,7 @@ bool RemainNumber::Start()
 {
 	for (int i = 0; i < 2; i++) 
 	{
-		m_num[i] = new Number;
+		m_num[i] = std::make_unique<Number>();
 	}
 
 	m_num[0]->Init(m_position + D3DXVECTOR2(NumSizeX, 0.0f), NumScale);
@@ -65,13 +64,5 @@ void RemainNumber::Render()
 	for (int i = 0; i < 2; i++)
 	{
 		m_num[i]->Render();
-	}
-}
-
-void RemainNumber::DeleteNum()
-{
-	for (int i = 0; i < 2; i++)
-	{
-		delete m_num[i];
 	}
 }

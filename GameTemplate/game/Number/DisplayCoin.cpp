@@ -15,7 +15,6 @@ DisplayCoin::DisplayCoin()
 
 DisplayCoin::~DisplayCoin()
 {
-	DeleteNum();
 }
 
 void DisplayCoin::Init(D3DXVECTOR2 position)
@@ -27,7 +26,7 @@ bool DisplayCoin::Start()
 {
 	for (int i = 0; i < 2; i++)
 	{
-		m_num[i] = new Number;
+		m_num[i] = std::make_unique<Number>();
 	}
 
 	m_num[0]->Init(m_position + D3DXVECTOR2(NumSizeX, 0.0f), NumScale);
@@ -54,13 +53,5 @@ void DisplayCoin::Render()
 	for (int i = 0; i < 2; i++)
 	{
 		m_num[i]->Render();
-	}
-}
-
-void DisplayCoin::DeleteNum()
-{
-	for (int i = 0; i < 2; i++)
-	{
-		delete m_num[i];
 	}
 }

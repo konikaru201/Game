@@ -106,6 +106,9 @@ VOID Render()
 	//ゲームオブジェクトをレンダリング
 	goMgr->Render();
 
+	//UIを描画
+	sceneManager->UIRender();
+
 	//ポストエフェクト
 	bloom->Render();
 

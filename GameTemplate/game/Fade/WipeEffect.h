@@ -51,7 +51,7 @@ public:
 	/*!
 	*@brief	ƒƒCƒvÀs’†‚©?
 	*/
-	bool IsExecute()
+	bool IsExecute() const
 	{
 		return m_isWipe;
 	}

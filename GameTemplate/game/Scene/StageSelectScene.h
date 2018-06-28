@@ -61,14 +61,14 @@ public:
 	/*!
 	*@brief	フェードアウト待ちであるか取得
 	*/
-	bool GetWaitFadeOut()
+	bool GetWaitFadeOut() const
 	{
 		return m_waitFadeOut;
 	}
 	/*!
 	*@brief	ステージ番号を取得
 	*/
-	int GetStageNumber()
+	int GetStageNumber() const
 	{
 		return m_stageNumber;
 	}
@@ -83,7 +83,7 @@ public:
 	/*!
 	*@brief	ステージ変更フラグを取得
 	*/
-	int GetChangeStageFlag()
+	int GetChangeStageFlag() const
 	{
 		return m_changeStage;
 	}

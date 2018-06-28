@@ -49,7 +49,7 @@ public:
 	* @brief	床の座標の取得
 	*@return	床の座標
 	*/
-	const D3DXVECTOR3& GetPosition()
+	const D3DXVECTOR3& GetPosition() const
 	{
 		return m_position;
 	}
@@ -57,7 +57,7 @@ public:
 	* @brief	床のワールド行列の取得
 	*@return	床のワールド行列
 	*/
-	const D3DXMATRIX& GetWorldMatrix()
+	const D3DXMATRIX& GetWorldMatrix() const
 	{
 		return m_model.GetWorldMatrix();
 	}
