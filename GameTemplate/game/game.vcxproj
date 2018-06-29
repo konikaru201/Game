@@ -229,6 +229,7 @@
     <ClCompile Include="Scene\GameOverScene.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Scene\StageSelectScene.cpp" />
+    <ClCompile Include="Scene\TitleBackGround.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -249,7 +250,6 @@
     <ClInclude Include="Enemy\StoneMonsterStateMachine.h" />
     <ClInclude Include="Fade\Fade.h" />
     <ClInclude Include="Fade\WipeEffect.h" />
-    <ClInclude Include="locationinfo\BossStage.h" />
     <ClInclude Include="locationinfo\stage1.h" />
     <ClInclude Include="locationinfo\stage2.h" />
     <ClInclude Include="locationinfo\stage3.h" />
@@ -327,6 +327,7 @@
     <ClInclude Include="Scene\GameOverScene.h" />
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Scene\StageSelectScene.h" />
+    <ClInclude Include="Scene\TitleBackGround.h" />
     <ClInclude Include="Scene\TitleScene.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

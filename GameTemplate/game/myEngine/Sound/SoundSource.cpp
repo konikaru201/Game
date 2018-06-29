@@ -13,7 +13,7 @@ CSoundSource::~CSoundSource()
 void CSoundSource::InitCommon()
 {
 	m_dspSettings.SrcChannelCount = INPUTCHANNELS;
-	m_dspSettings.DstChannelCount = /*SoundEngine().*/g_soundEngine->GetNumChannel();
+	m_dspSettings.DstChannelCount = g_soundEngine->GetNumChannel();
 	m_dspSettings.pMatrixCoefficients = m_matrixCoefficients;
 	m_dspSettings.pDelayTimes = nullptr;
 	m_dspSettings.DopplerFactor = 1.0f;
@@ -27,12 +27,12 @@ void CSoundSource::InitCommon()
 }
 void CSoundSource::Init(char* filePath, bool is3DSound)
 {
-	m_waveFile = /*SoundEngine().*/g_soundEngine->GetWaveFileBank().FindWaveFile(0, filePath);
+	m_waveFile = g_soundEngine->GetWaveFileBank().FindWaveFile(0, filePath);
 	if (!m_waveFile) {
 		m_waveFile.reset(new CWaveFile);
 		m_waveFile->Open(filePath);
 		m_waveFile->AllocReadBuffer(m_waveFile->GetSize());	//waveファイルのサイズ分の読み込みバッファを確保する。
-		/*SoundEngine().*/g_soundEngine->GetWaveFileBank().RegistWaveFile(0, m_waveFile);
+		g_soundEngine->GetWaveFileBank().RegistWaveFile(0, m_waveFile);
 		unsigned int dummy;
 		m_waveFile->Read(m_waveFile->GetReadBuffer(), m_waveFile->GetSize(), &dummy);
 		m_waveFile->ResetFile();
@@ -40,9 +40,9 @@ void CSoundSource::Init(char* filePath, bool is3DSound)
 	}
 
 	//サウンドボイスソースを作成。
-	m_sourceVoice = /*SoundEngine().*/g_soundEngine->CreateXAudio2SourceVoice(m_waveFile.get(), is3DSound);
+	m_sourceVoice = g_soundEngine->CreateXAudio2SourceVoice(m_waveFile.get(), is3DSound);
 	if (is3DSound) {
-		/*SoundEngine().*/g_soundEngine->Add3DSoundSource(this);
+		g_soundEngine->Add3DSoundSource(this);
 	}
 	InitCommon();
 
@@ -86,9 +86,9 @@ void CSoundSource::InitStreaming(char* filePath, bool is3DSound, unsigned int ri
 	m_readStartPos = 0;
 	m_currentBufferingSize = 0;
 	//サウンドボイスソースを作成。
-	m_sourceVoice = /*SoundEngine().*/g_soundEngine->CreateXAudio2SourceVoice(m_waveFile.get(), is3DSound);
+	m_sourceVoice = g_soundEngine->CreateXAudio2SourceVoice(m_waveFile.get(), is3DSound);
 	if (is3DSound) {
-		/*SoundEngine().*/g_soundEngine->Add3DSoundSource(this);
+		g_soundEngine->Add3DSoundSource(this);
 	}
 	InitCommon();
 
@@ -105,7 +105,6 @@ void CSoundSource::Release()
 	}
 	Remove3DSound();
 	SetisDead();
-	//DeleteGO(this);
 }
 void CSoundSource::Play(char* buff, unsigned int bufferSize)
 {
@@ -117,7 +116,6 @@ void CSoundSource::Play(char* buff, unsigned int bufferSize)
 		//再生開始。
 		if (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer))) {
 			Release();
-			//TK_LOG("Failed m_sourceVoice->SubmitSourceBuffer");
 			return;
 		}
 
@@ -191,7 +189,6 @@ void CSoundSource::UpdateStreaming()
 						//再生終了。
 						m_isPlaying = false;
 						SetisDead();
-						//DeleteGO(this);
 						Remove3DSound();
 					}
 				}
@@ -206,7 +203,7 @@ void CSoundSource::UpdateStreaming()
 void CSoundSource::Remove3DSound()
 {
 	if (m_is3DSound) {
-		/*SoundEngine().*/g_soundEngine->Remove3DSoundSource(this);
+		g_soundEngine->Remove3DSoundSource(this);
 		m_is3DSound = false;
 	}
 }
@@ -225,7 +222,6 @@ void CSoundSource::UpdateOnMemory()
 		}
 		else {
 			SetisDead();
-			//DeleteGO(this);
 			Remove3DSound();
 		}
 	}
@@ -244,8 +240,6 @@ void CSoundSource::Update()
 		//音源の移動速度を更新。
 		m_velocity = m_position - m_lastFramePosition;
 		m_velocity /= Timer::GetFrameDeltaTime();
-		//m_velocity.Subtract(m_position, m_lastFramePosition);
-		//m_velocity.Div(GameTime().GetFrameDeltaTime());
 		m_lastFramePosition = m_position;
 	}
 }

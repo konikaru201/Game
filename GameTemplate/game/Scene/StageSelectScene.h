@@ -96,15 +96,15 @@ public:
 		m_changeStage = changeStage;
 	}
 private:
-	Silhouette*		m_silhouette;				//シルエット
-	Step			m_step = step_WaitFadeOut;	//状態
-	CSoundSource*	m_bgmSource = nullptr;		//BGM
-	Sprite*			m_stage1;					//ステージ１
-	Sprite*			m_stage2;					//ステージ２
-	Sprite*			m_stage3;					//ステージ３
-	Sprite*			m_aBotton = nullptr;		//Aボタン表示のスプライト
-	bool			m_waitFadeOut = false;		//フェードアウト待ちフラグ
-	int				m_stageNumber = 0;			//ステージ番号
-	bool			m_changeStage = false;		//ステージを変更するか
-	bool			m_bottonRender[3];			//ボタンを表示するか
+	Silhouette*					m_silhouette;				//シルエット
+	Step						m_step = step_WaitFadeOut;	//状態
+	CSoundSource*				m_bgmSource = nullptr;		//BGM
+	std::unique_ptr<Sprite>		m_stage1;					//ステージ１
+	std::unique_ptr<Sprite>		m_stage2;					//ステージ２
+	std::unique_ptr<Sprite>		m_stage3;					//ステージ３
+	std::unique_ptr<Sprite>		m_aBotton = nullptr;		//Aボタン表示のスプライト
+	bool						m_waitFadeOut = false;		//フェードアウト待ちフラグ
+	int							m_stageNumber = 0;			//ステージ番号
+	bool						m_changeStage = false;		//ステージを変更するか
+	bool						m_bottonRender[3];			//ボタンを表示するか
 };

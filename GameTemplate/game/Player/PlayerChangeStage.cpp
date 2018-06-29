@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PlayerChangeStage.h"
 #include "Player.h"
+#include "Scene/SceneManager.h"
 #include "myEngine/Sound/SoundSource.h"
 #include "myEngine/GameObject/GameObjectManager.h"
 
@@ -30,9 +31,16 @@ void PlayerChangeStage::Update()
 
 bool PlayerChangeStage::Start()
 {
-	CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
-	SE->Init("Assets/sound/U_Voice_3.wav");
-	SE->Play(false);
+	if (m_player->GetSceneSelectFlag()) {
+		CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+		SE->Init("Assets/sound/U_Voice_4.wav");
+		SE->Play(false);
+	}
+	else {
+		CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+		SE->Init("Assets/sound/U_Voice_3.wav");
+		SE->Play(false);
+	}
 
 	return true;
 }

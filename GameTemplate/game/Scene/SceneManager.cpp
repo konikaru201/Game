@@ -92,6 +92,7 @@ void SceneManager::Update()
 			//フェードが終了
 			if (!g_fade->IsExecute()) {
 				//タイトルシーンを削除
+				m_titleScene->Release();
 				m_titleScene->SetisDead();
 				m_titleScene = nullptr;
 				g_fade->StartFadeIn();

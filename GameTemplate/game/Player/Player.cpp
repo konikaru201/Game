@@ -119,6 +119,10 @@ void Player::Update()
 	if (sceneManager->GetScene() == SceneManager::stateStageSelect) {
 		m_moveSpeed.x = 0.0f;
 		m_moveSpeed.z = 0.0f;
+		m_sceneSelect = true;
+	}
+	else {
+		m_sceneSelect = false;
 	}
 
 	//—Ž‰º‚µ‚½‚çƒtƒ‰ƒO‚ð‚½‚Ä‚é

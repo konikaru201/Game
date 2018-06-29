@@ -96,9 +96,12 @@ void GameScene::Update()
 			m_restart = false;
 		}
 		//ゲームオーバーシーンが終了
-		else if (m_gameOverScene != nullptr && m_gameOverScene->GetGameOverSceneEnd()) {
+		else if (m_gameOverScene != nullptr && m_gameOverScene->GetGameOverSceneEnd())
+		{
 			m_gameOverSceneStateNumber = m_gameOverScene->GetStateNumber();
-			if (m_gameOverSceneStateNumber == 0 || m_gameOverSceneStateNumber == 1) {
+			if (m_gameOverSceneStateNumber == m_gameOverScene->state_Continue 
+				|| m_gameOverSceneStateNumber == m_gameOverScene->state_return) 
+			{
 				wipeEffect->StartWipeOut();
 			}
 			else {

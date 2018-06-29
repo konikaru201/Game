@@ -8,9 +8,7 @@
 #include "myEngine/Sound/SoundSource.h"
 
 GameOverScene::GameOverScene() {}
-GameOverScene::~GameOverScene()
-{
-}
+GameOverScene::~GameOverScene() {}
 
 bool GameOverScene::Start()
 {
@@ -82,7 +80,7 @@ void GameOverScene::Update()
 	}
 
 
-	//上を選択(続ける、戻る)
+	//上を選択(続けるor戻る)
 	if (pad->IsTrigger(pad->enButtonUp)) {
 		if (m_state == state_return || m_state == state_End) {
 			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
@@ -107,7 +105,7 @@ void GameOverScene::Update()
 			m_triangle->SetPosition(m_preTrianglePos);
 		}
 	}
-	//下を選択(戻る、終了)
+	//下を選択(戻るor終了)
 	else if (pad->IsTrigger(pad->enButtonDown)) {
 		if (m_state == state_Continue || m_state == state_return) {
 			CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();

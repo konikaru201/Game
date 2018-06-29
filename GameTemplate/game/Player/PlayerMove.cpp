@@ -9,28 +9,35 @@ void PlayerMove::Update()
 	bool cameraRiset = false;
 	//カメラのリセット中は動かない
 	if (gameCamera != nullptr && !gameCamera->GetCameraReset()) {
+		D3DXVECTOR3 moveSpeed = Move();
+
+		//ジャンプ中でなければジャンプさせる
+		if (pad->IsTrigger(pad->enButtonA)
+			&& !m_player->GetIsJump()
+			&& m_player->GetIsOnGround())
+		{
+			moveSpeed = Jump(moveSpeed);
+		}
+
 		//移動速度と方向を設定
-		m_player->SetMoveSpeed(Move());
+		m_player->SetMoveSpeed(moveSpeed);
 	
+		//動いている
 		if (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f) {
 			//回転
 			Turn();
-		}
 
-		if (m_player->GetIsJump()) {
-			//ジャンプアニメーションを設定
-			m_currentAnim = AnimationJump;
-		}
-		else {
-			//走りアニメーションを設定
-			m_currentAnim = AnimationRun;
-			m_timer += Timer::GetFrameDeltaTime();
+			if (!m_player->GetIsJump()) {
+				//走りアニメーションを設定
+				m_currentAnim = AnimationRun;
+				m_timer += Timer::GetFrameDeltaTime();
 
-			if (m_timer >= 0.4f) {
-				CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
-				SE->Init("Assets/sound/FootStep.wav");
-				SE->Play(false);
-				m_timer = 0.0f;
+				if (m_timer >= 0.4f && m_player->GetIsOnGround()) {
+					CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+					SE->Init("Assets/sound/FootStep.wav");
+					SE->Play(false);
+					m_timer = 0.0f;
+				}
 			}
 		}
 		//アニメーションの設定
@@ -121,27 +128,23 @@ D3DXVECTOR3 PlayerMove::Move()
 	moveSpeed.x = m_dir.x * m_acceleration;
 	moveSpeed.z = m_dir.z * m_acceleration;
 
-	//ジャンプ中でなければジャンプさせる
-	if (pad->IsTrigger(pad->enButtonA) 
-		&& !m_player->GetIsJump() 
-		&& m_player->GetIsOnGround()) 
-	{
-		moveSpeed = Jump(moveSpeed);
-	}
-
 	return moveSpeed;
 }
 
 D3DXVECTOR3 PlayerMove::Jump(const D3DXVECTOR3& speed)
 {
 	D3DXVECTOR3 moveSpeed = speed;
-	moveSpeed.y = 10.0f;
-
 	m_player->SetIsJump();
 
-	CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
-	SE->Init("Assets/sound/U_Voice_1.wav");
-	SE->Play(false);
+	if (!m_player->GetSceneSelectFlag()) {
+		moveSpeed.y = 10.0f;
+		//ジャンプアニメーションを設定
+		m_currentAnim = AnimationJump;
+
+		CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+		SE->Init("Assets/sound/U_Voice_1.wav");
+		SE->Play(false);
+	}
 
 	return moveSpeed;
 }

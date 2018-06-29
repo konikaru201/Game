@@ -278,20 +278,27 @@ public:
 		return m_currentAnim;
 	}
 	/*!
-	* @brief	1フレーム前のアニメーションを更新
-	* @param[in]	anim		1フレーム前のアニメーション
+	* @brief	1つ前のアニメーションを更新
+	* @param[in]	anim		1つ前のアニメーション
 	*/
 	void SetPrevAnim(IPlayerState::AnimationNo anim)
 	{
 		m_prevAnim = anim;
 	}
 	/*!
-	* @brief	1フレーム前のアニメーションを取得
-	*@return	1フレーム前のアニメーション
+	* @brief	1つ前のアニメーションを取得
+	*@return	1つ前のアニメーション
 	*/
 	IPlayerState::AnimationNo GetPrevAnim() const
 	{
 		return m_prevAnim;
+	}
+	/*!
+	* @brief	ステージセレクトシーンか判定
+	*/
+	bool GetSceneSelectFlag() const
+	{
+		return m_sceneSelect;
 	}
 private:
 	SkinModel			m_model;								//スキンモデル
@@ -318,6 +325,7 @@ private:
 	bool				m_moveFloor2Inertia = false;			//移動床２の慣性
 	D3DXVECTOR3			m_airResistance = { 0.0f,0.0f,0.0f };	//空気抵抗
 	float				m_ineltiaTime = 0.0f;					//慣性が働く時間
+	bool				m_sceneSelect = false;					//ステージセレクトシーンかどうか
 
 	D3DXMATRIX			m_moveFloorWorldMatrix;							//移動床１のワールド行列
 	D3DXVECTOR3			m_moveFloorChildPosition = { 0.0f,0.0f,0.0f };	//移動床１から見たプレイヤーのローカル座標

@@ -45,7 +45,9 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
-	Move();
+	if (sceneManager->GetScene() != SceneManager::stateTitle) {
+		Move();
+	}
 
 	//カメラの前方向を計算。
 	D3DXVECTOR3 cameraForward = m_camera.GetLookatPt() - m_camera.GetEyePt();

@@ -64,6 +64,9 @@
     <Filter Include="ソース ファイル\myEngine\Physics\HID">
       <UniqueIdentifier>{eb51f13c-4c51-4798-b6cc-97f71ded64a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Scene\TitleScene">
+      <UniqueIdentifier>{9d7c5c31-57aa-48da-8140-a1804a922d84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -134,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="myEngine\Graphics\Sprite.cpp">
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\TitleScene.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\SceneManager.cpp">
       <Filter>ソース ファイル\Scene</Filter>
@@ -300,6 +300,12 @@
     <ClCompile Include="Map\Needle3.cpp">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\TitleScene.cpp">
+      <Filter>ソース ファイル\Scene\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\TitleBackGround.cpp">
+      <Filter>ソース ファイル\Scene\TitleScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -379,9 +385,6 @@
     </ClInclude>
     <ClInclude Include="myEngine\Graphics\Sprite.h">
       <Filter>ソース ファイル\myEngine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\TitleScene.h">
-      <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\SceneManager.h">
       <Filter>ソース ファイル\Scene</Filter>
@@ -572,8 +575,11 @@
     <ClInclude Include="Map\Needle3.h">
       <Filter>ソース ファイル\Map\object</Filter>
     </ClInclude>
-    <ClInclude Include="locationinfo\BossStage.h">
-      <Filter>ソース ファイル\locationinfo</Filter>
+    <ClInclude Include="Scene\TitleScene.h">
+      <Filter>ソース ファイル\Scene\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TitleBackGround.h">
+      <Filter>ソース ファイル\Scene\TitleScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

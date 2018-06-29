@@ -2,6 +2,8 @@
 #include "myEngine/Graphics/Sprite.h"
 #include "myEngine/GameObject/GameObject.h"
 #include "myEngine/Graphics/Camera.h"
+#include "myEngine/Sound/SoundSource.h"
+#include "TitleBackGround.h"
 
 class TitleScene : public GameObject{
 public:
@@ -26,6 +28,10 @@ public:
 	*/
 	void Render();
 	/*!
+	*@brief	解放
+	*/
+	void Release();
+	/*!
 	*@brief	シーン切り替えフラグを取得
 	*/
 	bool GetChangeSceneFlag() const
@@ -33,8 +39,17 @@ public:
 		return m_changeScene;
 	}
 private:
-	std::unique_ptr<Sprite> sprite;					//スプライト
-	std::unique_ptr<Sprite> m_pressA;
-	std::unique_ptr<Sprite> m_titleName;
-	bool	m_changeScene = false;	//シーン切り替えフラグ
+	enum State {
+		Entity,		//実体
+		Clear		//透明
+	};
+
+	State								m_state = Entity;		//状態
+	std::unique_ptr<Sprite>				m_pressA;
+	std::unique_ptr<TitleBackGround>	titleBackGround;		//背景
+	CSoundSource*						m_bgmSource;
+	bool								m_changeScene = false;	//シーン切り替えフラグ
+	float								m_timer = 0.0f;			//タイマー(透明になるまで)
+	float								m_alphaTimar = 0.0f;	//タイマー(実体になるまで)
+	const float							ALPHA_TIME = 0.5f;		//透明になるまでの時間
 };

@@ -93,7 +93,7 @@ public:
 	}
 private:
 	GameOverScene*	m_gameOverScene = nullptr;		//ゲームオーバーシーン
-	Silhouette*		m_silhouette;						//シルエット
+	Silhouette*		m_silhouette;					//シルエット
 	CSoundSource*	m_bgmSource = nullptr;			//BGM
 
 	Step			m_step = step_StageLoad;		//状態

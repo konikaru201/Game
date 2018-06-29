@@ -5,7 +5,6 @@
 
 SMapInfo Stage0[] = {
 #include "locationinfo/stage1.h"
-//#include "locationinfo/BossStage.h"
 };
 
 namespace {
@@ -39,23 +38,23 @@ bool CStageSelectScene::Start()
 		//ƒJƒƒ‰¶¬
 		gameCamera = goMgr->NewGameObject<GameCamera>();
 
-		m_stage1 = new Sprite;
+		m_stage1 = std::make_unique<Sprite>();
 		m_stage1->Initialize("Assets/sprite/Stage1.png");
 		m_stage1->SetSize(stageNameSize);
 		m_stage1->SetIsTrans(true);
 
-		m_stage2 = new Sprite;
+		m_stage2 = std::make_unique<Sprite>();
 		m_stage2->Initialize("Assets/sprite/Stage2.png");
 		m_stage2->SetSize(stageNameSize);
 		m_stage2->SetIsTrans(true);
 
-		m_stage3 = new Sprite;
+		m_stage3 = std::make_unique<Sprite>();
 		m_stage3->Initialize("Assets/sprite/Stage3.png");
 		m_stage3->SetSize(stageNameSize);
 		m_stage3->SetIsTrans(true);
 
 		//Aƒ{ƒ^ƒ“
-		m_aBotton = new Sprite;
+		m_aBotton = std::make_unique<Sprite>();
 		m_aBotton->Initialize("Assets/sprite/ABotton.png");
 		m_aBotton->SetSize(aBottonSize);
 		m_aBotton->SetIsTrans(true);
