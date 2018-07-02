@@ -67,17 +67,6 @@ void Killer::Init(D3DXVECTOR3 pos, D3DXQUATERNION rot)
 
 	//影を描画するフラグを立てる
 	SetRenderToShadow();
-
-	////パーティクルの初期化
-	//SParticleEmitParameter param;
-	//param.texturePath = "Assets/sprite/smoke.png";
-	//param.w = 0.5f;
-	//param.h = 0.5f;
-	//param.intervalTime = 0.1f;
-	//param.initSpeed = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
-	//param.position = position;
-	//param.alpha = 1.0f;
-	//particleEmitter.Init(param);
 }
 
 void Killer::Update()
@@ -139,10 +128,6 @@ D3DXVECTOR3 Killer::Move()
 	//プレイヤーとの当たり判定
 	CollisionDetection(length, toPlayer);
 
-	//particleEmitter.SetSpeed(GetDirection() * -1.0f);
-	//particleEmitter.SetPosition(position);
-	//particleEmitter.Update();
-
 	//プレイヤーがステージクリアしたらそのまま直進
 	if(player->GetChangeStage()){
 		m_state = State_Miss;
@@ -163,7 +148,6 @@ D3DXVECTOR3 Killer::Move()
 		}
 
 		move = direction * m_moveSpeed;
-		//move.x = direction.x * moveSpeed;
 
 		break;
 	//発見状態

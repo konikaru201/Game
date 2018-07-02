@@ -125,43 +125,47 @@ void CStageSelectScene::Render()
 
 void CStageSelectScene::PostRender()
 {
-	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	if (!map->GetStageMarkerInstance()->GetDecisionFlag()
+		&& !map->GetStageMarker2Instance()->GetDecisionFlag()
+		&& !map->GetStageMarker3Instance()->GetDecisionFlag())
+	{
+		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-	D3DXVECTOR3 playerPos = player->GetPosition();
-	playerPos.y += 2.0f;
-	m_aBotton->SetPosition3D(playerPos);
-	D3DXVECTOR3 stageNumberPos;
-	if (map->GetStageMarkerInstance()->GetUIRenderFlag()) {
-		m_aBotton->Render();
-		D3DXVECTOR3 markerFromCamera = gameCamera->GetPosition() - map->GetStageMarkerInstance()->GetPosition();
-		D3DXVec3Normalize(&markerFromCamera, &markerFromCamera);
-		markerFromCamera.z *= 2.0f;
-		stageNumberPos = map->GetStageMarkerInstance()->GetPosition() + markerFromCamera;
-		m_stage1->SetPosition3D(stageNumberPos);
-		m_stage1->Render();
-	}
-	else if (map->GetStageMarker2Instance()->GetUIRenderFlag()) {
-		m_aBotton->Render();
-		D3DXVECTOR3 markerFromCamera = gameCamera->GetPosition() - map->GetStageMarker2Instance()->GetPosition();
-		D3DXVec3Normalize(&markerFromCamera, &markerFromCamera);
-		markerFromCamera.z *= 2.0f;
-		stageNumberPos = map->GetStageMarker2Instance()->GetPosition() + markerFromCamera;
-		m_stage2->SetPosition3D(stageNumberPos);
-		m_stage2->Render();
-	}
-	else if (map->GetStageMarker3Instance()->GetUIRenderFlag()) {
-		m_aBotton->Render();
-		D3DXVECTOR3 markerFromCamera = gameCamera->GetPosition() - map->GetStageMarker3Instance()->GetPosition();
-		D3DXVec3Normalize(&markerFromCamera, &markerFromCamera);
-		markerFromCamera.z *= 2.0f;
-		stageNumberPos = map->GetStageMarker3Instance()->GetPosition() + markerFromCamera;
-		m_stage3->SetPosition3D(stageNumberPos);
-		m_stage3->Render();
-	}
+		D3DXVECTOR3 playerPos = player->GetPosition();
+		playerPos.y += 2.0f;
+		m_aBotton->SetPosition3D(playerPos);
+		if (map->GetStageMarkerInstance()->GetUIRenderFlag()) {
+			m_aBotton->Render();
+			D3DXVECTOR3 markerFromCamera = gameCamera->GetPosition() - map->GetStageMarkerInstance()->GetPosition();
+			D3DXVec3Normalize(&markerFromCamera, &markerFromCamera);
+			markerFromCamera.z *= 2.0f;
+			D3DXVECTOR3 stageNumberPos = map->GetStageMarkerInstance()->GetPosition() + markerFromCamera;
+			m_stage1->SetPosition3D(stageNumberPos);
+			m_stage1->Render();
+		}
+		else if (map->GetStageMarker2Instance()->GetUIRenderFlag()) {
+			m_aBotton->Render();
+			D3DXVECTOR3 markerFromCamera = gameCamera->GetPosition() - map->GetStageMarker2Instance()->GetPosition();
+			D3DXVec3Normalize(&markerFromCamera, &markerFromCamera);
+			markerFromCamera.z *= 2.0f;
+			D3DXVECTOR3 stageNumberPos = map->GetStageMarker2Instance()->GetPosition() + markerFromCamera;
+			m_stage2->SetPosition3D(stageNumberPos);
+			m_stage2->Render();
+		}
+		else if (map->GetStageMarker3Instance()->GetUIRenderFlag()) {
+			m_aBotton->Render();
+			D3DXVECTOR3 markerFromCamera = gameCamera->GetPosition() - map->GetStageMarker3Instance()->GetPosition();
+			D3DXVec3Normalize(&markerFromCamera, &markerFromCamera);
+			markerFromCamera.z *= 2.0f;
+			D3DXVECTOR3 stageNumberPos = map->GetStageMarker3Instance()->GetPosition() + markerFromCamera;
+			m_stage3->SetPosition3D(stageNumberPos);
+			m_stage3->Render();
+		}
 
-	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	}
 }
 
 void CStageSelectScene::StageCreate()
