@@ -38,10 +38,11 @@ void PlayerMove::Update()
 					SE->Play(false);
 					m_timer = 0.0f;
 				}
+
+				//アニメーションの設定
+				m_player->SetCurrentAnim(m_currentAnim);
 			}
 		}
-		//アニメーションの設定
-		m_player->SetCurrentAnim(m_currentAnim);
 	}
 	else {
 		D3DXVECTOR3 moveSpeed = { 0.0f,0.0f,0.0f };
@@ -140,6 +141,8 @@ D3DXVECTOR3 PlayerMove::Jump(const D3DXVECTOR3& speed)
 		moveSpeed.y = 10.0f;
 		//ジャンプアニメーションを設定
 		m_currentAnim = AnimationJump;
+		//アニメーションの設定
+		m_player->SetCurrentAnim(m_currentAnim);
 
 		CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
 		SE->Init("Assets/sound/U_Voice_1.wav");
