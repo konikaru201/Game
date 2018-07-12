@@ -18,7 +18,9 @@ bool GameCamera::Start()
 {
 	//カメラ初期化
 	m_camera.Init();
-	if (sceneManager->GetScene() == SceneManager::stateStageSelect) {
+	if (sceneManager->GetScene() == SceneManager::stateTitle
+		|| sceneManager->GetScene() == SceneManager::stateStageSelect) 
+	{
 		m_camera.SetEyePt(D3DXVECTOR3(0.0f, 19.0f, 15.0f));
 	}
 	else {
@@ -45,9 +47,7 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
-	if (sceneManager->GetScene() != SceneManager::stateTitle) {
-		Move();
-	}
+	Move();
 
 	//カメラの前方向を計算。
 	D3DXVECTOR3 cameraForward = m_camera.GetLookatPt() - m_camera.GetEyePt();
@@ -71,7 +71,9 @@ void GameCamera::Move()
 	m_camera.SetLookatPt(targetPos);
 
 	bool isRotate = true;
-	if (sceneManager->GetScene() == SceneManager::stateStageSelect) {
+	if (sceneManager->GetScene() == SceneManager::stateTitle
+		|| sceneManager->GetScene() == SceneManager::stateStageSelect) 
+	{
 		isRotate = false;
 	}
 

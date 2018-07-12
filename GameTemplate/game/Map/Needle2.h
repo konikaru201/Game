@@ -41,6 +41,10 @@ public:
 	* @param[in]	isRecieveShadow	シャドウレシーバーかどうか
 	*/
 	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
+	/*!
+	*@brief	深度値を描画
+	*/
+	void RenderDepthValue();
 private:
 	SkinModel		m_model;				//スキンモデル
 	SkinModelData	m_modelData;			//スキンモデルデータ

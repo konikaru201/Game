@@ -38,20 +38,28 @@ void GameObjectManager::Update()
 	}
 }
 
-void GameObjectManager::Render()
+void GameObjectManager::PreRender()
 {
 	for (GameObject* obj : gameObjects) {
 		if (!obj->GetisDead()) {
 			obj->PreRender();
 		}
 	}
+}
+
+void GameObjectManager::Render()
+{
 	for (GameObject* obj : gameObjects) {
 		if (!obj->GetisDead()) {
 			obj->Render();
 		}
 	}
+}
+
+void GameObjectManager::PostRender()
+{
 	for (GameObject* obj : gameObjects) {
-		if (!obj->GetisDead()){
+		if (!obj->GetisDead()) {
 			obj->PostRender();
 		}
 	}
@@ -63,6 +71,13 @@ void GameObjectManager::RenderToShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projM
 		if (obj->GetShadowToRender()){
 			obj->RenderShadow(viewMatrix, projMatrix, isDrawShadowMap, isRecieveShadow);
 		}
+	}
+}
+
+void GameObjectManager::RenderDepthValue()
+{
+	for (GameObject* obj : gameObjects) {
+		obj->RenderDepthValue();
 	}
 }
 

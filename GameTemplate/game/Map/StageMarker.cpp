@@ -51,18 +51,6 @@ void StageMarker::Init(D3DXVECTOR3 position, D3DXQUATERNION rotation)
 
 	//作成した剛体を物理ワールドに追加
 	g_physicsWorld->AddRigidBody(&m_rigidBody);
-
-	////パーティクルの初期化
-	//SParticleEmitParameter param;
-	//param.texturePath = "Assets/sprite/FireParticleGlow.png";
-	//param.w = 0.5f;
-	//param.h = 0.5f;
-	//param.intervalTime = 0.3f;
-	//param.initSpeed = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	//param.position = position;
-	//param.alpha = 1.0f;
-	//param.particleNum = 5;
-	//m_particleEmitter.Init(param);
 }
 
 bool StageMarker::Start()
@@ -95,29 +83,28 @@ void StageMarker::Update()
 		return;
 	}
 
-	//m_particleEmitter.SetPosition(m_position);
-	//m_particleEmitter.Update();
+	//親のワールド行列を取得
+	m_parentWorldMatrix = map->GetEarthInstance()->GetWorldMatrix();
+	//ワールド座標に変換する
+	D3DXVec3TransformCoord(&m_position, &m_childPosition, &m_parentWorldMatrix);
+	//親のワールド行列から逆行列を作成
+	D3DXMATRIX parentWorldMatrixInv;
+	D3DXMatrixInverse(&parentWorldMatrixInv, NULL, &m_parentWorldMatrix);
+	D3DXVec3TransformCoord(&m_childPosition, &m_position, &parentWorldMatrixInv);
+	//親のワールド行列からクォータニオンを作成
+	D3DXQUATERNION parentRotation;
+	D3DXQuaternionRotationMatrix(&parentRotation, &m_parentWorldMatrix);
+	//親のクォータニオンを使って回転させる
+	D3DXQuaternionMultiply(&m_rotation, &m_childRotation, &parentRotation);
+	//親のワールド行列の逆行列からクォータニオンを作成
+	D3DXQUATERNION parentRotationMatrixInv;
+	D3DXQuaternionRotationMatrix(&parentRotationMatrixInv, &parentWorldMatrixInv);
+	//親から見たクォータニオンに変換
+	D3DXQuaternionMultiply(&m_childRotation, &m_rotation, &parentRotationMatrixInv);
 
-	if (map->GetEarthInstance()->GetIsRotate()) {
-		//親のワールド行列を取得
-		m_parentWorldMatrix = map->GetEarthInstance()->GetWorldMatrix();
-		//ワールド座標に変換する
-		D3DXVec3TransformCoord(&m_position, &m_childPosition, &m_parentWorldMatrix);
-		//親のワールド行列から逆行列を作成
-		D3DXMATRIX parentWorldMatrixInv;
-		D3DXMatrixInverse(&parentWorldMatrixInv, NULL, &m_parentWorldMatrix);
-		D3DXVec3TransformCoord(&m_childPosition, &m_position, &parentWorldMatrixInv);
-		//親のワールド行列からクォータニオンを作成
-		D3DXQUATERNION parentRotation;
-		D3DXQuaternionRotationMatrix(&parentRotation, &m_parentWorldMatrix);
-		//親のクォータニオンを使って回転させる
-		D3DXQuaternionMultiply(&m_rotation, &m_childRotation, &parentRotation);
-		//親のワールド行列の逆行列からクォータニオンを作成
-		D3DXQUATERNION parentRotationMatrixInv;
-		D3DXQuaternionRotationMatrix(&parentRotationMatrixInv, &parentWorldMatrixInv);
-		//親から見たクォータニオンに変換
-		D3DXQuaternionMultiply(&m_childRotation, &m_rotation, &parentRotationMatrixInv);
-	}
+	//if (map->GetEarthInstance()->GetIsRotate()) {
+	//	
+	//}
 
 	D3DXVECTOR3 toPlayerPos = player->GetPosition() - m_position;
 	float length = D3DXVec3Length(&toPlayerPos);
@@ -158,4 +145,11 @@ void StageMarker::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix,
 		m_model.Draw(viewMatrix, projMatrix);
 		m_model.SetDrawShadowMap(false, false);
 	}
+}
+
+void StageMarker::RenderDepthValue()
+{
+	m_model.SetDepthValueDraw(true);
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+	m_model.SetDepthValueDraw(false);
 }

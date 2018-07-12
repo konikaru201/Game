@@ -26,6 +26,7 @@ namespace {
 		bool isDrawShadowMap,
 		bool isRecieveShadow,
 		bool isSilhouetteRender,
+		bool isDepthValue,
 		bool isInstancingDraw,
 		int numInstancing,
 		float alpha
@@ -57,6 +58,9 @@ namespace {
 				if (isSilhouetteRender) {
 					pEffect->SetTechnique("SilhouetteRender");
 				}
+				if (isDepthValue) {
+					pEffect->SetTechnique("SamplingDepthValue");
+				}
 			}
 			else {
 				if (isInstancingDraw) {
@@ -70,6 +74,9 @@ namespace {
 				}
 				if (isSilhouetteRender) {
 					pEffect->SetTechnique("NoSkinSilhouetteRender");
+				}
+				if (isDepthValue) {
+					pEffect->SetTechnique("NoSkinSamplingDepthValue");
 				}
 			}
 		}
@@ -266,6 +273,7 @@ namespace {
 		bool isDrawShadowMap,
 		bool isRecieveShadow,
 		bool isSilhouetteRender,
+		bool isDepthValue,
 		bool isInstancingDraw,
 		int numInstancing,
 		float alpha
@@ -292,6 +300,7 @@ namespace {
 				isDrawShadowMap,
 				isRecieveShadow,
 				isSilhouetteRender,
+				isDepthValue,
 				isInstancingDraw,
 				numInstancing,
 				alpha
@@ -317,6 +326,7 @@ namespace {
 				isDrawShadowMap,
 				isRecieveShadow,
 				isSilhouetteRender,
+				isDepthValue,
 				isInstancingDraw,
 				numInstancing,
 				alpha
@@ -340,6 +350,7 @@ namespace {
 				isDrawShadowMap,
 				isRecieveShadow,
 				isSilhouetteRender,
+				isDepthValue,
 				isInstancingDraw,
 				numInstancing,
 				alpha
@@ -430,6 +441,7 @@ void SkinModel::Draw(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix)
 			isDrawShadowMap,
 			isRecieveShadow,
 			isSilhouetteRender,
+			m_isDepthValue,
 			m_isInstancingDraw,
 			m_numInstancing,
 			m_alpha

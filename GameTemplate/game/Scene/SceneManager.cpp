@@ -4,6 +4,7 @@
 #include "Fade/Fade.h"
 #include "myEngine/GameObject/GameObjectManager.h"
 #include "Fade/WipeEffect.h"
+#include "myEngine/Graphics/DepthOfField.h"
 
 namespace {
 	//コインのスプライトのサイズと座標
@@ -91,11 +92,12 @@ void SceneManager::Update()
 		if (m_step == step_WaitFadeOut) {
 			//フェードが終了
 			if (!g_fade->IsExecute()) {
+				depthOfField->SetDepthOfField(false);
 				//タイトルシーンを削除
 				m_titleScene->Release();
 				m_titleScene->SetisDead();
 				m_titleScene = nullptr;
-				g_fade->StartFadeIn();
+				//g_fade->StartFadeIn();
 				//ステージセレクトシーンに遷移
 				m_stageSelectScene = goMgr->NewGameObject<CStageSelectScene>();
 				m_state = stateStageSelect;
@@ -106,7 +108,7 @@ void SceneManager::Update()
 		else if (m_step == step_normal) {
 			//シーン切り替え時フェードアウト
 			if (m_titleScene->GetChangeSceneFlag()) {
-				g_fade->StartFadeOut();
+				//g_fade->StartFadeOut();
 				m_step = step_WaitFadeOut;
 			}
 		}
@@ -153,14 +155,15 @@ void SceneManager::Update()
 				GameScene::Step g_step = m_gameScene->IsStep();
 				//ステージクリア時
 				if (g_step == GameScene::step_StageClear) {
-					//ステージセレクトシーンに遷移
-					m_stageSelectScene = goMgr->NewGameObject<CStageSelectScene>();
-					m_state = stateStageSelect;
-					m_step = step_WaitFadeIn;
 					//ゲームシーンを削除
 					m_gameScene->Release();
 					m_gameScene->SetisDead();
 					m_gameScene = nullptr;
+					//ステージセレクトシーンに遷移
+					m_stageSelectScene = goMgr->NewGameObject<CStageSelectScene>();
+					m_stageSelectScene->StageCreate();
+					m_state = stateStageSelect;
+					m_step = step_WaitFadeIn;
 				}
 				//ゲームオーバー時
 				if (g_step == GameScene::step_GameOver) {
@@ -206,6 +209,7 @@ void SceneManager::Update()
 		else if (m_gameOverSceneStateNumber == 1) {
 			//ステージセレクトシーンに遷移
 			m_stageSelectScene = goMgr->NewGameObject<CStageSelectScene>();
+			m_stageSelectScene->StageCreate();
 			m_state = stateStageSelect;
 		}
 		//タイトルに戻る
@@ -213,6 +217,7 @@ void SceneManager::Update()
 			//タイトルシーンに遷移
 			m_titleScene = goMgr->NewGameObject<TitleScene>();
 			m_state = stateTitle;
+			depthOfField->SetDepthOfField(true);
 		}
 		
 		m_step = step_WaitFadeIn;

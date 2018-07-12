@@ -48,6 +48,10 @@ public:
 	*/
 	void SilhouetteRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* projMatrix);
 	/*!
+	*@brief	深度値を描画
+	*/
+	void RenderDepthValue();
+	/*!
 	* @brief	プレイヤーの座標の取得
 	*@return	プレイヤーの座標
 	*/
@@ -300,6 +304,13 @@ public:
 	{
 		return m_sceneSelect;
 	}
+	/*!
+	* @brief	タイトルシーンか判定
+	*/
+	bool GetSceneTitleFlag() const
+	{
+		return m_sceneTitle;
+	}
 private:
 	SkinModel			m_model;								//スキンモデル
 	SkinModelData		m_modelData;							//スキンモデルデータ
@@ -326,6 +337,7 @@ private:
 	D3DXVECTOR3			m_airResistance = { 0.0f,0.0f,0.0f };	//空気抵抗
 	float				m_ineltiaTime = 0.0f;					//慣性が働く時間
 	bool				m_sceneSelect = false;					//ステージセレクトシーンかどうか
+	bool				m_sceneTitle = false;
 
 	D3DXMATRIX			m_moveFloorWorldMatrix;							//移動床１のワールド行列
 	D3DXVECTOR3			m_moveFloorChildPosition = { 0.0f,0.0f,0.0f };	//移動床１から見たプレイヤーのローカル座標

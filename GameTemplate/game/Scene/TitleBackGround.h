@@ -6,9 +6,9 @@
 
 #include "myEngine/Graphics/Sprite.h"
 #include "myEngine/Graphics/Light.h"
-#include "Camera/GameCamera.h"
+#include "myEngine/GameObject/GameObject.h"
 
-class TitleBackGround{
+class TitleBackGround : public GameObject{
 public:
 	/*!
 	*@brief	コンストラクタ
@@ -34,17 +34,16 @@ public:
 	*@brief	解放
 	*/
 	void Release();
+	/*!
+	*@brief	深度値を描画
+	*/
+	void RenderDepthValue();
 private:
 	std::unique_ptr<Sprite> m_backGround;			//背景
-	SkinModel				m_model;				//ユニティちゃん
-	SkinModelData			m_modelData;			
 	SkinModel				m_titleModel;			//3Dタイトル
 	SkinModelData			m_titleModelData;
 	Light					m_light;				//ライト
 	Animation				m_animation;			//アニメーション
-	D3DXVECTOR3				m_position;				//ユニティちゃん座標
-	D3DXQUATERNION			m_rotation;				//ユニティちゃん回転
-	D3DXVECTOR3				m_titlePosition;		//タイトル座標
-	D3DXQUATERNION			m_titleRotation;		//タイトル回転
+	D3DXQUATERNION			m_rotation;				//回転
 	int						m_animationRun = 2;		//走りアニメーション番号
 };

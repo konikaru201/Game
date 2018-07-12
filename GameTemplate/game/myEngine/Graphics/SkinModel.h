@@ -96,6 +96,11 @@ public:
 	{
 		m_numInstancing = numInstancing;
 	}
+	//深度値描画フラグを設定
+	void SetDepthValueDraw(bool isDepthValue)
+	{
+		m_isDepthValue = isDepthValue;
+	}
 	/*!
 	*@brief	オリジナルメッシュの先頭を取得する。
 	*/
@@ -115,6 +120,7 @@ private:
 	bool isRecieveShadow = false;
 	bool isSilhouetteRender = false;
 	bool m_isInstancingDraw = false;
+	bool m_isDepthValue = false;
 	float m_alpha = 1.0f;
 	int m_numInstancing = 0;
 };

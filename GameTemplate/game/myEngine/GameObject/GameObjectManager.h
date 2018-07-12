@@ -20,9 +20,17 @@ public:
 	*/
 	void Update();
 	/*!
+	*@brief	先に描画
+	*/
+	void PreRender();
+	/*!
 	*@brief	描画
 	*/
 	void Render();
+	/*!
+	*@brief	後から描画
+	*/
+	void PostRender();
 	/*!
 	* @brief	影を描画
 	* @param[in]	viewMatrix		ビュー行列
@@ -31,6 +39,10 @@ public:
 	* @param[in]	isRecieveShadow	シャドウレシーバーかどうか
 	*/
 	void RenderToShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
+	/*!
+	*@brief	深度値を描画
+	*/
+	void RenderDepthValue();
 	/*!
 	*@brief	インスタンスをゲームオブジェクトに追加
 	*@return	クラスのインスタンス

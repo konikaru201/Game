@@ -113,3 +113,10 @@ void Needle::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix, bool
 		m_model.SetDrawShadowMap(false, false);
 	}
 }
+
+void Needle::RenderDepthValue()
+{
+	m_model.SetDepthValueDraw(true);
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+	m_model.SetDepthValueDraw(false);
+}

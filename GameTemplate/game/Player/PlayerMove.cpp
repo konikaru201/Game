@@ -22,25 +22,27 @@ void PlayerMove::Update()
 		//移動速度と方向を設定
 		m_player->SetMoveSpeed(moveSpeed);
 	
-		//動いている
-		if (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f) {
-			//回転
-			Turn();
+		if (!player->GetSceneTitleFlag()) {
+			//動いている
+			if (pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f) {
+				//回転
+				Turn();
 
-			if (!m_player->GetIsJump()) {
-				//走りアニメーションを設定
-				m_currentAnim = AnimationRun;
-				m_timer += Timer::GetFrameDeltaTime();
+				if (!m_player->GetIsJump()) {
+					//走りアニメーションを設定
+					m_currentAnim = AnimationRun;
+					m_timer += Timer::GetFrameDeltaTime();
 
-				if (m_timer >= 0.4f && m_player->GetIsOnGround()) {
-					CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
-					SE->Init("Assets/sound/FootStep.wav");
-					SE->Play(false);
-					m_timer = 0.0f;
+					if (m_timer >= 0.4f && m_player->GetIsOnGround()) {
+						CSoundSource* SE = goMgr->NewGameObject<CSoundSource>();
+						SE->Init("Assets/sound/FootStep.wav");
+						SE->Play(false);
+						m_timer = 0.0f;
+					}
+
+					//アニメーションの設定
+					m_player->SetCurrentAnim(m_currentAnim);
 				}
-
-				//アニメーションの設定
-				m_player->SetCurrentAnim(m_currentAnim);
 			}
 		}
 	}
@@ -137,7 +139,7 @@ D3DXVECTOR3 PlayerMove::Jump(const D3DXVECTOR3& speed)
 	D3DXVECTOR3 moveSpeed = speed;
 	m_player->SetIsJump();
 
-	if (!m_player->GetSceneSelectFlag()) {
+	if (!player->GetSceneTitleFlag() && !m_player->GetSceneSelectFlag()) {
 		moveSpeed.y = 10.0f;
 		//ジャンプアニメーションを設定
 		m_currentAnim = AnimationJump;

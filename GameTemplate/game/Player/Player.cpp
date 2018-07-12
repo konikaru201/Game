@@ -116,6 +116,15 @@ void Player::Update()
 		return;
 	}
 
+	//タイトルシーンかステージセレクトシーンであれば動かない
+	if (sceneManager->GetScene() == SceneManager::stateTitle) {
+		m_moveSpeed.x = 0.0f;
+		m_moveSpeed.z = 0.0f;
+		m_sceneTitle = true;
+	}
+	else {
+		m_sceneTitle = false;
+	}
 	if (sceneManager->GetScene() == SceneManager::stateStageSelect) {
 		m_moveSpeed.x = 0.0f;
 		m_moveSpeed.z = 0.0f;
@@ -333,4 +342,11 @@ void Player::SilhouetteRender(const D3DXMATRIX* viewMatrix, const D3DXMATRIX* pr
 		m_model.Draw(viewMatrix, projMatrix);
 		m_model.SetSilhouetteRender(false);
 	}
+}
+
+void Player::RenderDepthValue()
+{
+	m_model.SetDepthValueDraw(true);
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+	m_model.SetDepthValueDraw(false);
 }

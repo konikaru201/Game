@@ -55,6 +55,8 @@ void Earth::Init(D3DXVECTOR3 position, D3DXQUATERNION rotation)
 
 bool Earth::Start()
 {
+	m_model.UpdateWorldMatrix(m_position, m_rotation, { 1.0f,1.0f,1.0f });
+
 	return true;
 }
 
@@ -69,29 +71,31 @@ void Earth::Update()
 	}
 
 	m_isRotate = false;
-	if ((pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f) 
-		&& !map->GetStageMarkerInstance()->GetDecisionFlag()
-		&& !map->GetStageMarker2Instance()->GetDecisionFlag()
-		&& !map->GetStageMarker3Instance()->GetDecisionFlag())
-	{
-		D3DXVECTOR3 rotationAxis = { 0.0f,1.0f,0.0f };
-		D3DXVECTOR3 stickDir;
-		stickDir.y = 0.0f;
-		stickDir.x = pad->GetLStickXF();
-		stickDir.z = pad->GetLStickYF();
-		D3DXVec3Normalize(&stickDir, &stickDir);
-		
-		float angle = -0.3f * cPI / 180.0f;
+	if (sceneManager->GetScene() != SceneManager::stateTitle) {
+		if ((pad->GetLStickXF() != 0.0f || pad->GetLStickYF() != 0.0f)
+			&& !map->GetStageMarkerInstance()->GetDecisionFlag()
+			&& !map->GetStageMarker2Instance()->GetDecisionFlag()
+			&& !map->GetStageMarker3Instance()->GetDecisionFlag())
+		{
+			D3DXVECTOR3 rotationAxis = { 0.0f,1.0f,0.0f };
+			D3DXVECTOR3 stickDir;
+			stickDir.y = 0.0f;
+			stickDir.x = pad->GetLStickXF();
+			stickDir.z = pad->GetLStickYF();
+			D3DXVec3Normalize(&stickDir, &stickDir);
 
-		D3DXVECTOR3 Cross;
-		D3DXVec3Cross(&Cross, &stickDir, &rotationAxis);
+			float angle = -0.3f * cPI / 180.0f;
 
-		D3DXQUATERNION rot;
-		D3DXQuaternionIdentity(&rot);
-		D3DXQuaternionRotationAxis(&rot, &Cross, angle);
-		D3DXQuaternionMultiply(&m_rotation, &m_rotation, &rot);
+			D3DXVECTOR3 Cross;
+			D3DXVec3Cross(&Cross, &stickDir, &rotationAxis);
 
-		m_isRotate = true;
+			D3DXQUATERNION rot;
+			D3DXQuaternionIdentity(&rot);
+			D3DXQuaternionRotationAxis(&rot, &Cross, angle);
+			D3DXQuaternionMultiply(&m_rotation, &m_rotation, &rot);
+
+			m_isRotate = true;
+		}
 	}
 
 	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
@@ -104,4 +108,11 @@ void Earth::Render()
 {
 	m_model.SetDrawShadowMap(false, true);
 	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+}
+
+void Earth::RenderDepthValue()
+{
+	m_model.SetDepthValueDraw(true);
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+	m_model.SetDepthValueDraw(false);
 }

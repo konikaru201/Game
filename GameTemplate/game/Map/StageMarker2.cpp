@@ -83,26 +83,28 @@ void StageMarker2::Update()
 		return;
 	}
 
-	if (map->GetEarthInstance()->GetIsRotate()) {
-		//親のワールド行列を取得
-		m_parentWorldMatrix = map->GetEarthInstance()->GetWorldMatrix();
-		//ワールド座標に変換する
-		D3DXVec3TransformCoord(&m_position, &m_childPosition, &m_parentWorldMatrix);
-		//親のワールド行列から逆行列を作成
-		D3DXMATRIX parentWorldMatrixInv;
-		D3DXMatrixInverse(&parentWorldMatrixInv, NULL, &m_parentWorldMatrix);
-		D3DXVec3TransformCoord(&m_childPosition, &m_position, &parentWorldMatrixInv);
-		//親のワールド行列からクォータニオンを作成
-		D3DXQUATERNION parentRotation;
-		D3DXQuaternionRotationMatrix(&parentRotation, &m_parentWorldMatrix);
-		//親のクォータニオンを使って回転させる
-		D3DXQuaternionMultiply(&m_rotation, &m_childRotation, &parentRotation);
-		//親のワールド行列の逆行列からクォータニオンを作成
-		D3DXQUATERNION parentRotationMatrixInv;
-		D3DXQuaternionRotationMatrix(&parentRotationMatrixInv, &parentWorldMatrixInv);
-		//親から見たクォータニオンに変換
-		D3DXQuaternionMultiply(&m_childRotation, &m_rotation, &parentRotationMatrixInv);
-	}
+	//親のワールド行列を取得
+	m_parentWorldMatrix = map->GetEarthInstance()->GetWorldMatrix();
+	//ワールド座標に変換する
+	D3DXVec3TransformCoord(&m_position, &m_childPosition, &m_parentWorldMatrix);
+	//親のワールド行列から逆行列を作成
+	D3DXMATRIX parentWorldMatrixInv;
+	D3DXMatrixInverse(&parentWorldMatrixInv, NULL, &m_parentWorldMatrix);
+	D3DXVec3TransformCoord(&m_childPosition, &m_position, &parentWorldMatrixInv);
+	//親のワールド行列からクォータニオンを作成
+	D3DXQUATERNION parentRotation;
+	D3DXQuaternionRotationMatrix(&parentRotation, &m_parentWorldMatrix);
+	//親のクォータニオンを使って回転させる
+	D3DXQuaternionMultiply(&m_rotation, &m_childRotation, &parentRotation);
+	//親のワールド行列の逆行列からクォータニオンを作成
+	D3DXQUATERNION parentRotationMatrixInv;
+	D3DXQuaternionRotationMatrix(&parentRotationMatrixInv, &parentWorldMatrixInv);
+	//親から見たクォータニオンに変換
+	D3DXQuaternionMultiply(&m_childRotation, &m_rotation, &parentRotationMatrixInv);
+
+	//if (map->GetEarthInstance()->GetIsRotate()) {
+	//	
+	//}
 
 	D3DXVECTOR3 toPlayerPos = player->GetPosition() - m_position;
 	float length = D3DXVec3Length(&toPlayerPos);
@@ -143,4 +145,11 @@ void StageMarker2::RenderShadow(D3DXMATRIX * viewMatrix, D3DXMATRIX * projMatrix
 		m_model.Draw(viewMatrix, projMatrix);
 		m_model.SetDrawShadowMap(false, false);
 	}
+}
+
+void StageMarker2::RenderDepthValue()
+{
+	m_model.SetDepthValueDraw(true);
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+	m_model.SetDepthValueDraw(false);
 }

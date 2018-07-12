@@ -188,6 +188,7 @@
     <ClCompile Include="myEngine\Graphics\Animation.cpp" />
     <ClCompile Include="myEngine\Graphics\Bloom.cpp" />
     <ClCompile Include="myEngine\Graphics\Camera.cpp" />
+    <ClCompile Include="myEngine\Graphics\DepthOfField.cpp" />
     <ClCompile Include="myEngine\Graphics\EffectManager.cpp" />
     <ClCompile Include="myEngine\Graphics\IndexBuffer.cpp" />
     <ClCompile Include="myEngine\Graphics\Particle.cpp" />
@@ -279,6 +280,7 @@
     <ClInclude Include="myEngine\Graphics\Animation.h" />
     <ClInclude Include="myEngine\Graphics\Bloom.h" />
     <ClInclude Include="myEngine\Graphics\Camera.h" />
+    <ClInclude Include="myEngine\Graphics\DepthOfField.h" />
     <ClInclude Include="myEngine\Graphics\EffectManager.h" />
     <ClInclude Include="myEngine\Graphics\IndexBuffer.h" />
     <ClInclude Include="myEngine\Graphics\Light.h" />

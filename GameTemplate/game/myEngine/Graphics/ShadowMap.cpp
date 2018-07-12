@@ -2,7 +2,7 @@
 #include "ShadowMap.h"
 #include "Player/Player.h"
 #include "Camera/GameCamera.h"
-#include "../GameObject/GameObjectManager.h"
+#include "myEngine/GameObject/GameObjectManager.h"
 
 CShadowMap::CShadowMap()
 {

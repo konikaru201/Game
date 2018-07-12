@@ -372,6 +372,16 @@ float4 PSSkyCubeMapMain(VS_OUTPUT In) : COLOR
 }
 
 /*!
+*@brief	深度値書き込み用のピクセルシェーダー。
+*/
+float4 PSSamplingDepthOfField(VS_OUTPUT In) : COLOR
+{
+	float z = In.PosInProj.z / In.PosInProj.w;
+
+	return float4(z, z, z, 1.0f);
+}
+
+/*!
  *@brief	スキンなし
  *@brief	キューブマップ用のテクニック。
  */
@@ -478,5 +488,31 @@ technique NoSkinSilhouetteRender
 	{
 		VertexShader = compile vs_3_0 VSMain(false);
 		PixelShader = compile ps_3_0 PSSilhouetteRenderMain();
+	}
+}
+
+/*!
+* @brief	スキンあり
+* @brief	深度値書き込み用テクニック。
+*/
+technique SamplingDepthValue
+{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMain(true);
+		PixelShader = compile ps_3_0 PSSamplingDepthOfField();
+	}
+}
+
+/*!
+* @brief	スキンなし
+* @brief	深度値書き込み用テクニック。
+*/
+technique NoSkinSamplingDepthValue
+{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMain(false);
+		PixelShader = compile ps_3_0 PSSamplingDepthOfField();
 	}
 }

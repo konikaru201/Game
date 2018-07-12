@@ -14,6 +14,7 @@
 #include "myEngine/Graphics/Bloom.h"
 #include "Number/RemainNumber.h"
 #include "Fade/WipeEffect.h"
+#include "myEngine/Graphics/DepthOfField.h"
 
 GameObjectManager* goMgr = nullptr;		//ゲームオブジェクト
 Pad* pad = nullptr;						//パッド
@@ -22,6 +23,7 @@ Fade* g_fade = nullptr;					//フェード
 WipeEffect* wipeEffect;					//ワイプエフェクト
 CShadowMap g_shadowMap;					//シャドウマップ。
 Bloom* bloom = nullptr;					//ブルーム
+DepthOfField* depthOfField = nullptr;	//被写界深度
 
 CRenderTarget* mainRenderTarget;		//メインレンダリングターゲット
 CPrimitive* quadPrimitive;				//四角形の板ポリプリミティブ
@@ -49,8 +51,12 @@ void Init()
 	//シャドウマップを初期化
 	g_shadowMap.Init();
 
-	//ブルーム生成
+	//ブルームを初期化
 	bloom = new Bloom;
+
+	//被写界深度を初期化
+	depthOfField = new DepthOfField;
+	depthOfField->SetDepthOfField(true);
 
 	//物理ワールドを初期化
 	g_physicsWorld = new PhysicsWorld;
@@ -104,13 +110,15 @@ VOID Render()
 	g_shadowMap.Draw();
 
 	//ゲームオブジェクトをレンダリング
+	goMgr->PreRender();
+	
 	goMgr->Render();
-
-	//UIを描画
-	sceneManager->UIRender();
 
 	//ポストエフェクト
 	bloom->Render();
+	depthOfField->Render();
+
+	goMgr->PostRender();
 
 	//レンダリングターゲットを戻す
 	g_pd3dDevice->SetRenderTarget(0, frameBufferRT);
@@ -122,6 +130,9 @@ VOID Render()
 
 	//オフスクリーンレンダリングした絵をフレームバッファに貼り付ける
 	CopyMainRTToCurrentRT();
+
+	//UIを描画
+	sceneManager->UIRender();
 
 	//ワイプエフェクトの描画
 	wipeEffect->Render();

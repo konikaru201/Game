@@ -45,6 +45,10 @@ public:
 	*/
 	void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow);
 	/*!
+	*@brief	深度値を描画
+	*/
+	void RenderDepthValue();
+	/*!
 	* @brief	座標の取得
 	*@return	座標
 	*/

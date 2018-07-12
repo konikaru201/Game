@@ -36,6 +36,10 @@ public:
 	*/
 	virtual void RenderShadow(D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawShadowMap, bool isRecieveShadow){}
 	/*!
+	*@brief	[“x’l‚ğ•`‰æ
+	*/
+	virtual void RenderDepthValue() {}
+	/*!
 	*@brief	StartŠÖ”‚ª‚·‚Å‚ÉŒÄ‚Î‚ê‚½‚©
 	*/
 	virtual bool IsStart() const

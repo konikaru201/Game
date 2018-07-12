@@ -306,6 +306,9 @@
     <ClCompile Include="Scene\TitleBackGround.cpp">
       <Filter>ソース ファイル\Scene\TitleScene</Filter>
     </ClCompile>
+    <ClCompile Include="myEngine\Graphics\DepthOfField.cpp">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -580,6 +583,9 @@
     </ClInclude>
     <ClInclude Include="Scene\TitleBackGround.h">
       <Filter>ソース ファイル\Scene\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="myEngine\Graphics\DepthOfField.h">
+      <Filter>ソース ファイル\myEngine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

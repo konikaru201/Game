@@ -6,9 +6,12 @@
 #include "myEngine/Timer/Timer.h"
 #include "myEngine/GameObject/GameObjectManager.h"
 
+SMapInfo Stage[] = {
+#include "locationinfo/stage1.h"
+};
+
 TitleScene::TitleScene()
 {
-	titleBackGround = std::make_unique<TitleBackGround>();
 }
 
 TitleScene::~TitleScene()
@@ -17,7 +20,20 @@ TitleScene::~TitleScene()
 
 bool TitleScene::Start()
 {
-	titleBackGround->Init();
+	//マップ生成
+	map = goMgr->NewGameObject<Map>();
+
+	//ステージ作成
+	StageCreate();
+
+	//カメラ生成
+	gameCamera = goMgr->NewGameObject<GameCamera>();
+
+	//プレイヤー生成
+	player = goMgr->NewGameObject<Player>();
+
+	m_titleBackGround = goMgr->NewGameObject<TitleBackGround>();
+	m_titleBackGround->Init();
 
 	m_pressA = std::make_unique<Sprite>();
 	m_pressA->Initialize("Assets/sprite/PressA.png");
@@ -34,8 +50,6 @@ bool TitleScene::Start()
 
 void TitleScene::Update()
 {
-	titleBackGround->Update();
-
 	switch (m_state) {
 	case Entity:
 		m_timer += Timer::GetFrameDeltaTime();
@@ -77,8 +91,10 @@ void TitleScene::Update()
 
 void TitleScene::Render()
 {
-	titleBackGround->Render();
+}
 
+void TitleScene::PostRender()
+{
 	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -90,5 +106,13 @@ void TitleScene::Render()
 
 void TitleScene::Release()
 {
-	titleBackGround->Release();
+	m_titleBackGround->SetisDead();
+	m_titleBackGround = nullptr;
+}
+
+void TitleScene::StageCreate()
+{
+	//配置されているオブジェクトの数を計算
+	int numObject = sizeof(Stage) / sizeof(Stage[0]);
+	map->Create(Stage, numObject);
 }

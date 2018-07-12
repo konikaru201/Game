@@ -36,6 +36,10 @@ public:
 	*/
 	void Render();
 	/*!
+	*@brief	深度値を描画
+	*/
+	void RenderDepthValue();
+	/*!
 	* @brief	ワールド行列を取得
 	*@return	ワールド行列
 	*/

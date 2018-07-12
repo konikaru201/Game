@@ -33,6 +33,10 @@ public:
 	*@brief	描画
 	*/
 	void Render();
+	/*!
+	*@brief	深度値を描画
+	*/
+	void RenderDepthValue();
 private:
 	SkinModel		m_model;			//スキンモデル
 	SkinModelData	m_modelData;		//スキンモデルデータ

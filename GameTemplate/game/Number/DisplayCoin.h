@@ -41,7 +41,7 @@ public:
 		m_coinNum++;
 	}
 private:
-	std::unique_ptr<Number>		m_num[3];					//”š
+	std::unique_ptr<Number>		m_num[2];					//”š
 	D3DXVECTOR2					m_position = { 0.0f,0.0f }; //À•W
 	int							m_coinNum = 0;				//ƒRƒCƒ“‚Ì–‡”
 };

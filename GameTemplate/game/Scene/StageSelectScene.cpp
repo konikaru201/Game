@@ -24,45 +24,53 @@ CStageSelectScene::~CStageSelectScene()
 
 bool CStageSelectScene::Start()
 {
-	if (m_step = step_WaitFadeOut) {
-		//マップ生成
-		map = goMgr->NewGameObject<Map>();
+	//マップ生成
+	//map = goMgr->NewGameObject<Map>();
 
-		//ステージ作成
-		StageCreate();
+	//ステージ作成
+	//StageCreate();
 
-		//シルエット生成
-		m_silhouette = goMgr->NewGameObject<Silhouette>();
-		//プレイヤー生成
-		player = goMgr->NewGameObject<Player>();
-		//カメラ生成
-		gameCamera = goMgr->NewGameObject<GameCamera>();
+	//シルエット生成
+	m_silhouette = goMgr->NewGameObject<Silhouette>();
+	//プレイヤー生成
+	//player = goMgr->NewGameObject<Player>();
+	//カメラ生成
+	//gameCamera = goMgr->NewGameObject<GameCamera>();
 
-		m_stage1 = std::make_unique<Sprite>();
-		m_stage1->Initialize("Assets/sprite/Stage1.png");
-		m_stage1->SetSize(stageNameSize);
-		m_stage1->SetIsTrans(true);
+	m_stage1 = std::make_unique<Sprite>();
+	m_stage1->Initialize("Assets/sprite/Stage1.png");
+	m_stage1->SetSize(stageNameSize);
+	m_stage1->SetIsTrans(true);
 
-		m_stage2 = std::make_unique<Sprite>();
-		m_stage2->Initialize("Assets/sprite/Stage2.png");
-		m_stage2->SetSize(stageNameSize);
-		m_stage2->SetIsTrans(true);
+	m_stage2 = std::make_unique<Sprite>();
+	m_stage2->Initialize("Assets/sprite/Stage2.png");
+	m_stage2->SetSize(stageNameSize);
+	m_stage2->SetIsTrans(true);
 
-		m_stage3 = std::make_unique<Sprite>();
-		m_stage3->Initialize("Assets/sprite/Stage3.png");
-		m_stage3->SetSize(stageNameSize);
-		m_stage3->SetIsTrans(true);
+	m_stage3 = std::make_unique<Sprite>();
+	m_stage3->Initialize("Assets/sprite/Stage3.png");
+	m_stage3->SetSize(stageNameSize);
+	m_stage3->SetIsTrans(true);
 
-		//Aボタン
-		m_aBotton = std::make_unique<Sprite>();
-		m_aBotton->Initialize("Assets/sprite/ABotton.png");
-		m_aBotton->SetSize(aBottonSize);
-		m_aBotton->SetIsTrans(true);
-	}
-	else {
-		m_step = step_WaitFadeIn;
-		g_fade->StartFadeIn();
-	}
+	//Aボタン
+	m_aBotton = std::make_unique<Sprite>();
+	m_aBotton->Initialize("Assets/sprite/ABotton.png");
+	m_aBotton->SetSize(aBottonSize);
+	m_aBotton->SetIsTrans(true);
+
+	m_bgmSource = goMgr->NewGameObject<CSoundSource>();
+	m_bgmSource->InitStreaming("Assets/sound/bgm_1.wav");
+	m_bgmSource->Play(true);
+
+	m_step = step_WaitFadeIn;
+
+	//if (m_step = step_WaitFadeOut) {
+	//	
+	//}
+	//else {
+	//	m_step = step_WaitFadeIn;
+	//	g_fade->StartFadeIn();
+	//}
 	
 	return true;
 }
@@ -129,6 +137,8 @@ void CStageSelectScene::PostRender()
 		&& !map->GetStageMarker2Instance()->GetDecisionFlag()
 		&& !map->GetStageMarker3Instance()->GetDecisionFlag())
 	{
+		g_pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
+
 		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 		g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -165,20 +175,28 @@ void CStageSelectScene::PostRender()
 		}
 
 		g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+		g_pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
 	}
 }
 
 void CStageSelectScene::StageCreate()
 {
+	//マップ生成
+	map = goMgr->NewGameObject<Map>();
+
 	//配置されているオブジェクトの数を計算
 	int numObject = sizeof(Stage0) / sizeof(Stage0[0]);
 	map->Create(Stage0, numObject);
 
-	m_bgmSource = goMgr->NewGameObject<CSoundSource>();
-	m_bgmSource->InitStreaming("Assets/sound/bgm_1.wav");
-	m_bgmSource->Play(true);
+	//カメラ生成
+	gameCamera = goMgr->NewGameObject<GameCamera>();
 
-	m_step = step_StageLoad;
+	//プレイヤー生成
+	player = goMgr->NewGameObject<Player>();
+
+	wipeEffect->StartWipeIn();
+	m_step = step_WaitFadeIn;
 }
 
 void CStageSelectScene::Release()

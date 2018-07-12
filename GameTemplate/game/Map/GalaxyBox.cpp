@@ -64,3 +64,10 @@ void GalaxyBox::Render()
 	m_model.SetDrawShadowMap(false, false);
 	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
 }
+
+void GalaxyBox::RenderDepthValue()
+{
+	m_model.SetDepthValueDraw(true);
+	m_model.Draw(&gameCamera->GetViewMatrix(), &gameCamera->GetProjectionMatrix());
+	m_model.SetDepthValueDraw(false);
+}
