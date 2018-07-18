@@ -202,22 +202,11 @@ sampler_state
 	AddressV = CLAMP;
 };
 
-texture g_blurTexture0;
+texture g_blurTexture;
 sampler g_blurSampler0 =
 sampler_state
 {
-	Texture = <g_blurTexture0>;
-	MipFilter = LINEAR;
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
-	AddressU = CLAMP;
-	AddressV = CLAMP;
-};
-texture g_blurTexture1;
-sampler g_blurSampler1 =
-sampler_state
-{
-	Texture = <g_blurTexture1>;
+	Texture = <g_blurTexture>;
 	MipFilter = LINEAR;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
@@ -257,11 +246,11 @@ float4 PSFinal( VS_OUTPUT In ) : COLOR
 	float4 depth = tex2D(g_depthMapSampler, uv);
 
 	float4 color = tex2D(g_mainSampler, uv);
-	if (depth.r < 0.9f) {
+	if (depth.r < 0.5f) {
 		color = tex2D(g_blurSampler0, uv);
 	}
-	else if (depth.r > 0.99f) {
-		color = tex2D(g_blurSampler1, uv);
+	else if (depth.r > 0.9f) {
+		color = tex2D(g_blurSampler0, uv);
 	}
 
 	return color;

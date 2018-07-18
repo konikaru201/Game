@@ -4,7 +4,7 @@
 //コンストラクタ。
 Camera::Camera()
 {
-	Near = 0.1f;
+	Near = 1.0f;
 	Far = 100.0f;
 	aspect = (float)FRAME_BUFFER_WIDTH / (float)FRAME_BUFFER_HEIGHT;
 	angle = D3DX_PI / 4;

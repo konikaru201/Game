@@ -6,7 +6,6 @@
 
 void PlayerMove::Update()
 {	
-	bool cameraRiset = false;
 	//カメラのリセット中は動かない
 	if (gameCamera != nullptr && !gameCamera->GetCameraReset()) {
 		D3DXVECTOR3 moveSpeed = Move();
@@ -49,7 +48,6 @@ void PlayerMove::Update()
 	else {
 		D3DXVECTOR3 moveSpeed = { 0.0f,0.0f,0.0f };
 		m_player->SetMoveSpeed(moveSpeed);
-		cameraRiset = true;
 	}
 
 	if (m_acceleration == 0.0f && !m_player->GetIsJump()) {

@@ -145,6 +145,7 @@ void Player::Update()
 		m_moveSpeed.y += m_jumpSpeed * 2;
 		m_playerController.Jump();
 		m_animation.PlayAnimation(IPlayerState::AnimationNo::AnimationJump);
+		SetCurrentAnim(IPlayerState::AnimationNo::AnimationJump);
 		m_treadOnSpring = false;
 	}
 
@@ -154,6 +155,7 @@ void Player::Update()
 		m_moveSpeed.y += m_jumpSpeed;
 		m_playerController.Jump();
 		m_animation.PlayAnimation(IPlayerState::AnimationNo::AnimationJump);
+		SetCurrentAnim(IPlayerState::AnimationNo::AnimationJump);
 		m_treadOnEnemy = false;
 	}
 	//äµê´

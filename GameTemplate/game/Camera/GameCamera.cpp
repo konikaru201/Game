@@ -22,12 +22,15 @@ bool GameCamera::Start()
 		|| sceneManager->GetScene() == SceneManager::stateStageSelect) 
 	{
 		m_camera.SetEyePt(D3DXVECTOR3(0.0f, 19.0f, 15.0f));
+		m_camera.SetNear(1.0f);
+		m_camera.SetFar(400.0f);
 	}
 	else {
 		m_camera.SetEyePt(D3DXVECTOR3(0.0f, 12.0f, 10.0f));
+		m_camera.SetNear(0.1f);
+		m_camera.SetFar(1000.0f);
 	}
 	m_camera.SetLookatPt(D3DXVECTOR3(0.0f, 10.5f, 3.0f));
-	m_camera.SetFar(1000.0f);
 	m_camera.Update();
 	//ƒJƒƒ‰‚Ì“–‚½‚è”»’è‚ğ‰Šú‰»
 	m_cameraCollisionSolver.Init(0.2f);

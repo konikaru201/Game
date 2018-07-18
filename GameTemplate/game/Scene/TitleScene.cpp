@@ -5,6 +5,7 @@
 #include "Fade/Fade.h"
 #include "myEngine/Timer/Timer.h"
 #include "myEngine/GameObject/GameObjectManager.h"
+#include "myEngine/Graphics/DepthOfField.h"
 
 SMapInfo Stage[] = {
 #include "locationinfo/stage1.h"

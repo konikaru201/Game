@@ -228,14 +228,20 @@ D3DXVECTOR3 Red_Dragon::Move()
 		move = toPlayer;
 		move.y = 0.0f;
 
-		//プレイヤーとの距離が離れると見失う
-		if (length > 20.0f) {
-			m_state = State_Miss;
+		//プレイヤーとの距離が近ければ攻撃に移行
+		if (length < 2.0f) {
+			m_state = State_Attack;
 			break;
 		}
-		//プレイヤーとの距離が近ければ攻撃に移行
-		else if(length < 2.0f){
-			m_state = State_Attack;
+
+		//現在の座標から初期座標の距離を計算
+		toInitPosition = m_position - m_initPosition;
+		toInitPosition += move / 60.0f;
+		length = D3DXVec3Length(&toInitPosition);
+
+		//初期位置から離れると追いかけない
+		if (length > 10.0f) {
+			m_state = State_Miss;
 			break;
 		}
 
@@ -410,7 +416,7 @@ void Red_Dragon::CollisionDetection(float length, const D3DXVECTOR3& toPlayer)
 			SE->Play(false);
 		}
 		//XZ方向に当たった
-		else if (lengthY <= 0.3f && lengthXZ <= 1.0f) {
+		else if (lengthY <= 0.3f && lengthXZ <= 0.9f) {
 			//プレイヤーが死亡
 			m_hitPlayer = true;
 			player->SetHitEnemy(m_hitPlayer);

@@ -97,7 +97,6 @@ void SceneManager::Update()
 				m_titleScene->Release();
 				m_titleScene->SetisDead();
 				m_titleScene = nullptr;
-				//g_fade->StartFadeIn();
 				//ステージセレクトシーンに遷移
 				m_stageSelectScene = goMgr->NewGameObject<CStageSelectScene>();
 				m_state = stateStageSelect;
@@ -108,7 +107,7 @@ void SceneManager::Update()
 		else if (m_step == step_normal) {
 			//シーン切り替え時フェードアウト
 			if (m_titleScene->GetChangeSceneFlag()) {
-				//g_fade->StartFadeOut();
+				g_fade->StartFadeOut();
 				m_step = step_WaitFadeOut;
 			}
 		}

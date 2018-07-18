@@ -52,6 +52,14 @@ public:
 		m_camera.SetEyePt(position);
 	}
 	/*!
+	*@brief	‹ß•½–Ê‚ğİ’è
+	* @param[in]	_far		‰“•½–Ê
+	*/
+	void SetNear(const float& _near)
+	{
+		m_camera.SetNear(_near);
+	}
+	/*!
 	*@brief	‰“•½–Ê‚ğİ’è
 	* @param[in]	_far		‰“•½–Ê
 	*/

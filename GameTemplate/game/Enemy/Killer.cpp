@@ -91,11 +91,14 @@ void Killer::Update()
 		killer->Init(m_initPosition,m_initRotation);
 	}
 
-	D3DXVECTOR3 moveSpeed = Move();
-	m_position += moveSpeed / 60.0f;
+	if (!player->GetChangeStage())
+	{
+		D3DXVECTOR3 moveSpeed = Move();
+		m_position += moveSpeed / 60.0f;
 
-	btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
-	trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
+		btTransform& trans = m_rigidBody.GetBody()->getWorldTransform();
+		trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
+	}
 
 	m_model.UpdateWorldMatrix(m_position, m_rotation, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 }

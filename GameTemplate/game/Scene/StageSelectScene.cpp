@@ -24,18 +24,8 @@ CStageSelectScene::~CStageSelectScene()
 
 bool CStageSelectScene::Start()
 {
-	//マップ生成
-	//map = goMgr->NewGameObject<Map>();
-
-	//ステージ作成
-	//StageCreate();
-
 	//シルエット生成
 	m_silhouette = goMgr->NewGameObject<Silhouette>();
-	//プレイヤー生成
-	//player = goMgr->NewGameObject<Player>();
-	//カメラ生成
-	//gameCamera = goMgr->NewGameObject<GameCamera>();
 
 	m_stage1 = std::make_unique<Sprite>();
 	m_stage1->Initialize("Assets/sprite/Stage1.png");
@@ -62,16 +52,10 @@ bool CStageSelectScene::Start()
 	m_bgmSource->InitStreaming("Assets/sound/bgm_1.wav");
 	m_bgmSource->Play(true);
 
-	m_step = step_WaitFadeIn;
+	m_step = step_StageLoad;
 
-	//if (m_step = step_WaitFadeOut) {
-	//	
-	//}
-	//else {
-	//	m_step = step_WaitFadeIn;
-	//	g_fade->StartFadeIn();
-	//}
-	
+	g_fade->StartFadeIn();
+
 	return true;
 }
 

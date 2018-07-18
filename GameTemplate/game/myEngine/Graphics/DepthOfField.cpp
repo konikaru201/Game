@@ -12,7 +12,7 @@ DepthOfField::DepthOfField()
 		FRAME_BUFFER_HEIGHT,
 		1,
 		D3DFMT_A16B16G16R16F,
-		D3DFMT_D24S8,
+		D3DFMT_D32,
 		D3DMULTISAMPLE_NONE,
 		0
 	);
@@ -147,7 +147,7 @@ void DepthOfField::Render()
 		}
 
 		{
-			//ボケフィルターの合成
+			//ボケ画像の合成
 			g_pd3dDevice->SetRenderTarget(0, m_combineRenderTarget[i].GetRenderTarget());
 
 			float offset[2];
@@ -171,6 +171,23 @@ void DepthOfField::Render()
 	}
 
 	{
+		g_pd3dDevice->SetRenderTarget(0, m_combineRenderTarget[0].GetRenderTarget());
+
+		m_effect->SetTechnique("Combine");
+		m_effect->Begin(NULL, D3DXFX_DONOTSAVESHADERSTATE);
+		m_effect->BeginPass(0);
+
+		m_effect->SetTexture("g_combineTex00", m_combineRenderTarget[0].GetTexture());
+		m_effect->SetTexture("g_combineTex01", m_combineRenderTarget[1].GetTexture());
+
+		m_effect->CommitChanges();
+		DrawQuadPrimitive();
+
+		m_effect->EndPass();
+		m_effect->End();
+	}
+
+	{
 		float offset[2];
 		offset[0] = 0.5f / (FRAME_BUFFER_HEIGHT / 2);
 		offset[1] = 0.5f / (FRAME_BUFFER_WIDTH / 2);
@@ -182,8 +199,7 @@ void DepthOfField::Render()
 		m_effect->SetTechnique("Final");
 		m_effect->Begin(NULL, D3DXFX_DONOTSAVESHADERSTATE);
 		m_effect->BeginPass(0);
-		m_effect->SetTexture("g_blurTexture0", m_combineRenderTarget[0].GetTexture());
-		m_effect->SetTexture("g_blurTexture1", m_combineRenderTarget[1].GetTexture());
+		m_effect->SetTexture("g_blurTexture", m_combineRenderTarget[0].GetTexture());
 		m_effect->SetTexture("g_mainTexture", mainRenderTarget->GetTexture());
 		m_effect->SetTexture("g_depthMapTexture", m_depthValueRenderTarget.GetTexture());
 		m_effect->SetValue("g_offset", offset, sizeof(offset));
